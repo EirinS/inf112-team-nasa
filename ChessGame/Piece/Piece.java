@@ -1,6 +1,6 @@
-package Piece;
+package piece;
 
-import Board.Square;
+import board.Square;
 
 public class Piece {
 	private PieceColor pieceColor;

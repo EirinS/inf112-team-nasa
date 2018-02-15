@@ -1,6 +1,6 @@
-package GameLogic;
+package game_logic;
 
-import Piece.PieceColor;
+import piece.PieceColor;
 
 /**
  * Created by jonas on 15/02/2018.
