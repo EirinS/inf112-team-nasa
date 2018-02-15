@@ -1,7 +1,7 @@
-package GameLogic.PlayerTypes;
+package game_logic.player_types;
 
-import GameLogic.ChessMove;
-import GameLogic.Player;
+import game_logic.ChessMove;
+import game_logic.Player;
 
 /**
  * Created by jonas on 15/02/2018.

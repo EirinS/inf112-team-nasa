@@ -1,6 +1,6 @@
-package Piece.Pieces;
+package piece.Pieces;
 
-import Piece.Piece;
+import piece.Piece;
 
 public class Queen extends Piece {
 }

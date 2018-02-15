@@ -1,7 +1,7 @@
-package GameLogic;
+package game_logic;
 
-import Board.Square;
-import Piece.Piece;
+import board.Square;
+import piece.Piece;
 
 /**
  * Created by jonas on 15/02/2018.
