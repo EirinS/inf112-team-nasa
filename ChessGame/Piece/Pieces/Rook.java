@@ -1,4 +1,4 @@
-package piece.Pieces;
+package piece.pieces;
 
 import piece.Piece;
 

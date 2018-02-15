@@ -1,4 +1,4 @@
-package piece.Pieces;
+package piece.pieces;
 
 /**
  * Created by jonas on 15/02/2018.
