@@ -1,6 +1,6 @@
-package piece.pieces;
+package piece_logic.piece_classes;
 
-import piece.Piece;
+import piece_logic.Piece;
 
 /**
  * Created by jonas on 15/02/2018.

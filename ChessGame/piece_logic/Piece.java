@@ -1,6 +1,6 @@
-package piece;
+package piece_logic;
 
-import board.Square;
+import board_logic.Square;
 
 public class Piece {
 	private PieceColor pieceColor;

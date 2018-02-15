@@ -1,6 +1,6 @@
 package game_logic;
 
-import piece.PieceColor;
+import piece_logic.PieceColor;
 
 import java.util.ArrayList;
 

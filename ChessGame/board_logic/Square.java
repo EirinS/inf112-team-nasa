@@ -1,6 +1,6 @@
-package board;
+package board_logic;
 
-import piece.PieceColor;
+import piece_logic.PieceColor;
 
 public class Square {
 	private int row;
