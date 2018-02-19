@@ -23,4 +23,8 @@ public class Square {
 	public PieceColor getPieceColor() {
 		return pieceColor;
 	}
+
+	public void setPieceColor(PieceColor pieceColor){
+		this.pieceColor = pieceColor;
+	}
 }
