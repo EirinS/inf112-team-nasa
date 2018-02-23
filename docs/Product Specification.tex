@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{hyperref}
-
+\graphicspath{{diagrams_and_illustrations/}}
 
 \begin{document}
 	\begin{LARGE}\begin{center}
@@ -51,14 +51,14 @@
 2.2	\hspace{0.5cm}Non Functional Requirements  ------------------------------------------	 5\\
 2.3	\hspace{0.5cm}User Stories  ------------------------------------------------------------------   5\\
 2.4	\hspace{0.5cm}Use case diagram  -----------------------------------------------------------	 6\\
-2.5	\hspace{0.5cm}Fully dressed use cases  ----------------------------------------------------	6\\
-\hspace{0.5cm}2.5.1	Multiplayer  ----------------------------------------------------------------	6\\
-\hspace{0.5cm}2.5.2	Single Player  --------------------------------------------------------------	7\\
+2.5	\hspace{0.5cm}Fully dressed use cases  ----------------------------------------------------	8\\
+\hspace{0.5cm}2.5.1	Multiplayer  ----------------------------------------------------------------	8\\
+\hspace{0.5cm}2.5.2	Single Player  --------------------------------------------------------------	9\\
 \vspace{3mm}
 
 
-\textbf{3.	Domain model}  --------------------------------------------------------------- 9\\
-3.1 \hspace{0.5cm}Class Diagram  --------------------------------------------------------------	9\\
+\textbf{3.	Domain model}  --------------------------------------------------------------- 11\\
+3.1 \hspace{0.5cm}Class Diagram  --------------------------------------------------------------	11\\
 
 \newpage
 
@@ -163,15 +163,19 @@ The rest of the document elaborates the system requirements for the chess game.\
 
 
 \begin{figure}[h]
-		\includegraphics*[scale=0.70]{ChessUCD}
+		\includegraphics*[scale=0.8]{ChessUCD}
+	\caption{Use case diagram }
+	
+\end{figure}
+
+\begin{figure}[h]
+		\includegraphics*[scale=0.8]{User_case_diagrams}
 	\caption{Use case diagram }
 	
 \end{figure}
 
 
-
-
-
+\clearpage
 \begin{flushleft}
 \vspace{5mm}	
 \textbf{2.5	Fully dressed use cases}\\
@@ -298,19 +302,9 @@ Special Requirements:\\
 \textbf{3.1	Class Diagram}
 
 \begin{figure}[h]
-	\includegraphics*[scale=0.30]{TEAM_nasa_uml_chess}
+	\includegraphics*[scale=0.30]{Class-diagram}
 	\caption{Class Diagram.}	
 \end{figure}
-
-
-
-
-
 	
 \end{flushleft}
-
-
-
-	
-	
-		\end{document}
+\end{document}
