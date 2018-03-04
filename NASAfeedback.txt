@@ -1,0 +1,41 @@
+Feedback INF112 spring 2018 - Oblig.2
+
+Group: Team NASA
+
+Overall feedback
+Very good delivery.
+Especially good product specification, the plan for the next assignments seems very clear.
+Overall good answers on most of the tasks.
+Should have specified more about the team members. Some team-members roles were specified, but what
+about the remaining team members?
+
+Deliverable: Product specification
+Very good delivery. It seems you have figured out the structure and design of the different
+diagrams and so on. Will be easy to change in future assignments. Only comment is that the nonfunctional requirements could
+be more specific.
+
+Deliverable: Team plan
+Good description of repo structure and so on, missing some team members when listing
+roles and skills.
+
+Deliverable: User manual
+Most of the user manual was very good.
+
+Deliverable: Project plan and process
+Good description of plan, and of the chosen process for development.
+
+Deliverable: Retrospective summary
+Maybe a bit short, but good to see that there are few struggles.
+
+Deliverable: Presentation
+Very nice slides and good presentation overall. Presentation went a little bit over the time (not much, about 1 minute).
+
+Team organization
+It seems like the team structure is fine, but it is not specified good enough. There are also few commits by some
+team members, even though they are listed in the meetings (also aware of the usage of google docs).
+What did these team memebers do?
+
+Score: 96.5 (of 100)
+Evaluation: PASS
+
+Graded by Joakim and Dan, Bergen, March 4.
