@@ -21,3 +21,6 @@ Stian Fagerli (sfa031)
 Paraneetharan Sabaratnam (psa028)
 
 Sofia Eika (sei019)
+
+# Issue Tracker
+[Link here](https://docs.google.com/document/d/1ni2kgMJWXSGN1bigxjvA0nLvWJidNImeU7CP-rQk50U/edit?usp=sharing)
