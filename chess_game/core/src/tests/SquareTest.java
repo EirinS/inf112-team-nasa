@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import boardstructure.BoardColor;
 import boardstructure.Square;
-import pieces.AbstractPiece;
 
 public class SquareTest {
 	
@@ -15,7 +14,7 @@ public class SquareTest {
 	private BoardColor color = BoardColor.BLACK;
 	//creates empty square
 	private Square sq = new Square(x, y, color);
-	//private AbstractPiece piece = //TODO:create piece
+	//private IPiece piece = //TODO:create piece
 
 	@Before
 	public void setUp() throws Exception {

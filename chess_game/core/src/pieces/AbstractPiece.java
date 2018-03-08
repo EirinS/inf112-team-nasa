@@ -1,38 +1,25 @@
 package pieces;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
-import boardstructure.Square;
-
-public abstract class AbstractPiece {
+public abstract class AbstractPiece implements IPiece {
 	/**
 	 * Is piece on the board?
 	 */
-	boolean inPlay;
+	private boolean inPlay;	
 	
 	/**
-	 * Graphic of piece
+	 * Color of piece
 	 */
-	public static Image graphic;
+	private PieceColor color;
 	
-	
-	/**
-	 * 
-	 * @return true if piece is in play, false if piece has been taken.
-	 */
+	@Override
 	public boolean isInPlay() {
 		return inPlay;		
 	}
 	
-	/**
-	 * Find and return all legal positions where a piece can be moved to.
-	 * Should check all the rules of the piece and get the legal positions.
-	 * @param Square square, the position of piece on board.
-	 * @return ArrayList<Square> of legal positions.
-	 */
-	public abstract ArrayList<Square> legalPositions(Square square);
+	@Override
+	public PieceColor getColor() {
+		return color;
+	}
 	
 	
 }

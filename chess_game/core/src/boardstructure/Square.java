@@ -1,6 +1,7 @@
 package boardstructure;
 
-import pieces.AbstractPiece;
+import pieces.IPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Square {
@@ -22,7 +23,7 @@ public class Square {
 	/**
 	 * The piece the square contains (null if nothing)
 	 */
-	private AbstractPiece piece;
+	private IPiece piece;
 	
 	private IBoard board;
 	
@@ -45,7 +46,7 @@ public class Square {
 	 * @param color (black, white)
 	 * @param piece, the piece that occupies this square
 	 */
-	public Square(int x, int y, BoardColor color, AbstractPiece piece) {
+	public Square(int x, int y, BoardColor color, IPiece piece) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -87,7 +88,7 @@ public class Square {
 	 * @param piece
 	 * @throws IllegalArgumentException, piece must have content and be put into an empty square.
 	 */
-	public void putPiece(AbstractPiece piece) {
+	public void putPiece(IPiece piece) {
 		if (piece == null || !isEmpty())
 			throw new IllegalArgumentException("Cannot put null piece");
 		this.piece = piece;				
@@ -97,8 +98,8 @@ public class Square {
 	 * Removes the piece in this sqaure (if there is one, otherwise do nothing)
 	 * @return AbstractPiece piece, the piece removed.
 	 */
-	public AbstractPiece removePiece() {
-		AbstractPiece p = piece;
+	public IPiece removePiece() {
+		IPiece p = piece;
 		piece = null;
 		return p;
 	}
@@ -106,7 +107,7 @@ public class Square {
 	/**
 	 * @return the piece stored in this square
 	 */
-	public AbstractPiece getPiece() {
+	public IPiece getPiece() {
 		return piece;
 	}
 }
