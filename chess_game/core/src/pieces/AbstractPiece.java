@@ -1,15 +1,18 @@
 package pieces;
 
+import boardstructure.IBoard;
+
 public abstract class AbstractPiece implements IPiece {
 	/**
 	 * Is piece on the board?
 	 */
-	private boolean inPlay;	
+	protected boolean inPlay;	
 	
 	/**
 	 * Color of piece
 	 */
-	private PieceColor color;
+	protected PieceColor color;
+
 	
 	@Override
 	public boolean isInPlay() {
@@ -21,5 +24,9 @@ public abstract class AbstractPiece implements IPiece {
 		return color;
 	}
 	
-	
+	@Override
+	public IPiece takePiece() {
+		inPlay = false;
+		return this;
+	}	
 }

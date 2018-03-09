@@ -4,16 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import boardstructure.BoardColor;
 import boardstructure.Square;
 
 public class SquareTest {
 	
 	private int x = 2, y = 1;
-	private BoardColor color = BoardColor.BLACK;
 	//creates empty square
-	private Square sq = new Square(x, y, color);
+	private Square sq = new Square(x, y);
 	//private IPiece piece = //TODO:create piece
 
 	@Before
@@ -41,20 +38,15 @@ public class SquareTest {
 	}
 	
 	@Test
-	public void boardColorSameAsInitialization() {
-		assertEquals(sq.getBoardColor(), color);
-	}
-	
-	@Test
 	public void removePieceReturnsSamePieceAsPlaced() {
 		//sq.putPiece(piece);
 		//assertEquals(piece, sq.removePiece());
 	}
 	
 	//@Test
-	public void removePieceLeavesBoardEmpty() {
+	public void movePieceLeavesSquareEmpty() {
 		//sq.putPiece(piece);
-		sq.removePiece();
+		sq.movePiece();
 		assertTrue(sq.isEmpty());
 		//TODO: Needs piece to test
 	}
@@ -68,6 +60,11 @@ public class SquareTest {
 	
 	@Test
 	public void cannotPutPieceInSquareThatContainsPiece() {
+		//TODO: code
+	}
+	
+	@Test
+	public void takePieceMovesPieceOutOfPlay() {
 		//TODO: code
 	}
 	

@@ -16,16 +16,9 @@ public class Square {
 	private int y;
 	
 	/**
-	 * White or black color
-	 */
-	private BoardColor color;
-	
-	/**
 	 * The piece the square contains (null if nothing)
 	 */
 	private IPiece piece;
-	
-	private IBoard board;
 	
 	/**
 	 * Precondition: Square must be within dimensions of board.
@@ -33,12 +26,12 @@ public class Square {
 	 * @param y position
 	 * @param color (black, white)
 	 */
-	public Square(int x, int y, BoardColor color) {
+	public Square(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.color = color;
 	}
-	
+
+
 	/**
 	 * Precondition: Square must be within dimensions of board.
 	 * @param x position
@@ -46,10 +39,9 @@ public class Square {
 	 * @param color (black, white)
 	 * @param piece, the piece that occupies this square
 	 */
-	public Square(int x, int y, BoardColor color, IPiece piece) {
+	public Square(int x, int y, IPiece piece) {
 		this.x = x;
 		this.y = y;
-		this.color = color;
 		this.piece = piece;
 	}
 	
@@ -65,13 +57,6 @@ public class Square {
 	 */
 	public int getY() {
 		return y;
-	}
-	
-	/**
-	 * @return color of square (black, white)
-	 */
-	public BoardColor getBoardColor() {
-		return color;
 	}
 	
 	/**
@@ -98,8 +83,19 @@ public class Square {
 	 * Removes the piece in this sqaure (if there is one, otherwise do nothing)
 	 * @return AbstractPiece piece, the piece removed.
 	 */
-	public IPiece removePiece() {
+	public IPiece movePiece() {
 		IPiece p = piece;
+		piece = null;
+		return p;
+	}
+	
+	/**
+	 * Piece is taken by another chess player.
+	 * @return the piece removed from the board.
+	 */
+	public IPiece takePiece() {
+		IPiece p = piece;
+		p.takePiece();
 		piece = null;
 		return p;
 	}
@@ -109,5 +105,10 @@ public class Square {
 	 */
 	public IPiece getPiece() {
 		return piece;
+	}
+	
+	@Override
+	public String toString() {
+		return "Square [x=" + x + ", y=" + y + ", piece=" + piece + "]";
 	}
 }

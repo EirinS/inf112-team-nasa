@@ -7,13 +7,21 @@ public class Board implements IBoard {
 	private int width;
 	private ArrayList<Square> board;
 
-	public Board (int h, int w) {
-		if(h <= 0 || w <= 0)
+	/**
+	 * Create new board.
+	 * @param dim Board is always square. Dim is the height and widht of board.
+	 */
+	public Board (int dim) {
+		if(dim < 0)
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
-		height = h;
-		width = w;
+		height = dim;
+		width = dim;
 		board = new ArrayList<>();
-		//TODO: standard piece setup??
+		for(int i = 0; i < dim; i++) {
+			for(int j = 0; j < dim; j++) {
+				board.add(new Square(i,j));
+			}
+		}
 	}
 	
 	@Override
@@ -25,24 +33,50 @@ public class Board implements IBoard {
 	public int getHeight() {
 		return height;
 	}
+	
 
 	@Override
 	public Square getSquare(int x, int y) {
 		return board.get(y * width + x);
 	}
+	
+	@Override
+	public int getBoardPlacement(Square sq) {
+		return (sq.getY() * width + sq.getX());
+	}
 
 	@Override
 	public ArrayList<Square> getBoard() {
-		// TODO Auto-generated method stub
-		return null;
+		return board;
 	}
 
 	@Override
-	public boolean moveable(Square sq) {
-		if (sq.getX() >= width || sq.getY() >= height || sq.getX() < 0 || sq.getY() < 0 || !sq.isEmpty())
+	public boolean movable(Square sq) {
+		if (!withinBoard(sq) || !sq.isEmpty())
 			return false;
 		return true;
-		
 	}
+
+	@Override
+	public int getDimension() {
+		return height;
+	}
+
+	@Override
+	public void addSquare(Square sq) {
+		if(!withinBoard(sq))
+			throw new IllegalArgumentException("Cannot place a square outside the board");
+		else {
+			board.add(getBoardPlacement(sq), sq);
+		}
+	}
+
+	@Override
+	public boolean withinBoard(Square sq) {
+		if(sq.getX() >= width || sq.getY() >= height || sq.getX() < 0 || sq.getY() < 0)
+			return false;
+		return true;
+	}
+
 
 }

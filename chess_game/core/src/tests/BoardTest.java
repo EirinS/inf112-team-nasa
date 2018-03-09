@@ -6,13 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardstructure.Board;
-import boardstructure.BoardColor;
 import boardstructure.IBoard;
 import boardstructure.Square;
 
 public class BoardTest {
-	private int height = 5, width = 5;
-	private IBoard board = new Board(height, width);
+	private int dim = 5;
+	private IBoard board = new Board(dim);
 
 	@Before
 	public void setUp() throws Exception {
@@ -22,7 +21,7 @@ public class BoardTest {
 	public void cantCreateIllegalBoard() {
 		boolean thrown = false;
 		try {
-			IBoard board = new Board(-1,-1);
+			IBoard board = new Board(-1);
 		} catch (Exception e){
 			thrown = true;
 		}
@@ -31,47 +30,55 @@ public class BoardTest {
 
 	@Test
 	public void checkHeightOfBoard() {
-		assertEquals(board.getHeight(), height);
+		assertEquals(board.getHeight(), dim);
 	}
 	
 	@Test
 	public void checkWidthOfBoard() {
-		assertEquals(board.getWidth(), width);
+		assertEquals(board.getWidth(), dim);
+	}
+	
+	@Test
+	public void checkIfBoardIsSquare() {
+		assertEquals(board.getWidth(), board.getHeight());
+	}
+	
+	@Test
+	public void boardHasNoNullSpots() {
+		assertFalse(board.getBoard().contains(null));		
 	}
 	
 	@Test
 	public void returnsCorrectSquare() {
-		//TODO: code
 	}
 	
 	@Test
 	public void illegalMoveToLargerThanHeight() {
-		assertFalse(board.moveable(new Square(height,width-1, BoardColor.WHITE)));
+		assertFalse(board.withinBoard(new Square(dim,dim-1)));
 	}
 	
 	@Test
 	public void illegalMoveToLargerThanWidth() {
-		assertFalse(board.moveable(new Square(height-1,width, BoardColor.WHITE)));
+		assertFalse(board.withinBoard(new Square(dim-1,dim)));
 	}
 	
 	@Test
 	public void illegalMoveToNegativeHeight() {
-		assertFalse(board.moveable(new Square(-1,0, BoardColor.WHITE)));
+		assertFalse(board.withinBoard(new Square(-1,0)));
 	}
 	
 	@Test
 	public void illegalMoveToNegativeWidth() {
-		assertFalse(board.moveable(new Square(0,-1, BoardColor.WHITE)));
+		assertFalse(board.withinBoard(new Square(0,-1)));
 	}
 	
 	@Test
 	public void legalMoveToFreeSquare() {
-		assertTrue(board.moveable(new Square(0, 0, BoardColor.WHITE)));
+		assertTrue(board.withinBoard(new Square(0, 0)));
 	}
 	
 	@Test
 	public void illegalMoveToTakenSquare() {
-		//TODO: code
 	}
 
 	
