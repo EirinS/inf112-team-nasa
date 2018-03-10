@@ -5,13 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import boardstructure.Square;
+import pieces.IPiece;
+import pieces.PieceColor;
+import pieces.pieceClasses.Rook;
 
 public class SquareTest {
 	
 	private int x = 2, y = 1;
 	//creates empty square
 	private Square sq = new Square(x, y);
-	//private IPiece piece = //TODO:create piece
+	private IPiece piece = new Rook(PieceColor.BLACK);
 
 	@Before
 	public void setUp() throws Exception {
@@ -24,7 +27,8 @@ public class SquareTest {
 	
 	@Test
 	public void nonEmptySquareIsNotEmpty() {
-		//TODO: code
+		sq.putPiece(piece);
+		assertFalse(sq.isEmpty());
 	}
 	
 	@Test
@@ -39,33 +43,51 @@ public class SquareTest {
 	
 	@Test
 	public void removePieceReturnsSamePieceAsPlaced() {
-		//sq.putPiece(piece);
-		//assertEquals(piece, sq.removePiece());
+		sq.putPiece(piece);
+		assertEquals(piece, sq.movePiece());
 	}
 	
-	//@Test
+	@Test
 	public void movePieceLeavesSquareEmpty() {
-		//sq.putPiece(piece);
+		sq.putPiece(piece);
+		assertFalse(sq.isEmpty());
 		sq.movePiece();
 		assertTrue(sq.isEmpty());
-		//TODO: Needs piece to test
 	}
 	
-	//@Test
-	public void putPieceGivesSamePiece() {
-		//sq.putPiece(piece);
-		//assertEquals(piece, sq.getPiece());
-		//TODO: Needs piece to test
+	@Test
+	public void putPieceGivesSamePieceOnGetPiece() {
+		sq.putPiece(piece);
+		assertEquals(piece, sq.getPiece());
 	}
 	
 	@Test
 	public void cannotPutPieceInSquareThatContainsPiece() {
-		//TODO: code
+		sq.putPiece(piece);
+		boolean caughtException = false;
+		try {
+			sq.putPiece(new Rook(PieceColor.BLACK));			
+		} catch (Exception e) {
+			caughtException = true;
+		}
+		assertTrue(caughtException);
+	}
+	
+	private void setupTakePiece() {
+		sq.putPiece(piece);
+		sq.takePiece();
 	}
 	
 	@Test
 	public void takePieceMovesPieceOutOfPlay() {
-		//TODO: code
+		setupTakePiece();
+		assertFalse(piece.isInPlay());
+	}
+	
+	@Test
+	public void takePieceLeavesSquareEmpty() {
+		setupTakePiece();
+		assertTrue(sq.isEmpty());
 	}
 	
 	

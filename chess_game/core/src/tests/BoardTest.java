@@ -8,6 +8,8 @@ import org.junit.Test;
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Square;
+import pieces.PieceColor;
+import pieces.pieceClasses.Rook;
 
 public class BoardTest {
 	private int dim = 5;
@@ -79,6 +81,9 @@ public class BoardTest {
 	
 	@Test
 	public void illegalMoveToTakenSquare() {
+		Square sq = new Square(0,0);
+		sq.putPiece(new Rook(PieceColor.WHITE));
+		assertFalse(board.movable(sq));
 	}
 
 	
