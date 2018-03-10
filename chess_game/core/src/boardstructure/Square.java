@@ -81,10 +81,12 @@ public class Square {
 	
 	/**
 	 * Removes the piece in this sqaure (if there is one, otherwise do nothing)
+	 * Sets moved state to true and piece field in square to null.
 	 * @return AbstractPiece piece, the piece removed.
 	 */
 	public IPiece movePiece() {
 		IPiece p = piece;
+		p.pieceMoved();
 		piece = null;
 		return p;
 	}

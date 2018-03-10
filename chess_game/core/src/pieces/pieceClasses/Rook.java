@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import boardstructure.IBoard;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Rook extends AbstractPiece {
@@ -12,29 +13,61 @@ public class Rook extends AbstractPiece {
 	public Rook(PieceColor color) {
 		inPlay = true;
 		this.color = color;
+		hasMoved = false;
 	}
 
 	@Override
 	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
 		ArrayList<Square> legalPositions = new ArrayList<>();
-		
-		//valid moves in x-direction
-		legalPositions.addAll(getValidSquares(sq.getX(), sq.getY(), board, true));
-		
-		//valid moves in y-direction
-		legalPositions.addAll(getValidSquares(sq.getY(), sq.getX(), board, false));
+		legalPositions.addAll(getEmptySquares(sq.getX(), sq.getY(), board));
 		return legalPositions;
 	}
 	
 	/**
-	 * Finds all positions in a straight line from start point.
+	 * NOT IMPLEMENTED
+	 * @return
+	 */
+	private boolean checkedAfterMove() {
+		//TODO: Code
+		return true;		
+	}
+
+	@Override
+	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board){
+		ArrayList<Square> reachable = new ArrayList<>();
+		reachable.addAll(reachableSquares(x, y, board, true));
+		reachable.addAll(reachableSquares(y, x, board, false));
+		return reachable;
+	}
+	
+	
+	/**
+	 * NOT IMPLEMENTED
+	 * @param sq, square of the rook
+	 * @param board, board the rook is on
+	 * @return legal castling square moves.
+	 */
+	private ArrayList<Square> castling(Square sq, IBoard board){
+		//TODO
+		/* CONDITIONS FOR THIS MOVE:
+		 * - Neither the king, nor rook has moved before
+		 * - No pieces between king and chosen rook
+		 * - The king never passes through pieces where it's in check
+		 * - King is not in check
+		 */		
+		return null;
+	}
+	
+	/**
+	 * Finds all positions in a straight line from start point, including first piece encountered.
 	 * @param startPoint, the point you start from.
 	 * @param axis, the axis you move on. If you move on y-axis, you
 	 * change the x-coordinate and find all position in x direction.
 	 * @param board, the board you're working on.
+	 * @param horizontal, tells you if you're checking horizontal or vertical direction.
 	 * @return ArrayList<Square>, all legal positions on the axis.
 	 */
-	private ArrayList<Square> getValidSquares(int startPoint, int axis, IBoard board, boolean horizontal){
+	private ArrayList<Square> reachableSquares(int startPoint, int axis, IBoard board, boolean horizontal){
 		ArrayList<Square> ok = new ArrayList<>();
 		Square newSq;
 		
@@ -46,6 +79,7 @@ public class Rook extends AbstractPiece {
 			else {newSq = board.getSquare(axis, i);}
 			
 			if(!newSq.isEmpty()) {
+				ok.add(newSq);
 				break;
 			}
 			ok.add(newSq);
@@ -59,15 +93,17 @@ public class Rook extends AbstractPiece {
 			else {newSq = board.getSquare(axis, i);}
 			
 			if(!newSq.isEmpty()) {
+				ok.add(newSq);
 				break;
 			}
 			ok.add(newSq);
 		}
-		return ok;			
+		return ok;	
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Rook [inPlay=" + inPlay + ", color=" + color + "]";
 	}
+
 }

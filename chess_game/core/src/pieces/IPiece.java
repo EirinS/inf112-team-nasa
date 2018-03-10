@@ -32,5 +32,39 @@ public interface IPiece {
 	 */
 	public IPiece takePiece();
 	
+	/**
+	 * When a piece moves, this sets hasMoved to true.
+	 */
+	public void pieceMoved();
+	
+	/**
+	 * @return true if this piece has moved, false else.
+	 */
+	public boolean hasMoved();
+	
+	
+	/**
+	 * Finds all enemy pieces reached by this piece. Useful to tell if
+	 * enemy king is set in check, and  to see if your king is set in 
+	 * check.
+	 * @param x-coordinate of current piece
+	 * @param y-position of current piece
+	 * @param board
+	 * @param opponent, the color of the pieces you'll look for
+	 * @return ArrayList<IPiece> enemy pieces reached by this piece
+	 */
+	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent);
+	
+	
+	/**
+	 * Finds all empty squares that can be reached by this rook.
+	 * Hence, you can move to it, if it doesn't leave your king in check
+	 * @param x-coordinate
+	 * @param y-coordinate
+	 * @param board
+	 * @return all empty squares reached by this rook
+	 */
+	public ArrayList<Square> getEmptySquares(int x, int y, IBoard board);
+	
 
 }

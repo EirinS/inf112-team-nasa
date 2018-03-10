@@ -15,14 +15,22 @@ import pieces.PieceColor;
 import pieces.pieceClasses.Rook;
 
 public class RookTest {
-	
-	IBoard board = new Board(5);
+	IBoard board = new Board(10);
 	IPiece rook = new Rook(PieceColor.WHITE);
 	Square sq = board.getSquare(0,0);
 
 	@Before
 	public void setUp() throws Exception {
 		sq.putPiece(rook);
+	}
+	
+	@Test
+	public void canFindEnemies() {
+		int x = 0, y = 3;
+		board.getSquare(x, y).putPiece(rook);
+		board.getSquare(x+1, y).putPiece(new Rook(PieceColor.BLACK));
+		board.getSquare(x, y+2).putPiece(new Rook(PieceColor.BLACK));
+		assertTrue(board.getSquare(x, y).getPiece().enemyPiecesReached(x, y, board, PieceColor.BLACK).size() == 2);
 	}
 	
 	@Test
@@ -63,9 +71,4 @@ public class RookTest {
 		assertTrue(!sq.getPiece().legalPositions(sq, board).contains(board.getSquare(4, 0)));
 	}
 	
-	@Test
-	public void rookCanBeTakenAndIsNotInPlay() {
-		rook.takePiece();
-		assertFalse(rook.isInPlay());
-	}
 }

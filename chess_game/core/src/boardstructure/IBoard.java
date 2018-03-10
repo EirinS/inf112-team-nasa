@@ -2,6 +2,8 @@ package boardstructure;
 
 import java.util.ArrayList;
 
+import pieces.IPiece;
+
 public interface IBoard {
 	
 	/**
@@ -63,6 +65,18 @@ public interface IBoard {
 	 * @return true if within board, false if not.
 	 */
 	public boolean withinBoard(Square sq);
+	
+	/**
+	 * Returns all the pieces than can be captured by white.
+	 * @return ArrayList<IPiece>, all pieces threatened by white.
+	 */
+	public ArrayList<IPiece> piecesThreatenedByWhite();
+	
+	/**
+	 * Returns all the pieces than can be captured by black.
+	 * @return ArrayList<IPiece>, all pieces threatened by black.
+	 */
+	public ArrayList<IPiece> piecesThreatenedByBlack();
 	
 	
 	
