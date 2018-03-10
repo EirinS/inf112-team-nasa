@@ -12,6 +12,7 @@ import boardstructure.IBoard;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class RookTest {
@@ -25,12 +26,25 @@ public class RookTest {
 	}
 	
 	@Test
+	public void testForGetMovable() {
+		board = new Board(2);
+		board.getSquare(0, 0).putPiece(rook);
+		ArrayList<Square> moves = rook.getMovableSquares(0, 0, board);
+		assertEquals(2, moves.size());
+		assertTrue(moves.contains(board.getSquare(0, 1)));
+		assertTrue(moves.contains(board.getSquare(1, 0)));
+		
+		//not itself
+		assertFalse(moves.contains(board.getSquare(0, 0)));
+	}
+	
+	@Test
 	public void canFindEnemies() {
 		int x = 0, y = 3;
 		board.getSquare(x, y).putPiece(rook);
 		board.getSquare(x+1, y).putPiece(new Rook(PieceColor.BLACK));
-		board.getSquare(x, y+2).putPiece(new Rook(PieceColor.BLACK));
-		assertTrue(board.getSquare(x, y).getPiece().enemyPiecesReached(x, y, board, PieceColor.BLACK).size() == 2);
+		board.getSquare(x, y+2).putPiece(new King(PieceColor.BLACK));
+		assertEquals(board.getSquare(x, y).getPiece().enemyPiecesReached(x, y, board, PieceColor.BLACK).size(), 2);
 	}
 	
 	@Test

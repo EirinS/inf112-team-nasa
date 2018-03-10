@@ -2,13 +2,17 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Square;
+import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class BoardTest {
@@ -51,8 +55,22 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void returnsCorrectSquare() {
+	public void returnsCorrectXCoordinateForSquare() {
+		assertEquals(board.getSquare(3, 2).getX(), 3);
 	}
+	
+	@Test
+	public void returnsCorrectYCoordinateForSquare() {
+		assertEquals(board.getSquare(3, 2).getY(), 2);
+	}
+	
+	@Test
+	public void returnsSameSquare() {
+		Square sq = board.getSquare(1, 4);
+		board.getSquare(1, 4).putPiece(new Rook(PieceColor.WHITE));
+		assertEquals(sq, board.getSquare(1, 4));
+	}
+	
 	
 	@Test
 	public void illegalMoveToLargerThanHeight() {
@@ -84,6 +102,25 @@ public class BoardTest {
 		Square sq = new Square(0,0);
 		sq.putPiece(new Rook(PieceColor.WHITE));
 		assertFalse(board.movable(sq));
+	}
+	
+	@Test
+	public void getAllThreatenedPiecesFindsThreatenedPieces() {
+		IBoard newboard = new Board(5);
+		IPiece whiteRook = new Rook(PieceColor.WHITE);
+		IPiece blackRook = new Rook(PieceColor.BLACK);
+		IPiece blackKing = new King(PieceColor.BLACK);
+		newboard.getSquare(0, 0).putPiece(blackKing);
+		newboard.getSquare(0, 1).putPiece(whiteRook);
+		newboard.getSquare(0, 2).putPiece(blackRook);
+		ArrayList<IPiece> p = newboard.piecesThreatenedByOpponent(PieceColor.BLACK, PieceColor.WHITE);
+		assertTrue(p.contains(blackRook));
+		assertTrue(p.contains(blackKing));
+		assertEquals(2, p.size());
+		
+		p = newboard.piecesThreatenedByOpponent(PieceColor.WHITE, PieceColor.BLACK);
+		assertTrue(p.contains(whiteRook));
+		assertEquals(1, p.size());
 	}
 
 	

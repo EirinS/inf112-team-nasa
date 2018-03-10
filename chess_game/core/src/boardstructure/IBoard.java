@@ -3,6 +3,7 @@ package boardstructure;
 import java.util.ArrayList;
 
 import pieces.IPiece;
+import pieces.PieceColor;
 
 public interface IBoard {
 	
@@ -68,15 +69,11 @@ public interface IBoard {
 	
 	/**
 	 * Returns all the pieces than can be captured by white.
+	 * @param PieceColor player, your piece color
+	 * @param PieceColor opponent, the color that threatens you.
 	 * @return ArrayList<IPiece>, all pieces threatened by white.
 	 */
-	public ArrayList<IPiece> piecesThreatenedByWhite();
-	
-	/**
-	 * Returns all the pieces than can be captured by black.
-	 * @return ArrayList<IPiece>, all pieces threatened by black.
-	 */
-	public ArrayList<IPiece> piecesThreatenedByBlack();
+	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
 	
 	
 	

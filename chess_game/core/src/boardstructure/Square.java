@@ -1,8 +1,6 @@
 package boardstructure;
 
 import pieces.IPiece;
-import pieces.IPiece;
-import pieces.PieceColor;
 
 public class Square {
 	/**
@@ -74,8 +72,11 @@ public class Square {
 	 * @throws IllegalArgumentException, piece must have content and be put into an empty square.
 	 */
 	public void putPiece(IPiece piece) {
-		if (piece == null || !isEmpty())
-			throw new IllegalArgumentException("Cannot put null piece");
+		if (piece == null)
+			throw new IllegalArgumentException("Cannot put null piece.");
+		if (!isEmpty()) {
+			throw new IllegalArgumentException("Square must be empty!");
+		}
 		this.piece = piece;				
 	}
 	

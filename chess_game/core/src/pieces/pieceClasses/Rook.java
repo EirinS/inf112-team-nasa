@@ -19,17 +19,15 @@ public class Rook extends AbstractPiece {
 	@Override
 	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
 		ArrayList<Square> legalPositions = new ArrayList<>();
-		legalPositions.addAll(getEmptySquares(sq.getX(), sq.getY(), board));
-		return legalPositions;
+		ArrayList<Square> moveSquares;
+		legalPositions.addAll(getMovableSquares(sq.getX(), sq.getY(), board));
+		moveSquares = removePositionsInCheck(legalPositions, sq, board);
+		return moveSquares;
 	}
-	
-	/**
-	 * NOT IMPLEMENTED
-	 * @return
-	 */
-	private boolean checkedAfterMove() {
-		//TODO: Code
-		return true;		
+
+	@Override
+	public void movePiece(Square cur, Square next) {
+		next.putPiece(cur.movePiece());
 	}
 
 	@Override
@@ -67,7 +65,7 @@ public class Rook extends AbstractPiece {
 	 * @param horizontal, tells you if you're checking horizontal or vertical direction.
 	 * @return ArrayList<Square>, all legal positions on the axis.
 	 */
-	private ArrayList<Square> reachableSquares(int startPoint, int axis, IBoard board, boolean horizontal){
+	public ArrayList<Square> reachableSquares(int startPoint, int axis, IBoard board, boolean horizontal){
 		ArrayList<Square> ok = new ArrayList<>();
 		Square newSq;
 		
@@ -79,24 +77,28 @@ public class Rook extends AbstractPiece {
 			else {newSq = board.getSquare(axis, i);}
 			
 			if(!newSq.isEmpty()) {
-				ok.add(newSq);
+				if(getColor() != newSq.getPiece().getColor())
+					ok.add(newSq);
 				break;
+			} else {
+				ok.add(newSq);
 			}
-			ok.add(newSq);
 		}
 		
 		//check axis downwards
-		for(int i = startPoint-1; i > 0; i--) {
+		for(int i = startPoint-1; i >= 0; i--) {
 			
 			//check if we're looking on y-axis or x-axis
 			if (horizontal) {newSq= board.getSquare(i, axis);}
 			else {newSq = board.getSquare(axis, i);}
 			
 			if(!newSq.isEmpty()) {
-				ok.add(newSq);
+				if(getColor() != newSq.getPiece().getColor())
+					ok.add(newSq);
 				break;
-			}
+			} else {
 			ok.add(newSq);
+			}
 		}
 		return ok;	
 	}
@@ -105,5 +107,6 @@ public class Rook extends AbstractPiece {
 	public String toString() {
 		return "Rook [inPlay=" + inPlay + ", color=" + color + "]";
 	}
+
 
 }

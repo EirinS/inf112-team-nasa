@@ -73,6 +73,7 @@ public class SquareTest {
 		assertTrue(caughtException);
 	}
 	
+	
 	private void setupTakePiece() {
 		sq.putPiece(piece);
 		sq.takePiece();
@@ -88,6 +89,17 @@ public class SquareTest {
 	public void takePieceLeavesSquareEmpty() {
 		setupTakePiece();
 		assertTrue(sq.isEmpty());
+	}
+	
+	@Test
+	public void cannotPutNullPiece() {
+		boolean thrown = false;
+		try {
+			sq.putPiece(null);
+		} catch(Exception e) {
+			thrown = true;
+		}
+		assertTrue(thrown);		
 	}
 	
 	

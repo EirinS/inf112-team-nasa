@@ -42,14 +42,14 @@ public class Board implements IBoard {
 		if(x < 0 || x > getDimension() || y < 0 || y > getDimension()) {
 			throw new IllegalArgumentException("Cannot look for squares outside the board");
 		}
-		return board.get(y * width + x);
+		return board.get(x * width + y);
 	}
 
 	@Override
 	public int getBoardPlacement(Square sq) {
 		if(!withinBoard(sq))
 			throw new IllegalArgumentException("Piece must be inside board to find");
-		return (sq.getY() * width + sq.getX());
+		return (sq.getX() * width + sq.getY());
 	}
 
 	@Override
@@ -86,28 +86,26 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public ArrayList<IPiece> piecesThreatenedByWhite() {
-		return threatenedPieces(PieceColor.WHITE, PieceColor.BLACK);
-	}
-
-	@Override
-	public ArrayList<IPiece> piecesThreatenedByBlack() {
-		return threatenedPieces(PieceColor.BLACK, PieceColor.WHITE);
+	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent){
+		return threatenedPieces(opponent, player);
 	}
 
 	/**
 	 * Helper method to get threatened pieces.
-	 * @param opponent, color of the opponent
-	 * @return ArrayList<IPiece> of threatened opponent pieces
+	 * @param PieceColor threatening, color of the opponent
+	 * @param PieceColor gettingThreatened, your color
+	 * @return ArrayList<IPiece> of your threatened pieces
 	 */
-	private ArrayList<IPiece> threatenedPieces(PieceColor turn, PieceColor opponent) {
+	private ArrayList<IPiece> threatenedPieces(PieceColor opponent, PieceColor player) {
 		ArrayList<IPiece> reached = new ArrayList<>();
 		for(int i = 0; i < board.size(); i++) {
 			Square sq = board.get(i);
 			if(!sq.isEmpty()) {
 				IPiece p = sq.getPiece();
-				if(p.getColor() == turn) {
-					reached.addAll(p.enemyPiecesReached(sq.getX(), sq.getY(), this, opponent));
+				if(p.getColor() == opponent) {
+					ArrayList<IPiece> pieces = p.enemyPiecesReached(sq.getX(), sq.getY(), this, player);
+					if (pieces != null)
+						reached.addAll(pieces);
 				}
 			}
 		}
