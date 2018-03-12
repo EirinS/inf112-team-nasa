@@ -82,6 +82,6 @@ public class Queen extends AbstractPiece {
 		return ok;
 	}
 	public String toString() {
-		return "Queen [inPlay=" + inPlay + ", color=" + color + "]";
+		return "Q";
 	}
 }
