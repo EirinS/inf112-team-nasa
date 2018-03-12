@@ -38,6 +38,11 @@ public abstract class AbstractPiece implements IPiece {
 	public boolean isInPlay() {
 		return inPlay;		
 	}
+	
+	@Override
+	public void putInPlay() {
+		inPlay = true;
+	}
 
 	@Override
 	public PieceColor getColor() {
@@ -48,21 +53,27 @@ public abstract class AbstractPiece implements IPiece {
 	public IPiece takePiece() {
 		inPlay = false;
 		return this;
-	}	
+	}
 	
+	@Override
+	public void setMovedFalse() {
+		hasMoved = false;
+	}
+
 
 	@Override
 	//note to self, må endres når man implementerer å ta brikker, sannsynligvis legge til ta-brikke-logikk
 	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board){
-		ArrayList<Square> reach = new ArrayList<Square>();
-		ArrayList<Square> check = allReachableSquares(x, y, board);
+		/* 
+		 will remove when sure it works.
 		for(Square sq : check) {
 			if (sq.isEmpty())
 				reach.add(sq);
 		}
-		return reach;
+		*/
+		return allReachableSquares(x, y, board);
 	}
-	
+
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
@@ -75,10 +86,8 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return reach;
 	}
-	
-	
-	
-	
+
+
 	/**
 	 * Precondition: input does not contain any of your own pieces
 	 * Method to check if a list of pieces contain a king.
@@ -93,7 +102,7 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks for every position that a piece can move to, and makes sure that no 
 	 * open space will result in a position where your own king is in check.
@@ -106,14 +115,34 @@ public abstract class AbstractPiece implements IPiece {
 	protected ArrayList<Square> removePositionsInCheck(ArrayList<Square> legalPositions, Square origin, IBoard board){
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
-		else {opponent = PieceColor.WHITE;};
+		else {opponent = PieceColor.WHITE;}
+		
+		IPiece p = null;
 		ArrayList<Square> okPos = new ArrayList<Square>();
 		for(Square movSq : legalPositions) {	
 			//temporary move
-			movePiece(origin, movSq);
+			if (movSq.isEmpty()) {
+				movePieceTest(origin, movSq);
+			} else {
+				//setup to revert move with correct field variables
+				boolean notHasMoved = true;
+				if (movSq.getPiece().hasMoved()) {
+					notHasMoved = false;
+				}
+				
+				p = captureEnemyPieceAndMovePiece(origin, movSq);
+				if(notHasMoved)
+					p.setMovedFalse();
+			}
+			
 			ArrayList<IPiece> threatened = board.piecesThreatenedByOpponent(getColor(), opponent);
+			
 			//reverts move
-			movePiece(movSq, origin);
+			if(p != null) {
+				revertMove(origin, movSq, p);
+			} else {
+				movePieceTest(movSq, origin);
+			}
 			if (!threatensKing(threatened)) {
 				//removes illegal move
 				okPos.add(movSq);
@@ -121,22 +150,48 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return okPos;
 	}
+
+	@Override
+	public IPiece captureEnemyPieceAndMovePiece(Square origin, Square next) {
+		IPiece captured = next.getPiece();
+		next.takePiece();
+		movePieceTest(origin, next);
+		return captured;
+	}
 	
+	protected void revertMove(Square origin, Square movedTo, IPiece taken) {
+		movePieceTest(movedTo, origin);
+		if(taken != null) {
+			movedTo.putPiece(taken);
+			taken.putInPlay();
+		}
+	}
+
 	@Override
 	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
 		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares;
-		legalPositions.addAll(getMovableSquares(sq.getX(), sq.getY(), board));
+		ArrayList<Square> moveSquares = getMovableSquares(sq.getX(), sq.getY(), board);
+		for(int i = 0; i < moveSquares.size(); i++) {
+			if(moveSquares.get(i).isEmpty()) {
+				legalPositions.add(moveSquares.get(i));
+			}else if(moveSquares.get(i).getPiece().getColor() != getColor()) {
+				legalPositions.add(moveSquares.get(i));
+			}
+		}
 		moveSquares = removePositionsInCheck(legalPositions, sq, board);
 		return moveSquares;
 	}
-	
+
 	@Override
-	public void movePiece(Square cur, Square next) {
-		next.putPiece(cur.movePiece());
+	public void movePieceTest(Square origin, Square next) {
+		if(next.isEmpty()){
+			//fix so that it doesn't change hasMoved, only if it didn't move before.
+			next.putPiece(origin.movePiece());
+		} else 
+			throw new IllegalArgumentException("Only try to move to empty positions, please.");
 	}
 
-	
+
 	/**
 	 * Finds and returns all fields that can be reached by piece,
 	 * including first piece met.

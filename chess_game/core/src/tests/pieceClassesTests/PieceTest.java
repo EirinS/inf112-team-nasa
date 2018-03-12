@@ -55,19 +55,18 @@ public class PieceTest {
 	}
 	
 	@Test
-	//note to self: testen må gjøres om når man kan ta brikker.
 	public void removesPositionsInCheckFromValidPositonsHorizontal() {
 		IBoard newBoard = new Board(5);
 		newBoard.getSquare(0, 0).putPiece(enemyRook);
-		newBoard.getSquare(0, 1).putPiece(rook);
-		newBoard.getSquare(0, 2).putPiece(new King(PieceColor.WHITE));
-		Square sq = newBoard.getSquare(0, 1);
+		newBoard.getSquare(0, 2).putPiece(rook);
+		newBoard.getSquare(0, 3).putPiece(new King(PieceColor.WHITE));
+		Square sq = newBoard.getSquare(0, 2);
 		ArrayList<Square> leg = rook.legalPositions(sq, newBoard);
-		assertEquals(0, leg.size());
+		//legal position while takin black, and before black.
+		assertEquals(2, leg.size());
 	}
 	
 	@Test
-	//note to self: testen må gjøres om når man kan ta brikker.
 	public void removesPositionsInCheckFromValidPositonsvertical() {
 		IBoard newBoard = new Board(5);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
@@ -80,8 +79,8 @@ public class PieceTest {
 		Square sq = newBoard.getSquare(2, 0);
 		
 		ArrayList<Square> leg = rook.legalPositions(sq, newBoard);
-		//legal positions should now become 0, because your king is always reachable by enemyRook if you move
-		assertEquals(0, leg.size());
+		//legal positions should now become 1, because your king is always reachable by enemyRook if you move, but you can capture enemy rook.
+		assertEquals(1, leg.size());
 	}
 	
 	@Test
@@ -94,14 +93,10 @@ public class PieceTest {
 		assertEquals(enemyRook, newBoard.getSquare(1, 0).getPiece());
 	}
 	
-	
-	
 	@Test
 	public void threatensKingIsTrueWhenThreatensKing() {
 		ArrayList<IPiece> threatened = new ArrayList<IPiece>();
 		threatened.add(new King(PieceColor.BLACK));
 		assertTrue(((AbstractPiece) rook).threatensKing(threatened));
 	}
-	
-
 }

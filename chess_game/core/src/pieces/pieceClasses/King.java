@@ -20,7 +20,7 @@ public class King extends AbstractPiece {
 	}
 
 	@Override
-	public void movePiece(Square cur, Square next) {
+	public void movePieceTest(Square cur, Square next) {
 		// TODO Auto-generated method stub
 		
 	}

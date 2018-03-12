@@ -44,9 +44,10 @@ public class KnightTest {
 		ArrayList<Square> legalKnightSquares = sq.getPiece().legalPositions(sq, board);
 		assertTrue(!legalKnightSquares.contains(board.getSquare(1, 1)));		
 	}
+	
 	@Test
 	public void cantMoveHorisontally() {
 		ArrayList<Square> legalKnightSquares = sq.getPiece().legalPositions(sq, board);
-		assertTrue(!legalKnightSquares.contains(board.getSquare(0, 2)));		
+		assertTrue(!legalKnightSquares.contains(board.getSquare(0, 2)));	
 	}
 }

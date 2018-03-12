@@ -85,4 +85,16 @@ public class RookTest {
 		assertTrue(!sq.getPiece().legalPositions(sq, board).contains(board.getSquare(4, 0)));
 	}
 	
+	@Test
+	public void cantMoveToSquaresContainingSameColor() {
+		board.getSquare(0, 1).putPiece(new Rook(PieceColor.WHITE));
+		board.getSquare(1, 0).putPiece(new Rook(PieceColor.WHITE));
+		ArrayList<Square> lst = rook.legalPositions(board.getSquare(0, 0), board);
+		for(int i = 0; i < lst.size(); i++) {
+			if (lst.get(i).getPiece().getColor() == rook.getColor()) {
+				fail("Should have different colors on pieces you can move to");
+			}
+		}
+	}
+	
 }

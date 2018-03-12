@@ -24,7 +24,7 @@ public class Queen extends AbstractPiece {
 	}
 
 	@Override
-	public void movePiece(Square cur, Square next) {
+	public void movePieceTest(Square cur, Square next) {
 		next.putPiece(cur.movePiece());
 
 	}

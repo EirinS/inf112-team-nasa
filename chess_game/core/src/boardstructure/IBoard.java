@@ -75,7 +75,7 @@ public interface IBoard {
 	 */
 	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
 	
-	
+	//public IPiece takePiece()
 	
 	
 }

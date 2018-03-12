@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import boardstructure.IBoard;
 import boardstructure.Square;
 import pieces.AbstractPiece;
-import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Rook extends AbstractPiece {
@@ -18,7 +17,7 @@ public class Rook extends AbstractPiece {
 
 
 	@Override
-	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
+	public ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
 		ArrayList<Square> reachable = new ArrayList<Square>();
 		reachable.addAll(reachableSquares(x, y, board, true));
 		reachable.addAll(reachableSquares(y, x, board, false));
