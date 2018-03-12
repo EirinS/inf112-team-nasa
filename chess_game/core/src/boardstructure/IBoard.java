@@ -92,7 +92,7 @@ public interface IBoard {
 	 * @param PieceColor player, the color of the player that moves piece.
 	 * @return algebraic notation of the move. 
 	 */
-	public String move(Square start, Square end, PieceColor player);
+	public String move(Square start, Square end);
 	
 	/**
 	 * This method returns the algebraic notation of all moves made.

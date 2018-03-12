@@ -104,7 +104,7 @@ public class Rook extends AbstractPiece {
 
 	@Override
 	public String toString() {
-		return "Rook [inPlay=" + inPlay + ", color=" + color + "]";
+		return "R";
 	}
 
 }

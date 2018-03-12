@@ -1,6 +1,7 @@
 package boardstructure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -28,6 +29,10 @@ public class Board implements IBoard {
 				board.add(new Square(i, j));
 			}
 		}
+	}
+
+	public List<Move> getAvailableMoves(PieceColor playerColor) {
+		return null;
 	}
 
 	@Override
@@ -126,17 +131,15 @@ public class Board implements IBoard {
 		return reached;
 	}
 
-	@Override
-	public String move(Square start, Square end, PieceColor player) {
-		//IPiece moving = start.getPiece();
-		//moving.
-		
-		return null;
-	}
 
 	@Override
 	public ArrayList<String> getHistory() {
 		return history;
+	}
+
+	@Override
+	public String move(Square from, Square to) {
+		return null;
 	}
 
 }

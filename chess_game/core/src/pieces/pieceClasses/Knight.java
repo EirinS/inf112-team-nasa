@@ -85,7 +85,7 @@ public class Knight extends AbstractPiece {
 	}
 
 	public String toString() {
-		return "Knight [inPlay=" + inPlay + ", color=" + color + "]";
+		return "N";
 	}
 
 }
