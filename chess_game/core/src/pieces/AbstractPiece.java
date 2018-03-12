@@ -122,8 +122,21 @@ public abstract class AbstractPiece implements IPiece {
 		return okPos;
 	}
 	
+	@Override
+	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
+		ArrayList<Square> legalPositions = new ArrayList<Square>();
+		ArrayList<Square> moveSquares;
+		legalPositions.addAll(getMovableSquares(sq.getX(), sq.getY(), board));
+		moveSquares = removePositionsInCheck(legalPositions, sq, board);
+		return moveSquares;
+	}
+	
+	@Override
+	public void movePiece(Square cur, Square next) {
+		next.putPiece(cur.movePiece());
+	}
 
-
+	
 	/**
 	 * Finds and returns all fields that can be reached by piece,
 	 * including first piece met.

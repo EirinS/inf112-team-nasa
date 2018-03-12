@@ -16,19 +16,6 @@ public class Rook extends AbstractPiece {
 		hasMoved = false;
 	}
 
-	@Override
-	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
-		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares;
-		legalPositions.addAll(getMovableSquares(sq.getX(), sq.getY(), board));
-		moveSquares = removePositionsInCheck(legalPositions, sq, board);
-		return moveSquares;
-	}
-
-	@Override
-	public void movePiece(Square cur, Square next) {
-		next.putPiece(cur.movePiece());
-	}
 
 	@Override
 	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {

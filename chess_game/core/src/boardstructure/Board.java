@@ -12,7 +12,7 @@ public class Board implements IBoard {
 
 	/**
 	 * Create new board.
-	 * @param dim Board is always square. Dim is the height and widht of board.
+	 * @param dim Board is always square. Dim is the height and width of board.
 	 */
 	public Board (int dim) {
 		if(dim < 0)
