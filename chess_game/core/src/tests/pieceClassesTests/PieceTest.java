@@ -14,6 +14,8 @@ import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Knight;
+import pieces.pieceClasses.Queen;
 import pieces.pieceClasses.Rook;
 
 public class PieceTest {
@@ -96,7 +98,7 @@ public class PieceTest {
 	
 	@Test
 	public void threatensKingIsTrueWhenThreatensKing() {
-		ArrayList<IPiece> threatened = new ArrayList<>();
+		ArrayList<IPiece> threatened = new ArrayList<IPiece>();
 		threatened.add(new King(PieceColor.BLACK));
 		assertTrue(((AbstractPiece) rook).threatensKing(threatened));
 	}
