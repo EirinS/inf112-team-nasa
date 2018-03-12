@@ -20,7 +20,7 @@ import pieces.pieceClasses.Rook;
 
 public class PieceTest {
 	IBoard board = new Board(10);
-	IPiece rook = new Rook(PieceColor.WHITE);
+	IPiece rook = new Knight(PieceColor.WHITE);
 	int x = 0,  y = 3;
 	IPiece enemyRook = new Rook(PieceColor.BLACK);
 	

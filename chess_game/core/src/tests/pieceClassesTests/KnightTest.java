@@ -17,7 +17,8 @@ import pieces.PieceColor;
 import pieces.pieceClasses.Knight;
 
 public class KnightTest {
-	IBoard board = new Board(8);
+	IBoard board = new Board(10);
+	int x = 0,  y = 3;
 	IPiece knight = new Knight(PieceColor.WHITE);
 	Square sq = board.getSquare(0, 0);
 
@@ -39,6 +40,7 @@ public class KnightTest {
 				fail("should not move outside board");
 		}
 	}
+	
 	@Test
 	public void cantMoveDiagonally() {
 		ArrayList<Square> legalKnightSquares = sq.getPiece().legalPositions(sq, board);
@@ -49,5 +51,15 @@ public class KnightTest {
 	public void cantMoveHorisontally() {
 		ArrayList<Square> legalKnightSquares = sq.getPiece().legalPositions(sq, board);
 		assertTrue(!legalKnightSquares.contains(board.getSquare(0, 2)));	
+	}
+	
+	@Test
+	public void canMakeLegalMove() {
+		ArrayList<Square> legalKnightSquares = sq.getPiece().legalPositions(sq, board);
+		assertTrue(legalKnightSquares.contains(board.getSquare(1, 2)));		
+	}
+	@Test
+	public void canFindLegalPositions() {
+		assertTrue(sq.getPiece().legalPositions(sq, board).size() > 0);
 	}
 }
