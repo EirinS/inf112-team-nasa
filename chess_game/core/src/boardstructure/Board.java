@@ -19,7 +19,7 @@ public class Board implements IBoard {
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
 		height = dim;
 		width = dim;
-		board = new ArrayList<>();
+		board = new ArrayList<Square>();
 		for(int i = 0; i < dim; i++) {
 			for(int j = 0; j < dim; j++) {
 				board.add(new Square(i,j));
@@ -97,7 +97,7 @@ public class Board implements IBoard {
 	 * @return ArrayList<IPiece> of your threatened pieces
 	 */
 	private ArrayList<IPiece> threatenedPieces(PieceColor opponent, PieceColor player) {
-		ArrayList<IPiece> reached = new ArrayList<>();
+		ArrayList<IPiece> reached = new ArrayList<IPiece>();
 		for(int i = 0; i < board.size(); i++) {
 			Square sq = board.get(i);
 			if(!sq.isEmpty()) {

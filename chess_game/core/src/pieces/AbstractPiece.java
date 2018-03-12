@@ -54,7 +54,7 @@ public abstract class AbstractPiece implements IPiece {
 	@Override
 	//note to self, må endres når man implementerer å ta brikker, sannsynligvis legge til ta-brikke-logikk
 	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board){
-		ArrayList<Square> reach = new ArrayList<>();
+		ArrayList<Square> reach = new ArrayList<Square>();
 		ArrayList<Square> check = allReachableSquares(x, y, board);
 		for(Square sq : check) {
 			if (sq.isEmpty())
@@ -65,7 +65,7 @@ public abstract class AbstractPiece implements IPiece {
 	
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
-		ArrayList<IPiece> reach = new ArrayList<>();
+		ArrayList<IPiece> reach = new ArrayList<IPiece>();
 		ArrayList<Square> check = allReachableSquares(x, y, board);
 		if (check == null) {return reach;}
 		for(Square sq : check) {
@@ -107,7 +107,7 @@ public abstract class AbstractPiece implements IPiece {
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
 		else {opponent = PieceColor.WHITE;};
-		ArrayList<Square> okPos = new ArrayList<>();
+		ArrayList<Square> okPos = new ArrayList<Square>();
 		for(Square movSq : legalPositions) {	
 			//temporary move
 			movePiece(origin, movSq);
