@@ -6,6 +6,7 @@ import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Board implements IBoard {
+	private ArrayList<String> history;
 	private int height;
 	private int width;
 	private ArrayList<Square> board;
@@ -123,6 +124,19 @@ public class Board implements IBoard {
 			}
 		}
 		return reached;
+	}
+
+	@Override
+	public String move(Square start, Square end, PieceColor player) {
+		//IPiece moving = start.getPiece();
+		//moving.
+		
+		return null;
+	}
+
+	@Override
+	public ArrayList<String> getHistory() {
+		return history;
 	}
 
 }

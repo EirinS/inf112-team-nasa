@@ -60,17 +60,23 @@ public abstract class AbstractPiece implements IPiece {
 		hasMoved = false;
 	}
 
+	@Override
+	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
+		ArrayList<Square> legalPositions = new ArrayList<Square>();
+		ArrayList<Square> moveSquares = allReachableSquares(sq.getX(), sq.getY(), board);
+		for(int i = 0; i < moveSquares.size(); i++) {
+			if(moveSquares.get(i).isEmpty()) {
+				legalPositions.add(moveSquares.get(i));
+			}else if(moveSquares.get(i).getPiece().getColor() != getColor()) {
+				legalPositions.add(moveSquares.get(i));
+			}
+		}
+		moveSquares = removePositionsInCheck(legalPositions, sq, board);
+		return moveSquares;
+	}
 
 	@Override
-	//note to self, må endres når man implementerer å ta brikker, sannsynligvis legge til ta-brikke-logikk
 	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board){
-		/* 
-		 will remove when sure it works.
-		for(Square sq : check) {
-			if (sq.isEmpty())
-				reach.add(sq);
-		}
-		*/
 		return allReachableSquares(x, y, board);
 	}
 
@@ -174,20 +180,6 @@ public abstract class AbstractPiece implements IPiece {
 		}
 	}
 
-	@Override
-	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
-		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares = getMovableSquares(sq.getX(), sq.getY(), board);
-		for(int i = 0; i < moveSquares.size(); i++) {
-			if(moveSquares.get(i).isEmpty()) {
-				legalPositions.add(moveSquares.get(i));
-			}else if(moveSquares.get(i).getPiece().getColor() != getColor()) {
-				legalPositions.add(moveSquares.get(i));
-			}
-		}
-		moveSquares = removePositionsInCheck(legalPositions, sq, board);
-		return moveSquares;
-	}
 
 	@Override
 	public void movePieceTest(Square origin, Square next) {

@@ -87,6 +87,7 @@ public class PieceTest {
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));
+		rook.legalPositions((newBoard.getSquare(2, 0)), newBoard);
 		assertEquals(rook, newBoard.getSquare(2, 0).getPiece());
 		assertEquals(enemyRook, newBoard.getSquare(1, 0).getPiece());
 	}

@@ -18,7 +18,7 @@ public class Queen extends AbstractPiece {
 	public ArrayList<Square> legalPositions(Square square, IBoard board) {
 		ArrayList<Square> legalPositions = new ArrayList<Square>();
 		ArrayList<Square> moveSquares;
-		legalPositions.addAll(getMovableSquares(square.getX(), square.getY(), board));
+		legalPositions.addAll(allReachableSquares(square.getX(), square.getY(), board));
 		moveSquares = removePositionsInCheck(legalPositions, square, board);
 		return moveSquares;
 	}
