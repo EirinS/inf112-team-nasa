@@ -159,6 +159,13 @@ public abstract class AbstractPiece implements IPiece {
 		return captured;
 	}
 	
+	/**
+	 * Reverts a move, and puts taken piece back in place.
+	 * Resets the inPlay field variable of the taken piece
+	 * @param origin, the position moved from
+	 * @param movedTo, the position moved to
+	 * @param taken, the piece that was captured, but is put back
+	 */
 	protected void revertMove(Square origin, Square movedTo, IPiece taken) {
 		movePieceTest(movedTo, origin);
 		if(taken != null) {

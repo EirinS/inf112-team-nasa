@@ -14,13 +14,11 @@ import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
-import pieces.pieceClasses.Knight;
-import pieces.pieceClasses.Queen;
 import pieces.pieceClasses.Rook;
 
 public class PieceTest {
 	IBoard board = new Board(10);
-	IPiece rook = new Knight(PieceColor.WHITE);
+	IPiece rook = new Rook(PieceColor.WHITE);
 	int x = 0,  y = 3;
 	IPiece enemyRook = new Rook(PieceColor.BLACK);
 	
@@ -62,7 +60,7 @@ public class PieceTest {
 		newBoard.getSquare(0, 3).putPiece(new King(PieceColor.WHITE));
 		Square sq = newBoard.getSquare(0, 2);
 		ArrayList<Square> leg = rook.legalPositions(sq, newBoard);
-		//legal position while takin black, and before black.
+		//legal position while capturing black, and before black.
 		assertEquals(2, leg.size());
 	}
 	
@@ -98,5 +96,14 @@ public class PieceTest {
 		ArrayList<IPiece> threatened = new ArrayList<IPiece>();
 		threatened.add(new King(PieceColor.BLACK));
 		assertTrue(((AbstractPiece) rook).threatensKing(threatened));
+	}
+	
+	@Test
+	public void canCapturePiece() {
+		IPiece blackrook = new Rook(PieceColor.BLACK);
+		board.getSquare(0, 0).putPiece(blackrook);
+		blackrook.captureEnemyPieceAndMovePiece(board.getSquare(x, y), board.getSquare(0, 0));
+		assertFalse(blackrook.isInPlay());
+		assertEquals(rook, board.getSquare(0, 0).getPiece());
 	}
 }
