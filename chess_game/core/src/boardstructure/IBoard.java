@@ -74,6 +74,8 @@ public interface IBoard {
 	 * @return ArrayList<IPiece>, all pieces threatened by white.
 	 */
 	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
+
+	boolean withinBoard(int x, int y);
 	
 	
 	
