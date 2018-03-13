@@ -29,7 +29,7 @@ public class RookTest {
 	public void testForGetMovable() {
 		board = new Board(2);
 		board.getSquare(0, 0).putPiece(rook);
-		ArrayList<Square> moves = rook.getMovableSquares(0, 0, board);
+		ArrayList<Square> moves = rook.legalPositions(board.getSquare(0, 0), board);
 		assertEquals(2, moves.size());
 		assertTrue(moves.contains(board.getSquare(0, 1)));
 		assertTrue(moves.contains(board.getSquare(1, 0)));

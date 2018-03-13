@@ -40,7 +40,7 @@ public class PieceTest {
 	
 	@Test
 	public void canFindEmptySquares() {
-		ArrayList<Square> squares = board.getSquare(x, y).getPiece().getMovableSquares(x, y, board);
+		ArrayList<Square> squares = board.getSquare(x, y).getPiece().legalPositions(board.getSquare(x, y), board);
 		for(int i = 0; i < squares.size(); i++) {
 			assertTrue(squares.get(i).isEmpty());
 		}
