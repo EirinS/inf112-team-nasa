@@ -13,22 +13,7 @@ public class Knight extends AbstractPiece {
 		inPlay = true;
 		this.color = color;
 	}
-
-	@Override
-	public ArrayList<Square> legalPositions(Square square, IBoard board) {
-		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares;
-		legalPositions.addAll(getMovableSquares(square.getX(), square.getY(), board));
-		moveSquares = removePositionsInCheck(legalPositions, square, board);
-		return moveSquares;
-	}
-
-	@Override
-	public void movePieceTest(Square cur, Square next) {
-		next.putPiece(cur.movePiece());
-		
-	}
-
+	
 	@Override
 	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
 		ArrayList<Square> reachable = new ArrayList<Square>();
