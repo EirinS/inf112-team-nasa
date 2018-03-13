@@ -89,16 +89,15 @@ public interface IBoard {
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
-	 * @param PieceColor player, the color of the player that moves piece.
-	 * @return algebraic notation of the move. 
+	 * @return Move move, the move that was done.
 	 */
-	public String move(Square start, Square end);
+	public Move move(Square start, Square end);
 	
 	/**
 	 * This method returns the algebraic notation of all moves made.
 	 * @return ArrayList<String> history of all moves made.
 	 */
-	public ArrayList<String> getHistory();
+	public ArrayList<Move> getHistory();
 
 	
 	

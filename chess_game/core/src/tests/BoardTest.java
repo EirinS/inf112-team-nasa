@@ -16,7 +16,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class BoardTest {
-	private int dim = 5;
+	private int dim = 10;
 	private IBoard board = new Board(dim);
 
 	@Before
@@ -122,8 +122,25 @@ public class BoardTest {
 		assertTrue(p.contains(whiteRook));
 		assertEquals(1, p.size());
 	}
-
 	
+	private void setUpForMoveTest() {
+		IPiece rook = new Rook(PieceColor.WHITE);
+		board.getSquare(5, 5).putPiece(rook);
+		board.move(board.getSquare(5, 5), board.getSquare(7, 5));
+	}
+	
+	@Test
+	public void moveMovesPiece() {
+		setUpForMoveTest();
+		assertFalse(board.getSquare(7, 5).isEmpty());
+		assertTrue(board.getSquare(5, 5).isEmpty());
+	}
+	
+	@Test
+	public void moveSavesMoveInHistory() {
+		setUpForMoveTest();
+		assertEquals(1, board.getHistory().size());
+	}
 	
 
 }

@@ -118,36 +118,37 @@ public abstract class AbstractPiece implements IPiece {
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
 		else {opponent = PieceColor.WHITE;}
 		
+		boolean hasMoved = false;
+		if(origin.getPiece().hasMoved())
+			hasMoved = true;
+		
 		IPiece p = null;
 		ArrayList<Square> okPos = new ArrayList<Square>();
-		for(Square movSq : legalPositions) {	
+		for(Square movSq : legalPositions) {			
 			//temporary move
 			if (movSq.isEmpty()) {
-				movePieceTest(origin, movSq);
-			} else {
-				//setup to revert move with correct field variables
-				boolean notHasMoved = true;
-				if (movSq.getPiece().hasMoved()) {
-					notHasMoved = false;
-				}
-				
+				movePiece(origin, movSq);	
+			} else {				
 				p = captureEnemyPieceAndMovePiece(origin, movSq);
-				if(notHasMoved)
-					p.setMovedFalse();
 			}
 			
 			ArrayList<IPiece> threatened = board.piecesThreatenedByOpponent(getColor(), opponent);
-			
 			//reverts move
 			if(p != null) {
 				revertMove(origin, movSq, p);
 			} else {
-				movePieceTest(movSq, origin);
+				movePiece(movSq, origin);
 			}
+			
 			if (!threatensKing(threatened)) {
 				//removes illegal move
 				okPos.add(movSq);
 			}
+		}
+		
+		//reset field variable
+		if(!hasMoved) {
+			origin.getPiece().setMovedFalse();
 		}
 		return okPos;
 	}
@@ -156,7 +157,7 @@ public abstract class AbstractPiece implements IPiece {
 	public IPiece captureEnemyPieceAndMovePiece(Square origin, Square next) {
 		IPiece captured = next.getPiece();
 		next.takePiece();
-		movePieceTest(origin, next);
+		movePiece(origin, next);
 		return captured;
 	}
 	
@@ -168,7 +169,7 @@ public abstract class AbstractPiece implements IPiece {
 	 * @param taken, the piece that was captured, but is put back
 	 */
 	protected void revertMove(Square origin, Square movedTo, IPiece taken) {
-		movePieceTest(movedTo, origin);
+		movePiece(movedTo, origin);
 		if(taken != null) {
 			movedTo.putPiece(taken);
 			taken.putInPlay();
@@ -177,9 +178,8 @@ public abstract class AbstractPiece implements IPiece {
 
 
 	@Override
-	public void movePieceTest(Square origin, Square next) {
+	public void movePiece(Square origin, Square next) {
 		if(next.isEmpty()){
-			//fix so that it doesn't change hasMoved, only if it didn't move before.
 			next.putPiece(origin.movePiece());
 		} else 
 			throw new IllegalArgumentException("Only try to move to empty positions, please.");

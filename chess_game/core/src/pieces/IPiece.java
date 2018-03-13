@@ -74,7 +74,7 @@ public interface IPiece {
 	 * @return null if no piece captured, IPiece piece, if 
 	 * piece was captured.
 	 */
-	public void movePieceTest(Square cur, Square next);
+	public void movePiece(Square cur, Square next);
 
 	/**
 	 * Precondition: Assumes you only call this method if you can 

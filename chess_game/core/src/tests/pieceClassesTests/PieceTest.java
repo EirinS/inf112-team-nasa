@@ -47,6 +47,12 @@ public class PieceTest {
 	}
 	
 	@Test
+	public void legalPositionDoesNotChangeHasMovedFieldVariable() {
+		rook.legalPositions(board.getSquare(x, y), board);
+		assertFalse(rook.hasMoved());
+	}
+	
+	@Test
 	public void moveSetsMoveFieldToTrue() {
 		board.getSquare(x, y).movePiece();
 		assertTrue(rook.hasMoved());

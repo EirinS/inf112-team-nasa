@@ -7,7 +7,7 @@ import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Board implements IBoard {
-	private ArrayList<String> history;
+	private ArrayList<Move> history = new ArrayList<>();
 	private int height;
 	private int width;
 	private ArrayList<Square> board;
@@ -47,7 +47,7 @@ public class Board implements IBoard {
 
 	@Override
 	public Square getSquare(int x, int y) {
-		if (x < 0 || x > getDimension() || y < 0 || y > getDimension()) {
+		if (!withinBoard(x,y)) {
 			throw new IllegalArgumentException("Cannot look for squares outside the board");
 		}
 		return board.get(x * width + y);
@@ -123,8 +123,14 @@ public class Board implements IBoard {
 				IPiece p = sq.getPiece();
 				if (p.getColor() == opponent) {
 					ArrayList<IPiece> pieces = p.enemyPiecesReached(sq.getX(), sq.getY(), this, player);
-					if (pieces != null)
-						reached.addAll(pieces);
+					if (pieces != null) {
+						//check if this piece is already reached by another piece on the board.
+						for(IPiece reachedPiece : pieces) {
+							if (!reached.contains(reachedPiece)) {
+								reached.add(reachedPiece);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -133,13 +139,28 @@ public class Board implements IBoard {
 
 
 	@Override
-	public ArrayList<String> getHistory() {
+	public ArrayList<Move> getHistory() {
 		return history;
 	}
 
 	@Override
-	public String move(Square from, Square to) {
-		return null;
+	public Move move(Square from, Square to) {
+		if(!from.getPiece().legalPositions(from, this).contains(to)) {
+			throw new IllegalArgumentException("This is an illegal move.");
+		}
+		Move move;
+		if(to.isEmpty()) {
+			move = new Move(from, to, from.getPiece(), null);
+			from.getPiece().movePiece(from, to);
+			history.add(move);
+			return move;
+		} else {
+			IPiece moving = from.getPiece();
+			IPiece captured = from.getPiece().captureEnemyPieceAndMovePiece(from, to);
+			move = new Move(from, to, moving, captured);
+			history.add(move);
+			return move;
+		}
 	}
 
 }
