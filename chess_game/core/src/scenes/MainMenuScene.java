@@ -43,7 +43,7 @@ public class MainMenuScene implements Screen {
 	private ArrayList<Actor> actors;
 	private Image imgBackground;
 	private Label staticText, header;
-	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle;
+	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle, black, white;
 	private TextField username, registerUsername;
 	private Button backToLogIn, backToChooseGame;
 	private SelectBox<String> difficulty;
@@ -116,9 +116,15 @@ public class MainMenuScene implements Screen {
 		startSingle = new TextButton("Start game", skin, "default");
 		startSingle.setPosition(centreWidth, GameInformation.HEIGHT/3);
 		difficulty = new SelectBox<String>(skin, "default");
-		String[] options = {"Black","White"};
+		String[] options = {"Intermediate","Easy"};
 		difficulty.setItems(options);
 		difficulty.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		black = new TextButton("Black", skin, "toggle");
+		black.setPosition(centreWidth-(defaultWidth/4), GameInformation.HEIGHT/1.6f);
+		white = new TextButton("White", skin, "toggle");
+		white.setPosition((centreWidth+(defaultWidth/2)), GameInformation.HEIGHT/1.6f);
+		
+		//Elements in multiplayer
 		
 		//Multiscreen
 		backToChooseGame = new Button(skin, "left");
@@ -143,8 +149,8 @@ public class MainMenuScene implements Screen {
 		actors.add(header);
 		actors.add(startSingle);
 		actors.add(difficulty);
-//		actors.add();
-//		actors.add();
+		actors.add(black);
+		actors.add(white);
 //		actors.add();
 //		actors.add();
 	}
@@ -159,6 +165,8 @@ public class MainMenuScene implements Screen {
 		backToLogIn.setSize(27, 27);
 		backToChooseGame.setSize(27, 27);
 		difficulty.setSize(defaultWidth, defaultHeight/1.5f);
+		black.setSize(defaultWidth/1.5f, defaultHeight/1.5f);
+		white.setSize(defaultWidth/1.5f, defaultHeight/1.5f);
 	}
 	
 	
@@ -212,6 +220,8 @@ public class MainMenuScene implements Screen {
 		startSingle.setVisible(true);
 		difficulty.setVisible(true);
 		backToChooseGame.setVisible(true);
+		black.setVisible(true);
+		white.setVisible(true);
 	}
 	private void screenMultiplayer(){
 		invisible();
