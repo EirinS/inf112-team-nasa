@@ -67,17 +67,6 @@ public interface IPiece {
 	
 	
 	/**
-	 * Finds all empty squares that can be reached by this rook (empty or
-	 * to capture another piece).
-	 * Hence, you can move to it, if it doesn't leave your king in check
-	 * @param x-coordinate
-	 * @param y-coordinate
-	 * @param board
-	 * @return all empty squares reached by this rook
-	 */
-	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board);
-	
-	/**
 	 * Moves a piece from current square to the next, but 
 	 * not changing the hasMoved field variable.
 	 * @param cur, square moved from

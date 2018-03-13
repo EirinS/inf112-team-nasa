@@ -76,11 +76,6 @@ public abstract class AbstractPiece implements IPiece {
 	}
 
 	@Override
-	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board){
-		return allReachableSquares(x, y, board);
-	}
-
-	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
 		ArrayList<Square> check = allReachableSquares(x, y, board);

@@ -2,7 +2,6 @@ NOT TESTED/DONE YET:
 NOT added implementation for capturing pieces
 
 ABOUT PIECES - methods you need:
-OBS: eg kjem til å fjerne getMovableSquares(), fordi den berre kalle på allReachableSquares anyway. Men rakk ikkje gjere det nå!
 AllReachableSquares - the method that returns all the squares you can reach with the piece (you probably need a helper method, like 
 "reachableSquares" and "castling" from rook, to filter out illegal moves for general, and special rules.
 Everything else should be dealt with in AbstractPiece. Legal positions uses the "AllReachableSquares" method, to filter out 
