@@ -1,15 +1,19 @@
 package scenes;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -29,34 +33,46 @@ import chessGame.GameInformation;
  */
 
 public class MainMenuScene implements Screen {
-	
-	private Chess game;
-	private static final int buttonHeight = 55;
-	private static final int buttonWidth = 250;
-	private static final int centreWidth = (GameInformation.WIDTH/2)-(buttonWidth/2);
+	//necessary components
+	private Chess game;	
 	private Stage stage;
+	private Skin skin;
+	private static final int defaultHeight = 55;
+	private static final int defaultWidth = 250;
+	private static final int centreWidth = (GameInformation.WIDTH/2)-(defaultWidth/2);
+	private ArrayList<Actor> actors;
 	private Image imgBackground;
-	private Label staticText;
-	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores;
+	private Label staticText, header;
+	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle;
 	private TextField username, registerUsername;
 	private Button backToLogIn, backToChooseGame;
-	private Skin skin;
-	
-
+	private SelectBox<String> difficulty;
 
 	public MainMenuScene (Chess mainGame){
 		game = mainGame;
 		initialize();
 		setUpElements();
+		setUpArrayList();
+		setUpElementSizes();
 		addListeners();
 		addActorsToStage();
 		screenSignIn();
 		Gdx.input.setInputProcessor(stage);
 		
+	}	
+	
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		game.getSpriteBatch().begin();
+		stage.act(delta);
+		stage.draw();
+		game.getSpriteBatch().end();
+
 	}
 	
 	//Section 1: Set up
-	
 	private void initialize (){
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt")); 
 		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
@@ -70,72 +86,101 @@ public class MainMenuScene implements Screen {
 		
 		//Elements in log in
 		signIn = new TextButton("Sign in", skin, "default");
-		signIn.setSize(buttonWidth, buttonHeight);
 		signIn.setPosition(centreWidth, GameInformation.HEIGHT/2.5f);
-		
 		staticText = new Label("Or if you haven't already,", skin, "optional");
-		staticText.setSize(buttonWidth, buttonHeight);
 		staticText.setPosition(centreWidth+30, GameInformation.HEIGHT/3.1f);
-		
 		register = new TextButton("Register here", skin, "default");
-		register.setSize(buttonWidth/2, buttonHeight/2);
 		register.setPosition(centreWidth+50, GameInformation.HEIGHT/3.4f);
-		
 		username = new TextField("username", skin, "default");
-		username.setSize(buttonWidth, buttonHeight);
 		username.setPosition(centreWidth, GameInformation.HEIGHT/2);
 		
 		//Elements in register
 		backToLogIn = new Button(skin, "left");
-		backToLogIn.setSize(27, 27);
 		backToLogIn.setPosition(centreWidth/3.8f, GameInformation.HEIGHT/1.2f);
-		
 		signUp = new TextButton("Sign up", skin, "default");
-		signUp.setSize(buttonWidth, buttonHeight);
 		signUp.setPosition(centreWidth, GameInformation.HEIGHT/2);
-		
 		registerUsername = new TextField(" desired username", skin, "default");
-		registerUsername.setSize(buttonWidth, buttonHeight);
 		registerUsername.setPosition(centreWidth, GameInformation.HEIGHT/2.5f);
-		
-		
+
 		//Elements in gamemenu
-		//singleplayer, multiplayer, score
+		header = new Label ("Main menu", skin, "title-plain");
+		header.setPosition((centreWidth+(defaultWidth/4)), GameInformation.HEIGHT/1.6f);
+		singleplayer = new TextButton("Singleplayer", skin, "default");
+		singleplayer.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		multiplayer = new TextButton("Multiplayer", skin, "default"); 
+		multiplayer.setPosition(centreWidth, GameInformation.HEIGHT/2.7f);
+		scores = new TextButton("Highscore", skin, "default");
+		scores.setPosition(centreWidth, GameInformation.HEIGHT/4);
 		
 		//Elements in preferences (singleplayer)
+		startSingle = new TextButton("Start game", skin, "default");
+		startSingle.setPosition(centreWidth, GameInformation.HEIGHT/3);
+		difficulty = new SelectBox<String>(skin, "default");
+		String[] options = {"Black","White"};
+		difficulty.setItems(options);
+		difficulty.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		
+		//Multiscreen
 		backToChooseGame = new Button(skin, "left");
-		backToChooseGame.setSize(27, 27);
 		backToChooseGame.setPosition(centreWidth/3.8f, GameInformation.HEIGHT/1.2f);
+		
+	}
+	
+	
+	private void setUpArrayList(){
+		actors = new ArrayList<Actor>();
+		actors.add(signIn);
+		actors.add(username);
+		actors.add(staticText);
+		actors.add(register);
+		actors.add(registerUsername);
+		actors.add(backToLogIn);
+		actors.add(backToChooseGame);
+		actors.add(signUp);
+		actors.add(singleplayer);
+		actors.add(multiplayer);
+		actors.add(scores);
+		actors.add(header);
+		actors.add(startSingle);
+		actors.add(difficulty);
+//		actors.add();
+//		actors.add();
+//		actors.add();
+//		actors.add();
+	}
+	
+	private void setUpElementSizes(){
+		for (Actor element : actors){
+			if(element instanceof TextButton || element instanceof TextField || element instanceof Label){
+				element.setSize(defaultWidth, defaultHeight);
+			}
+		}
+		register.setSize(defaultWidth/2, defaultHeight/2);
+		backToLogIn.setSize(27, 27);
+		backToChooseGame.setSize(27, 27);
+		difficulty.setSize(defaultWidth, defaultHeight/1.5f);
 	}
 	
 	
 	private void addActorsToStage(){
 		stage.addActor(imgBackground);
-		stage.addActor(signIn);
-		stage.addActor(username);
-		stage.addActor(staticText);
-		stage.addActor(register);
-		stage.addActor(registerUsername);
-		stage.addActor(backToLogIn);
-		stage.addActor(backToChooseGame);
-		stage.addActor(signUp);
-	}
-		
-
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.getSpriteBatch().begin();
-		stage.act(delta);
-		stage.draw();
-		game.getSpriteBatch().end();
-
-	}
-
-	
+		for(Actor element : actors){
+			stage.addActor(element);
+		}
+	}	
 	
 	//Section 2: ToggleRightScreens
+	
+	/**
+	 * Help method. Sets all elements on screen to invisible. Will be used by
+	 * screen methods that turn the correct elements back to visible.
+	 */
+	private void invisible(){
+		
+		for(Actor element : actors){
+			element.setVisible(false);
+		}
+	}
 	
 	protected void screenSignIn(){
 		invisible();
@@ -153,106 +198,136 @@ public class MainMenuScene implements Screen {
 	}
 	protected void screenGameMenu(){
 		invisible();
-		
+		singleplayer.setVisible(true);
+		header.setVisible(true);
+		multiplayer.setVisible(true);
+		scores.setVisible(true);
 	}
 	protected void screenScore(){
 		invisible();
+		backToChooseGame.setVisible(true);
 	}
 	protected void screenPreferences(){
 		invisible();
+		startSingle.setVisible(true);
+		difficulty.setVisible(true);
+		backToChooseGame.setVisible(true);
 	}
-	prvoid screenMultiplayer(){
+	private void screenMultiplayer(){
 		invisible();
+		backToChooseGame.setVisible(true);
 	}
-	
-	/**
-	 * Help method. Sets all elements on screen to invisible. Will be used by
-	 * screen methods that turn the correct elements back to visible.
-	 */
-	private void invisible(){
-		signIn.setVisible(false);
-		username.setVisible(false);
-		staticText.setVisible(false);
-		register.setVisible(false);
-		backToLogIn.setVisible(false);
-		backToChooseGame.setVisible(false);
-		signUp.setVisible(false);
-		registerUsername.setVisible(false);
-	}
-	
-	
-	
 	
 	//Section 3: Buttonlisteners
-	
-	
 	/**
 	 * Will only be called upon initialization. Calling the button itself in each eventhandler
 	 * will reset the functionality of the button.
 	 * 
 	 * Remaining buttons: 
-	 * backToLogIn: goes back to screenLogIn
-	 * Singleplayer: go to screenPreferences
-	 * backToChooseGame: used in multiplayer- and singleplayerscreen. Goes back to main game menu
+
 	 * multiplayer: goes to multiplayerScreen screen (= signIn + "Log in or register as player 2")
 	 * 
+	 * 
+	 * textfield -> inputlistener
 	 */
 private void addListeners(){
-		addSignInListener();
-		addRegisterListener();
+		signInListener();
+		registerListener();
+		returnSignInListener();
+		singleplayerListener();
+		backToChooseGameListener();
+		multiplayerListener();
+		scoreListener();
 	}
 	
-	private void addSignInListener(){
+	private void signInListener(){
 		signIn.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
-				System.out.print("Log in clicked!");
 				//Stian ->  if (valid input){
 				screenGameMenu();
 				//}
 				//else -> errormessage
-				addSignInListener();
+				signInListener();
 			}
 			
 		});
 	}
-	private void addRegisterListener(){
+	private void registerListener(){
 		register.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
 				//Stian -> add username
 				screenRegister();
-				addSignInListener();
+				registerListener();
 			}
 			
 		});
 	}
+	private void returnSignInListener(){
+		backToLogIn.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent e, float x, float y, int point, int button){
+				screenSignIn();
+				returnSignInListener();
+			}
+		});
+	}
 	
-	
+	private void singleplayerListener(){
+		singleplayer.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent e, float x, float y, int point, int button){
+				screenPreferences();
+				singleplayerListener();
+			}
+		});
+	}
+	private void backToChooseGameListener(){
+		backToChooseGame.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent e, float x, float y, int point, int button){
+				screenGameMenu();
+				backToChooseGameListener();
+			}
+		});
+	}
+	private void multiplayerListener(){
+		multiplayer.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent e, float x, float y, int point, int button){
+				screenMultiplayer();
+				multiplayerListener();
+			}
+		});
+	}
+	private void scoreListener(){
+		scores.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent e, float x, float y, int point, int button){
+				screenScore();
+				multiplayerListener();
+			}
+		});
+	}
 		
 		@Override
-	public void hide() {
-	}
+	public void hide() {}
 
 	@Override
-	public void resize(int width, int height) {	
-	}
+	public void resize(int width, int height) {}
 	
 	@Override
-	public void pause() {	
-	}
+	public void pause() {}
 	
 	@Override
-	public void resume() {	
-	}
+	public void resume() {}
 	
 	@Override
-	public void dispose() {
-	}
+	public void dispose() {}
 	
 	@Override
-	public void show() {
-	}
+	public void show() {}
 }
