@@ -2,6 +2,8 @@ package tests.pieceClassesTests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +17,7 @@ public class BishopsTest {
 	
 	IBoard board = new Board(8);
 	Bishop wBishop = new Bishop(PieceColor.WHITE);
-	int x = 3, y = 1;
+	int x = 4, y = 4;
 	Square square = board.getSquare(x, y);
 
 	@Before
@@ -24,10 +26,18 @@ public class BishopsTest {
 	}
 	
 	
-	
 	@Test 
 	public void pieceIsInitialized(){
-		assertEquals(board.getSquare(x, y).getPiece(), wBishop);
+		assertEquals(square.getPiece(), wBishop);
 	}
-	
+//	@Test
+//	public void printListOfSquares(){
+//		ArrayList<Square> possibleMoves = wBishop.allReachableSquares(x, y, board);
+//		int i = 0;
+//		for (Square square : possibleMoves){
+//			i++;
+//			System.out.print(i +". ");
+//			System.out.println("X: " + square.getX() + " Y: " + square.getY());
+//		}		
+//	}
 }
