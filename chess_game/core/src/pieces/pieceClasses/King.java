@@ -97,66 +97,76 @@ public class King extends AbstractPiece {
 
 	public ArrayList<Move> reachable(int x, int y, Square origin, IBoard board){
 		ArrayList<Move> lst = new ArrayList<>();
-		int newX, newY;
+		Move mv;
 		if(board.withinBoard(x+1, y)) {
-			newX = x+1; newY = y;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
+			mv = getMove(origin, (x+1), y, board);
+			if (mv != null) {
+				lst.add(mv);
+			}
 		}
 		if(board.withinBoard(x+1, y-1)) {
-			newX = x+1; newY = y-1;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
-		}
-		if(board.withinBoard(x+1, y+1)) {
-			newX = x+1; newY = y+1;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
+			mv = getMove(origin, (x+1), (y-1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
 		}
 		
+		if(board.withinBoard(x+1, y+1)) {
+			mv = getMove(origin, (x+1), (y+1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
+
 		if(board.withinBoard(x, y-1)) {
-			newX = x; newY = y-1;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
+			mv = getMove(origin, x, (y-1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
 		}
 		if(board.withinBoard(x, y+1)) {
-			newX = x; newY = y+1;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
-		}
+				mv = getMove(origin, x, (y+1), board);
+				if (mv != null) {
+					lst.add(mv);
+				}
+			}
 		if(board.withinBoard(x-1, y)) {
-			newX = x-1; newY = y;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
+			mv = getMove(origin, (x-1), (y), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
 		}
 		if(board.withinBoard(x-1, y+1)) {
-			newX = x-1; newY = y+1;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
+			mv = getMove(origin, (x-1), (y+1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
 		}
 		if(board.withinBoard(x-1, y-1)) {
-			newX = x-1; newY = y-1;
-			if(board.getSquare(newX, newY).isEmpty())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, null, MoveType.REGULAR));
-			else if (board.getSquare(newX, newY).getPiece().getColor() != getColor())
-				lst.add(new Move(origin, board.getSquare(newX, newY), this, board.getSquare(newX, newY).getPiece(), MoveType.REGULAR));
+			mv = getMove(origin, (x-1), (y-1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
 		}
 		return lst;		
+	}
 
+	/**
+	 * Method to extract moves more easily
+	 * @param origin
+	 * @param x
+	 * @param y
+	 * @param board
+	 * @return the move that was legal
+	 */
+	private Move getMove(Square origin, int x, int y, IBoard board) {
+		Square sq = board.getSquare(x, y);
+		if(sq.isEmpty()) {
+			return new Move(origin, sq, this, null, MoveType.REGULAR);
+		} else if (sq.getPiece().getColor() != getColor()) {
+			return new Move(origin, sq, this, sq.getPiece(), MoveType.REGULAR);
+		}
+		return null;
 	}
 
 }
