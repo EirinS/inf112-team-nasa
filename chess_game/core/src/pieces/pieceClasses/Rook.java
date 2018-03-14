@@ -62,24 +62,24 @@ public class Rook extends AbstractPiece {
 	 */
 	public ArrayList<Move> reachableSquares(int startPoint, int axis, Square origin, IBoard board, boolean horizontal) {
 		ArrayList<Move> ok = new ArrayList<>();
-		Square newSq;
+		Square dest;
 
 		// check axis upwards
 		for (int i = startPoint + 1; i < board.getDimension(); i++) {
 
 			// looking on y-axis or x-axis
 			if (horizontal) {
-				newSq = board.getSquare(i, axis);
+				dest = board.getSquare(i, axis);
 			} else {
-				newSq = board.getSquare(axis, i);
+				dest = board.getSquare(axis, i);
 			}
 
-			if (!newSq.isEmpty()) {
-				if (getColor() != newSq.getPiece().getColor())
-					ok.add(new Move(origin, newSq, this, newSq.getPiece(), MoveType.REGULAR));
+			if (!dest.isEmpty()) {
+				if (getColor() != dest.getPiece().getColor())
+					ok.add(getMove(origin, dest, board));
 				break;
 			} else {
-				ok.add(new Move(origin, newSq, this, null, MoveType.REGULAR));
+				ok.add(getMove(origin, dest, board));
 			}
 		}
 
@@ -88,17 +88,17 @@ public class Rook extends AbstractPiece {
 
 			// check if we're looking on y-axis or x-axis
 			if (horizontal) {
-				newSq = board.getSquare(i, axis);
+				dest = board.getSquare(i, axis);
 			} else {
-				newSq = board.getSquare(axis, i);
+				dest = board.getSquare(axis, i);
 			}
 
-			if (!newSq.isEmpty()) {
-				if (getColor() != newSq.getPiece().getColor())
-					ok.add(new Move(origin, newSq, this, newSq.getPiece(), MoveType.REGULAR));
+			if (!dest.isEmpty()) {
+				if (getColor() != dest.getPiece().getColor())
+					ok.add(getMove(origin, dest, board));
 				break;
 			} else {
-				ok.add(new Move(origin, newSq, this, null, MoveType.REGULAR));
+				ok.add(getMove(origin, dest, board));
 			}
 		}		
 		return ok;
