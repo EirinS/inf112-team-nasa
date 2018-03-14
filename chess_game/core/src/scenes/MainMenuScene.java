@@ -69,12 +69,11 @@ public class MainMenuScene implements Screen {
 		stage.act(delta);
 		stage.draw();
 		game.getSpriteBatch().end();
-
 	}
 	
 	//Section 1: Set up
 	private void initialize (){
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt")); 
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
 		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
@@ -248,8 +247,19 @@ private void addListeners(){
 		backToChooseGameListener();
 		multiplayerListener();
 		scoreListener();
+		startSingleListener();
 	}
-	
+
+	private void startSingleListener() {
+		startSingle.addListener(new ClickListener() {
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				game.setScreen(new GameScene(game));
+			}
+		});
+	}
+
 	private void signInListener(){
 		signIn.addListener(new ClickListener(){
 			@Override
