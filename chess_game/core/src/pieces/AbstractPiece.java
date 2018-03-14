@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.pieceClasses.King;
 
@@ -203,4 +204,39 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return list of all reachable fields in moving direction of piece
 	 */
 	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board);
+
+	/**
+	 * Method to extract moves more easily
+	 * @param origin
+	 * @param x
+	 * @param y
+	 * @param board
+	 * @return Legal move, null if illegal.
+	 */
+	protected Move getMove(Square origin, int x, int y, IBoard board) {
+		Square sq = board.getSquare(x, y);
+		if(sq.isEmpty()) {
+			return new Move(origin, sq, this, null, MoveType.REGULAR);
+		} else if (sq.getPiece().getColor() != getColor()) {
+			return new Move(origin, sq, this, sq.getPiece(), MoveType.REGULAR);
+		}
+		return null;
+	}
+
+	/**
+	 * Method to extract moves more easily
+	 * @param origin
+	 * @param dest
+	 * @param board
+	 * @return Legal move, null if illegal.
+	 *
+	 */
+	protected Move getMove(Square origin, Square dest, IBoard board) {
+		if(dest.isEmpty()) {
+			return new Move(origin, dest, this, null, MoveType.REGULAR);
+		} else if (dest.getPiece().getColor() != getColor()) {
+			return new Move(origin, dest, this, dest.getPiece(), MoveType.REGULAR);
+		}
+		return null;
+	}
 }

@@ -2,6 +2,8 @@ package boardstructure;
 
 import pieces.IPiece;
 
+import java.util.Objects;
+
 public class Square {
 	/**
 	 * X position
@@ -136,5 +138,21 @@ public class Square {
 	@Override
 	public String toString() {
 		return numberToLetter(y)+x;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Square square = (Square) o;
+		return x == square.x &&
+				y == square.y &&
+				Objects.equals(piece, square.piece);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(x, y, piece);
 	}
 }

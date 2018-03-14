@@ -88,17 +88,12 @@ public class Board implements IBoard {
 
 	@Override
 	public boolean withinBoard(Square sq) {
-		if (sq.getX() >= width || sq.getY() >= height || sq.getX() < 0 || sq.getY() < 0)
-			return false;
-		return true;
+		return withinBoard(sq.getX(), sq.getY());
 	}
 
 	@Override
 	public boolean withinBoard(int x, int y) {
-		if (x >= width || y >= height || x < 0 || y < 0) {
-			return false;
-		}
-		return true;
+		return x >= 0 && x < width && y >= 0 && y < height;
 	}
 
 	@Override

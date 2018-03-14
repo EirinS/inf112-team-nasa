@@ -150,23 +150,4 @@ public class King extends AbstractPiece {
 		}
 		return lst;		
 	}
-
-	/**
-	 * Method to extract moves more easily
-	 * @param origin
-	 * @param x
-	 * @param y
-	 * @param board
-	 * @return the move that was legal
-	 */
-	private Move getMove(Square origin, int x, int y, IBoard board) {
-		Square sq = board.getSquare(x, y);
-		if(sq.isEmpty()) {
-			return new Move(origin, sq, this, null, MoveType.REGULAR);
-		} else if (sq.getPiece().getColor() != getColor()) {
-			return new Move(origin, sq, this, sq.getPiece(), MoveType.REGULAR);
-		}
-		return null;
-	}
-
 }

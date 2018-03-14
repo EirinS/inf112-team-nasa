@@ -17,54 +17,54 @@ public class Knight extends AbstractPiece {
 	
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
-		ArrayList<Square> reachable = new ArrayList<Square>();
-		reachable.addAll(reachableSquares(x, board));
+		ArrayList<Move> reachable = new ArrayList<Move>();
+		reachable.addAll(reachableSquares(x, board.getSquare(x, y), board));
 		return reachable;
 
 	}
 
-	public ArrayList<Square> reachableSquares(int startPoint, IBoard board) {
-		ArrayList<Square> ok = new ArrayList<Square>();
-		Square newSq;
+	public ArrayList<Move> reachableSquares(int startPoint, Square origin, IBoard board) {
+		ArrayList<Move> ok = new ArrayList<Move>();
+		Square dest = null;
 
 		if (board.withinBoard(startPoint + 1, startPoint + 2)) {
-			newSq = board.getSquare(startPoint + 1, startPoint + 2);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint + 1, startPoint + 2);
+			ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint + 2, startPoint + 1)) {
-			newSq = board.getSquare(startPoint + 2, startPoint + 1);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint + 2, startPoint + 1);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint + 1, startPoint - 2)) {
-			newSq = board.getSquare(startPoint + 1, startPoint - 2);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint + 1, startPoint - 2);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint + 2, startPoint - 1)) {
-			newSq = board.getSquare(startPoint + 2, startPoint - 1);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint + 2, startPoint - 1);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint - 1, startPoint + 2)) {
-			newSq = board.getSquare(startPoint - 1, startPoint + 2);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint - 1, startPoint + 2);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint - 2, startPoint + 1)) {
-			newSq = board.getSquare(startPoint - 2, startPoint + 1);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint - 2, startPoint + 1);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint - 1, startPoint - 2)) {
-			newSq = board.getSquare(startPoint - 1, startPoint - 2);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint - 1, startPoint - 2);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		if (board.withinBoard(startPoint - 2, startPoint - 1)) {
-			newSq = board.getSquare(startPoint - 2, startPoint - 1);
-			ok.add(newSq);
+			dest = board.getSquare(startPoint - 2, startPoint - 1);
+            ok.add(getMove(origin, dest, board));
 		}
 
 		return ok;
