@@ -3,6 +3,7 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -15,7 +16,7 @@ public class Queen extends AbstractPiece {
 	}
 
 	@Override
-	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
 		ArrayList<Square> reachable = new ArrayList<Square>();
 		reachable.addAll(reachableSquares(x, y, board, true, false));
 		reachable.addAll(reachableSquares(y, x, board, false, true));

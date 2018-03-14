@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.IPiece;
@@ -35,20 +36,12 @@ public class PieceTest {
 	
 	@Test
 	public void canFindLegalPositions() {
-		assertTrue(board.getSquare(x, y).getPiece().legalPositions(board.getSquare(x, y), board).size() > 0);
-	}
-	
-	@Test
-	public void canFindEmptySquares() {
-		ArrayList<Square> squares = board.getSquare(x, y).getPiece().legalPositions(board.getSquare(x, y), board);
-		for(int i = 0; i < squares.size(); i++) {
-			assertTrue(squares.get(i).isEmpty());
-		}
+		assertTrue(board.getSquare(x, y).getPiece().getLegalMoves(board.getSquare(x, y), board).size() > 0);
 	}
 	
 	@Test
 	public void legalPositionDoesNotChangeHasMovedFieldVariable() {
-		rook.legalPositions(board.getSquare(x, y), board);
+		rook.getLegalMoves(board.getSquare(x, y), board);
 		assertFalse(rook.hasMoved());
 	}
 	
@@ -65,7 +58,7 @@ public class PieceTest {
 		newBoard.getSquare(0, 2).putPiece(rook);
 		newBoard.getSquare(0, 3).putPiece(new King(PieceColor.WHITE));
 		Square sq = newBoard.getSquare(0, 2);
-		ArrayList<Square> leg = rook.legalPositions(sq, newBoard);
+		ArrayList<Move> leg = rook.getLegalMoves(sq, newBoard);
 		//legal position while capturing black, and before black.
 		assertEquals(2, leg.size());
 	}
@@ -77,12 +70,12 @@ public class PieceTest {
 		newBoard.getSquare(2, 0).putPiece(rook);
 		
 		//has legal moves before placing king
-		assertTrue(rook.legalPositions((newBoard.getSquare(2, 0)), newBoard).size() > 0);
+		assertTrue(rook.getLegalMoves((newBoard.getSquare(2, 0)), newBoard).size() > 0);
 		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));
 		Square sq = newBoard.getSquare(2, 0);
 		
-		ArrayList<Square> leg = rook.legalPositions(sq, newBoard);
+		ArrayList<Move> leg = rook.getLegalMoves(sq, newBoard);
 		//legal positions should now become 1, because your king is always reachable by enemyRook if you move, but you can capture enemy rook.
 		assertEquals(1, leg.size());
 	}
@@ -93,7 +86,7 @@ public class PieceTest {
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));
-		rook.legalPositions((newBoard.getSquare(2, 0)), newBoard);
+		rook.getLegalMoves((newBoard.getSquare(2, 0)), newBoard);
 		assertEquals(rook, newBoard.getSquare(2, 0).getPiece());
 		assertEquals(enemyRook, newBoard.getSquare(1, 0).getPiece());
 	}

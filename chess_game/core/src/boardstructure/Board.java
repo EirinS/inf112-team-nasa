@@ -145,19 +145,19 @@ public class Board implements IBoard {
 
 	@Override
 	public Move move(Square from, Square to) {
-		if(!from.getPiece().legalPositions(from, this).contains(to)) {
+		if(!from.getPiece().getLegalMoves(from, this).contains(to)) {
 			throw new IllegalArgumentException("This is an illegal move.");
 		}
 		Move move;
 		if(to.isEmpty()) {
-			move = new Move(from, to, from.getPiece(), null);
+			move = new Move(from, to, from.getPiece(), null, MoveType.REGULAR);
 			from.getPiece().movePiece(from, to);
 			history.add(move);
 			return move;
 		} else {
 			IPiece moving = from.getPiece();
 			IPiece captured = from.getPiece().captureEnemyPieceAndMovePiece(from, to);
-			move = new Move(from, to, moving, captured);
+			move = new Move(from, to, moving, captured, MoveType.REGULAR);
 			history.add(move);
 			return move;
 		}

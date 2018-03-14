@@ -3,6 +3,7 @@ package pieces;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.pieceClasses.King;
 
@@ -61,29 +62,31 @@ public abstract class AbstractPiece implements IPiece {
 	}
 
 	@Override
-	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
-		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares = allReachableSquares(sq.getX(), sq.getY(), board);
-		for(int i = 0; i < moveSquares.size(); i++) {
-			if(moveSquares.get(i).isEmpty()) {
-				legalPositions.add(moveSquares.get(i));
-			}else if(moveSquares.get(i).getPiece().getColor() != getColor()) {
-				legalPositions.add(moveSquares.get(i));
+	public ArrayList<Move> getLegalMoves(Square origin, IBoard board) {
+		ArrayList<Move> legalMoves = new ArrayList<>();
+		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board);
+		for(int i = 0; i < moves.size(); i++) {
+			Square sq = moves.get(i).getTo();
+			if(sq.isEmpty()) {
+				legalMoves.add(moves.get(i));
+			}else if(sq.getPiece().getColor() != getColor()) {
+				legalMoves.add(moves.get(i));
 			}
 		}
-		moveSquares = removePositionsInCheck(legalPositions, sq, board);
-		return moveSquares;
+		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
+		return moves;
 	}
 
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
-		ArrayList<Square> check = allReachableSquares(x, y, board);
+		ArrayList<Move> check = allFreeMoves(x, y, board);
 		if (check == null) {return reach;}
-		for(Square sq : check) {
+		for(Move mov : check) {
+			Square sq = mov.getTo();
 			if (!sq.isEmpty())
-				if (sq.getPiece().getColor() == opponent)
-					reach.add(sq.getPiece());	
+				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
+					reach.add(sq.getPiece());
 		}
 		return reach;
 	}
@@ -113,7 +116,7 @@ public abstract class AbstractPiece implements IPiece {
 	 * @param board
 	 * @return a updated list of positions where you can move.
 	 */
-	protected ArrayList<Square> removePositionsInCheck(ArrayList<Square> legalPositions, Square origin, IBoard board){
+	protected ArrayList<Move> removeMovesThatPutYourselfInCheck(ArrayList<Move> legalMoves, Square origin, IBoard board){
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
 		else {opponent = PieceColor.WHITE;}
@@ -123,8 +126,9 @@ public abstract class AbstractPiece implements IPiece {
 			hasMoved = true;
 		
 		IPiece p = null;
-		ArrayList<Square> okPos = new ArrayList<Square>();
-		for(Square movSq : legalPositions) {			
+		ArrayList<Move> okMov = new ArrayList<Move>();
+		for(Move move : legalMoves) {
+			Square movSq = move.getTo();
 			//temporary move
 			if (movSq.isEmpty()) {
 				movePiece(origin, movSq);	
@@ -142,7 +146,7 @@ public abstract class AbstractPiece implements IPiece {
 			
 			if (!threatensKing(threatened)) {
 				//removes illegal move
-				okPos.add(movSq);
+				okMov.add(move);
 			}
 		}
 		
@@ -150,7 +154,7 @@ public abstract class AbstractPiece implements IPiece {
 		if(!hasMoved) {
 			origin.getPiece().setMovedFalse();
 		}
-		return okPos;
+		return okMov;
 	}
 
 	@Override
@@ -198,5 +202,5 @@ public abstract class AbstractPiece implements IPiece {
 	 * @param board
 	 * @return list of all reachable fields in moving direction of piece
 	 */
-	protected abstract ArrayList<Square> allReachableSquares(int x, int y, IBoard board);
+	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board);
 }

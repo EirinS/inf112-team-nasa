@@ -3,6 +3,8 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -17,10 +19,10 @@ public class Rook extends AbstractPiece {
 
 
 	@Override
-	public ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
-		ArrayList<Square> reachable = new ArrayList<Square>();
-		reachable.addAll(reachableSquares(x, y, board, true));
-		reachable.addAll(reachableSquares(y, x, board, false));
+	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+		ArrayList<Move> reachable = new ArrayList<Move>();
+		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
+		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
 		return reachable;
 	}
 
@@ -33,7 +35,7 @@ public class Rook extends AbstractPiece {
 	 *            board the rook is on
 	 * @return legal castling square moves.
 	 */
-	private ArrayList<Square> castling(Square sq, IBoard board) {
+	private ArrayList<Move> castling(Square sq, IBoard board) {
 		// TODO
 		/*
 		 * CONDITIONS FOR THIS MOVE: - Neither the king, nor rook has moved before - No
@@ -58,8 +60,8 @@ public class Rook extends AbstractPiece {
 	 *            tells you if you're checking horizontal or vertical direction.
 	 * @return ArrayList<Square>, all legal positions on the axis.
 	 */
-	public ArrayList<Square> reachableSquares(int startPoint, int axis, IBoard board, boolean horizontal) {
-		ArrayList<Square> ok = new ArrayList<Square>();
+	public ArrayList<Move> reachableSquares(int startPoint, int axis, Square origin, IBoard board, boolean horizontal) {
+		ArrayList<Move> ok = new ArrayList<>();
 		Square newSq;
 
 		// check axis upwards
@@ -74,10 +76,10 @@ public class Rook extends AbstractPiece {
 
 			if (!newSq.isEmpty()) {
 				if (getColor() != newSq.getPiece().getColor())
-					ok.add(newSq);
+					ok.add(new Move(origin, newSq, this, newSq.getPiece(), MoveType.REGULAR));
 				break;
 			} else {
-				ok.add(newSq);
+				ok.add(new Move(origin, newSq, this, null, MoveType.REGULAR));
 			}
 		}
 
@@ -93,12 +95,12 @@ public class Rook extends AbstractPiece {
 
 			if (!newSq.isEmpty()) {
 				if (getColor() != newSq.getPiece().getColor())
-					ok.add(newSq);
+					ok.add(new Move(origin, newSq, this, newSq.getPiece(), MoveType.REGULAR));
 				break;
 			} else {
-				ok.add(newSq);
+				ok.add(new Move(origin, newSq, this, null, MoveType.REGULAR));
 			}
-		}
+		}		
 		return ok;
 	}
 

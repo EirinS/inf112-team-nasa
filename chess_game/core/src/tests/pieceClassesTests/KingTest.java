@@ -26,7 +26,7 @@ public class KingTest {
 
 	@Test
 	public void finds8validpositionsInEmptyBoard() {
-		assertEquals(8, king.reachable(x,y, board).size());
+		assertEquals(8, king.reachable(x,y, sq, board).size());
 	}
 
 }
