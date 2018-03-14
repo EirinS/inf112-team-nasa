@@ -2,12 +2,20 @@ package scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import chessGame.Chess;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import scenes.styles.Buttons;
 
 
 public class GameScene implements Screen {
@@ -15,6 +23,8 @@ public class GameScene implements Screen {
 	private Chess game;
 	private Stage stage;
 	//private Sprite bPawn, wPawn, bRook, wRook, wBishop, bBishop, bKnight, wKnight, bQueen, wQueen;
+	private Button btn;
+	private Skin skin;
 
 	public GameScene (Chess mainGame){
 
@@ -31,8 +41,22 @@ public class GameScene implements Screen {
 		 * bQueen = new Sprite (new Texture("bQueen.jpg");
 		 * wQueen = new Sprite (new Texture("wQueen.jpg");
 		 */
+		initialize();
+		addActors();
+	}
+
+	private void initialize() {
 		stage = new Stage(new ScreenViewport());
+		skin = new Skin();
+		skin.add("background", Buttons.createPixmapRoundCornerRect(Color.WHITE, Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/10, 15));
+		skin.add("default", new BitmapFont());
+		Buttons.blueButton(skin);
 		Gdx.input.setInputProcessor(stage);
+	}
+
+	private void addActors() {
+		btn = new TextButton("Test", skin);
+		stage.addActor(btn);
 	}
 
 	@Override
@@ -44,7 +68,7 @@ public class GameScene implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(43/255f, 50/255f, 56/255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getSpriteBatch().begin();
 		stage.act(delta);
