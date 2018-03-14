@@ -1,4 +1,4 @@
-package tests;
+package tests.boardstructureTests;
 
 import static org.junit.Assert.*;
 
@@ -130,14 +130,14 @@ public class BoardTest {
 		board.move(board.getSquare(5, 5), board.getSquare(7, 5));
 	}
 	
-	//@Test
+	@Test
 	public void moveMovesPiece() {
 		setUpForMoveTest();
 		assertFalse(board.getSquare(7, 5).isEmpty());
 		assertTrue(board.getSquare(5, 5).isEmpty());
 	}
 	
-	//@Test
+	@Test
 	public void moveSavesMoveInHistory() {
 		setUpForMoveTest();
 		assertEquals(1, board.getHistory().size());

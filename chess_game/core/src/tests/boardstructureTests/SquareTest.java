@@ -1,4 +1,4 @@
-package tests;
+package tests.boardstructureTests;
 
 import static org.junit.Assert.*;
 

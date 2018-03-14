@@ -15,7 +15,7 @@ public interface IPiece {
 	 * of your own color.
 	 * @param Square square, the position of piece on board.
 	 * @param IBoard board, the board we're playing on.
-	 * @return ArrayList<Move> of legal positions.
+	 * @return ArrayList<Move> of legal moves.
 	 */
 	public ArrayList<Move> getLegalMoves(Square square, IBoard board);
 	

@@ -145,22 +145,47 @@ public class Board implements IBoard {
 
 	@Override
 	public Move move(Square from, Square to) {
-		/*if(!from.getPiece().getLegalMoves(from, this).contains(to)) {
-			throw new IllegalArgumentException("This is an illegal move.");
+		if (from == null) {
+			//tell user this is illegal
 		}
-		Move move;
-		if(to.isEmpty()) {
-			move = new Move(from, to, from.getPiece(), null, MoveType.REGULAR);
-			from.getPiece().movePiece(from, to);
-			history.add(move);
-			return move;
+		
+		IPiece moving = from.getPiece();
+		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this);
+		for(Move m : legalMoves) {
+			if (m.getTo() == to) {
+				return doMove(m);
+			}
+		}
+		// error message to tell user move is illegal.
+		return null;
+	}
+	
+	/**
+	 * Finds and executes the chosen move.
+	 * @param Move m, the move that you'll do
+	 * @return the move done
+	 */
+	private Move doMove(Move m) {
+		if(m.getMoveType() == MoveType.ENPASSANT) {
+			//TODO:
+		} else if (m.getMoveType() == MoveType.KINGSIDECASTLING) {
+			//TODO:
+		} else if(m.getMoveType() == MoveType.QUEENSIDECASTLING) {
+			//TODO:
+		} else if (m.getMoveType() == MoveType.PROMOTION) {
+			//TODO:
+			
+			//regular moves
+		} else if (!m.getTo().isEmpty()){ 
+			//move and capture piece
+			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
+			history.add(m);
+			return m;
 		} else {
-			IPiece moving = from.getPiece();
-			IPiece captured = from.getPiece().captureEnemyPieceAndMovePiece(from, to);
-			move = new Move(from, to, moving, captured, MoveType.REGULAR);
-			history.add(move);
-			return move;
-		}*/
+			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
+			history.add(m);
+			return m;			
+		}
 		return null;
 	}
 
