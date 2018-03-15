@@ -32,6 +32,7 @@ public class Pawn extends AbstractPiece {
 	
 	//TODO en passant
 	
+	
 	/**
 	 * 
 	 */
