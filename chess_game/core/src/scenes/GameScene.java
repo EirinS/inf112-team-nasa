@@ -1,5 +1,6 @@
 package scenes;
 
+import chessGame.GameInformation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -7,15 +8,21 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import chessGame.Chess;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import scenes.styles.Buttons;
+import gui.Checkerboard;
+import scenes.styling.Colors;
+import scenes.styling.Styles;
+
+import static chessGame.GameInformation.HEIGHT;
 
 
 public class GameScene implements Screen {
@@ -25,9 +32,14 @@ public class GameScene implements Screen {
 	//private Sprite bPawn, wPawn, bRook, wRook, wBishop, bBishop, bKnight, wKnight, bQueen, wQueen;
 	private Button btn;
 	private Skin skin;
+	private TiledMap checkerboard;
+	private OrthogonalTiledMapRenderer checkerboardRenderer;
+
+	// TODO: 15.03.2018 this is temp; just to have something to draw.
+	private String player1 = "triki";
+	private String player2 = "wagle";
 
 	public GameScene (Chess mainGame){
-
 		game = mainGame;
 		/*
 		 * bPawn = new Sprite(new Texture("bPawn.jpg");
@@ -43,14 +55,19 @@ public class GameScene implements Screen {
 		 */
 		initialize();
 		addActors();
+		loadCheckerboard();
+	}
+
+	private void loadCheckerboard() {
+		checkerboard = Checkerboard.getCheckerboard();
+		checkerboardRenderer = new OrthogonalTiledMapRenderer(checkerboard, game.getSpriteBatch());
 	}
 
 	private void initialize() {
 		stage = new Stage(new ScreenViewport());
 		skin = new Skin();
-		skin.add("background", Buttons.createPixmapRoundCornerRect(Color.WHITE, Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/10, 15));
-		skin.add("default", new BitmapFont());
-		Buttons.blueButton(skin);
+		Styles.myriadProFont(skin);
+		Styles.blueButton(skin);
 		Gdx.input.setInputProcessor(stage);
 	}
 
@@ -68,12 +85,19 @@ public class GameScene implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(43/255f, 50/255f, 56/255f, 1);
+		Gdx.gl.glClearColor(Colors.bgColor.r, Colors.bgColor.g, Colors.bgColor.b, Colors.bgColor.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getSpriteBatch().begin();
+
+		skin.getFont("white-24").draw(game.getSpriteBatch(), player1, 100, HEIGHT - 50);
+		skin.getFont("white-24").draw(game.getSpriteBatch(), player2, 300, HEIGHT - 50);
+
+		checkerboardRenderer.render();
+
+		game.getSpriteBatch().end();
+
 		stage.act(delta);
 		stage.draw();
-		game.getSpriteBatch().end();
 	}
 
 	@Override
@@ -102,7 +126,5 @@ public class GameScene implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 }

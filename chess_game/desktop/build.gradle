@@ -1,6 +1,6 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "com.mygdx.game.desktop.DesktopLauncher"
@@ -52,4 +52,15 @@ task afterEclipseImport(description: "Post processing after project generation",
     printer.setPreserveWhitespace(true)
     printer.print(classpath)
   }
+}
+
+//Configuration for the :core project
+project(":core") {
+    //Uses the java gradle plugin
+    apply plugin: "java"
+
+    dependencies {
+        //Defines dependencies for the :core project, in this example the gdx dependency
+        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    }
 }
