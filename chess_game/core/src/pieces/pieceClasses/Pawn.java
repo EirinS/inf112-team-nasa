@@ -3,6 +3,8 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -16,7 +18,6 @@ public class Pawn extends AbstractPiece {
 	private PieceColor color;
 	private boolean inPlay;
 	private boolean hasMoved;
-	private boolean reachedOtherSide; //may be redundant
 	
 	/**
 	 * Constructs a pawn
@@ -26,25 +27,29 @@ public class Pawn extends AbstractPiece {
 		this.color = color;
 		this.inPlay = true;
 		this.hasMoved = false;
-		this.reachedOtherSide = false;
 	}
-	
 	
 	//TODO en passant
 	
-	
-	/**
-	 * 
-	 */
 	@Override
-	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
-		ArrayList<Square> reachable = new ArrayList<Square>();
-		reachable.addAll(reachableSquares(x, y, board));
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+		ArrayList<Move> reachable = new ArrayList<Move>();
+		reachable.addAll(allFreeMoves(x, y, board));
 		return reachable;
 	}
 	
-	public ArrayList<Square> reachableSquares(int x, int y, IBoard board) {
-		ArrayList<Square> reachable = new ArrayList<Square>();
+	/**
+	 * Checks whether this pawn has moved yet.
+	 * @return whether this pawn has moved
+	 */
+	public boolean hasMoved() {
+		return hasMoved;
+	}
+	
+	public ArrayList<Move> reachableSquares(Square origin, IBoard board) {
+		ArrayList<Move> reachable = new ArrayList<Move>();
+		int x = origin.getX();
+		int y = origin.getY();
 		Square oneAhead = null;
 		Square twoAhead = null;
 		Square westAhead = null; // One square ahead and westward
@@ -67,49 +72,30 @@ public class Pawn extends AbstractPiece {
 		}
 		
 		// Check square straight ahead
-		if (oneAhead != null && oneAhead.isEmpty()) reachable.add(oneAhead);
+		if (oneAhead != null && oneAhead.isEmpty()) {
+			Move move = new Move(origin, oneAhead, this, null, MoveType.REGULAR);
+			reachable.add(move);
+		}
 		
 		// Check if this pawn can move two squares ahead
-		if (!hasMoved && oneAhead.isEmpty() && twoAhead.isEmpty()) reachable.add(twoAhead);
+		if (!hasMoved && oneAhead.isEmpty() && twoAhead.isEmpty()) {
+			Move move = new Move(origin, twoAhead, this, null, MoveType.REGULAR);
+			reachable.add(move);
+		}
 
 		// Check for opponent pieces on both sides of the square straight ahead
 		if (westAhead != null && westAhead.getPiece() != null
-				&& westAhead.getPiece().getColor() == opponentColor) reachable.add(westAhead);
+				&& westAhead.getPiece().getColor() == opponentColor) {
+			Move move = new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR);
+			reachable.add(move);
+		}
 		if (eastAhead != null && eastAhead.getPiece() != null
-				&& eastAhead.getPiece().getColor() == opponentColor) reachable.add(eastAhead);
+				&& eastAhead.getPiece().getColor() == opponentColor) {
+			Move move = new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR);
+			reachable.add(move);
+		}
 
 		return reachable;
-	}
-	
-	/**
-	 * Checks whether this pawn has moved yet.
-	 * @return whether this pawn has moved
-	 */
-	public boolean hasMoved() {
-		return hasMoved;
-	}
-	
-	/**
-	 * 
-	 * @param square
-	 * @return
-	 */
-	public boolean isLegalMove(Square square) {
-		//TODO
-		return true;
-	}
-	
-	@Override
-	public void movePiece(Square cur, Square next) {
-		next.putPiece(cur.movePiece());
-	}
-	
-	/**
-	 * 
-	 * @return whether the pawn has reached the far side of the board
-	 */
-	public boolean reachedOtherSide() {
-		return reachedOtherSide;
 	}
 	
 	/**
