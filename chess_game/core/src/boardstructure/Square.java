@@ -2,6 +2,8 @@ package boardstructure;
 
 import pieces.IPiece;
 
+import java.util.Objects;
+
 public class Square {
 	/**
 	 * X position
@@ -27,6 +29,29 @@ public class Square {
 	public Square(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+
+	String numberToLetter(int num){
+		switch (num) {
+			case 1:
+				return "A";
+			case 2:
+				return "B";
+			case 3:
+				return "C";
+			case 4:
+				return "D";
+			case 5:
+				return "E";
+			case 6:
+				return "F";
+			case 7:
+				return "G";
+			default:
+				return "H";
+
+		}
 	}
 
 
@@ -81,7 +106,7 @@ public class Square {
 	}
 	
 	/**
-	 * Removes the piece in this sqaure (if there is one, otherwise do nothing)
+	 * Removes the piece in this square (if there is one, otherwise do nothing)
 	 * Sets moved state to true and piece field in square to null.
 	 * @return AbstractPiece piece, the piece removed.
 	 */
@@ -112,6 +137,22 @@ public class Square {
 	
 	@Override
 	public String toString() {
-		return "Square [x=" + x + ", y=" + y + ", piece=" + piece + "]";
+		return numberToLetter(y)+x;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Square square = (Square) o;
+		return x == square.x &&
+				y == square.y &&
+				Objects.equals(piece, square.piece);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(x, y, piece);
 	}
 }

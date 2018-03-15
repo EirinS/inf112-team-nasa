@@ -3,6 +3,8 @@ package pieces;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.pieceClasses.King;
 
@@ -38,6 +40,11 @@ public abstract class AbstractPiece implements IPiece {
 	public boolean isInPlay() {
 		return inPlay;		
 	}
+	
+	@Override
+	public void putInPlay() {
+		inPlay = true;
+	}
 
 	@Override
 	public PieceColor getColor() {
@@ -48,37 +55,44 @@ public abstract class AbstractPiece implements IPiece {
 	public IPiece takePiece() {
 		inPlay = false;
 		return this;
-	}	
-	
-
-	@Override
-	//note to self, må endres når man implementerer å ta brikker, sannsynligvis legge til ta-brikke-logikk
-	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board){
-		ArrayList<Square> reach = new ArrayList<Square>();
-		ArrayList<Square> check = allReachableSquares(x, y, board);
-		for(Square sq : check) {
-			if (sq.isEmpty())
-				reach.add(sq);
-		}
-		return reach;
 	}
 	
+	@Override
+	public void setMovedFalse() {
+		hasMoved = false;
+	}
+
+	@Override
+	public ArrayList<Move> getLegalMoves(Square origin, IBoard board) {
+		ArrayList<Move> legalMoves = new ArrayList<>();
+		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board);
+		for(int i = 0; i < moves.size(); i++) {
+			Square sq = moves.get(i).getTo();
+			if(sq.isEmpty()) {
+				legalMoves.add(moves.get(i));
+			}else if(sq.getPiece().getColor() != getColor()) {
+				legalMoves.add(moves.get(i));
+			}
+		}
+		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
+		return moves;
+	}
+
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
-		ArrayList<Square> check = allReachableSquares(x, y, board);
+		ArrayList<Move> check = allFreeMoves(x, y, board);
 		if (check == null) {return reach;}
-		for(Square sq : check) {
+		for(Move mov : check) {
+			Square sq = mov.getTo();
 			if (!sq.isEmpty())
-				if (sq.getPiece().getColor() == opponent)
-					reach.add(sq.getPiece());	
+				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
+					reach.add(sq.getPiece());
 		}
 		return reach;
 	}
-	
-	
-	
-	
+
+
 	/**
 	 * Precondition: input does not contain any of your own pieces
 	 * Method to check if a list of pieces contain a king.
@@ -93,7 +107,7 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks for every position that a piece can move to, and makes sure that no 
 	 * open space will result in a position where your own king is in check.
@@ -103,40 +117,80 @@ public abstract class AbstractPiece implements IPiece {
 	 * @param board
 	 * @return a updated list of positions where you can move.
 	 */
-	protected ArrayList<Square> removePositionsInCheck(ArrayList<Square> legalPositions, Square origin, IBoard board){
+	protected ArrayList<Move> removeMovesThatPutYourselfInCheck(ArrayList<Move> legalMoves, Square origin, IBoard board){
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
-		else {opponent = PieceColor.WHITE;};
-		ArrayList<Square> okPos = new ArrayList<Square>();
-		for(Square movSq : legalPositions) {	
+		else {opponent = PieceColor.WHITE;}
+		
+		boolean hasMoved = false;
+		if(origin.getPiece().hasMoved())
+			hasMoved = true;
+		
+		IPiece p = null;
+		ArrayList<Move> okMov = new ArrayList<Move>();
+		for(Move move : legalMoves) {
+			Square movSq = move.getTo();
 			//temporary move
-			movePiece(origin, movSq);
+			if (movSq.isEmpty()) {
+				movePiece(origin, movSq);	
+			} else {				
+				p = captureEnemyPieceAndMovePiece(origin, movSq);
+			}
+			
 			ArrayList<IPiece> threatened = board.piecesThreatenedByOpponent(getColor(), opponent);
 			//reverts move
-			movePiece(movSq, origin);
+			if(p != null) {
+				revertMove(origin, movSq, p);
+			} else {
+				movePiece(movSq, origin);
+			}
+			
 			if (!threatensKing(threatened)) {
 				//removes illegal move
-				okPos.add(movSq);
+				okMov.add(move);
 			}
 		}
-		return okPos;
-	}
-	
-	@Override
-	public ArrayList<Square> legalPositions(Square sq, IBoard board) {
-		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares;
-		legalPositions.addAll(getMovableSquares(sq.getX(), sq.getY(), board));
-		moveSquares = removePositionsInCheck(legalPositions, sq, board);
-		return moveSquares;
-	}
-	
-	@Override
-	public void movePiece(Square cur, Square next) {
-		next.putPiece(cur.movePiece());
+		
+		//reset field variable
+		if(!hasMoved) {
+			origin.getPiece().setMovedFalse();
+		}
+		return okMov;
 	}
 
+	@Override
+	public IPiece captureEnemyPieceAndMovePiece(Square origin, Square next) {
+		IPiece captured = next.getPiece();
+		next.takePiece();
+		movePiece(origin, next);
+		return captured;
+	}
 	
+	/**
+	 * Reverts a move, and puts taken piece back in place.
+	 * Resets the inPlay field variable of the taken piece
+	 * @param origin, the position moved from
+	 * @param movedTo, the position moved to
+	 * @param taken, the piece that was captured, but is put back
+	 */
+	protected void revertMove(Square origin, Square movedTo, IPiece taken) {
+		movePiece(movedTo, origin);
+		if(taken != null) {
+			movedTo.putPiece(taken);
+			taken.putInPlay();
+		}
+	}
+
+
+	@Override
+	public void movePiece(Square origin, Square next) {
+		if(next.isEmpty()){
+			next.putPiece(origin.movePiece());
+		} else 
+			throw new IllegalArgumentException("Only try to move to empty positions, please.");
+	}
+
+
 	/**
 	 * Finds and returns all fields that can be reached by piece,
 	 * including first piece met.
@@ -149,5 +203,40 @@ public abstract class AbstractPiece implements IPiece {
 	 * @param board
 	 * @return list of all reachable fields in moving direction of piece
 	 */
-	protected abstract ArrayList<Square> allReachableSquares(int x, int y, IBoard board);
+	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board);
+
+	/**
+	 * Method to extract moves more easily
+	 * @param origin
+	 * @param x
+	 * @param y
+	 * @param board
+	 * @return Legal move, null if illegal.
+	 */
+	protected Move getMove(Square origin, int x, int y, IBoard board) {
+		Square sq = board.getSquare(x, y);
+		if(sq.isEmpty()) {
+			return new Move(origin, sq, this, null, MoveType.REGULAR);
+		} else if (sq.getPiece().getColor() != getColor()) {
+			return new Move(origin, sq, this, sq.getPiece(), MoveType.REGULAR);
+		}
+		return null;
+	}
+
+	/**
+	 * Method to extract moves more easily
+	 * @param origin
+	 * @param dest
+	 * @param board
+	 * @return Legal move, null if illegal.
+	 *
+	 */
+	protected Move getMove(Square origin, Square dest, IBoard board) {
+		if(dest.isEmpty()) {
+			return new Move(origin, dest, this, null, MoveType.REGULAR);
+		} else if (dest.getPiece().getColor() != getColor()) {
+			return new Move(origin, dest, this, dest.getPiece(), MoveType.REGULAR);
+		}
+		return null;
+	}
 }

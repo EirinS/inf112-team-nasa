@@ -68,6 +68,15 @@ public interface IBoard {
 	public boolean withinBoard(Square sq);
 	
 	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean withinBoard(int x, int y);
+	
+	
+	/**
 	 * Returns all the pieces than can be captured by white.
 	 * @param PieceColor player, your piece color
 	 * @param PieceColor opponent, the color that threatens you.
@@ -75,7 +84,21 @@ public interface IBoard {
 	 */
 	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
 	
+	/**
+	 * Move a piece to a legal position on the board. 
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param start, the position the piece had
+	 * @param end, the position the piece goes to.
+	 * @return Move move, the move that was done.
+	 */
+	public Move move(Square start, Square end);
 	
+	/**
+	 * This method returns the algebraic notation of all moves made.
+	 * @return ArrayList<String> history of all moves made.
+	 */
+	public ArrayList<Move> getHistory();
+
 	
 	
 }

@@ -1,6 +1,12 @@
 NOT TESTED/DONE YET:
 NOT added implementation for capturing pieces
 
+ABOUT PIECES - methods you need:
+AllReachableSquares - the method that returns all the squares you can reach with the piece (you probably need a helper method, like 
+"reachableSquares" and "castling" from rook, to filter out illegal moves for general, and special rules.
+Everything else should be dealt with in AbstractPiece. Legal positions uses the "AllReachableSquares" method, to filter out 
+all moves that leaves the king in chess, and makes sure you don't try to capture your own pieces.
+
 
 ABOUT THE CODE
 NOTE: Please read through this (especially the part you're working with, and update and add needed parts about your code)

@@ -3,6 +3,7 @@ package pieces;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 
 public interface IPiece {
@@ -10,11 +11,13 @@ public interface IPiece {
 	/**
 	 * Find and return all legal positions where a piece can be moved to.
 	 * Should check all the rules of the piece and get the legal positions.
+	 * It also checks that you cannot move to squares containing a piece 
+	 * of your own color.
 	 * @param Square square, the position of piece on board.
 	 * @param IBoard board, the board we're playing on.
-	 * @return ArrayList<Square> of legal positions.
+	 * @return ArrayList<Move> of legal moves.
 	 */
-	public ArrayList<Square> legalPositions(Square square, IBoard board);
+	public ArrayList<Move> getLegalMoves(Square square, IBoard board);
 	
 	/**
 	 * @return color of this piece
@@ -42,6 +45,16 @@ public interface IPiece {
 	 */
 	public boolean hasMoved();
 	
+	/**
+	 * @return true if this piece has moved, false else.
+	 */
+	public void setMovedFalse();
+	
+	/**
+	 * inPlay = true;
+	 */
+	public void putInPlay();
+	
 	
 	/**
 	 * Finds all enemy pieces reached by this piece, and with the color given.
@@ -55,22 +68,25 @@ public interface IPiece {
 	
 	
 	/**
-	 * Finds all empty squares that can be reached by this rook (empty or
-	 * to capture another piece).
-	 * Hence, you can move to it, if it doesn't leave your king in check
-	 * @param x-coordinate
-	 * @param y-coordinate
-	 * @param board
-	 * @return all empty squares reached by this rook
-	 */
-	public ArrayList<Square> getMovableSquares(int x, int y, IBoard board);
-	
-	/**
-	 * Moves a piece from current square to the next.
+	 * Moves a piece from current square to the next, but 
+	 * not changing the hasMoved field variable.
 	 * @param cur, square moved from
 	 * @param next, square moved to
+	 * @return null if no piece captured, IPiece piece, if 
+	 * piece was captured.
 	 */
 	public void movePiece(Square cur, Square next);
+
+	/**
+	 * Precondition: Assumes you only call this method if you can 
+	 * capture a piece, or the position is empty.
+	 * Moves a piece to a new position, where it has captured an
+	 * enemy piece.
+	 * @param cur, the position you move from
+	 * @param next, the position you move to
+	 * @return the IPiece you captured or null, if space was empty
+	 */
+	public IPiece captureEnemyPieceAndMovePiece(Square cur, Square next);
 	
 
 }

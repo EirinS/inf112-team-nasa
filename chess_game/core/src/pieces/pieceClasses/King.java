@@ -1,10 +1,16 @@
 package pieces.pieceClasses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 public class King extends AbstractPiece {
@@ -14,21 +20,134 @@ public class King extends AbstractPiece {
 	}
 
 	@Override
-	public ArrayList<Square> legalPositions(Square square, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
 		// TODO Auto-generated method stub
+		return reachable(x,y, board.getSquare(x, y), board);
+	}
+
+	/**
+	 * NOT IMPLEMENTED
+	 * 
+	 * @param sq,
+	 *            square of the rook
+	 * @param board,
+	 *            board the rook is on
+	 * @return legal castling square moves.
+	 */
+	private ArrayList<Move> castling(Square sq, IBoard board) {
+		ArrayList<Square> legalCastlingMoves = new ArrayList<>();
+		PieceColor opponent;
+		if(getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
+		else { opponent = PieceColor.WHITE;}
+
+		if(hasMoved());
+		if(threatensKing(board.piecesThreatenedByOpponent(getColor(), opponent)));
+		if(getFirstPieceHorizontal(sq, board).isEmpty());
+
+
+		ArrayList<Square> rookPositions = new ArrayList<>();
+		for(Map.Entry<IPiece, Square> entry : getFirstPieceHorizontal(sq, board).entrySet()) {
+			if (entry.getKey() instanceof Rook) {
+				if(!entry.getKey().hasMoved())
+					rookPositions.add(entry.getValue());
+			}
+		}
+		if(!rookPositions.isEmpty()) {
+			for(Square square : rookPositions) {
+				if(square.getX() < sq.getX()) {
+				}
+			}
+		}
+
+		// TODO
+		/*
+		 * CONDITIONS FOR THIS MOVE:
+		 *  - Neither the king, nor rook has moved before 
+		 *  - No pieces between king and chosen rook 
+		 *  - The king never passes through pieces where it's in check 
+		 *  - King is not in check
+		 */
 		return null;
 	}
 
-	@Override
-	public void movePiece(Square cur, Square next) {
-		// TODO Auto-generated method stub
+	/**
+	 * Method to get all 
+	 * @param sq
+	 * @param board
+	 * @return
+	 */
+	private Map<IPiece, Square> getFirstPieceHorizontal(Square sq, IBoard board) {
+		Map<IPiece, Square> pieces = new HashMap<IPiece, Square>();
+		int x = sq.getX(), y = sq.getY();
+		for(int i = 0; i < x; i++) {
+			if (!board.getSquare(i, y).isEmpty()) {
+				pieces.put(board.getSquare(i, y).getPiece(), board.getSquare(i, y));
+				break;
+			}
+		}
+
+		for(int i = x+1; i < 0; i--) {
+			if (!board.getSquare(i, y).isEmpty()) {
+				pieces.put(board.getSquare(i, y).getPiece(), board.getSquare(i, y));
+				break;
+			}
+		}
+		return pieces;
+	}
+
+	public ArrayList<Move> reachable(int x, int y, Square origin, IBoard board){
+		ArrayList<Move> lst = new ArrayList<>();
+		Move mv;
+		if(board.withinBoard(x+1, y)) {
+			mv = getMove(origin, (x+1), y, board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
+		if(board.withinBoard(x+1, y-1)) {
+			mv = getMove(origin, (x+1), (y-1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
 		
-	}
+		if(board.withinBoard(x+1, y+1)) {
+			mv = getMove(origin, (x+1), (y+1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
 
-	@Override
-	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
-		// TODO Auto-generated method stub
-		return null;
+		if(board.withinBoard(x, y-1)) {
+			mv = getMove(origin, x, (y-1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
+		if(board.withinBoard(x, y+1)) {
+				mv = getMove(origin, x, (y+1), board);
+				if (mv != null) {
+					lst.add(mv);
+				}
+			}
+		if(board.withinBoard(x-1, y)) {
+			mv = getMove(origin, (x-1), (y), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
+		if(board.withinBoard(x-1, y+1)) {
+			mv = getMove(origin, (x-1), (y+1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
+		if(board.withinBoard(x-1, y-1)) {
+			mv = getMove(origin, (x-1), (y-1), board);
+			if (mv != null) {
+				lst.add(mv);
+			}
+		}
+		return lst;		
 	}
-
 }

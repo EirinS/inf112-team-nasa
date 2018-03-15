@@ -3,9 +3,10 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
-import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Rook extends AbstractPiece {
@@ -18,10 +19,10 @@ public class Rook extends AbstractPiece {
 
 
 	@Override
-	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
-		ArrayList<Square> reachable = new ArrayList<Square>();
-		reachable.addAll(reachableSquares(x, y, board, true));
-		reachable.addAll(reachableSquares(y, x, board, false));
+	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+		ArrayList<Move> reachable = new ArrayList<Move>();
+		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
+		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
 		return reachable;
 	}
 
@@ -34,7 +35,7 @@ public class Rook extends AbstractPiece {
 	 *            board the rook is on
 	 * @return legal castling square moves.
 	 */
-	private ArrayList<Square> castling(Square sq, IBoard board) {
+	private ArrayList<Move> castling(Square sq, IBoard board) {
 		// TODO
 		/*
 		 * CONDITIONS FOR THIS MOVE: - Neither the king, nor rook has moved before - No
@@ -59,26 +60,26 @@ public class Rook extends AbstractPiece {
 	 *            tells you if you're checking horizontal or vertical direction.
 	 * @return ArrayList<Square>, all legal positions on the axis.
 	 */
-	public ArrayList<Square> reachableSquares(int startPoint, int axis, IBoard board, boolean horizontal) {
-		ArrayList<Square> ok = new ArrayList<Square>();
-		Square newSq;
+	public ArrayList<Move> reachableSquares(int startPoint, int axis, Square origin, IBoard board, boolean horizontal) {
+		ArrayList<Move> ok = new ArrayList<>();
+		Square dest;
 
 		// check axis upwards
 		for (int i = startPoint + 1; i < board.getDimension(); i++) {
 
 			// looking on y-axis or x-axis
 			if (horizontal) {
-				newSq = board.getSquare(i, axis);
+				dest = board.getSquare(i, axis);
 			} else {
-				newSq = board.getSquare(axis, i);
+				dest = board.getSquare(axis, i);
 			}
 
-			if (!newSq.isEmpty()) {
-				if (getColor() != newSq.getPiece().getColor())
-					ok.add(newSq);
+			if (!dest.isEmpty()) {
+				if (getColor() != dest.getPiece().getColor())
+					ok.add(getMove(origin, dest, board));
 				break;
 			} else {
-				ok.add(newSq);
+				ok.add(getMove(origin, dest, board));
 			}
 		}
 
@@ -87,25 +88,25 @@ public class Rook extends AbstractPiece {
 
 			// check if we're looking on y-axis or x-axis
 			if (horizontal) {
-				newSq = board.getSquare(i, axis);
+				dest = board.getSquare(i, axis);
 			} else {
-				newSq = board.getSquare(axis, i);
+				dest = board.getSquare(axis, i);
 			}
 
-			if (!newSq.isEmpty()) {
-				if (getColor() != newSq.getPiece().getColor())
-					ok.add(newSq);
+			if (!dest.isEmpty()) {
+				if (getColor() != dest.getPiece().getColor())
+					ok.add(getMove(origin, dest, board));
 				break;
 			} else {
-				ok.add(newSq);
+				ok.add(getMove(origin, dest, board));
 			}
-		}
+		}		
 		return ok;
 	}
 
 	@Override
 	public String toString() {
-		return "Rook [inPlay=" + inPlay + ", color=" + color + "]";
+		return "R";
 	}
 
 }

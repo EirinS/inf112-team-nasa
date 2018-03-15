@@ -3,6 +3,7 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -15,73 +16,59 @@ public class Queen extends AbstractPiece {
 	}
 
 	@Override
-	public ArrayList<Square> legalPositions(Square square, IBoard board) {
-		ArrayList<Square> legalPositions = new ArrayList<Square>();
-		ArrayList<Square> moveSquares;
-		legalPositions.addAll(getMovableSquares(square.getX(), square.getY(), board));
-		moveSquares = removePositionsInCheck(legalPositions, square, board);
-		return moveSquares;
-	}
-
-	@Override
-	public void movePiece(Square cur, Square next) {
-		next.putPiece(cur.movePiece());
-
-	}
-
-	@Override
-	protected ArrayList<Square> allReachableSquares(int x, int y, IBoard board) {
-		ArrayList<Square> reachable = new ArrayList<Square>();
-		reachable.addAll(reachableSquares(x, y, board, true, false));
-		reachable.addAll(reachableSquares(y, x, board, false, true));
-		reachable.addAll(reachableSquares(x, y, board, false, false));
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+		ArrayList<Move> reachable = new ArrayList<Move>();
+		Square origin = board.getSquare(x, y);
+		reachable.addAll(reachableSquares(x, y, origin, board, true, false));
+		reachable.addAll(reachableSquares(y, x, origin, board, false, true));
+		reachable.addAll(reachableSquares(x, y, origin, board, false, false));
 		return reachable;
 		
 	}
 
-	public ArrayList<Square> reachableSquares(int startPoint, int axis, IBoard board, boolean horizontal,
+	public ArrayList<Move> reachableSquares(int startPoint, int axis, Square origin, IBoard board, boolean horizontal,
 			boolean diagonal) {
-		ArrayList<Square> ok = new ArrayList<Square>();
-		Square newSq;
+		ArrayList<Move> ok = new ArrayList<Move>();
 
 		for (int i = startPoint + 1; i < board.getDimension(); i++) {
-			if (horizontal) {
-				newSq = board.getSquare(i, axis);
-			} else if (diagonal) {
-				newSq = board.getSquare(i, i);
-			} else {
-				newSq = board.getSquare(axis, i);
-			}
-			
-			if (!newSq.isEmpty()) {
-				if (getColor() != newSq.getPiece().getColor())
-					ok.add(newSq);
+			Square dest = getSquare(axis, board, horizontal, diagonal, i);
+
+			if (!dest.isEmpty()) {
+				if (getColor() != dest.getPiece().getColor())
+					ok.add(getMove(origin, dest, board));
 				break;
 			} else {
-				ok.add(newSq);
+				ok.add(getMove(origin, dest, board));
 			}
 		}
 		
 		for (int i = startPoint - 1; i >= 0; i--) {
-			if (horizontal) {
-				newSq = board.getSquare(i, axis);
-			} else if (diagonal) {
-				newSq = board.getSquare(i, i);
-			} else {
-				newSq = board.getSquare(axis, i);
-			}
-			
-			if (!newSq.isEmpty()) {
-				if (getColor() != newSq.getPiece().getColor())
-					ok.add(newSq);
+			Square dest = getSquare(axis, board, horizontal, diagonal, i);
+
+			if (!dest.isEmpty()) {
+				if (getColor() != dest.getPiece().getColor())
+					ok.add(getMove(origin, dest, board));
 				break;
 			} else {
-				ok.add(newSq);
+				ok.add(getMove(origin, dest, board));
 			}
 		}
 		return ok;
 	}
+
+	private Square getSquare(int axis, IBoard board, boolean horizontal, boolean diagonal, int i) {
+		Square newSq;
+		if (horizontal) {
+            newSq = board.getSquare(i, axis);
+        } else if (diagonal) {
+            newSq = board.getSquare(i, i);
+        } else {
+            newSq = board.getSquare(axis, i);
+        }
+		return newSq;
+	}
+
 	public String toString() {
-		return "Queen [inPlay=" + inPlay + ", color=" + color + "]";
+		return "Q";
 	}
 }
