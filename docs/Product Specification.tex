@@ -98,47 +98,90 @@ The rest of the document elaborates the system requirements for the chess game.\
 \vspace{3mm}
 \textbf{2.1	Functional Requirements}\\
 \begin{itemize}
-	 
-	\item The system offers the option to choose between a human player and a machine player
-	\item The system provides a name registration function, which enables unique identification of each user. 
-	\item The system upholds the uniqueness of user names. 
-	\item The system offers the option to choose the level of intelligence.
-	\item The system offers the option to choose the color of the pieces (White /Black).
-	\item Displaying the chess board, nearest right hand side square is white.
-	\item Displaying all 32 pieces in the correct positions.
-	\item The system only allows a white piece to make the very first move in a game.
-	\item Enable Pawn’s valid moves in the system.
-	\item Enable Knight’s valid moves in the system.
-	\item Enable Bishop’s valid moves in the system.
-	\item Enable Rook’s valid moves in the system.
-	\item Enable Queen’s valid moves in the system.
-	\item Enable King’s valid moves in the system.
-	\item Enable the functionality of castling in the game.
-	\item Enable the functionality of En-passant move in the game.
-	\item In an event of invalid move the system displays notification.
-	\item In the event of “check”, “checkmate” and “stalemate” the system displays relevant notifications.
-	\item The system offers the last move undo option.
-	\item The system offers the option to quit the game anytime.   
-	\item The system records all the moves from both players.
-	\item Enable the time keeping functionality for each move.
-	\item Displaying the captured pieces on both sides.
-	\item Enable the points calculation for the entire chess game. Such as Win, draw, lose, each captured pieces and the moves.	
-	\item The system keeps the win and loss results records of the games played.
-	\item The system offers the ranking of players according to the level of intelligence. 
+	\item Keep track of ranking
+	\begin{itemize}
+		\item The system keeps the win and loss results records of the games played.
+		\item The system should save the result of each game to a file.
+		\item The system should load result of all games played when showing highscore.
+		\item The system offers the ranking of players according to the level of intelligence.
+		\item The system should save statistics about games lost, won (time spent).
+	\end{itemize}
+	\item Rules of chess
+	\begin{itemize}
+		\item Enable the king to move exactly one square horizontally, vertically or diagonally.
+		\item Enable the rooks to move any number of vacant squares horizontally or diagonally. 
+		\item Enable the bishops to move number of vacant squares diagonally.
+		\item Enable the queen to move number of vacant squares horizontally, vertically or diagonally.
+		\item Enable the knights to move to the nearest square not on the same rank, file or diagonal. 
+		\item Enable the pawns in their start positions to move two  vacant squares straight forward.
+		\item Enable the pawns in other positions than the start position to move one square forward.
+		\item Enable the pawns to move one square diagonally if one of the opponents pieces are in the square.
+		\item Enable all players to perform castling. Castling consists of moving the king two squares towards a rook and placing the rook on the other side of the king. 
+		\item Enable all players to perform en passant.
+		\item Enable a pawn that has reached the eighth rank to promote to a queen, rook, bishop or knight. 
+	\end{itemize}
+	\item Creating an account
+	\begin{itemize}
+		\item The system provides a registration function which enables a identification of a user.
+		\item The system should uphold uniqueness of each user.
+		\item The start-rating of every newly created user should be the same for everyone 
+	\end{itemize}
+	\item Artificial intelligence
+	\begin{itemize}
+	    \item The system offers the option to choose between a human player and a machine player.
+		\item The system offers a difficulty option for the AI.
+		\item The system should correctly start a game against an AI and not another human player.
+		\item The system selects the correct difficulty of the AI
+		\item Simple AI: Moves within 1 second
+		\begin{itemize}
+			\item Find all possible moves, pick random (within one second)
+		\end{itemize}
+		\item Intermediate AI: Moved within 3 seconds
+		\begin{itemize}
+			\item Count current “points”
+			\item Make a move, see if position is better, move if is, next if not.
+		\end{itemize}
+	\end{itemize}
 \end{itemize}
 
-\newpage
+%\newpage
 
 \textbf{2.2	Non Functional Requirements}
 \begin{itemize}
-	\item AI (easy) should make move after 1 second.
-	\item AI (mediums) should make move after 3 seconds.
-	\item User interface should be simple to use
-	\item User graphics should be clean and comfortable to look at
 	\item Easily expandable code
-	\item Code that is easily understandable
-	\item Code should have good documentation
-	\item All used graphics should have open licence
+	\begin{itemize}
+		\item Avoid code duplication
+		\item Refactor code when necessary 
+		\item Descriptive documentation
+		\item Good/descriptive variable and method names.
+		\item Little to nothing of hard coding
+	\end{itemize}
+	\item GUI
+	\begin{itemize}
+		\item Readable and comfortable text (contrast between background and text)
+		\item Neutral and good-sized font
+		\item Understandable terms (no obscure chess terms where it can be avoided)
+		\item Visible markers on pieces and of valid moves.
+		\item Good error messages when something goes wrong (i.e. illegal move)
+		\item Distinct pieces (no confusion which piece is which)
+		\item Simple menu, with good names and distinct choices (start game, view high score)
+		\item Readable high score list, top on top, bottom on bottom.
+		\item Regular chess board with regular markers for which spot on the board it belongs to.
+		\item Find licence on everything that is not made by us.
+		\item Create licence on everything we create.
+	\end{itemize}
+	\item Documentation
+	\begin{itemize}
+		\item Should give insight into why the code is written the way it is.
+		\item Should describe what each API item (class, interface, package, method, etc.) does.
+		\item Should be descriptive, but not redundant. For instance, a description of a method should give information beyond what the method name already does.
+		\item Should be concise.
+		\item The first sentence of a doc comment should be a summary sentence. It should contain a concise but complete description of the API item.
+		\item Names and keywords should be written in <code> style in descriptions.
+		\item Should be written in 3rd person. For instance, “gets the name” is preferred over “get the name”.
+		\item Objects created from the current class should be referred to as “this”, not “the”.
+		\item Should include all relevant tags (@return, @param, @author, @version, etc.).
+	\end{itemize}
 \end{itemize}
 
 \vspace{5mm}

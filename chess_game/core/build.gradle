@@ -1,0 +1,25 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+
+eclipse.project {
+    name = appName + "-core"
+}
+
+//Configuration for the :desktop project
+project(":desktop") {
+    //Uses the java plugin (provides compiling, execution, etc.).
+    //That one is bundled with gradle, so we didn’t have to define it in the buildscript section.
+    apply plugin: "java"
+
+    //Defines dependencies for the :desktop project
+    dependencies {
+        //Adds dependency on the :core project as well as the gdx lwjgl backend and native dependencies
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    }
+}
