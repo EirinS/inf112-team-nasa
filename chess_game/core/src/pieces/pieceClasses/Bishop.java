@@ -20,8 +20,8 @@ public class Bishop extends AbstractPiece{
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
-		reachable.addAll(reachableSquares(board.getSquare(x, y), board, true));
-		reachable.addAll(reachableSquares(board.getSquare(x, y), board, false));
+		reachable.addAll(possibleMoves(board.getSquare(x, y), board, true));
+		reachable.addAll(possibleMoves(board.getSquare(x, y), board, false));
 		return reachable;
 	}
 	
@@ -37,7 +37,7 @@ public class Bishop extends AbstractPiece{
 		return y;		
 	}
 	
-	private ArrayList<Move> reachableSquares (Square origin, IBoard board, boolean yAscending){
+	private ArrayList<Move> possibleMoves (Square origin, IBoard board, boolean yAscending){
 		ArrayList<Move> canBeReached = new ArrayList<Move>();
 		Square square = new Square(0, 0);
 		int yCoordinate = determineY(yAscending, origin.getY());
