@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.PieceColor;
 import pieces.pieceClasses.Bishop;
@@ -30,14 +31,76 @@ public class BishopsTest {
 	public void pieceIsInitialized(){
 		assertEquals(square.getPiece(), wBishop);
 	}
-//	@Test
-//	public void printListOfSquares(){
-//		ArrayList<Square> possibleMoves = wBishop.allReachableSquares(x, y, board);
-//		int i = 0;
-//		for (Square square : possibleMoves){
-//			i++;
-//			System.out.print(i +". ");
-//			System.out.println("X: " + square.getX() + " Y: " + square.getY());
-//		}		
-//	}
-}
+	
+
+	@Test
+	public void legalPositionsMoreThanZero() {
+		assertTrue(square.getPiece().getLegalMoves(square, board).size() > 0);
+	}
+	
+	/**
+	 * Currently: Something wrong with < > operators in method. Does not include
+	 *  (8,8). If the y coordinate is set to an odd number, give "outofbounds" 
+	 *  the test should still work if (7, 7) = (8, 8)
+	 */
+
+	@Test
+	public void diagonalMove() {
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+	//	int i = 0;
+		boolean found = false;
+		for (Move aMove : move) {
+	//		i++;
+	//		System.out.println(i + ". " + aMove.getTo() + " " + board.getSquare(7, 7));
+			if (aMove.getTo().equals(board.getSquare(7, 7))){
+				found = true;
+			}
+		}
+		assertTrue(found);
+	}
+	
+	@Test
+	public void cannotMoveHorisontally(){
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		for (Move aMove : move) {
+			assertFalse(move.contains(aMove.getTo().equals(board.getSquare(2, 4))));
+		}
+		
+	}
+	
+	@Test 
+	public void cannotMoveVertically(){
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		for (Move aMove : move) {
+			assertFalse(move.contains(aMove.getTo().equals(board.getSquare(4, 7))));
+		}
+	}
+	
+	@Test
+	public void cannotShareSquareWithSameTeam(){
+		Bishop wBishopTwo = new Bishop(PieceColor.WHITE);
+		board.getSquare(6, 6).putPiece(wBishopTwo);
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		boolean found = false;
+		for (Move aMove : move) {
+			if (aMove.getTo().equals(board.getSquare(7, 7))){
+				found = true;
+			}
+		}
+		assertFalse(found);
+		
+	}
+	@Test
+	public void cannotMovePastPiece(){
+		Bishop wBishopTwo = new Bishop(PieceColor.WHITE);
+		board.getSquare(6, 6).putPiece(wBishopTwo);
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		boolean found = false;
+		for (Move aMove : move) {
+			if (aMove.getTo().equals(board.getSquare(6, 6))){
+				found = true;
+			}
+		}
+		assertFalse(found);
+	}
+}	
