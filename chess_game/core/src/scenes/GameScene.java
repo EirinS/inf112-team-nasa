@@ -92,7 +92,7 @@ public class GameScene implements Screen {
 		skin.getFont("white-24").draw(game.getSpriteBatch(), player1, 100, HEIGHT - 50);
 		skin.getFont("white-24").draw(game.getSpriteBatch(), player2, 300, HEIGHT - 50);
 
-		checkerboardRenderer.render();
+		//checkerboardRenderer.render();
 
 		game.getSpriteBatch().end();
 
