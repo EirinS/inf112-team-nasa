@@ -31,10 +31,13 @@ public class Pawn extends AbstractPiece {
 	
 	//TODO en passant
 	
+	/**
+	 * Gets a list of all legal moves for this pawn
+	 */
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
-		reachable.addAll(allFreeMoves(x, y, board));
+		reachable.addAll(reachableSquares(new Square(x, y), board));
 		return reachable;
 	}
 	
@@ -46,12 +49,18 @@ public class Pawn extends AbstractPiece {
 		return hasMoved;
 	}
 	
+	/**
+	 * Builds a list of all legal moves for this pawn
+	 * @param origin the square this pawn moves from
+	 * @param board the board this pawn is placed on
+	 * @return
+	 */
 	public ArrayList<Move> reachableSquares(Square origin, IBoard board) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		int x = origin.getX();
 		int y = origin.getY();
-		Square oneAhead = null;
-		Square twoAhead = null;
+		Square oneAhead = null; // One square ahead
+		Square twoAhead = null; // Two squares ahead
 		Square westAhead = null; // One square ahead and westward
 		Square eastAhead = null; // One square ahead and eastward
 		PieceColor opponentColor = null;
