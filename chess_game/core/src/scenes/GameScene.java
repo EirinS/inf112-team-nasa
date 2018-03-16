@@ -66,7 +66,7 @@ public class GameScene implements Screen {
 	private void initialize() {
 		stage = new Stage(new ScreenViewport());
 		skin = new Skin();
-		Styles.myriadProFont(skin);
+		Styles.whiteFont(skin);
 		Styles.blueButton(skin);
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -89,8 +89,8 @@ public class GameScene implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getSpriteBatch().begin();
 
-		skin.getFont("white-24").draw(game.getSpriteBatch(), player1, 100, HEIGHT - 50);
-		skin.getFont("white-24").draw(game.getSpriteBatch(), player2, 300, HEIGHT - 50);
+		skin.getFont("default").draw(game.getSpriteBatch(), player1, 100, HEIGHT - 50);
+		skin.getFont("default").draw(game.getSpriteBatch(), player2, 300, HEIGHT - 50);
 
 		//checkerboardRenderer.render();
 
