@@ -16,6 +16,10 @@ public class AIEasy implements AI,Playable {
 	PieceColor playerColor;
 	Random rand = new Random(System.nanoTime());
 
+	public AIEasy(PieceColor playerColor){
+		this.playerColor = playerColor;
+	}
+
 	@Override
 	public Move calculateMove(Board currentBoard) {
 		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
