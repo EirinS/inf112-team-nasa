@@ -68,16 +68,23 @@ public class AIMedium implements AI,Playable {
 
 	@Override
 	public Move calculateMove(IBoard board) {
-		return calculate(getBoardState(board), board, playerColor);
+		if(playerColor == PieceColor.BLACK) {
+			return calculate(3, getBoardState(board), board, PieceColor.WHITE);
+		}else{
+			return calculate(3, getBoardState(board), board, PieceColor.BLACK);
+		}
 	}
 
-	private int calcFromOpponent(int score, IBoard board, PieceColor color) {
+	private int calcFromColor(int depth, int score, IBoard board, PieceColor color) {
+
+		if(depth == 0) return score;
+
 		List<Move> moves = board.getAvailableMoves(color);
 		int state = score;
 
 		for(Move currentMove : moves){
 
-			int sum = score;
+			int sum = 0;
 			int getPosSumBefore = getPositionValue(currentMove.getFrom().getX(), currentMove.getFrom().getY());
 			int getPosSumAfter = getPositionValue(currentMove.getTo().getX(), currentMove.getTo().getY());
 			int posChange = getPosSumAfter - getPosSumBefore;
@@ -86,17 +93,49 @@ public class AIMedium implements AI,Playable {
 			IPiece captured = currentMove.getCapturedPiece();
 			if(captured != null) {
 				sum -= getScoreForPieceType(captured);
+				currentMove.getTo().takePiece();
+			}
+			int possibleState = score;
+			if(color == playerColor) {
+				sum = sum * -1;
+				int possibleState2 = sum+score;
+				if(possibleState2 > state) possibleState = possibleState2;
+			}else{
+				sum = sum + state;
+				if(sum < state) {
+					state = sum;
+				}
 			}
 
-			if(sum < state) {
-				state = sum;
+			int deeper = possibleState;
+
+			if(color == playerColor) {
+				PieceColor colorDeeper;
+				if(playerColor == PieceColor.BLACK) {
+					colorDeeper = PieceColor.WHITE;
+				}else {
+					colorDeeper = PieceColor.BLACK;
+				}
+				deeper = calcFromColor(depth - 1, possibleState, board, colorDeeper);
+			}else {
+				deeper = calcFromColor(depth - 1, possibleState, board, playerColor);
+			}
+
+			if(color == playerColor) {
+				if(deeper > state) state = deeper;
+			}else {
+				if(deeper < state) state = deeper;
+			}
+
+			if(captured != null) {
+				currentMove.getTo().putPiece(captured);
 			}
 		}
 
 		return state;
 	}
 
-	private Move calculate(int score, IBoard board, PieceColor color) {
+	private Move calculate(int depth, int score, IBoard board, PieceColor color) {
 
 		List<Move> moves = board.getAvailableMoves(playerColor);
 		Move bestMove = null;
@@ -116,21 +155,25 @@ public class AIMedium implements AI,Playable {
 				sum += getScoreForPieceType(captured);
 			}
 
-			//Take piece so opponent cant use it in board state calculation
+			//Take piece out from board so opponent cant use it in board state calculation
 			if(captured != null) {
 				currentMove.getTo().takePiece();
 			}
-			int sumForOpponent = calcFromOpponent(sum, board, color);
+			int sumForOpponent = calcFromColor(0, sum, board, color);
 
+			int newSum = sumForOpponent;
 
+			if(depth - 1 > 0) {
+				newSum = calcFromColor(depth - 1, sumForOpponent, board, playerColor);
+			}
 			//Undo the move
 			if(captured != null) {
 				currentMove.getTo().putPiece(captured);
 			}
 
-			if(sumForOpponent > state) {
+			if(newSum > state) {
 				System.out.println("Updated state");
-				state = sum;
+				state = newSum;
 				bestMove = currentMove;
 			}
 		}
