@@ -1,6 +1,7 @@
 package player;
 
 import boardstructure.Board;
+import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import pieces.IPiece;
@@ -21,7 +22,7 @@ public class AIMedium implements AI,Playable {
 		this.playerColor = playerColor;
 	}
 
-	private int getBoardState(Board currentBoard){
+	private int getBoardState(IBoard currentBoard){
 		int score = 0;
 		for(Square s : currentBoard.getBoard()) {
 			IPiece p = s.getPiece();
@@ -66,14 +67,12 @@ public class AIMedium implements AI,Playable {
 	}
 
 	@Override
-	public Move calculateMove(Board board) {
+	public Move calculateMove(IBoard board) {
 		return calculate(getBoardState(board), board, playerColor);
 	}
 
-	private int calcFromOpponent(int score, Board board, PieceColor color) {
+	private int calcFromOpponent(int score, IBoard board, PieceColor color) {
 		List<Move> moves = board.getAvailableMoves(color);
-		Move bestMove = null;
-
 		int state = score;
 
 		for(Move currentMove : moves){
@@ -100,12 +99,12 @@ public class AIMedium implements AI,Playable {
 		return state;
 	}
 
-	private Move calculate(int score, Board board, PieceColor color) {
+	private Move calculate(int score, IBoard board, PieceColor color) {
 
 		List<Move> moves = board.getAvailableMoves(playerColor);
 		Move bestMove = null;
 
-		int state = score;
+		int state = -99999;
 
 		for(Move currentMove : moves){
 
@@ -125,7 +124,7 @@ public class AIMedium implements AI,Playable {
 
 			currentMove.getTo().putPiece(captured);
 
-			if(sum > state) {
+			if(sumForOpponent > state) {
 				state = sum;
 				bestMove = currentMove;
 			}
@@ -136,7 +135,7 @@ public class AIMedium implements AI,Playable {
 
 
 	@Override
-	public Move makeMove(Board board, Square from, Square to) {
+	public Move makeMove(IBoard board, Square from, Square to) {
 		return null;
 	}
 
