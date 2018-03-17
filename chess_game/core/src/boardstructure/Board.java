@@ -195,4 +195,18 @@ public class Board implements IBoard {
 		return null;
 	}
 
+	public void printOutBoard(){
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				IPiece p = getSquare(i,j).getPiece();
+
+				if(p == null) {
+					System.out.println(" ");
+				}else {
+					System.out.println(p);
+				}
+			}
+		}
+	}
+
 }
