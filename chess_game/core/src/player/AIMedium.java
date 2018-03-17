@@ -106,7 +106,6 @@ public class AIMedium implements AI,Playable {
 		for(Move currentMove : moves){
 
 			int sum = score;
-			System.out.println("Init sum to: " + sum);
 			int getPosSumBefore = getPositionValue(currentMove.getFrom().getX(), currentMove.getFrom().getY());
 			int getPosSumAfter = getPositionValue(currentMove.getTo().getX(), currentMove.getTo().getY());
 			int posChange = getPosSumAfter - getPosSumBefore;
@@ -117,17 +116,17 @@ public class AIMedium implements AI,Playable {
 				sum += getScoreForPieceType(captured);
 			}
 
+			//Take piece so opponent cant use it in board state calculation
 			if(captured != null) {
 				currentMove.getTo().takePiece();
 			}
 			int sumForOpponent = calcFromOpponent(sum, board, color);
 
+
+			//Undo the move
 			if(captured != null) {
 				currentMove.getTo().putPiece(captured);
 			}
-
-			System.out.println("Sum for opponent: " + sumForOpponent);
-			System.out.println("New sum: " + sum);
 
 			if(sumForOpponent > state) {
 				System.out.println("Updated state");
@@ -136,7 +135,8 @@ public class AIMedium implements AI,Playable {
 			}
 		}
 		//System.out.println(indent+&quot;max: &quot;+currentMax);
-		System.out.println("Best move : " + bestMove);
+		System.out.println("Best move   : " + bestMove);
+		System.out.println("Current sum : " + state);
 		return bestMove;
 	}
 
