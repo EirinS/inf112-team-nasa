@@ -3,30 +3,47 @@ package scenes;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-
 /**
  * 
  * @author Stian
  * 
+ * Class for keeping track of players. Information is stored on a text file 
+ * with the following format: "playername" rating(int) wins(int) losses(int) draws(int)
+ * One row per player
+ *
  */
-public class RegisteredPlayers
+public class RegisteredPlayers 
 {
 
 	private static final int defaultRating = 1500;
 	private static final int highscoreLength = 10;
-	private static final String playerFile ="playerFile.txt";
+	private static String playerFile;
+	
+	public RegisteredPlayers(String fileName)
+	{
+		RegisteredPlayers.playerFile = fileName;
+		
+		File f = new File(fileName);
+		if(!f.exists())
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
 	
 	/**
 	 * This method checks if the given name already occurs in the player file.
 	 * Reads from the player file
 	 * 
 	 * @param playerName Name of the player we want to check
-	 * @return bool returns True if player is registered and False if not
+	 * @return returns True if player is registered and False if not
 	 */
 	public static boolean playerIsRegistered(String playerName) 
 	{
@@ -65,6 +82,7 @@ public class RegisteredPlayers
 
 	/**
 	 * Registers a player in the player file. Automatically sets his rating to the default rating given by "defaultRating"
+	 * Also sets wins/losses/draws to 0/0/0
 	 * Writes to the player file. 
 	 * 
 	 * @param playerName Name of the player
@@ -72,13 +90,18 @@ public class RegisteredPlayers
 	 */
 	public static void registerPlayer(String playerName) 
 	{
+		if(playerIsRegistered(playerName))
+		{
+			return;
+		}
+		
 		PrintWriter printWriter = null;
 
 		try 
 		{
 			// Simply appends the new player to the player file with the default rating
 			printWriter = new PrintWriter(new FileOutputStream(new File(playerFile),true));
-			printWriter.println(playerName + " " + defaultRating);
+			printWriter.println(playerName + " " + defaultRating + " " + 0 + " " + 0 + " " + 0);
 		} 
 		catch (FileNotFoundException e) 
 		{
@@ -99,8 +122,9 @@ public class RegisteredPlayers
 	 *  
 	 *  @param playerName Name of the player
 	 *  @param newRating The updated rating for the player
+	 *  @param win_lose_draw 1 if the player wins, 2 if the player loses and 3 if the player draws
 	 */
-	public static void updatePlayerRating(String playerName, int newRating) 
+	public static void updatePlayerRating(String playerName, int newRating, int win_lose_draw) 
 	{
 		// Setup
 		File file = new File(playerFile);		
@@ -118,11 +142,29 @@ public class RegisteredPlayers
 			{
 				players.add(sc.nextLine());
 				
-				// If we find the player we are searching for we update his rating in the arraylist
-				if(players.get(counter).split(" ")[0].equals(playerName))
+				String[] playerAttributes = players.get(counter).split(" ");
+				String name = playerAttributes[0];
+				int wins = Integer.parseInt(playerAttributes[2]);
+				int losses = Integer.parseInt(playerAttributes[3]);
+				int draws = Integer.parseInt(playerAttributes[4]);
+				
+				// If we find the player we are searching for we update his/her rating in the arraylist
+				if(name.equals(playerName))
 				{
-					players.set(counter, playerName + " " + newRating);
+					if(win_lose_draw == 1)
+					{
+						players.set(counter, playerName + " " + newRating + " " + (wins+1) + " " + losses + " " + draws);
+					}
+					else if(win_lose_draw == 2)
+					{
+						players.set(counter, playerName + " " + newRating + " " + wins + " " + (losses+1) + " " + draws);
+					}
+					else if(win_lose_draw == 3)
+					{
+						players.set(counter, playerName + " " + newRating + " " + wins + " " + losses + " " + (draws+1));
+					}	
 				}
+				
 				counter++;
 			}
 			try 
@@ -173,7 +215,7 @@ public class RegisteredPlayers
 		File file = new File(playerFile);	
 		Scanner sc = null;	
 		ArrayList<String> highscores = new ArrayList<String>();	
-		PriorityQueue<playerScorePair<String, Integer>> pq = new PriorityQueue<playerScorePair<String, Integer>>();
+		PriorityQueue<playerClass<String, Integer>> pq = new PriorityQueue<playerClass<String, Integer>>();
 		
 		try 
 		{
@@ -183,16 +225,19 @@ public class RegisteredPlayers
 			{
 				String[] line = sc.nextLine().split(" ");
 				String name = line[0];
-				int score = Integer.parseInt(line[1]);
+				int rating = Integer.parseInt(line[1]);
+				int wins = Integer.parseInt(line[2]);
+				int losses = Integer.parseInt(line[3]);
+				int draws = Integer.parseInt(line[4]);
 
-				pq.add(new playerScorePair<String,Integer>(name, score));
+				pq.add(new playerClass<String,Integer>(name, rating, wins, losses, draws));
 			}
 			
 			// Add the highest rated players to the highscores-arrayList
-			for(int i = 0; i < pq.size() && i < highscoreLength; i++)
+			for(int i = 0; i < pq.size()+1 && i < highscoreLength; i++)
 			{
-				playerScorePair<String,Integer> p = pq.poll();
-				highscores.add(p.getPlayerName() + " " + p.getScore());
+				playerClass<String,Integer> p = pq.poll();
+				highscores.add(p.getPlayerName() + " " + p.getRating() + " " + p.getWins() + " " + p.getLosses() + " " + p.getDraws());
 			}
 		}
 		catch (FileNotFoundException e) 
@@ -216,33 +261,49 @@ public class RegisteredPlayers
 	 * 	Stores a player using his name and score. 
 	 */
 	@SuppressWarnings("hiding")
-	private static class playerScorePair<String, Integer> implements Comparable<playerScorePair<String, Integer>>
+	private static class playerClass<String, Integer> implements Comparable<playerClass<String, Integer>>
 	{
 		public final String playerName;
-		public final int score;
+		public final int rating;
+		public final int wins;
+		public final int losses;
+		public final int draws;
 	
-		public playerScorePair(String playerName, int score)
+		public playerClass(String playerName, int rating, int wins, int losses, int draws)
 		{
 			this.playerName = playerName;
-			this.score = score;
+			this.rating = rating;
+			this.wins = wins;
+			this.losses = losses;
+			this.draws = draws;
 		}
 
 	    public String getPlayerName() {
 	        return playerName;
 	    }
 
-	    public int getScore() {
-	        return score;
+	    public int getRating() {
+	        return rating;
+	    }
+	    
+	    public int getWins() {
+	        return wins;
+	    }
+	    
+	    public int getLosses() {
+	        return losses;
+	    }
+	    
+	    public int getDraws() {
+	        return draws;
 	    }
 	
-	    public int compareTo(playerScorePair<String, Integer> other) 
+	    public int compareTo(playerClass<String, Integer> other) 
 	    {
-	    	int b = this.getScore();
-	    	int a = other.getScore();
+	    	int b = this.getRating();
+	    	int a = other.getRating();
 	    	int cmp = a > b ? +1 : a < b ? -1 : 0;
 	    	return cmp;
 	    }
-}
-	
-	
+	}
 }
