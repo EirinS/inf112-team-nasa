@@ -86,10 +86,7 @@ public class AIMedium implements AI,Playable {
 			IPiece captured = currentMove.getCapturedPiece();
 			if(captured != null) {
 				sum -= getScoreForPieceType(captured);
-				currentMove.getTo().putPiece(null);
 			}
-
-			currentMove.getTo().putPiece(captured);
 
 			if(sum < state) {
 				state = sum;
@@ -109,6 +106,7 @@ public class AIMedium implements AI,Playable {
 		for(Move currentMove : moves){
 
 			int sum = score;
+			System.out.println("Init sum to: " + sum);
 			int getPosSumBefore = getPositionValue(currentMove.getFrom().getX(), currentMove.getFrom().getY());
 			int getPosSumAfter = getPositionValue(currentMove.getTo().getX(), currentMove.getTo().getY());
 			int posChange = getPosSumAfter - getPosSumBefore;
@@ -117,19 +115,28 @@ public class AIMedium implements AI,Playable {
 			IPiece captured = currentMove.getCapturedPiece();
 			if(captured != null) {
 				sum += getScoreForPieceType(captured);
-				currentMove.getTo().putPiece(null);
 			}
 
+			if(captured != null) {
+				currentMove.getTo().takePiece();
+			}
 			int sumForOpponent = calcFromOpponent(sum, board, color);
 
-			currentMove.getTo().putPiece(captured);
+			if(captured != null) {
+				currentMove.getTo().putPiece(captured);
+			}
+
+			System.out.println("Sum for opponent: " + sumForOpponent);
+			System.out.println("New sum: " + sum);
 
 			if(sumForOpponent > state) {
+				System.out.println("Updated state");
 				state = sum;
 				bestMove = currentMove;
 			}
 		}
 		//System.out.println(indent+&quot;max: &quot;+currentMax);
+		System.out.println("Best move : " + bestMove);
 		return bestMove;
 	}
 

@@ -29,6 +29,6 @@ public class AIEasyTests {
 	public void testThatEasyAIMovesFromItsOriginalPositionToAnotherOne(){
 		AIEasy ai = new AIEasy(PieceColor.WHITE);
 		Move move = ai.calculateMove(board);
-		org.junit.Assert.assertTrue(move.getTo().getX() != 5 || move.getTo().getY() != 5);
+		org.junit.Assert.assertTrue((move.getTo().getX() != 5 || move.getTo().getY() != 5) && move.getMovingPiece().toString().equals("K"));
 	}
 }
