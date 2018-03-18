@@ -23,7 +23,6 @@ public class Queen extends AbstractPiece {
 		reachable.addAll(reachableSquares(y, x, origin, board, false, true));
 		reachable.addAll(reachableSquares(x, y, origin, board, false, false));
 		return reachable;
-		
 	}
 
 	public ArrayList<Move> reachableSquares(int startPoint, int axis, Square origin, IBoard board, boolean horizontal,
