@@ -25,8 +25,8 @@ public class Queen extends AbstractPiece {
 		reachable.addAll(reachableSquaresDiagonalBottomLeftToTopRight(x, y, origin, board));
 		reachable.addAll(reachableSquaresDiagonalBottomRightToTopLeft(x, y, origin, board));
 		return reachable;
-
 	}
+
 	/**
 	 * Reachable squares in a straight line from Queen.
 	 * @param startPoint
@@ -52,10 +52,10 @@ public class Queen extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}
 
@@ -71,10 +71,10 @@ public class Queen extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}		
 		return ok;
@@ -98,11 +98,11 @@ public class Queen extends AbstractPiece {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
-						ok.add(getMove(origin, dest, board));
+						ok.add(getMove(origin, dest));
 					}
 					break;
 				} else if(dest.isEmpty()) {
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				}
 				i++; j++;
 			}
@@ -115,11 +115,11 @@ public class Queen extends AbstractPiece {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
-						ok.add(getMove(origin, dest, board));
+						ok.add(getMove(origin, dest));
 					}
 					break; 
 				} else if(dest.isEmpty()) {
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				}
 				i--; j--;
 			}
@@ -145,12 +145,12 @@ public class Queen extends AbstractPiece {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
-						ok.add(getMove(origin, dest, board));
+						ok.add(getMove(origin, dest));
 					}
 					break;
 				}
 				if(dest.isEmpty()) {
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				}
 				i++; j--;
 			}
@@ -162,12 +162,12 @@ public class Queen extends AbstractPiece {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
-						ok.add(getMove(origin, dest, board));
+						ok.add(getMove(origin, dest));
 					}
 					break;
 				}
 				if(dest.isEmpty()) {
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				}
 				i--; j++;
 			}

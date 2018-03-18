@@ -23,9 +23,6 @@ public class Rook extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
-		if(castling(board.getSquare(x, y), board) != null) {
-			reachable.add(castling(board.getSquare(x, y), board));
-		}
 		return reachable;
 	}
 
@@ -119,10 +116,10 @@ public class Rook extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}
 
@@ -138,10 +135,10 @@ public class Rook extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}		
 		return ok;

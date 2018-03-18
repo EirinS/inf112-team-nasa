@@ -25,46 +25,45 @@ public class Knight extends AbstractPiece {
 
 	public ArrayList<Move> reachableSquares(int x, int y, Square origin, IBoard board) {
 		ArrayList<Move> ok = new ArrayList<Move>();
-		Square dest = null;
 
 		if (board.withinBoard(x + 1, y + 2)) {
-			dest = board.getSquare(x + 1, y + 2);
-			ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x + 1, y + 2, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x + 2, y + 1)) {
-			dest = board.getSquare(x + 2, y + 1);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x + 2, y + 1, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x + 1, y - 2)) {
-			dest = board.getSquare(x + 1, y - 2);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x + 1, y - 2, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x + 2, y - 1)) {
-			dest = board.getSquare(x + 2, y - 1);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x + 2, y - 1, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x - 1, y + 2)) {
-			dest = board.getSquare(x - 1, y + 2);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x - 1, y + 2, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x - 2, y + 1)) {
-			dest = board.getSquare(x - 2, y + 1);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x - 2, y + 1, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x - 1, y - 2)) {
-			dest = board.getSquare(x - 1, y - 2);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x - 1, y - 2, board);
+			if (m != null) ok.add(m);
 		}
 
 		if (board.withinBoard(x - 2, y - 1)) {
-			dest = board.getSquare(x - 2, y - 1);
-            ok.add(getMove(origin, dest, board));
+			Move m = getMove(origin, x - 2, y - 1, board);
+			if (m != null) ok.add(m);
 		}
 
 		return ok;

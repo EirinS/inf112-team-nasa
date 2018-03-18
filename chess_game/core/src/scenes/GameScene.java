@@ -18,9 +18,7 @@ import game.GameInfo;
 import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
-import styling.Colors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
