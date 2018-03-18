@@ -151,4 +151,9 @@ public class King extends AbstractPiece {
 		}
 		return lst;		
 	}
+
+	@Override
+	public String toString() {
+		return "K";
+	}
 }

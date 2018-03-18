@@ -1,6 +1,7 @@
 package boardstructure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -98,6 +99,14 @@ public interface IBoard {
 	 * @return ArrayList<String> history of all moves made.
 	 */
 	public ArrayList<Move> getHistory();
+
+
+	/**
+	 *
+	 * @param playerColor color of the player you want to have the moves from
+	 * @return available moves for the given player color
+	 */
+	public List<Move> getAvailableMoves(PieceColor playerColor);
 
 	
 	

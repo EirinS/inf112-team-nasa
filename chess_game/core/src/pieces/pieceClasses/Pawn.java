@@ -111,6 +111,6 @@ public class Pawn extends AbstractPiece {
 	 * Returns a string that represents this pawn.
 	 */
 	public String toString() {
-		return "Pawn [inPlay=" + inPlay + ", color=" + color + "]";
+		return "P";
 	}
 }

@@ -32,7 +32,18 @@ public class Board implements IBoard {
 	}
 
 	public List<Move> getAvailableMoves(PieceColor playerColor) {
-		return null;
+
+		ArrayList<Move> moves = new ArrayList<>();
+
+		for(Square s : board) {
+			IPiece piece = s.getPiece();
+
+			if(piece != null && piece.getColor() == playerColor) {
+				List<Move> moveList = piece.getLegalMoves(s, this);
+				moves.addAll(moveList);
+			}
+		}
+		return moves;
 	}
 
 	@Override
@@ -182,6 +193,20 @@ public class Board implements IBoard {
 			return m;			
 		}
 		return null;
+	}
+
+	public void printOutBoard(){
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				IPiece p = getSquare(i,j).getPiece();
+
+				if(p == null) {
+					System.out.println(" ");
+				}else {
+					System.out.println(p);
+				}
+			}
+		}
 	}
 
 }

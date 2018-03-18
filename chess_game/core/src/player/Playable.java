@@ -1,6 +1,7 @@
 package player;
 
 import boardstructure.Board;
+import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 
@@ -13,5 +14,5 @@ public interface Playable {
 	 * Every player has to be able to perform a move
 	 * @return if move was performed or not
 	 */
-	Move makeMove(Board board, Square from, Square to);
+	Move makeMove(IBoard board, Square from, Square to);
 }
