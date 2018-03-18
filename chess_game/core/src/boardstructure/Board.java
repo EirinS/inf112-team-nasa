@@ -207,6 +207,7 @@ public class Board implements IBoard {
 			history.add(m);
 			return m;			
 		}
+		printOutBoard();
 		return null;
 	}
 

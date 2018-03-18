@@ -34,8 +34,6 @@ public class GameScene implements Screen, CheckerboardListener {
 	private HashMap<String, Texture> sprites;
 	private Checkerboard checkerboard;
 	private Board board;
-	private Square selectedSquare;
-	private ArrayList<Move> selectedMoves;
 
 	// TODO: 15.03.2018 this is temp; just to have something to draw.
 	private String player1 = "triki";
@@ -58,7 +56,6 @@ public class GameScene implements Screen, CheckerboardListener {
 		// Init sprites and checkerboard.
 		sprites = PieceSpriteLoader.loadDefaultPieces();
 		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
-		selectedMoves = new ArrayList<>();
 		turn = PieceColor.WHITE;
 		checkerboard = new Checkerboard(game, stage, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
 	}
@@ -69,8 +66,6 @@ public class GameScene implements Screen, CheckerboardListener {
 		} else {
 			turn = PieceColor.WHITE;
 		}
-		selectedSquare = null;
-		selectedMoves.clear();
 	}
 
 	@Override
@@ -115,17 +110,10 @@ public class GameScene implements Screen, CheckerboardListener {
 	}
 
 	@Override
-	public void onPieceClick(int x, int y) {
-		System.out.println(x + ", " + y);
+	public void onDragPieceStarted(int x, int y) {
 		Square square = board.getSquare(x, y);
 		if (square.getPiece().getColor() != turn) return; // Ignore if we click on opponent pieces.
-		if (selectedSquare == null || !selectedSquare.equals(square)) {
-			selectedSquare = square;
-			selectedMoves = selectedSquare.getPiece().getLegalMoves(selectedSquare, board, PieceColor.WHITE);
-			//checkerboard.showMoves(selectedSquare, selectedMoves);
-		} else if (selectedSquare.equals(square)) {
-			selectedSquare = null;
-		}
+		checkerboard.showMoves(square.getPiece().getLegalMoves(square, board, PieceColor.WHITE));
 	}
 
 	@Override
