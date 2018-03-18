@@ -98,9 +98,17 @@ public interface IBoard {
 	 * @return ArrayList<IPiece>, all pieces threatened by white.
 	 */
 	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
-	
+
 	/**
 	 * Move a piece to a legal position on the board. 
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param m The move to perform.
+	 * @return Move move, the move that was done.
+	 */
+	public Move move(Move m);
+
+	/**
+	 * Move a piece to a legal position on the board.
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.

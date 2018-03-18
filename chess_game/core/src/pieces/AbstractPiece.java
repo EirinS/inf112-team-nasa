@@ -83,11 +83,9 @@ public abstract class AbstractPiece implements IPiece {
 		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
-
-	@Override
-	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
+	
+	protected ArrayList<IPiece> enemiesReached(int x, int y, IBoard board, PieceColor opponent, ArrayList<Move> check) {
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
-		ArrayList<Move> check = allFreeMoves(x, y, board, null);
 		if (check == null) {return reach;}
 		for(Move mov : check) {
 
@@ -96,12 +94,18 @@ public abstract class AbstractPiece implements IPiece {
 				//System.out.println("mov null");
 				continue;
 			}
-				Square sq = mov.getTo();
-				if (!sq.isEmpty())
-					if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
-						reach.add(sq.getPiece());
-			}
+			Square sq = mov.getTo();
+			if (!sq.isEmpty())
+				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
+					reach.add(sq.getPiece());
+		}
 		return reach;
+	}
+
+	@Override
+	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
+		ArrayList<Move> check = allFreeMoves(x, y, board, null);
+		return enemiesReached(x, y, board, opponent, check);
 	}
 
 
@@ -124,7 +128,7 @@ public abstract class AbstractPiece implements IPiece {
 	 * Checks for every position that a piece can move to, and makes sure that no 
 	 * open space will result in a position where your own king is in check.
 	 * Does not actually move any pieces (always moves back)
-	 * @param legalPositions, all legal positions you can move to.
+	 * @param legalMoves, all legal positions you can move to.
 	 * @param origin, the square the piece is originally in
 	 * @param board
 	 * @return a updated list of positions where you can move.

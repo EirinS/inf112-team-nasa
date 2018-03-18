@@ -116,6 +116,8 @@ public class Board implements IBoard {
 		return threatenedPieces(opponent, player);
 	}
 
+
+
 	/**
 	 * Helper method to get threatened pieces.
 	 * 
@@ -151,6 +153,11 @@ public class Board implements IBoard {
 	@Override
 	public ArrayList<Move> getHistory() {
 		return history;
+	}
+
+	@Override
+	public Move move(Move m) {
+		return move(m.getFrom(), m.getTo());
 	}
 
 	@Override
