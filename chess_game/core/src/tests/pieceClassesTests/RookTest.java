@@ -30,7 +30,7 @@ public class RookTest {
 	public void canFindLegalMoves() {
 		board = new Board(2);
 		board.getSquare(0, 0).putPiece(rook);
-		ArrayList<Move> moves = rook.getLegalMoves(board.getSquare(0, 0), board);
+		ArrayList<Move> moves = rook.getLegalMoves(board.getSquare(0, 0), board, PieceColor.WHITE);
 		assertEquals(2, moves.size());
 	}
 	
@@ -57,7 +57,7 @@ public class RookTest {
 	@Test
 	public void canMoveHorizontal() {
 		boolean hasMovedTo = false;
-		for(Move m : ((Rook) rook).allFreeMoves(sq.getX(), sq.getY(), board)) {
+		for(Move m : ((Rook) rook).allFreeMoves(sq.getX(), sq.getY(), board, null)) {
 			if (m.getTo().getX() != 0) {
 				hasMovedTo = true;
 			}
@@ -68,7 +68,7 @@ public class RookTest {
 	@Test
 	public void canMoveVertical() {
 		boolean hasMovedTo = false;
-		for(Move m : ((Rook) rook).allFreeMoves(sq.getX(), sq.getY(), board)) {
+		for(Move m : ((Rook) rook).allFreeMoves(sq.getX(), sq.getY(), board, null)) {
 			if (m.getTo().getY() != 0) {
 				hasMovedTo = true;
 			}
@@ -78,7 +78,7 @@ public class RookTest {
 	
 	@Test
 	public void cantMoveDiagonal() {
-		ArrayList<Move> legalRookMoves = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalRookMoves = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for(int i = 0; i < legalRookMoves.size(); i++) {
 			assertFalse(legalRookMoves.get(i).getTo() == board.getSquare(1, 1));
 		}	
@@ -87,7 +87,7 @@ public class RookTest {
 	
 	@Test
 	public void illegalMoveOutsideBoard() {
-		ArrayList<Move> legalRookMoves = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalRookMoves = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for(int i = 0; i < legalRookMoves.size(); i++) {
 			if(!board.withinBoard(legalRookMoves.get(i).getTo()))
 					fail ("should not move outside board");
@@ -100,7 +100,7 @@ public class RookTest {
 		board.getSquare(0, 2).putPiece(new Rook(PieceColor.WHITE));
 		board.getSquare(2, 0).putPiece(new Rook(PieceColor.WHITE));
 		
-		ArrayList<Move> legalRookMoves = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalRookMoves = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for(int i = 0; i < legalRookMoves.size(); i++) {
 			assertFalse(legalRookMoves.get(i).getTo() == board.getSquare(0, 3));
 			assertFalse(legalRookMoves.get(i).getTo() == board.getSquare(0, 4));
@@ -114,7 +114,7 @@ public class RookTest {
 	public void cantMoveToSquaresContainingSameColor() {
 		board.getSquare(0, 1).putPiece(new Rook(PieceColor.WHITE));
 		board.getSquare(1, 0).putPiece(new Rook(PieceColor.WHITE));
-		ArrayList<Move> lst = rook.getLegalMoves(board.getSquare(0, 0), board);
+		ArrayList<Move> lst = rook.getLegalMoves(board.getSquare(0, 0), board, PieceColor.WHITE);
 		for(int i = 0; i < lst.size(); i++) {
 			if (lst.get(i).getTo().getPiece().getColor() == rook.getColor()) {
 				fail("Should have different colors on pieces you can move to");

@@ -16,7 +16,7 @@ public class Knight extends AbstractPiece {
 	}
 	
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, board.getSquare(x, y), board));
 		return reachable;

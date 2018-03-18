@@ -16,7 +16,7 @@ public class Queen extends AbstractPiece {
 	}
 
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		Square origin = board.getSquare(x, y);
 		reachable.addAll(reachableSquares(x, y, origin, board, true, false));

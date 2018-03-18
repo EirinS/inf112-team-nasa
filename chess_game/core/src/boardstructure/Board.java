@@ -39,7 +39,7 @@ public class Board implements IBoard {
 			IPiece piece = s.getPiece();
 
 			if(piece != null && piece.getColor() == playerColor) {
-				List<Move> moveList = piece.getLegalMoves(s, this);
+				List<Move> moveList = piece.getLegalMoves(s, this, null);
 				moves.addAll(moveList);
 			}
 		}
@@ -156,7 +156,7 @@ public class Board implements IBoard {
 		}
 		
 		IPiece moving = from.getPiece();
-		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this);
+		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, null);
 		for(Move m : legalMoves) {
 			if (m.getTo() == to) {
 				return doMove(m);

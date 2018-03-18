@@ -63,9 +63,9 @@ public abstract class AbstractPiece implements IPiece {
 	}
 
 	@Override
-	public ArrayList<Move> getLegalMoves(Square origin, IBoard board) {
+	public ArrayList<Move> getLegalMoves(Square origin, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> legalMoves = new ArrayList<>();
-		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board);
+		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, null);
 		for(int i = 0; i < moves.size(); i++) {
 			Square sq = moves.get(i).getTo();
 			if(sq.isEmpty()) {
@@ -81,7 +81,7 @@ public abstract class AbstractPiece implements IPiece {
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
-		ArrayList<Move> check = allFreeMoves(x, y, board);
+		ArrayList<Move> check = allFreeMoves(x, y, board, null);
 		if (check == null) {return reach;}
 		for(Move mov : check) {
 			Square sq = mov.getTo();
@@ -198,12 +198,13 @@ public abstract class AbstractPiece implements IPiece {
 	 * of the empty reachable fields, and take into account that the
 	 * list will contain the non-empty squares of the reachable
 	 * pieces from this position.
+	 * @param board
+	 * @param playerOne, the PieceColor of first player
 	 * @param x-position of rook
 	 * @param y-position of rook
-	 * @param board
 	 * @return list of all reachable fields in moving direction of piece
 	 */
-	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board);
+	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne);
 
 	/**
 	 * Method to extract moves more easily
@@ -239,4 +240,5 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return null;
 	}
+	
 }

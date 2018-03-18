@@ -3,7 +3,6 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
@@ -20,9 +19,13 @@ public class King extends AbstractPiece {
 	}
 
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
-		// TODO Auto-generated method stub
-		return reachable(x,y, board.getSquare(x, y), board);
+	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
+		ArrayList<Move> moves = reachable(x,y, board.getSquare(x, y), board);
+		if(castling(board.getSquare(x, y), board) == null) {
+			return moves;
+		}
+		moves.addAll(castling(board.getSquare(x, y), board));
+		return moves;
 	}
 
 	/**
@@ -59,11 +62,11 @@ public class King extends AbstractPiece {
 			for(Square square : rookPositions) {
 				if(square.getX() > origin.getX()) {
 					if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
-						legalCastlingMoves.add(new Move(origin, square, this, null, MoveType.KINGSIDECASTLING));
+						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()+2, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
 					}
 				} if (square.getX() < origin.getX()) {
 					if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
-						legalCastlingMoves.add(new Move(origin, square, this, null, MoveType.QUEENSIDECASTLING));
+						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()-2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
 					}
 				}
 			}
@@ -73,6 +76,13 @@ public class King extends AbstractPiece {
 		return null;
 	}
 
+	/**
+	 * Check if king at any point in castling, moves through a position that is in check.
+	 * @param origin
+	 * @param board
+	 * @param kingSide
+	 * @return
+	 */
 	public boolean kingMovesThroughCheckPos(Square origin, IBoard board, boolean kingSide) {
 		ArrayList<Move> kingPassesThroughPos = new ArrayList<>();
 		if (kingSide) {
@@ -183,6 +193,17 @@ public class King extends AbstractPiece {
 			}
 		}
 		return lst;		
+	}
+	
+	/** Precondition: All positions that are moved to are empty and possible to move to.
+	 * Castling is an OK move.
+	 */
+	public void moveCastling(Square origin, Square next, MoveType type) {
+		//moves king
+		next.putPiece(origin.movePiece());
+		if(type == MoveType.KINGSIDECASTLING) {
+			
+		}
 	}
 
 	@Override

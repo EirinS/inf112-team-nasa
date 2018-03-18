@@ -52,17 +52,50 @@ public class Move {
 		return movingPiece.toString()+from.toString()+x+to.toString();
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((capturedPiece == null) ? 0 : capturedPiece.hashCode());
+		result = prime * result + ((from == null) ? 0 : from.hashCode());
+		result = prime * result + ((moveType == null) ? 0 : moveType.hashCode());
+		result = prime * result + ((movingPiece == null) ? 0 : movingPiece.hashCode());
+		result = prime * result + ((to == null) ? 0 : to.hashCode());
+		return result;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Move))
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		if(!obj.toString().equals(this.toString())) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-		if (!(getMoveType() == ((Move) obj).getMoveType())) {
+		Move other = (Move) obj;
+		if (capturedPiece == null) {
+			if (other.capturedPiece != null)
+				return false;
+		} else if (!capturedPiece.equals(other.capturedPiece))
 			return false;
-		}
+		if (from == null) {
+			if (other.from != null)
+				return false;
+		} else if (!from.equals(other.from))
+			return false;
+		if (moveType != other.moveType)
+			return false;
+		if (movingPiece == null) {
+			if (other.movingPiece != null)
+				return false;
+		} else if (movingPiece.getColor() != (other.movingPiece.getColor()))
+			return false;
+		if (to == null) {
+			if (other.to != null)
+				return false;
+		} else if (!to.equals(other.to))
+			return false;
 		return true;
 	}
 }

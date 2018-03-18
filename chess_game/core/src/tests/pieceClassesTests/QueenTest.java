@@ -32,7 +32,7 @@ public class QueenTest {
 
 	@Test
 	public void canMoveDiagonally() {
-		ArrayList<Move> legalQueenSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalQueenSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (Move m : legalQueenSquares) {
 			if (m.getTo().equals(board.getSquare(1, 1))) {
 				return;
@@ -43,7 +43,7 @@ public class QueenTest {
 	
 	@Test
 	public void canMoveHorisontally() {
-		ArrayList<Move> legalQueenSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalQueenSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (Move m : legalQueenSquares) {
 			if (m.getTo().equals(board.getSquare(1, 0))) {
 				return;
@@ -54,7 +54,7 @@ public class QueenTest {
 	
 	@Test
 	public void illegalMoveOutsideBoard() {
-		ArrayList<Move> legalQueenSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalQueenSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (int i = 0; i < legalQueenSquares.size(); i++) {
 			if (!board.withinBoard(legalQueenSquares.get(i).getTo()))
 				fail("should not move outside board");

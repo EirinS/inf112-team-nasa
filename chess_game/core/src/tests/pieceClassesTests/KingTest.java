@@ -80,7 +80,7 @@ public class KingTest {
 		setUpCastlingTest();
 		assertEquals(king.castling(board.getSquare(4, 7), board).size(), 1);
 		
-		Move expected = new Move(board.getSquare(4, 7), board.getSquare(0, 7), king, null, MoveType.QUEENSIDECASTLING);
+		Move expected = new Move(board.getSquare(4, 7), board.getSquare(2, 7), king, null, MoveType.QUEENSIDECASTLING);
 		assertEquals(expected, king.castling(board.getSquare(4, 7), board).get(0));
 	}
 	
@@ -91,8 +91,36 @@ public class KingTest {
 		board.getSquare(7, 7).putPiece(sndRook);
 		assertEquals(king.castling(board.getSquare(4, 7), board).size(), 1);
 		
-		Move expected = new Move(board.getSquare(4, 7), board.getSquare(7, 7), king, null, MoveType.KINGSIDECASTLING);
+		Move expected = new Move(board.getSquare(4, 7), board.getSquare(6, 7), king, null, MoveType.KINGSIDECASTLING);
 		assertEquals(expected, king.castling(board.getSquare(4, 7), board).get(0));
+	}
+	
+	@Test
+	public void canFind6legalPositionsWhen1RookPossible() {
+		setUpCastlingTest();
+		assertEquals(6, king.getLegalMoves(board.getSquare(4, 7), board, PieceColor.WHITE).size());
+	}
+	
+	@Test
+	public void canFindPlayer1CastlingBlack() {
+		IBoard newBoard = new Board(8);
+		King king = new King(PieceColor.BLACK);
+		Rook rook = new Rook(PieceColor.BLACK);
+		newBoard.getSquare(4, 7).putPiece(king);
+		newBoard.getSquare(0, 7).putPiece(rook);
+		Move expected = new Move(newBoard.getSquare(4, 7), newBoard.getSquare(2, 7), king, null, MoveType.QUEENSIDECASTLING);
+		assertEquals(expected, king.castling(newBoard.getSquare(4, 7), newBoard).get(0));	
+	}
+	
+	@Test
+	public void canFindPlayer2CastlingBlack() {
+		IBoard newBoard = new Board(8);
+		King king = new King(PieceColor.BLACK);
+		Rook rook = new Rook(PieceColor.BLACK);
+		newBoard.getSquare(4, 0).putPiece(king);
+		newBoard.getSquare(0, 0).putPiece(rook);
+		Move expected = new Move(newBoard.getSquare(4, 0), newBoard.getSquare(2, 0), king, null, MoveType.QUEENSIDECASTLING);
+		assertEquals(expected, king.castling(newBoard.getSquare(4, 0), newBoard).get(0));	
 	}
 	
 	private void setUpForMoveTests() {

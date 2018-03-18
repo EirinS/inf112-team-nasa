@@ -19,7 +19,7 @@ public class Rook extends AbstractPiece {
 
 
 	@Override
-	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
