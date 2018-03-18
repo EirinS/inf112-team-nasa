@@ -13,16 +13,19 @@ public class Board implements IBoard {
 	private int height;
 	private int width;
 	private ArrayList<Square> board;
+	private PieceColor playerOne;
 
 	/**
 	 * Create new board.
 	 * 
 	 * @param dim
 	 *            Board is always square. Dim is the height and width of board.
+	 * @param playerOne pieceColor of player one (player in lower side of board)	
 	 */
-	public Board(int dim) {
+	public Board(int dim, PieceColor playerOne) {
 		if (dim < 0)
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
+		this.playerOne = playerOne;
 		height = dim;
 		width = dim;
 		board = new ArrayList<Square>();
@@ -32,7 +35,9 @@ public class Board implements IBoard {
 			}
 		}
 	}
+	
 
+	@Override
 	public List<Move> getAvailableMoves(PieceColor playerColor) {
 
 		ArrayList<Move> moves = new ArrayList<>();
@@ -41,7 +46,7 @@ public class Board implements IBoard {
 			IPiece piece = s.getPiece();
 
 			if(piece != null && piece.getColor() == playerColor) {
-				List<Move> moveList = piece.getLegalMoves(s, this, null);
+				List<Move> moveList = piece.getLegalMoves(s, this, playerOne);
 				moves.addAll(moveList);
 			}
 		}

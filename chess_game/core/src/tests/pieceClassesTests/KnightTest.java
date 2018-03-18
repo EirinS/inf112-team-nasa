@@ -18,7 +18,7 @@ import pieces.PieceColor;
 import pieces.pieceClasses.Knight;
 
 public class KnightTest {
-	IBoard board = new Board(10);
+	IBoard board = new Board(10, PieceColor.WHITE);
 	int x = 0,  y = 3;
 	IPiece knight = new Knight(PieceColor.WHITE);
 	Square sq = board.getSquare(0, 0);

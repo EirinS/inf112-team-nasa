@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -35,23 +36,35 @@ public class Rook extends AbstractPiece {
 	 * @return
 	 */
 	private Move castling(Square sq, IBoard board) {
-		Square kingSq = board.getKingPos(this.getColor());
+		if (hasMoved()) {return null;}
 		
-		//no castling to be done if there is no king
-		if(kingSq == null) {return null;} 
+		//4 is king position in regular chess, if no piece there, no castling
+		if(board.getSquare(sq.getY(), 4).isEmpty()) {return null;}
 		
-		King king = (King) kingSq.getPiece();
-		ArrayList<Move> castlingMoves = king.castling(sq, board);
-		if(castlingMoves == null) {return null;} //no castling moves
-		for (Move m : castlingMoves) {
-			if (sq.getX() == 0 && m.getTo().getX() < kingSq.getX()) {
-				return m;
-			} else if(sq.getX() == 7 && m.getTo().getX() > kingSq.getX()) {
-				return m;
-			}
-		}
-		//no castlingMoves
-		return null;
+		//if piece is not king, no castling
+		if(!(board.getSquare(sq.getY(), 4).getPiece() instanceof King)) {return null;}
+		
+		//okay, we know king is instanceof King
+		Square kingSq = board.getSquare(sq.getY(), 4);
+		King k = (King) kingSq.getPiece();
+		
+		//no castling if king has moved.
+		if(k.hasMoved()) {return null;}
+		
+		//check which castling-type
+		boolean kingSide = false;
+		if(sq.getX() == 7) {kingSide = true;}
+		
+		//if king moves through positions in check, no castling.
+		if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
+		
+		//castling should now be possible
+		if (kingSide)
+			return new Move(kingSq, board.getSquare(kingSq.getX()+2, sq.getY()), k, null, MoveType.KINGSIDECASTLING);
+		else 
+			return new Move(kingSq, board.getSquare(kingSq.getX()-2, sq.getY()), k, null, MoveType.QUEENSIDECASTLING);
+		
+
 	}
 
 	/**

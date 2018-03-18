@@ -17,7 +17,7 @@ import player.AIMedium;
  * Created by jonas on 17/03/2018.
  */
 public class AIMediumTests {
-	IBoard board = new Board(8);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	Rook w = new Rook(PieceColor.WHITE);
 	King wk = new King(PieceColor.WHITE);
 	King bk = new King(PieceColor.BLACK);

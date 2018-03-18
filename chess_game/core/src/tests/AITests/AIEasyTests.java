@@ -14,7 +14,7 @@ import player.AIEasy;
  * Created by jonas on 17/03/2018.
  */
 public class AIEasyTests {
-	IBoard board = new Board(8);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	King king = new King(PieceColor.WHITE);
 	int x = 5, y = 5;
 	Square sq = board.getSquare(x, y);
