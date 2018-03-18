@@ -87,6 +87,4 @@ public interface IPiece {
 	 * @return the IPiece you captured or null, if space was empty
 	 */
 	public IPiece captureEnemyPieceAndMovePiece(Square cur, Square next);
-	
-
 }

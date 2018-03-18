@@ -3,11 +3,9 @@ package pieces.pieceClasses;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
-import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.IPiece;

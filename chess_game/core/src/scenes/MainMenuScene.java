@@ -19,8 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import chessGame.Chess;
-import chessGame.GameInformation;
+import game.Chess;
+import game.WindowInformation;
 
 /**
  * This class sets up and manages the elements in the main menu of the user interface.
@@ -39,7 +39,7 @@ public class MainMenuScene implements Screen {
 	private Skin skin;
 	private static final int defaultHeight = 55;
 	private static final int defaultWidth = 250;
-	private static final int centreWidth = (GameInformation.WIDTH/2)-(defaultWidth/2);
+	private static final int centreWidth = (WindowInformation.WIDTH/2)-(defaultWidth/2);
 	private ArrayList<Actor> actors;
 	private Image imgBackground;
 	private Label staticText, header;
@@ -81,53 +81,53 @@ public class MainMenuScene implements Screen {
 	
 	private void setUpElements(){
 		imgBackground = new Image(new Texture("pictures/menu.jpg"));
-		imgBackground.setSize(GameInformation.WIDTH, GameInformation.HEIGHT);
+		imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
 		
 		//Elements in log in
 		signIn = new TextButton("Sign in", skin, "default");
-		signIn.setPosition(centreWidth, GameInformation.HEIGHT/2.5f);
+		signIn.setPosition(centreWidth, WindowInformation.HEIGHT/2.5f);
 		staticText = new Label("Or if you haven't already,", skin, "optional");
-		staticText.setPosition(centreWidth+30, GameInformation.HEIGHT/3.1f);
+		staticText.setPosition(centreWidth+30, WindowInformation.HEIGHT/3.1f);
 		register = new TextButton("Register here", skin, "default");
-		register.setPosition(centreWidth+50, GameInformation.HEIGHT/3.4f);
+		register.setPosition(centreWidth+50, WindowInformation.HEIGHT/3.4f);
 		username = new TextField("username", skin, "default");
-		username.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		username.setPosition(centreWidth, WindowInformation.HEIGHT/2);
 		
 		//Elements in register
 		backToLogIn = new Button(skin, "left");
-		backToLogIn.setPosition(centreWidth/3.8f, GameInformation.HEIGHT/1.2f);
+		backToLogIn.setPosition(centreWidth/3.8f, WindowInformation.HEIGHT/1.2f);
 		signUp = new TextButton("Sign up", skin, "default");
-		signUp.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		signUp.setPosition(centreWidth, WindowInformation.HEIGHT/2);
 		registerUsername = new TextField(" desired username", skin, "default");
-		registerUsername.setPosition(centreWidth, GameInformation.HEIGHT/2.5f);
+		registerUsername.setPosition(centreWidth, WindowInformation.HEIGHT/2.5f);
 
 		//Elements in gamemenu
 		header = new Label ("Main menu", skin, "title-plain");
-		header.setPosition((centreWidth+(defaultWidth/4)), GameInformation.HEIGHT/1.6f);
+		header.setPosition((centreWidth+(defaultWidth/4)), WindowInformation.HEIGHT/1.6f);
 		singleplayer = new TextButton("Singleplayer", skin, "default");
-		singleplayer.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		singleplayer.setPosition(centreWidth, WindowInformation.HEIGHT/2);
 		multiplayer = new TextButton("Multiplayer", skin, "default"); 
-		multiplayer.setPosition(centreWidth, GameInformation.HEIGHT/2.7f);
+		multiplayer.setPosition(centreWidth, WindowInformation.HEIGHT/2.7f);
 		scores = new TextButton("Highscore", skin, "default");
-		scores.setPosition(centreWidth, GameInformation.HEIGHT/4);
+		scores.setPosition(centreWidth, WindowInformation.HEIGHT/4);
 		
 		//Elements in preferences (singleplayer)
 		startSingle = new TextButton("Start game", skin, "default");
-		startSingle.setPosition(centreWidth, GameInformation.HEIGHT/3);
+		startSingle.setPosition(centreWidth, WindowInformation.HEIGHT/3);
 		difficulty = new SelectBox<String>(skin, "default");
 		String[] options = {"Intermediate","Easy"};
 		difficulty.setItems(options);
-		difficulty.setPosition(centreWidth, GameInformation.HEIGHT/2);
+		difficulty.setPosition(centreWidth, WindowInformation.HEIGHT/2);
 		black = new TextButton("Black", skin, "toggle");
-		black.setPosition(centreWidth-(defaultWidth/4), GameInformation.HEIGHT/1.6f);
+		black.setPosition(centreWidth-(defaultWidth/4), WindowInformation.HEIGHT/1.6f);
 		white = new TextButton("White", skin, "toggle");
-		white.setPosition((centreWidth+(defaultWidth/2)), GameInformation.HEIGHT/1.6f);
+		white.setPosition((centreWidth+(defaultWidth/2)), WindowInformation.HEIGHT/1.6f);
 		
 		//Elements in multiplayer
 		
 		//Multiscreen
 		backToChooseGame = new Button(skin, "left");
-		backToChooseGame.setPosition(centreWidth/3.8f, GameInformation.HEIGHT/1.2f);
+		backToChooseGame.setPosition(centreWidth/3.8f, WindowInformation.HEIGHT/1.2f);
 		
 	}
 	

@@ -68,6 +68,7 @@ public class Queen extends AbstractPiece {
 		return newSq;
 	}
 
+	@Override
 	public String toString() {
 		return "Q";
 	}

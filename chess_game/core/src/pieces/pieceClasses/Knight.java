@@ -70,8 +70,8 @@ public class Knight extends AbstractPiece {
 		return ok;
 	}
 
+	@Override
 	public String toString() {
 		return "N";
 	}
-
 }

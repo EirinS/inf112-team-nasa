@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
-import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -108,5 +107,4 @@ public class Rook extends AbstractPiece {
 	public String toString() {
 		return "R";
 	}
-
 }

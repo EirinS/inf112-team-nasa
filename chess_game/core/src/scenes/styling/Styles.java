@@ -11,32 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class Styles {
 
-    public static void myriadProFont(Skin skin) {
-        /*
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Myriad Pro Regular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.color = Color.WHITE;
-
-        parameter.size = 30;
-        BitmapFont font = generator.generateFont(parameter);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        skin.add("white-30", font);
-
-        parameter.size = 24;
-        font = generator.generateFont(parameter);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        skin.add("white-24", font);
-
-        parameter.color = Colors.darkColor;
-        parameter.size = 24;
-        font = generator.generateFont(parameter);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        skin.add("dark-24", font);
-
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
-        */
-    }
-
     public static void whiteFont(Skin skin) {
         BitmapFont font = new BitmapFont();
         font.setColor(Color.WHITE);
@@ -53,7 +27,7 @@ public class Styles {
         style.up = skin.newDrawable("background", Colors.blueColor);
         style.down = skin.newDrawable("background", Colors.bluePressedColor);
         style.over = skin.newDrawable("background", Colors.blueColor);
-        style.font = skin.getFont("white-30");
+        style.font = skin.getFont("default");
         skin.add("default", style);
     }
 

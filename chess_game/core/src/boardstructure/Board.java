@@ -5,8 +5,11 @@ import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
+import setups.Setup;
+import sprites.PlayerColor;
 
 public class Board implements IBoard {
+
 	private ArrayList<Move> history = new ArrayList<>();
 	private int height;
 	private int width;
@@ -58,6 +61,8 @@ public class Board implements IBoard {
 
 	@Override
 	public Square getSquare(int x, int y) {
+
+		// TODO: 18/03/2018 Bishop/Knight bug here
 		if (!withinBoard(x,y)) {
 			throw new IllegalArgumentException("Cannot look for squares outside the board");
 		}
@@ -72,7 +77,7 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public ArrayList<Square> getBoard() {
+	public ArrayList<Square> getSquares() {
 		return board;
 	}
 
@@ -115,9 +120,9 @@ public class Board implements IBoard {
 	/**
 	 * Helper method to get threatened pieces.
 	 * 
-	 * @param PieceColor
+	 * @param opponent
 	 *            threatening, color of the opponent
-	 * @param PieceColor
+	 * @param player
 	 *            gettingThreatened, your color
 	 * @return ArrayList<IPiece> of your threatened pieces
 	 */
@@ -168,7 +173,7 @@ public class Board implements IBoard {
 	
 	/**
 	 * Finds and executes the chosen move.
-	 * @param Move m, the move that you'll do
+	 * @param m, the move that you'll do
 	 * @return the move done
 	 */
 	private Move doMove(Move m) {
@@ -208,5 +213,4 @@ public class Board implements IBoard {
 			}
 		}
 	}
-
 }

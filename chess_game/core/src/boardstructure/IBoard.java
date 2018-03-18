@@ -5,6 +5,8 @@ import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
+import setups.Setup;
+import sprites.PlayerColor;
 
 public interface IBoard {
 	
@@ -45,7 +47,7 @@ public interface IBoard {
 	 * Gives all the squares in the board.
 	 * @return all squares in board.
 	 */
-	public ArrayList<Square> getBoard();
+	public ArrayList<Square> getSquares();
 	
 	/**
 	 * Check if a piece is inside the board, and if there is no other piece there.
@@ -107,7 +109,4 @@ public interface IBoard {
 	 * @return available moves for the given player color
 	 */
 	public List<Move> getAvailableMoves(PieceColor playerColor);
-
-	
-	
 }
