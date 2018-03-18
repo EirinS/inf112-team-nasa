@@ -79,7 +79,8 @@ public abstract class AbstractPiece implements IPiece {
 				legalMoves.add(moves.get(i));
 			}
 		}
-		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
+		//this line is buggy as hell (:::::::::
+		//moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
 

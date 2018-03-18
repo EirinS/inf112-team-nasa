@@ -23,7 +23,7 @@ public class Queen extends AbstractPiece {
 		reachable.addAll(reachableSquaresStraight(x, y, origin, board, true));
 		reachable.addAll(reachableSquaresStraight(y, x, origin, board, false));
 		reachable.addAll(reachableSquaresDiagonalBottomLeftToTopRight(x, y, origin, board));
-		//reachable.addAll(reachableSquaresDiagonalBottomRightToTopLeft(x, y, origin, board));
+		reachable.addAll(reachableSquaresDiagonalBottomRightToTopLeft(x, y, origin, board));
 		return reachable;
 	}
 

@@ -67,13 +67,13 @@ public class King extends AbstractPiece {
 		if(!rookPositions.isEmpty()) {
 			for(Square square : rookPositions) {
 				if(square.getX() > origin.getX()) {
-					if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
+					//if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
 						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()+2, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
-					}
+					//}
 				} if (square.getX() < origin.getX()) {
-					if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
+					//if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
 						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()-2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
-					}
+				//	}
 				}
 			}
 			return legalCastlingMoves;

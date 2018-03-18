@@ -23,6 +23,7 @@ public class Rook extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
+		reachable.add(castling(board.getSquare(x, y), board));
 		return reachable;
 	}
 
@@ -50,7 +51,7 @@ public class Rook extends AbstractPiece {
 		if(sq.getX() == 7) {kingSide = true;}
 		
 		//if king moves through positions in check, no castling.
-		if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
+		//if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
 		
 		//this rook is not on a free path to king
 		if(!k.getFirstPieceHorizontal(kingSq, board).containsKey(this)) {return null;}
