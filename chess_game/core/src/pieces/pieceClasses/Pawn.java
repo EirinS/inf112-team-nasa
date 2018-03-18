@@ -34,7 +34,7 @@ public class Pawn extends AbstractPiece {
 	 * Gets a list of all legal moves for this pawn
 	 */
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		return reachableSquares(new Square(x, y), board);
 	}
 	

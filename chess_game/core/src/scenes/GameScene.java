@@ -15,9 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Checkerboard;
 import game.GameInfo;
+import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
-import sprites.PlayerColor;
 import scenes.styling.Colors;
 
 import java.util.ArrayList;
@@ -55,8 +55,8 @@ public class GameScene implements Screen, CheckerboardListener {
 
 		// Init sprites and checkerboard.
 		sprites = PieceSpriteLoader.loadDefaultPieces();
-		board = (new DefaultSetup()).getInitialPosition(PlayerColor.WHITE);
-		checkerboard = new Checkerboard(game, stage, new GameInfo(PlayerColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
+		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
+		checkerboard = new Checkerboard(game, stage, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class GameScene implements Screen, CheckerboardListener {
 		Square square = board.getSquare(x, y);
 		if (selectedSquare == null || !selectedSquare.equals(square)) {
 			selectedSquare = square;
-			ArrayList<Move> moves = selectedSquare.getPiece().getLegalMoves(selectedSquare, board);
+			ArrayList<Move> moves = selectedSquare.getPiece().getLegalMoves(selectedSquare, board, PieceColor.WHITE);
 			if (moves.isEmpty()) System.out.println("No moves?");
 			for (Move m : moves) {
 				System.out.println(m.getTo().getX() + ", " + m.getTo().getY());

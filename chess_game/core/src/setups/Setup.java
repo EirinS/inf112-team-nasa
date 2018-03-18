@@ -1,9 +1,8 @@
 package setups;
 
 import boardstructure.Board;
-import sprites.PlayerColor;
-
+import pieces.PieceColor;
 
 public interface Setup {
-    Board getInitialPosition(PlayerColor playerColor);
+    Board getInitialPosition(PieceColor playerColor);
 }

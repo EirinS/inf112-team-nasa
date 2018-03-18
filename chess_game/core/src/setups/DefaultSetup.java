@@ -4,9 +4,6 @@ import boardstructure.Board;
 import boardstructure.Square;
 import pieces.PieceColor;
 import pieces.pieceClasses.*;
-import sprites.PlayerColor;
-
-import java.util.ArrayList;
 
 public class DefaultSetup implements Setup {
 
@@ -28,8 +25,8 @@ public class DefaultSetup implements Setup {
     }
 
     @Override
-    public Board getInitialPosition(PlayerColor playerColor) {
-        boolean playerWhite = playerColor == PlayerColor.WHITE;
+    public Board getInitialPosition(PieceColor playerColor) {
+        boolean playerWhite = playerColor == PieceColor.WHITE;
         Board board = new Board(8);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {

@@ -8,25 +8,128 @@ import org.junit.Test;
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Rook;
 
 public class KingTest {
-	IBoard board = new Board(10);
-	King king = new King(PieceColor.WHITE);
-	int x = 5, y = 5;
-	Square sq = board.getSquare(x, y);
+	private IBoard board = new Board(8);
+	private King king = new King(PieceColor.WHITE);
+	private int x = 3, y = 3;
+	private Square sq = board.getSquare(x, y);
+	private IPiece rook = new Rook(PieceColor.WHITE);
+	private IPiece sndRook = new Rook(PieceColor.WHITE);
 	
 
 	@Before
 	public void setUp() throws Exception {
-		sq.putPiece(king);
+	}
+	
+	private void setUpCastlingTest() {
+		board.getSquare(0, 7).putPiece(rook);
+		board.getSquare(4, 7).putPiece(king);
+	}
+	
+	@Test
+	public void canFindFirstPiecesInHorizontalDirection() {
+		setUpCastlingTest();
+		Square sq = board.getSquare(4, 7);
+		board.getSquare(7, 7).putPiece(sndRook);
+		
+		assertEquals(2, king.getFirstPieceHorizontal(sq, board).size());
+		assertEquals(king.getFirstPieceHorizontal(sq, board).get(rook), board.getSquare(0, 7));
+	}
+	
+	@Test
+	public void cantMoveThroughPositionsInCheck() {
+		setUpCastlingTest();
+		IPiece enemyRook = new Rook(PieceColor.BLACK);
+		//position king must move through for castling
+		board.getSquare(3, 0).putPiece(enemyRook);
+		assertTrue(king.kingMovesThroughCheckPos(board.getSquare(4, 7), board, false));
+		
+	}
+	
+	@Test
+	public void noCastlingIfKingMoved() {
+		setUpCastlingTest();
+		king.pieceMoved();
+		assertEquals(null, king.castling(board.getSquare(4, 7), board));
+	}
+	
+	@Test
+	public void noCastlingIfKingInCheck() {
+		setUpCastlingTest();
+		IPiece enemyRook = new Rook(PieceColor.BLACK);
+		board.getSquare(4, 0).putPiece(enemyRook);
+		assertEquals(null, king.castling(board.getSquare(4, 7), board));
+	}
+	
+	@Test
+	public void noCastlingIfRookMoved() {
+		setUpCastlingTest();
+		rook.pieceMoved();
+		assertEquals(null, king.castling(board.getSquare(4, 7), board));
+	}
+	
+	@Test
+	public void canFindQueenSideCastling() {
+		setUpCastlingTest();
+		assertEquals(king.castling(board.getSquare(4, 7), board).size(), 1);
+		
+		Move expected = new Move(board.getSquare(4, 7), board.getSquare(2, 7), king, null, MoveType.QUEENSIDECASTLING);
+		assertEquals(expected, king.castling(board.getSquare(4, 7), board).get(0));
+	}
+	
+	@Test
+	public void canFindKingSideCastling() {
+		setUpCastlingTest();
+		board.getSquare(0, 7).takePiece(); //remove queensidecastling-option
+		board.getSquare(7, 7).putPiece(sndRook);
+		assertEquals(king.castling(board.getSquare(4, 7), board).size(), 1);
+		
+		Move expected = new Move(board.getSquare(4, 7), board.getSquare(6, 7), king, null, MoveType.KINGSIDECASTLING);
+		assertEquals(expected, king.castling(board.getSquare(4, 7), board).get(0));
+	}
+	
+	@Test
+	public void canFind6legalPositionsWhen1RookPossible() {
+		setUpCastlingTest();
+		assertEquals(6, king.getLegalMoves(board.getSquare(4, 7), board, PieceColor.WHITE).size());
+	}
+	
+	@Test
+	public void canFindPlayer1CastlingBlack() {
+		IBoard newBoard = new Board(8);
+		King king = new King(PieceColor.BLACK);
+		Rook rook = new Rook(PieceColor.BLACK);
+		newBoard.getSquare(4, 7).putPiece(king);
+		newBoard.getSquare(0, 7).putPiece(rook);
+		Move expected = new Move(newBoard.getSquare(4, 7), newBoard.getSquare(2, 7), king, null, MoveType.QUEENSIDECASTLING);
+		assertEquals(expected, king.castling(newBoard.getSquare(4, 7), newBoard).get(0));	
+	}
+	
+	@Test
+	public void canFindPlayer2CastlingBlack() {
+		IBoard newBoard = new Board(8);
+		King king = new King(PieceColor.BLACK);
+		Rook rook = new Rook(PieceColor.BLACK);
+		newBoard.getSquare(4, 0).putPiece(king);
+		newBoard.getSquare(0, 0).putPiece(rook);
+		Move expected = new Move(newBoard.getSquare(4, 0), newBoard.getSquare(2, 0), king, null, MoveType.QUEENSIDECASTLING);
+		assertEquals(expected, king.castling(newBoard.getSquare(4, 0), newBoard).get(0));	
+	}
+	
+	private void setUpForMoveTests() {
+		sq.putPiece(king);		
 	}
 	
 	@Test
 	public void kingCanMoveUp() {
+		setUpForMoveTests();
 		int newy = this.y+1;
 		boolean movedUp = false;
 		for (Move m : king.reachable(x, y, sq, board)) {
@@ -39,6 +142,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveDown() {
+		setUpForMoveTests();
 		int newy = this.y-1;
 		boolean movedDown = false;
 		for (Move m : king.reachable(x, y, sq, board)) {
@@ -51,6 +155,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveLeft() {
+		setUpForMoveTests();
 		int newx = this.x+1;
 		boolean movedUp = false;
 		for (Move m : king.reachable(x, y, sq, board)) {
@@ -63,6 +168,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveRight() {
+		setUpForMoveTests();
 		int newx = this.x-1;
 		boolean movedDown = false;
 		for (Move m : king.reachable(x, y, sq, board)) {
@@ -75,6 +181,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveRightDiagonalUp() {
+		setUpForMoveTests();
 		int newy = this.y+1;
 		int newx = this.x+1;
 		boolean movedSide = false;
@@ -88,6 +195,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveLeftDiagonalUp() {
+		setUpForMoveTests();
 		int newy = this.y+1;
 		int newx = this.x-1;
 		boolean moved = false;
@@ -101,6 +209,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveLeftDiagonalDown() {
+		setUpForMoveTests();
 		int newy = this.y-1;
 		int newx = this.x-1;
 		boolean moved = false;
@@ -114,6 +223,7 @@ public class KingTest {
 	
 	@Test
 	public void kingCanMoveRightDiagonalDown() {
+		setUpForMoveTests();
 		int newy = this.y-1;
 		int newx = this.x+1;
 		boolean moved = false;
@@ -127,6 +237,7 @@ public class KingTest {
 
 	@Test
 	public void finds8validpositionsInEmptyBoard() {
+		setUpForMoveTests();
 		assertEquals(8, king.reachable(x,y, sq, board).size());
 	}
 

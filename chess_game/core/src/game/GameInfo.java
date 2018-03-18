@@ -2,19 +2,19 @@ package game;
 
 import boardstructure.Square;
 import com.badlogic.gdx.graphics.Texture;
-import sprites.PlayerColor;
+import pieces.PieceColor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameInfo {
 
-    private PlayerColor playerColor;
+    private PieceColor playerColor;
     private String playerName, opponentName;
     private HashMap<String, Texture> sprites;
     private ArrayList<Square> squares;
 
-    public GameInfo(PlayerColor playerColor, String playerName, String opponentName, HashMap<String, Texture> sprites, ArrayList<Square> squares) {
+    public GameInfo(PieceColor playerColor, String playerName, String opponentName, HashMap<String, Texture> sprites, ArrayList<Square> squares) {
         this.playerColor = playerColor;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -22,7 +22,7 @@ public class GameInfo {
         this.squares = squares;
     }
 
-    public PlayerColor getPlayerColor() {
+    public PieceColor getPlayerColor() {
         return playerColor;
     }
 

@@ -19,7 +19,7 @@ public class Bishop extends AbstractPiece {
 	}
 
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(possibleMoves(board.getSquare(x, y), board, true));
 		reachable.addAll(possibleMoves(board.getSquare(x, y), board, false));

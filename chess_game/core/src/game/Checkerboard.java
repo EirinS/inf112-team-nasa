@@ -8,9 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import pieces.PieceColor;
-import sprites.PlayerColor;
-
-import java.util.ArrayList;
 
 public class Checkerboard {
 
@@ -31,7 +28,7 @@ public class Checkerboard {
     private Image boardImg;
     private Group checkerGroup, pieceGroup, highlightGroup;
 
-    private PlayerColor turn;
+    private PieceColor turn;
 
     public Checkerboard(Chess game, Stage stage, GameInfo gameInfo, CheckerboardListener listener) {
         this.game = game;

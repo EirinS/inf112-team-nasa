@@ -5,8 +5,6 @@ import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
-import setups.Setup;
-import sprites.PlayerColor;
 
 public interface IBoard {
 	

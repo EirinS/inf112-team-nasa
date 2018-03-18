@@ -35,7 +35,7 @@ public class KnightTest {
 
 	@Test
 	public void illegalMoveOutsideBoard() {
-		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (int i = 0; i < legalKnightSquares.size(); i++) {
 			if (!board.withinBoard(legalKnightSquares.get(i).getTo()))
 				fail("should not move outside board");
@@ -44,7 +44,7 @@ public class KnightTest {
 	
 	@Test
 	public void cantMoveDiagonally() {
-		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (Move m : legalKnightSquares) {
 			if (m.getTo().equals(board.getSquare(1, 1))) {
 				fail("Can not move diagonally");
@@ -54,7 +54,7 @@ public class KnightTest {
 	
 	@Test
 	public void cantMoveHorisontally() {
-		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (Move m : legalKnightSquares) {
 			if (m.getTo().equals(board.getSquare(0, 2))) {
 				fail("Can not move horizontally");
@@ -64,7 +64,7 @@ public class KnightTest {
 	
 	@Test
 	public void canMakeLegalMove() {
-		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board);
+		ArrayList<Move> legalKnightSquares = sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE);
 		for (Move m : legalKnightSquares) {
 			if (m.getTo().equals(board.getSquare(1, 2))) {
 				return;
@@ -74,6 +74,6 @@ public class KnightTest {
 	}
 	@Test
 	public void canFindLegalPositions() {
-		assertTrue(sq.getPiece().getLegalMoves(sq, board).size() > 0);
+		assertTrue(sq.getPiece().getLegalMoves(sq, board, PieceColor.WHITE).size() > 0);
 	}
 }
