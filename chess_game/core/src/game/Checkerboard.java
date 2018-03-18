@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class Checkerboard extends DragListener {
 
-    private final int SQUARE_COUNT = 8;
     private final int SQUARE_WIDTH = 55;
     private final int SQUARE_HEIGHT = 58;
 

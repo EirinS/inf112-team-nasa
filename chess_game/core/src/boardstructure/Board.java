@@ -167,6 +167,7 @@ public class Board implements IBoard {
 	@Override
 	public Move move(Square from, Square to) {
 		if (from == null) {
+			return null;
 			//tell user this is illegal
 		}
 		
@@ -207,21 +208,22 @@ public class Board implements IBoard {
 			history.add(m);
 			return m;			
 		}
-		printOutBoard();
 		return null;
 	}
 
 	public void printOutBoard(){
+		System.out.println("--------");
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				IPiece p = getSquare(i,j).getPiece();
+				IPiece p = getSquare(j,i).getPiece();
 
 				if(p == null) {
-					System.out.println(" ");
+					System.out.print("_");
 				}else {
-					System.out.println(p);
+					System.out.print(p);
 				}
 			}
+			System.out.println("");
 		}
 	}
 

@@ -54,7 +54,7 @@ public class Bishop extends AbstractPiece {
 			else { yCoordinate--;}
 			//Checks if non-empty field is opponent, adds to the list then breaks the loop if true 
 			if (!square.isEmpty() && this.color != square.getPiece().getColor()){
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 				break;
 			}
 			//Checks if square is inhabited by piece of the same team. Breaks the loop if it is.
@@ -63,7 +63,7 @@ public class Bishop extends AbstractPiece {
 			//Empty squares are added
 			}
 			else{
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 			}
 		}
 		yCoordinate = determineY(yAscending, origin.getY());
@@ -80,14 +80,14 @@ public class Bishop extends AbstractPiece {
 			
 			
 			if (!square.isEmpty() && this.color != square.getPiece().getColor()){
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 				break;
 			}
 			else if (!square.isEmpty() && this.color == square.getPiece().getColor()){
 				break;
 			}
 			else{
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 			}
 		}
 		return canBeReached;

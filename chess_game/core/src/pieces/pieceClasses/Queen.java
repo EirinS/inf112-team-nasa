@@ -35,10 +35,10 @@ public class Queen extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}
 		
@@ -47,10 +47,10 @@ public class Queen extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}
 		return ok;
