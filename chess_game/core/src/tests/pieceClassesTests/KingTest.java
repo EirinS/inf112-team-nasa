@@ -28,13 +28,33 @@ public class KingTest {
 	public void setUp() throws Exception {
 	}
 	
-	//@Test
-	public void legalMovesOutsideBoard() {
+	@Test
+	public void threeLegalMovesInCornerWithoutCastling() {
 		IBoard b = new Board(8);
 		Square sq = b.getSquare(0, 0);
 		sq.putPiece(king);
-		System.out.println(king.getLegalMoves(sq, b, PieceColor.WHITE));
+		assertEquals(3, king.getLegalMoves(sq, b, PieceColor.WHITE).size());
 	}
+	
+	@Test
+	public void canFind6LegalMovesWith1Castling() {
+		IBoard b = new Board(8);
+		Square sq = b.getSquare(4, 7);
+		sq.putPiece(king);
+		b.getSquare(7, 7).putPiece(rook);
+		assertEquals(6, king.getLegalMoves(sq, b, PieceColor.WHITE).size());
+	}
+	
+	@Test
+	public void canFind7LegalMovesWith2Castlings() {
+		IBoard b = new Board(8);
+		Square sq = b.getSquare(4, 7);
+		sq.putPiece(king);
+		b.getSquare(7, 7).putPiece(rook);
+		b.getSquare(0, 7).putPiece(new Rook(PieceColor.WHITE));
+		assertEquals(7, king.getLegalMoves(sq, b, PieceColor.WHITE).size());
+	}
+	
 	
 	@Test
 	public void kingsMoveCastlingMethodSetsBoardAsExpectedForQueenSideCastling() {
