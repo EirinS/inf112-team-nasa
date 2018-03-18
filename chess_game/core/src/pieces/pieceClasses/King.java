@@ -208,9 +208,11 @@ public class King extends AbstractPiece {
 		//moves king
 		next.putPiece(origin.movePiece());
 		if (type == MoveType.KINGSIDECASTLING) {
+			//moves rook
 			Square rooksq = board.getSquare(board.getWidth()-1, origin.getY());
 			board.getSquare(rooksq.getX()-2, rooksq.getY()).putPiece(rooksq.movePiece());
 		} else if (type == MoveType.QUEENSIDECASTLING){
+			//moves rook
 			Square rooksq = board.getSquare(0, origin.getY());
 			board.getSquare(rooksq.getX()+3, rooksq.getY()).putPiece(rooksq.movePiece());
 		} else {

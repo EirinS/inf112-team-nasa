@@ -124,6 +124,12 @@ public class BoardTest {
 		IPiece whiteRook = new Rook(PieceColor.WHITE);
 		IPiece blackRook = new Rook(PieceColor.BLACK);
 		IPiece blackKing = new King(PieceColor.BLACK);
+		
+		//pieces is not here unless moved.
+		whiteRook.pieceMoved();
+		blackRook.pieceMoved();
+		blackKing.pieceMoved();
+		
 		newboard.getSquare(0, 0).putPiece(blackKing);
 		newboard.getSquare(0, 1).putPiece(whiteRook);
 		newboard.getSquare(0, 2).putPiece(blackRook);

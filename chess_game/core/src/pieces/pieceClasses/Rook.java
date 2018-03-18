@@ -30,26 +30,23 @@ public class Rook extends AbstractPiece {
 	}
 
 	/**
-	 * Uses the method for finding castling-moves in king.
-	 * @param sq
+	 * Finds a castling move, if there is one, for this rook.
+	 * @param sq, the square this rook is in
 	 * @param board
-	 * @return
+	 * @return Move m, that is the castling move, if there is one, null if not.
 	 */
-	private Move castling(Square sq, IBoard board) {
+	public Move castling(Square sq, IBoard board) {
+		//no castling if piece moved
 		if (hasMoved()) {return null;}
 		
-		//4 is king position in regular chess, if no piece there, no castling
-		if(board.getSquare(sq.getY(), 4).isEmpty()) {return null;}
+		Square kingSq = board.getKingPos(getColor());
 		
-		//if piece is not king, no castling
-		if(!(board.getSquare(sq.getY(), 4).getPiece() instanceof King)) {return null;}
-		
-		//okay, we know king is instanceof King
-		Square kingSq = board.getSquare(sq.getY(), 4);
+		//no king, no castling.
+		if(kingSq == null) {return null;}
 		King k = (King) kingSq.getPiece();
 		
-		//no castling if king has moved.
-		if(k.hasMoved()) {return null;}
+		//king has moved, no castling.
+		if (k.hasMoved()) {return null;}		
 		
 		//check which castling-type
 		boolean kingSide = false;
@@ -58,13 +55,37 @@ public class Rook extends AbstractPiece {
 		//if king moves through positions in check, no castling.
 		if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
 		
+		//this rook is not on a free path to king
+		if(!k.getFirstPieceHorizontal(kingSq, board).containsKey(this)) {return null;}
+		
 		//castling should now be possible
 		if (kingSide)
-			return new Move(kingSq, board.getSquare(kingSq.getX()+2, sq.getY()), k, null, MoveType.KINGSIDECASTLING);
+			return new Move(sq, board.getSquare(sq.getX()-2, sq.getY()), this, null, MoveType.KINGSIDECASTLING);
 		else 
-			return new Move(kingSq, board.getSquare(kingSq.getX()-2, sq.getY()), k, null, MoveType.QUEENSIDECASTLING);
+			return new Move(sq, board.getSquare(sq.getX()+3, sq.getY()), this, null, MoveType.QUEENSIDECASTLING);
+	}
+	
+	/**
+	 *  Precondition: All positions that are moved to are empty and possible to move to.
+	 * Castling is an OK move.
+	 * @param origin
+	 * @param next
+	 * @param type
+	 * @param board
+	 */
+	public void moveCastling(Square origin, Square next, MoveType type, IBoard board) {
+		//moves rook
+		next.putPiece(origin.movePiece());
 		
-
+		Square kingSq = board.getKingPos(getColor());
+		if (type == MoveType.KINGSIDECASTLING) {
+			board.getSquare(kingSq.getX()+2, kingSq.getY()).putPiece(kingSq.movePiece());
+		} else if (type == MoveType.QUEENSIDECASTLING){
+			//moves rook
+			board.getSquare(kingSq.getX()-2, kingSq.getY()).putPiece(kingSq.movePiece());
+		} else {
+			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
+		}
 	}
 
 	/**
