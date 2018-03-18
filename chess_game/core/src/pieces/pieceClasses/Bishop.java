@@ -46,7 +46,7 @@ public class Bishop extends AbstractPiece {
 		// Depending on the boolean ascending, the following squares are added to the list:
 		//TRUE: (Ascending x, ascending Y) || FALSE: (Ascending x, descending Y)
 		for(int i = origin.getX()+1; i < board.getDimension(); i++){
-			if (yCoordinate > board.getDimension()){
+			if (yCoordinate >= board.getDimension() || yCoordinate < 0) {
 				break;
 			}
 			square = board.getSquare(i, yCoordinate); 
@@ -70,7 +70,7 @@ public class Bishop extends AbstractPiece {
 		//Logic identical to loop above. 
 		//TRUE: (Descending x, ascending Y) || FALSE: (Decending x, descending Y)
 		for (int i = origin.getX()-1; i > 0; i--){
-			if(yCoordinate < 0){
+			if (yCoordinate >= board.getDimension() || yCoordinate < 0) {
 				break;
 			}
 			square = board.getSquare(i, yCoordinate);

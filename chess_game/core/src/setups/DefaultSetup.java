@@ -8,7 +8,7 @@ import pieces.pieceClasses.*;
 public class DefaultSetup implements Setup {
 
     private PieceColor getPieceColor(int y, boolean playerWhite) {
-        boolean isBottom = y == 0 || y == 1;
+        boolean isBottom = y == 6 || y == 7;
         if (isBottom) {
             if (playerWhite) {
                 return PieceColor.WHITE;

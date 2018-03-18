@@ -93,7 +93,7 @@ public abstract class AbstractPiece implements IPiece {
 
 			// TODO: 18/03/2018 possible bug here aswell, mov is sometimes null, why?
 			if (mov == null) {
-				System.out.println("mov null");
+				//System.out.println("mov null");
 				continue;
 			}
 			Square sq = mov.getTo();

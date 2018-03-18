@@ -72,7 +72,7 @@ public class Checkerboard {
             Texture texture = gameInfo.getSprites().get(pieceColor + square.getPiece().toString().toLowerCase());
             final Image img = new Image(texture);
             img.setSize(54, 54);
-            img.setPosition(boardImg.getX() + LEFT_MARIGN + square.getX() * SQUARE_WIDTH, boardImg.getY() + TOP_MARIGN + square.getY() * SQUARE_HEIGHT);
+            img.setPosition(boardImg.getX() + LEFT_MARIGN + square.getX() * SQUARE_WIDTH, boardImg.getY() + TOP_MARIGN + (7 - square.getY()) * SQUARE_HEIGHT);
             img.setName("" + square.getX() + square.getY());
             img.addListener(new ClickListener() {
 

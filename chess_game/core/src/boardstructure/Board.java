@@ -63,7 +63,7 @@ public class Board implements IBoard {
 
 		// TODO: 18/03/2018 Bishop/Knight/etc... bug here
 		if (!withinBoard(x,y)) {
-			throw new IllegalArgumentException("Cannot look for squares outside the board");
+			throw new IllegalArgumentException("Cannot look for squares outside the board: (" + x + ", " + y + ")");
 		}
 		return board.get(x * width + y);
 	}

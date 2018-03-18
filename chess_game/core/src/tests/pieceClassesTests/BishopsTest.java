@@ -63,7 +63,7 @@ public class BishopsTest {
 	public void cannotMoveHorisontally(){
 		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
 		for (Move aMove : move) {
-			assertFalse(move.contains(aMove.getTo().equals(board.getSquare(2, 4))));
+			assertFalse(aMove.getTo().equals(board.getSquare(2, 4)));
 		}
 		
 	}
@@ -72,7 +72,7 @@ public class BishopsTest {
 	public void cannotMoveVertically(){
 		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
 		for (Move aMove : move) {
-			assertFalse(move.contains(aMove.getTo().equals(board.getSquare(4, 7))));
+			assertFalse(aMove.getTo().equals(board.getSquare(4, 7)));
 		}
 	}
 	
