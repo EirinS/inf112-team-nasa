@@ -28,6 +28,14 @@ public class KingTest {
 	public void setUp() throws Exception {
 	}
 	
+	//@Test
+	public void legalMovesOutsideBoard() {
+		IBoard b = new Board(8);
+		Square sq = b.getSquare(0, 0);
+		sq.putPiece(king);
+		System.out.println(king.getLegalMoves(sq, b, PieceColor.WHITE));
+	}
+	
 	@Test
 	public void kingsMoveCastlingMethodSetsBoardAsExpectedForQueenSideCastling() {
 		IBoard board = new Board(8);
