@@ -35,12 +35,12 @@ public class Pawn extends AbstractPiece {
 	 */
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
-		/*ArrayList<Move> m = new ArrayList<>();
+		ArrayList<Move> m = new ArrayList<>();
 		Square sq = board.getSquare(x, y);
 		m.addAll(reachableSquares(board.getSquare(x, y), board));
 		m.add(getMove(sq, sq.getX(), sq.getY()-1, board));
-		return m;*/
-		return reachableSquares(board.getSquare(x, y), board);
+		return m;
+		//return reachableSquares(board.getSquare(x, y), board);
 	}
 	
 	/**

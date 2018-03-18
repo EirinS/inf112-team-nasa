@@ -23,7 +23,7 @@ public class Queen extends AbstractPiece {
 		reachable.addAll(reachableSquaresStraight(x, y, origin, board, true));
 		reachable.addAll(reachableSquaresStraight(y, x, origin, board, false));
 		reachable.addAll(reachableSquaresDiagonalBottomLeftToTopRight(x, y, origin, board));
-		reachable.addAll(reachableSquaresDiagonalBottomRightToTopLeft(x, y, origin, board));
+		//reachable.addAll(reachableSquaresDiagonalBottomRightToTopLeft(x, y, origin, board));
 		return reachable;
 	}
 
@@ -90,11 +90,11 @@ public class Queen extends AbstractPiece {
 	 */
 	public ArrayList<Move>reachableSquaresDiagonalBottomLeftToTopRight(int x, int y, Square origin, IBoard board) {
 		ArrayList<Move> ok = new ArrayList<>();
-		int i = x+1; int j = y+1;
+		int i = x-1; int j = y+1;
 		Square dest = null;
 
 		if(board.withinBoard(i,j)) {
-			while (i < board.getWidth() && j < board.getHeight()) {
+			while (i >= 0 && j < board.getHeight()) {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
@@ -104,14 +104,14 @@ public class Queen extends AbstractPiece {
 				} else if(dest.isEmpty()) {
 					ok.add(getMove(origin, dest));
 				}
-				i++; j++;
+				i--; j++;
 			}
 		}
 
 
-		i = x-1; j = y+1;
+		i = x+1; j = y-1;
 		if(board.withinBoard(i,j)) {
-			while (i >= 0 && j >= 0) {
+			while (i < board.getWidth() && j >= 0) {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
@@ -121,7 +121,7 @@ public class Queen extends AbstractPiece {
 				} else if(dest.isEmpty()) {
 					ok.add(getMove(origin, dest));
 				}
-				i--; j--;
+				i++; j--;
 			}
 		}
 		return ok;
@@ -137,11 +137,11 @@ public class Queen extends AbstractPiece {
 	 */
 	public ArrayList<Move>reachableSquaresDiagonalBottomRightToTopLeft(int x, int y, Square origin, IBoard board) {
 		ArrayList<Move> ok = new ArrayList<>();
-		int i = x+1; int j = y-1;
+		int i = x+1; int j = y+1;
 		Square dest = null;
 
 		if(board.withinBoard(i, j)) {
-			while (i < board.getWidth() && j >= 0) {
+			while (i < board.getWidth() && j < board.getHeight()) {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
@@ -152,13 +152,13 @@ public class Queen extends AbstractPiece {
 				if(dest.isEmpty()) {
 					ok.add(getMove(origin, dest));
 				}
-				i++; j--;
+				i++; j++;
 			}
 		}
 
-		i = x-1; j = y+1;
+		i = x-1; j = y-1;
 		if(board.withinBoard(i,j)) {
-			while (i >= 0 && j < board.getHeight()) {
+			while (i >= 0 && j >= 0) {
 				dest = board.getSquare(i, j);
 				if(!dest.isEmpty()) {
 					if (dest.getPiece().getColor() != getColor()) {
@@ -169,7 +169,7 @@ public class Queen extends AbstractPiece {
 				if(dest.isEmpty()) {
 					ok.add(getMove(origin, dest));
 				}
-				i--; j++;
+				i--; j--;
 			}
 		}
 		return ok;
