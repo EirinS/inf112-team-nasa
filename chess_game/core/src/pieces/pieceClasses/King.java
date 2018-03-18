@@ -27,6 +27,23 @@ public class King extends AbstractPiece {
 		moves.addAll(castling(board.getSquare(x, y), board));
 		return moves;
 	}
+	
+	@Override
+	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
+		ArrayList<IPiece> reach = new ArrayList<IPiece>();
+		ArrayList<Move> check = reachable(x, y, board.getSquare(x, y), board);
+		if (check == null) {return reach;}
+		for(Move mov : check) {
+			if (mov == null) {
+				continue;
+			}
+				Square sq = mov.getTo();
+				if (!sq.isEmpty())
+					if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
+						reach.add(sq.getPiece());
+			}
+		return reach;
+	}
 
 	/**
 	 * Returns 

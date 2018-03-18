@@ -40,7 +40,7 @@ public abstract class AbstractPiece implements IPiece {
 	public boolean isInPlay() {
 		return inPlay;		
 	}
-	
+
 	@Override
 	public void putInPlay() {
 		inPlay = true;
@@ -56,7 +56,7 @@ public abstract class AbstractPiece implements IPiece {
 		inPlay = false;
 		return this;
 	}
-	
+
 	@Override
 	public void setMovedFalse() {
 		hasMoved = false;
@@ -96,11 +96,11 @@ public abstract class AbstractPiece implements IPiece {
 				//System.out.println("mov null");
 				continue;
 			}
-			Square sq = mov.getTo();
-			if (!sq.isEmpty())
-				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
-					reach.add(sq.getPiece());
-		}
+				Square sq = mov.getTo();
+				if (!sq.isEmpty())
+					if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
+						reach.add(sq.getPiece());
+			}
 		return reach;
 	}
 
@@ -133,11 +133,11 @@ public abstract class AbstractPiece implements IPiece {
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
 		else {opponent = PieceColor.WHITE;}
-		
+
 		boolean hasMoved = false;
 		if(origin.getPiece().hasMoved())
 			hasMoved = true;
-		
+
 		IPiece p = null;
 		ArrayList<Move> okMov = new ArrayList<Move>();
 		for(Move move : legalMoves) {
@@ -148,7 +148,7 @@ public abstract class AbstractPiece implements IPiece {
 			} else {				
 				p = captureEnemyPieceAndMovePiece(origin, movSq);
 			}
-			
+
 			ArrayList<IPiece> threatened = board.piecesThreatenedByOpponent(getColor(), opponent);
 			//reverts move
 			if(p != null) {
@@ -156,13 +156,13 @@ public abstract class AbstractPiece implements IPiece {
 			} else {
 				movePiece(movSq, origin);
 			}
-			
+
 			if (!threatensKing(threatened)) {
 				//removes illegal move
 				okMov.add(move);
 			}
 		}
-		
+
 		//reset field variable
 		if(!hasMoved) {
 			origin.getPiece().setMovedFalse();
@@ -177,7 +177,7 @@ public abstract class AbstractPiece implements IPiece {
 		movePiece(origin, next);
 		return captured;
 	}
-	
+
 	/**
 	 * Reverts a move, and puts taken piece back in place.
 	 * Resets the inPlay field variable of the taken piece
@@ -252,5 +252,5 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return null;
 	}
-	
+
 }
