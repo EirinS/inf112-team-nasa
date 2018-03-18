@@ -33,6 +33,20 @@ public class BoardTest {
 		}
 		assertTrue(thrown);
 	}
+	
+	@Test
+	public void getKingPosCanGetPositionWithKing() {
+		Square sq = board.getSquare(3, 3);
+		sq.putPiece(new King(PieceColor.WHITE));
+		assertEquals(sq, board.getKingPos(PieceColor.WHITE));
+	}
+	
+	@Test
+	public void getKingPosCanNotGetPositionWithRook() {
+		Square sq = board.getSquare(3, 3);
+		sq.putPiece(new Rook(PieceColor.WHITE));
+		assertEquals(null, board.getKingPos(PieceColor.WHITE));
+	}
 
 	@Test
 	public void checkHeightOfBoard() {

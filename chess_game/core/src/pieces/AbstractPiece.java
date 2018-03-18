@@ -67,7 +67,6 @@ public abstract class AbstractPiece implements IPiece {
 		ArrayList<Move> legalMoves = new ArrayList<>();
 		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, null);
 		for(int i = 0; i < moves.size(); i++) {
-
 			// TODO: 18/03/2018 bug here, sometimes getTo is null?
 			if (moves.get(i) == null) {
 				System.out.println("moves.get(i) null");

@@ -22,25 +22,35 @@ public class Rook extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
+		if(castling(board.getSquare(x, y), board) != null) {
+			reachable.add(castling(board.getSquare(x, y), board));
+		}
 		return reachable;
 	}
 
 	/**
-	 * NOT IMPLEMENTED
-	 * 
-	 * @param sq,
-	 *            square of the rook
-	 * @param board,
-	 *            board the rook is on
-	 * @return legal castling square moves.
+	 * Uses the method for finding castling-moves in king.
+	 * @param sq
+	 * @param board
+	 * @return
 	 */
-	private ArrayList<Move> castling(Square sq, IBoard board) {
-		// TODO
-		/*
-		 * CONDITIONS FOR THIS MOVE: - Neither the king, nor rook has moved before - No
-		 * pieces between king and chosen rook - The king never passes through pieces
-		 * where it's in check - King is not in check
-		 */
+	private Move castling(Square sq, IBoard board) {
+		Square kingSq = board.getKingPos(this.getColor());
+		
+		//no castling to be done if there is no king
+		if(kingSq == null) {return null;} 
+		
+		King king = (King) kingSq.getPiece();
+		ArrayList<Move> castlingMoves = king.castling(sq, board);
+		if(castlingMoves == null) {return null;} //no castling moves
+		for (Move m : castlingMoves) {
+			if (sq.getX() == 0 && m.getTo().getX() < kingSq.getX()) {
+				return m;
+			} else if(sq.getX() == 7 && m.getTo().getX() > kingSq.getX()) {
+				return m;
+			}
+		}
+		//no castlingMoves
 		return null;
 	}
 
