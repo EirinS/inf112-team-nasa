@@ -71,7 +71,8 @@ public class King extends AbstractPiece {
 	}
 
 	/**
-	 * Method to get all 
+	 * Method to get the first pieces in horizontal direction.
+	 * Castling only legal if it is rook, and rook is in edges of board.
 	 * @param sq
 	 * @param board
 	 * @return
