@@ -5,6 +5,7 @@ import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 
 public class Board implements IBoard {
 	private ArrayList<Move> history = new ArrayList<>();
@@ -207,6 +208,15 @@ public class Board implements IBoard {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Square getKingPos(PieceColor kingColor) {
+		for(Square sq : getBoard())
+			if (sq.getPiece() instanceof King && sq.getPiece().getColor() == kingColor) {
+				return sq;
+			}
+		return null;
 	}
 
 }

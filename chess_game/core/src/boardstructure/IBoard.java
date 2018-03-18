@@ -27,6 +27,14 @@ public interface IBoard {
 	public int getDimension();
 	
 	/**
+	 * Find a king on the board.
+	 * @param kingColor, color of king you want to find.
+	 * @return the square the king you want to find is in,
+	 * null if no king was found.
+	 */
+	public Square getKingPos(PieceColor kingColor);
+	
+	/**
 	 * Get a specific square in board
 	 * @return square
 	 */

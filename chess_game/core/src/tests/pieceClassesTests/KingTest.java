@@ -28,6 +28,26 @@ public class KingTest {
 	public void setUp() throws Exception {
 	}
 	
+	@Test
+	public void kingsMoveCastlingMethodSetsBoardAsExpectedForQueenSideCastling() {
+		IBoard board = new Board(8);
+		board.getSquare(4, 7).putPiece(king);
+		board.getSquare(0, 7).putPiece(rook);
+		king.moveCastling(board.getSquare(4, 7), board.getSquare(2, 7), MoveType.QUEENSIDECASTLING, board);
+		assertEquals(board.getSquare(2, 7).getPiece(), king);
+		assertEquals(board.getSquare(3, 7).getPiece(), rook);
+	}
+	
+	@Test
+	public void kingsMoveCastlingMethodSetsBoardAsExpectedForKingSideCastling() {
+		IBoard board = new Board(8);
+		board.getSquare(4, 7).putPiece(king);
+		board.getSquare(7, 7).putPiece(rook);
+		king.moveCastling(board.getSquare(4, 7), board.getSquare(6, 7), MoveType.KINGSIDECASTLING, board);
+		assertEquals(board.getSquare(6, 7).getPiece(), king);
+		assertEquals(board.getSquare(5, 7).getPiece(), rook);
+	}
+		
 	private void setUpCastlingTest() {
 		board.getSquare(0, 7).putPiece(rook);
 		board.getSquare(4, 7).putPiece(king);

@@ -198,11 +198,17 @@ public class King extends AbstractPiece {
 	/** Precondition: All positions that are moved to are empty and possible to move to.
 	 * Castling is an OK move.
 	 */
-	public void moveCastling(Square origin, Square next, MoveType type) {
+	public void moveCastling(Square origin, Square next, MoveType type, IBoard board) {
 		//moves king
 		next.putPiece(origin.movePiece());
-		if(type == MoveType.KINGSIDECASTLING) {
-			
+		if (type == MoveType.KINGSIDECASTLING) {
+			Square rooksq = board.getSquare(board.getWidth()-1, origin.getY());
+			board.getSquare(rooksq.getX()-2, rooksq.getY()).putPiece(rooksq.movePiece());
+		} else if (type == MoveType.QUEENSIDECASTLING){
+			Square rooksq = board.getSquare(0, origin.getY());
+			board.getSquare(rooksq.getX()+3, rooksq.getY()).putPiece(rooksq.movePiece());
+		} else {
+			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
 		}
 	}
 
