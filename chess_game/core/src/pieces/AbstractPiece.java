@@ -83,7 +83,7 @@ public abstract class AbstractPiece implements IPiece {
 		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
-	
+
 	protected ArrayList<IPiece> enemiesReached(int x, int y, IBoard board, PieceColor opponent, ArrayList<Move> check) {
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
 		if (check == null) {return reach;}

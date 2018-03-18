@@ -71,7 +71,6 @@ public class GameScene implements Screen, CheckerboardListener {
 		}
 		selectedSquare = null;
 		selectedMoves.clear();
-		checkerboard.showMoves(null, null);
 	}
 
 	@Override
@@ -123,21 +122,19 @@ public class GameScene implements Screen, CheckerboardListener {
 		if (selectedSquare == null || !selectedSquare.equals(square)) {
 			selectedSquare = square;
 			selectedMoves = selectedSquare.getPiece().getLegalMoves(selectedSquare, board, PieceColor.WHITE);
-			checkerboard.showMoves(selectedSquare, selectedMoves);
+			//checkerboard.showMoves(selectedSquare, selectedMoves);
 		} else if (selectedSquare.equals(square)) {
 			selectedSquare = null;
 		}
 	}
 
 	@Override
-	public void onMoveRequested(Move m) {
-		Move move = board.move(m);
+	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
+		Move move = board.move(fromX, fromY, toX, toY);
 		if (move == null) {
-
-			// TODO: 18/03/2018 show this in the gui
-			System.out.println("Move is illegal!");
+			checkerboard.movePieceFailed(fromX, fromY);
 		} else {
-			checkerboard.movePiece(m);
+			checkerboard.movePiece(fromX, fromY, toX, toY);
 		}
 	}
 }

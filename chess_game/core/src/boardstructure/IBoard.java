@@ -100,12 +100,15 @@ public interface IBoard {
 	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
 
 	/**
-	 * Move a piece to a legal position on the board. 
+	 * Move a piece to a legal position on the board.
 	 * Assumes the piece chosen is a piece of correct color.
-	 * @param m The move to perform.
-	 * @return Move move, the move that was done.
+	 * @param fromX From x position
+	 * @param fromY From y position
+	 * @param toX To x position
+	 * @param toY To y position
+	 * @return
 	 */
-	public Move move(Move m);
+	public Move move(int fromX, int fromY, int toX, int toY);
 
 	/**
 	 * Move a piece to a legal position on the board.

@@ -117,7 +117,6 @@ public class Board implements IBoard {
 	}
 
 
-
 	/**
 	 * Helper method to get threatened pieces.
 	 * 
@@ -156,8 +155,8 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public Move move(Move m) {
-		return move(m.getFrom(), m.getTo());
+	public Move move(int fromX, int fromY, int toX, int toY) {
+		return move(getSquare(fromX, fromY), getSquare(toX, toY));
 	}
 
 	@Override

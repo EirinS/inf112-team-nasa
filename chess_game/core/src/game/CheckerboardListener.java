@@ -4,5 +4,5 @@ import boardstructure.Move;
 
 public interface CheckerboardListener {
     void onPieceClick(int x, int y);
-    void onMoveRequested(Move m);
+    void onMoveRequested(int fromX, int fromY, int toX, int toY);
 }
