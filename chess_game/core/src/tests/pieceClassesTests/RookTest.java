@@ -17,7 +17,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class RookTest {
-	IBoard board = new Board(10);
+	IBoard board = new Board(10, PieceColor.WHITE);
 	IPiece rook = new Rook(PieceColor.WHITE);
 	Square sq = board.getSquare(0,0);
 
@@ -28,10 +28,11 @@ public class RookTest {
 	
 	@Test
 	public void canFindLegalMoves() {
-		board = new Board(2);
+		board = new Board(5, PieceColor.WHITE);
 		board.getSquare(0, 0).putPiece(rook);
 		ArrayList<Move> moves = rook.getLegalMoves(board.getSquare(0, 0), board, PieceColor.WHITE);
-		assertEquals(2, moves.size());
+		System.out.println(moves);
+		assertEquals(8, moves.size());
 	}
 	
 	@Test

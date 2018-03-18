@@ -18,7 +18,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class PieceTest {
-	IBoard board = new Board(10);
+	IBoard board = new Board(10, PieceColor.WHITE);
 	IPiece rook = new Rook(PieceColor.WHITE);
 	int x = 0,  y = 3;
 	IPiece enemyRook = new Rook(PieceColor.BLACK);
@@ -53,7 +53,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsHorizontal() {
-		IBoard newBoard = new Board(5);
+		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(0, 0).putPiece(enemyRook);
 		newBoard.getSquare(0, 2).putPiece(rook);
 		newBoard.getSquare(0, 3).putPiece(new King(PieceColor.WHITE));
@@ -65,7 +65,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsvertical() {
-		IBoard newBoard = new Board(5);
+		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);
 		
@@ -82,7 +82,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsverticalDoesNotChangePosition() {
-		IBoard newBoard = new Board(5);
+		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));

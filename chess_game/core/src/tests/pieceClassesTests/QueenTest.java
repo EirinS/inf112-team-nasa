@@ -16,7 +16,7 @@ import pieces.PieceColor;
 import pieces.pieceClasses.Queen;
 
 public class QueenTest {
-	IBoard board = new Board(8);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	IPiece queen = new Queen(PieceColor.WHITE);
 	Square sq = board.getSquare(0, 0);
 	

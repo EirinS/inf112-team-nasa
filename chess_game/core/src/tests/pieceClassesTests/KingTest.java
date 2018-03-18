@@ -16,7 +16,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class KingTest {
-	private IBoard board = new Board(8);
+	private IBoard board = new Board(8, PieceColor.WHITE);
 	private King king = new King(PieceColor.WHITE);
 	private int x = 3, y = 3;
 	private Square sq = board.getSquare(x, y);
@@ -30,7 +30,7 @@ public class KingTest {
 	
 	@Test
 	public void threeLegalMovesInCornerWithoutCastling() {
-		IBoard b = new Board(8);
+		IBoard b = new Board(8, PieceColor.WHITE);
 		Square sq = b.getSquare(0, 0);
 		sq.putPiece(king);
 		assertEquals(3, king.getLegalMoves(sq, b, PieceColor.WHITE).size());
@@ -38,7 +38,7 @@ public class KingTest {
 	
 	@Test
 	public void canFind6LegalMovesWith1Castling() {
-		IBoard b = new Board(8);
+		IBoard b = new Board(8, PieceColor.WHITE);
 		Square sq = b.getSquare(4, 7);
 		sq.putPiece(king);
 		b.getSquare(7, 7).putPiece(rook);
@@ -47,7 +47,7 @@ public class KingTest {
 	
 	@Test
 	public void canFind7LegalMovesWith2Castlings() {
-		IBoard b = new Board(8);
+		IBoard b = new Board(8, PieceColor.WHITE);
 		Square sq = b.getSquare(4, 7);
 		sq.putPiece(king);
 		b.getSquare(7, 7).putPiece(rook);
@@ -58,7 +58,7 @@ public class KingTest {
 	
 	@Test
 	public void kingsMoveCastlingMethodSetsBoardAsExpectedForQueenSideCastling() {
-		IBoard board = new Board(8);
+		IBoard board = new Board(8, PieceColor.WHITE);
 		board.getSquare(4, 7).putPiece(king);
 		board.getSquare(0, 7).putPiece(rook);
 		king.moveCastling(board.getSquare(4, 7), board.getSquare(2, 7), MoveType.QUEENSIDECASTLING, board);
@@ -68,7 +68,7 @@ public class KingTest {
 	
 	@Test
 	public void kingsMoveCastlingMethodSetsBoardAsExpectedForKingSideCastling() {
-		IBoard board = new Board(8);
+		IBoard board = new Board(8, PieceColor.WHITE);
 		board.getSquare(4, 7).putPiece(king);
 		board.getSquare(7, 7).putPiece(rook);
 		king.moveCastling(board.getSquare(4, 7), board.getSquare(6, 7), MoveType.KINGSIDECASTLING, board);
@@ -151,7 +151,7 @@ public class KingTest {
 	
 	@Test
 	public void canFindPlayer1CastlingBlack() {
-		IBoard newBoard = new Board(8);
+		IBoard newBoard = new Board(8, PieceColor.WHITE);
 		King king = new King(PieceColor.BLACK);
 		Rook rook = new Rook(PieceColor.BLACK);
 		newBoard.getSquare(4, 7).putPiece(king);
@@ -162,7 +162,7 @@ public class KingTest {
 	
 	@Test
 	public void canFindPlayer2CastlingBlack() {
-		IBoard newBoard = new Board(8);
+		IBoard newBoard = new Board(8, PieceColor.WHITE);
 		King king = new King(PieceColor.BLACK);
 		Rook rook = new Rook(PieceColor.BLACK);
 		newBoard.getSquare(4, 0).putPiece(king);

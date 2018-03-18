@@ -17,7 +17,7 @@ import pieces.pieceClasses.Rook;
 
 public class BoardTest {
 	private int dim = 10;
-	private IBoard board = new Board(dim);
+	private IBoard board = new Board(dim, PieceColor.WHITE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -27,11 +27,25 @@ public class BoardTest {
 	public void cantCreateIllegalBoard() {
 		boolean thrown = false;
 		try {
-			IBoard board = new Board(-1);
+			IBoard board = new Board(-1, PieceColor.WHITE);
 		} catch (Exception e){
 			thrown = true;
 		}
 		assertTrue(thrown);
+	}
+	
+	@Test
+	public void getKingPosCanGetPositionWithKing() {
+		Square sq = board.getSquare(3, 3);
+		sq.putPiece(new King(PieceColor.WHITE));
+		assertEquals(sq, board.getKingPos(PieceColor.WHITE));
+	}
+	
+	@Test
+	public void getKingPosCanNotGetPositionWithRook() {
+		Square sq = board.getSquare(3, 3);
+		sq.putPiece(new Rook(PieceColor.WHITE));
+		assertEquals(null, board.getKingPos(PieceColor.WHITE));
 	}
 
 	@Test
@@ -106,7 +120,7 @@ public class BoardTest {
 	
 	@Test
 	public void getAllThreatenedPiecesFindsThreatenedPieces() {
-		IBoard newboard = new Board(5);
+		IBoard newboard = new Board(5, PieceColor.WHITE);
 		IPiece whiteRook = new Rook(PieceColor.WHITE);
 		IPiece blackRook = new Rook(PieceColor.BLACK);
 		IPiece blackKing = new King(PieceColor.BLACK);

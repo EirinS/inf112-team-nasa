@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
@@ -22,26 +23,48 @@ public class Rook extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
+		if(castling(board.getSquare(x, y), board) != null) {
+			reachable.add(castling(board.getSquare(x, y), board));
+		}
 		return reachable;
 	}
 
 	/**
-	 * NOT IMPLEMENTED
-	 * 
-	 * @param sq,
-	 *            square of the rook
-	 * @param board,
-	 *            board the rook is on
-	 * @return legal castling square moves.
+	 * Uses the method for finding castling-moves in king.
+	 * @param sq
+	 * @param board
+	 * @return
 	 */
-	private ArrayList<Move> castling(Square sq, IBoard board) {
-		// TODO
-		/*
-		 * CONDITIONS FOR THIS MOVE: - Neither the king, nor rook has moved before - No
-		 * pieces between king and chosen rook - The king never passes through pieces
-		 * where it's in check - King is not in check
-		 */
-		return null;
+	private Move castling(Square sq, IBoard board) {
+		if (hasMoved()) {return null;}
+		
+		//4 is king position in regular chess, if no piece there, no castling
+		if(board.getSquare(sq.getY(), 4).isEmpty()) {return null;}
+		
+		//if piece is not king, no castling
+		if(!(board.getSquare(sq.getY(), 4).getPiece() instanceof King)) {return null;}
+		
+		//okay, we know king is instanceof King
+		Square kingSq = board.getSquare(sq.getY(), 4);
+		King k = (King) kingSq.getPiece();
+		
+		//no castling if king has moved.
+		if(k.hasMoved()) {return null;}
+		
+		//check which castling-type
+		boolean kingSide = false;
+		if(sq.getX() == 7) {kingSide = true;}
+		
+		//if king moves through positions in check, no castling.
+		if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
+		
+		//castling should now be possible
+		if (kingSide)
+			return new Move(kingSq, board.getSquare(kingSq.getX()+2, sq.getY()), k, null, MoveType.KINGSIDECASTLING);
+		else 
+			return new Move(kingSq, board.getSquare(kingSq.getX()-2, sq.getY()), k, null, MoveType.QUEENSIDECASTLING);
+		
+
 	}
 
 	/**

@@ -16,7 +16,7 @@ import pieces.pieceClasses.Bishop;
 
 public class BishopsTest {
 	
-	IBoard board = new Board(8);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	Bishop wBishop = new Bishop(PieceColor.WHITE);
 	int x = 4, y = 4;
 	Square square = board.getSquare(x, y);

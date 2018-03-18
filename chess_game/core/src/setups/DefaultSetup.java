@@ -27,7 +27,7 @@ public class DefaultSetup implements Setup {
     @Override
     public Board getInitialPosition(PieceColor playerColor) {
         boolean playerWhite = playerColor == PieceColor.WHITE;
-        Board board = new Board(8);
+        Board board = new Board(8, PieceColor.WHITE);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 PieceColor color = getPieceColor(y, playerWhite);
