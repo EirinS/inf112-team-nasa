@@ -15,7 +15,6 @@ import pieces.PieceColor;
  *
  */
 public class Pawn extends AbstractPiece {
-	private PieceColor color;
 	private boolean inPlay;
 	private boolean hasMoved;
 	
@@ -36,9 +35,7 @@ public class Pawn extends AbstractPiece {
 	 */
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
-		ArrayList<Move> reachable = new ArrayList<Move>();
-		reachable.addAll(reachableSquares(new Square(x, y), board));
-		return reachable;
+		return reachableSquares(new Square(x, y), board);
 	}
 	
 	/**
@@ -48,7 +45,7 @@ public class Pawn extends AbstractPiece {
 	public boolean hasMoved() {
 		return hasMoved;
 	}
-	
+
 	/**
 	 * Builds a list of all legal moves for this pawn
 	 * @param origin the square this pawn moves from
@@ -87,7 +84,7 @@ public class Pawn extends AbstractPiece {
 		}
 		
 		// Check if this pawn can move two squares ahead
-		if (!hasMoved && oneAhead.isEmpty() && twoAhead.isEmpty()) {
+		if (!hasMoved && oneAhead != null && oneAhead.isEmpty() && twoAhead != null && twoAhead.isEmpty()) {
 			Move move = new Move(origin, twoAhead, this, null, MoveType.REGULAR);
 			reachable.add(move);
 		}
@@ -110,6 +107,7 @@ public class Pawn extends AbstractPiece {
 	/**
 	 * Returns a string that represents this pawn.
 	 */
+	@Override
 	public String toString() {
 		return "P";
 	}

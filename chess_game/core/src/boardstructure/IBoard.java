@@ -53,6 +53,12 @@ public interface IBoard {
 	 * Gives all the squares in the board.
 	 * @return all squares in board.
 	 */
+	public ArrayList<Square> getSquares();
+	
+	/**
+	 * Returns the board as a list.
+	 * @return ArrayList<Square> of all squares on the board.
+	 */
 	public ArrayList<Square> getBoard();
 	
 	/**
@@ -115,7 +121,4 @@ public interface IBoard {
 	 * @return available moves for the given player color
 	 */
 	public List<Move> getAvailableMoves(PieceColor playerColor);
-
-	
-	
 }

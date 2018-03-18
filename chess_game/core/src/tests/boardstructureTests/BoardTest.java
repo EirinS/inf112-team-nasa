@@ -51,7 +51,7 @@ public class BoardTest {
 	
 	@Test
 	public void boardHasNoNullSpots() {
-		assertFalse(board.getBoard().contains(null));		
+		assertFalse(board.getSquares().contains(null));
 	}
 	
 	@Test

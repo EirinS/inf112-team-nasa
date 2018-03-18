@@ -67,6 +67,12 @@ public abstract class AbstractPiece implements IPiece {
 		ArrayList<Move> legalMoves = new ArrayList<>();
 		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, null);
 		for(int i = 0; i < moves.size(); i++) {
+
+			// TODO: 18/03/2018 bug here, sometimes getTo is null?
+			if (moves.get(i) == null) {
+				System.out.println("moves.get(i) null");
+				continue;
+			}
 			Square sq = moves.get(i).getTo();
 			if(sq.isEmpty()) {
 				legalMoves.add(moves.get(i));
@@ -84,6 +90,12 @@ public abstract class AbstractPiece implements IPiece {
 		ArrayList<Move> check = allFreeMoves(x, y, board, null);
 		if (check == null) {return reach;}
 		for(Move mov : check) {
+
+			// TODO: 18/03/2018 possible bug here aswell, mov is sometimes null, why?
+			if (mov == null) {
+				System.out.println("mov null");
+				continue;
+			}
 			Square sq = mov.getTo();
 			if (!sq.isEmpty())
 				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))

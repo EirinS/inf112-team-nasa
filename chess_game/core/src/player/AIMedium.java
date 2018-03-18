@@ -1,6 +1,5 @@
 package player;
 
-import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
@@ -24,7 +23,7 @@ public class AIMedium implements AI,Playable {
 
 	private int getBoardState(IBoard currentBoard){
 		int score = 0;
-		for(Square s : currentBoard.getBoard()) {
+		for(Square s : currentBoard.getSquares()) {
 			IPiece p = s.getPiece();
 
 			if (p != null) {

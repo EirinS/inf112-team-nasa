@@ -1,39 +1,40 @@
 package scenes;
 
-import chessGame.GameInformation;
+import boardstructure.Board;
+import boardstructure.Move;
+import boardstructure.Square;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.*;
 
-import chessGame.Chess;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import game.CheckerboardListener;
+import game.Chess;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import gui.Checkerboard;
+import game.Checkerboard;
+import game.GameInfo;
+import pieces.PieceColor;
+import setups.DefaultSetup;
+import sprites.PieceSpriteLoader;
 import scenes.styling.Colors;
-import scenes.styling.Styles;
 
-import static chessGame.GameInformation.HEIGHT;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
-public class GameScene implements Screen {
+public class GameScene implements Screen, CheckerboardListener {
 
 	private Chess game;
 	private Stage stage;
-	//private Sprite bPawn, wPawn, bRook, wRook, wBishop, bBishop, bKnight, wKnight, bQueen, wQueen;
-	private Button btn;
+
 	private Skin skin;
-	private TiledMap checkerboard;
-	private OrthogonalTiledMapRenderer checkerboardRenderer;
+
+	private HashMap<String, Texture> sprites;
+	private Checkerboard checkerboard;
+	private Board board;
+	private Square selectedSquare;
 
 	// TODO: 15.03.2018 this is temp; just to have something to draw.
 	private String player1 = "triki";
@@ -41,61 +42,32 @@ public class GameScene implements Screen {
 
 	public GameScene (Chess mainGame){
 		game = mainGame;
-		/*
-		 * bPawn = new Sprite(new Texture("bPawn.jpg");
-		 * wPawn = new Sprite(new Texture("wPawn.jpg");
-		 * bRook = new Sprite(new Texture("bRook.jpg");
-		 * wRook = new Sprite(new Texture("wRook.jpg");
-		 * wBishop = new Sprite(new Texture("wBishop.jpg");
-		 * bBishop = new Sprite(new Texture("bBishop.jpg");
-		 * bKnight = new Sprite(new Texture("bKnight.jpg");
-		 * wKnight = new Sprite(new Texture("wKnight.jpg");
-		 * bQueen = new Sprite (new Texture("bQueen.jpg");
-		 * wQueen = new Sprite (new Texture("wQueen.jpg");
-		 */
 		initialize();
-		addActors();
-		loadCheckerboard();
-	}
-
-	private void loadCheckerboard() {
-		checkerboard = Checkerboard.getCheckerboard();
-		checkerboardRenderer = new OrthogonalTiledMapRenderer(checkerboard, game.getSpriteBatch());
 	}
 
 	private void initialize() {
-		stage = new Stage(new ScreenViewport());
-		skin = new Skin();
-		Styles.myriadProFont(skin);
-		Styles.blueButton(skin);
-		Gdx.input.setInputProcessor(stage);
-	}
 
-	private void addActors() {
-		btn = new TextButton("Test", skin);
-		stage.addActor(btn);
+		// Set-up stage
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
+		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
+		stage = new Stage(new ScreenViewport());
+		Gdx.input.setInputProcessor(stage);
+
+		// Init sprites and checkerboard.
+		sprites = PieceSpriteLoader.loadDefaultPieces();
+		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
+		checkerboard = new Checkerboard(game, stage, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-
 	}
-
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(Colors.bgColor.r, Colors.bgColor.g, Colors.bgColor.b, Colors.bgColor.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.getSpriteBatch().begin();
-
-		skin.getFont("white-24").draw(game.getSpriteBatch(), player1, 100, HEIGHT - 50);
-		skin.getFont("white-24").draw(game.getSpriteBatch(), player2, 300, HEIGHT - 50);
-
-		//checkerboardRenderer.render();
-
-		game.getSpriteBatch().end();
-
 		stage.act(delta);
 		stage.draw();
 	}
@@ -126,5 +98,21 @@ public class GameScene implements Screen {
 
 	@Override
 	public void dispose() {
+	}
+
+	@Override
+	public void onPieceClick(int x, int y) {
+		System.out.println("piece x: " + x + ", y: " + y + " clicked.");
+		Square square = board.getSquare(x, y);
+		if (selectedSquare == null || !selectedSquare.equals(square)) {
+			selectedSquare = square;
+			ArrayList<Move> moves = selectedSquare.getPiece().getLegalMoves(selectedSquare, board, PieceColor.WHITE);
+			if (moves.isEmpty()) System.out.println("No moves?");
+			for (Move m : moves) {
+				System.out.println(m.getTo().getX() + ", " + m.getTo().getY());
+			}
+		} else if (selectedSquare.equals(square)) {
+			selectedSquare = null;
+		}
 	}
 }

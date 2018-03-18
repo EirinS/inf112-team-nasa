@@ -6,11 +6,12 @@ import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.PieceColor;
+
 /**
  * 
  * @author Sofia
  */
-public class Bishop extends AbstractPiece{
+public class Bishop extends AbstractPiece {
 	
 	public Bishop (PieceColor enumColor){
 		color = enumColor;
