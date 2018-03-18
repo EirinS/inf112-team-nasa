@@ -26,16 +26,13 @@ public class ChessGame implements CheckerboardListener {
 		this.board = (new DefaultSetup()).getInitialPosition(playerOneColor);
 	}
 
-
 	@Override
-	public void onPieceClick(int x, int y) {
-		// TODO Auto-generated method stub
+	public void onDragPieceStarted(int x, int y) {
+
 	}
 
 	@Override
-	public void onMoveRequested(Move m) {
-		// TODO Auto-generated method stub
-	}
-	
+	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
 
+	}
 }
