@@ -7,25 +7,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import game.CheckerboardListener;
 import game.Chess;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Checkerboard;
 import game.GameInfo;
-import game.WindowInformation;
 import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -44,7 +38,8 @@ public class GameScene implements Screen, CheckerboardListener {
 	private String player1 = "triki";
 	private String player2 = "wagle";
 	private PieceColor turn;
-	
+
+	private VerticalGroup historyGroup;
 	private TextButton quitBtn, resignBtn;
 
 	public GameScene (Chess mainGame){
@@ -76,15 +71,13 @@ public class GameScene implements Screen, CheckerboardListener {
 		
 		stage.addActor(quitBtn);
 		stage.addActor(resignBtn);
-		
-		List<ArrayList<Move>> list = new List(skin);
-		list.setItems(board.getHistory());
-		list.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
-		ScrollPane scrollPane = new ScrollPane(list, skin);
+
+		historyGroup = new VerticalGroup();
+		historyGroup.setFillParent(true);
+		ScrollPane scrollPane = new ScrollPane(historyGroup, skin);
 		scrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
-		scrollPane.setSize(buttonsWidth, list.getHeight());
+		scrollPane.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
 		stage.addActor(scrollPane);
-		
 		
 		Label header = new Label("History", skin,"title-plain");
 		header.setPosition(scrollPane.getX() + ((scrollPane.getWidth() - header.getWidth()) / 2), scrollPane.getY() + scrollPane.getHeight() - header.getHeight() + 25);
@@ -98,6 +91,16 @@ public class GameScene implements Screen, CheckerboardListener {
 		} else {
 			turn = PieceColor.WHITE;
 		}
+	}
+
+	private void addMoveToHistory(Move m) {
+		if (m == null) {
+			System.out.println("Should never happend, @addMoveToHistory");
+			return;
+		}
+		Label line = new Label(m.toString(), skin, "title-plain");
+		line.setAlignment(Align.left);
+		historyGroup.addActor(line);
 	}
 
 	@Override
@@ -154,6 +157,7 @@ public class GameScene implements Screen, CheckerboardListener {
 		if (move == null) {
 			checkerboard.movePieceFailed(fromX, fromY);
 		} else {
+			addMoveToHistory(board.getLastMove());
 			checkerboard.movePiece(fromX, fromY, toX, toY);
 		}
 	}
