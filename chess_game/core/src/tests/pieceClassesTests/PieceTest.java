@@ -28,6 +28,7 @@ public class PieceTest {
 		board.getSquare(x, y).putPiece(rook);
 	}
 	
+	
 	@Test
 	public void pieceCanBeTakenAndIsNotInPlayAfter() {
 		rook.takePiece();

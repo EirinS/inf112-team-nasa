@@ -24,6 +24,11 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void equalBoardsAreEqual() {
+		assertEquals(new Board(8, PieceColor.WHITE), new Board(8, PieceColor.WHITE));
+	}
+	
+	@Test
 	public void cantCreateIllegalBoard() {
 		boolean thrown = false;
 		try {

@@ -9,6 +9,7 @@ import boardstructure.Square;
 import pieces.pieceClasses.King;
 
 public abstract class AbstractPiece implements IPiece {
+
 	/**
 	 * Is piece on the board?
 	 */

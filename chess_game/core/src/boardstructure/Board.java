@@ -6,7 +6,6 @@ import java.util.List;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
-import pieces.pieceClasses.Rook;
 
 public class Board implements IBoard {
 
@@ -156,6 +155,35 @@ public class Board implements IBoard {
 
 
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Board other = (Board) obj;
+		if (board == null) {
+			if (other.board != null)
+				return false;
+		} else if (!board.equals(other.board))
+			return false;
+		if (height != other.height)
+			return false;
+		if (history == null) {
+			if (other.history != null)
+				return false;
+		} else if (!history.equals(other.history))
+			return false;
+		if (playerOne != other.playerOne)
+			return false;
+		if (width != other.width)
+			return false;
+		return true;
+	}
+
+
+	@Override
 	public ArrayList<Move> getHistory() {
 		return history;
 	}
@@ -173,13 +201,13 @@ public class Board implements IBoard {
 
 	@Override
 	public ArrayList<Move> move(Square from, Square to) {
-		if (from == null) {
+		if (from == null || to == null) {
 			return new ArrayList<>();
 			//tell user this is illegal
 		}
 		
 		IPiece moving = from.getPiece();
-		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, null);
+		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, playerOne);
 		for(Move m : legalMoves) {
 			if (m.getTo() == to) {
 				return doMove(m);
@@ -206,6 +234,7 @@ public class Board implements IBoard {
 					moves.add(m);
 					moves.add(rookMove);
 				}
+				history.add(m);
 			}
 		} else if(m.getMoveType() == MoveType.QUEENSIDECASTLING) {
 			if(m.getMovingPiece() instanceof King) {
@@ -214,6 +243,7 @@ public class Board implements IBoard {
 					moves.add(m);
 					moves.add(rookMove);
 				}
+				history.add(m);
 			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
 			//TODO:
@@ -233,6 +263,19 @@ public class Board implements IBoard {
 		printOutBoard();
 		return moves;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((board == null) ? 0 : board.hashCode());
+		result = prime * result + height;
+		result = prime * result + ((history == null) ? 0 : history.hashCode());
+		result = prime * result + ((playerOne == null) ? 0 : playerOne.hashCode());
+		result = prime * result + width;
+		return result;
+	}
+
 
 	public void printOutBoard(){
 		System.out.println("--------");
