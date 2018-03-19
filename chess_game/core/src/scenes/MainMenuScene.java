@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Chess;
+import game.ChessGame;
 import game.WindowInformation;
 
 /**
@@ -132,6 +133,7 @@ public class MainMenuScene implements Screen {
 		black.setPosition(centreWidth-(defaultWidth/4), WindowInformation.HEIGHT/1.6f);
 		white = new TextButton("White", skin, "toggle");
 		white.setPosition((centreWidth+(defaultWidth/2)), WindowInformation.HEIGHT/1.6f);
+		white.toggle();
 		
 		//Elements in score screen
 		headerScore = new Label ("High scores:", skin, "title-plain");
@@ -286,23 +288,76 @@ private void addListeners(){
 		multiplayerListener();
 		scoreListener();
 		startSingleListener();
+		blackListener();
+		whiteListener();
 	}
 
 	private void startSingleListener() {
 		startSingle.addListener(new ClickListener() {
-
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				/*Pseudokode:
+				 * if (white.isChecked){
+				 * GameScene game = new GameScene(game, filehandler.getPlayerOne, difficulty.getSelected(), PieceColor.WHITE);
+				 * }
+				 * else{
+				 * GameScene game = new GameScene(game, filehandler.getPlayerOne, difficulty.getSelected(), PieceColor.BLACK);
+				 */
 				game.setScreen(new GameScene(game));
+			}
+		});
+	}
+	
+	private void blackListener(){
+		black.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				white.setChecked(false);
+				blackListener();
+			}
+		});
+	}
+	private void whiteListener(){
+		white.addListener(new ClickListener(){
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				black.setChecked(false);
+				whiteListener();
 			}
 		});
 	}
 
 	private void signInListener(){
 		signIn.addListener(new ClickListener(){
+			// String name = registerUsername.getText();
+			// Boolean exists = filehandler.checkIfNameExists(name);
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
+				/**
+				if (playerOne){
+					/**
+					 * Pseudokode:
+					 * if (exists)	{error}
+					 * else{ 
+					 * 		filehandler.setPlayerOne(name);
+					 * 		game.setPlayerOne(name);
+					 * 		
+					 *}
+					 
+					 
+				}
+				else {
+					/*
+					 * if (exists)	{error}
+					 * else{
+					 * 		filehandler.setPlayerTwo(name);
+					 * 		game.setPlayerTwo(name);
+					 * 		GameScene game = new GameScene(game, filehandler.getPlayerOne, 
+					 * 			filehandler.getPlayerTwo);
+					 * 		
+				*/
+				
 				if (playerOne){
 				screenGameMenu();
 				signInListener();
@@ -334,8 +389,9 @@ private void addListeners(){
 					 * Pseudokode:
 					 * if (exists)	{error}
 					 * else{ 
-					 * 		filehandler.setName(name);
-					 * 		game.setPlayerOne(name);
+					 * 		filehandler.setPlayerOne(name);
+					 * 		filehandler.registername(name);
+					 * 		Game
 					 *}
 					 */
 				}
@@ -343,8 +399,9 @@ private void addListeners(){
 					/*
 					 * if (exists)	{error}
 					 * else{
-					 * 		filehandler.setName(name);
-					 * 		game.setPlayerOne(name);
+					 * 		filehandler.setPlayerTwo(name);
+					 * 		filehandler.registerName(name);
+					 * 		game.setPlayerTwo(name);
 					 */
 				}
 			}
