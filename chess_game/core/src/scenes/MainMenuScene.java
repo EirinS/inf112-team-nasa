@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -33,23 +35,31 @@ import game.WindowInformation;
  */
 
 public class MainMenuScene implements Screen {
+	
 	//necessary components
 	private Chess game;	
 	private Stage stage;
 	private Skin skin;
+	//graphical components
 	private static final int defaultHeight = 55;
 	private static final int defaultWidth = 250;
 	private static final int centreWidth = (WindowInformation.WIDTH/2)-(defaultWidth/2);
 	private ArrayList<Actor> actors;
 	private Image imgBackground;
-	private Label staticText, header;
-	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle, black, white;
+	private Label staticText, header, headerScore;
+	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
+		black, white, signInP2;
 	private TextField username, registerUsername;
 	private Button backToLogIn, backToChooseGame;
 	private SelectBox<String> difficulty;
+	private List<String> scoreList;
+	private ScrollPane scorePane;
+	//Navigation assistance
+	private boolean playerOne;
 
 	public MainMenuScene (Chess mainGame){
 		game = mainGame;
+		playerOne = true;
 		initialize();
 		setUpElements();
 		setUpArrayList();
@@ -123,7 +133,20 @@ public class MainMenuScene implements Screen {
 		white = new TextButton("White", skin, "toggle");
 		white.setPosition((centreWidth+(defaultWidth/2)), WindowInformation.HEIGHT/1.6f);
 		
+		//Elements in score screen
+		headerScore = new Label ("High scores:", skin, "title-plain");
+		scoreList = new List<String>(skin);
+		String[] temporary = new String[] {"1", "2", "3"};
+		scoreList.setItems(temporary);
+		scorePane = new ScrollPane(scoreList, skin, "default");
+		scorePane.setPosition(centreWidth/1.5f, WindowInformation.HEIGHT/6);
+		headerScore.setPosition(centreWidth/1.5f + (defaultWidth/2), WindowInformation.HEIGHT/1.2f);
+		
 		//Elements in multiplayer
+		signInP2 = new TextButton("Sign in", skin, "default");
+		signInP2.setPosition(centreWidth, WindowInformation.HEIGHT/2.5f);
+
+
 		
 		//Multiscreen
 		backToChooseGame = new Button(skin, "left");
@@ -150,8 +173,8 @@ public class MainMenuScene implements Screen {
 		actors.add(difficulty);
 		actors.add(black);
 		actors.add(white);
-//		actors.add();
-//		actors.add();
+		actors.add(scorePane);
+		actors.add(headerScore);
 	}
 	
 	private void setUpElementSizes(){
@@ -166,6 +189,7 @@ public class MainMenuScene implements Screen {
 		difficulty.setSize(defaultWidth, defaultHeight/1.5f);
 		black.setSize(defaultWidth/1.5f, defaultHeight/1.5f);
 		white.setSize(defaultWidth/1.5f, defaultHeight/1.5f);
+		scorePane.setSize(defaultWidth*1.6f, defaultHeight*7);
 	}
 	
 	
@@ -205,14 +229,18 @@ public class MainMenuScene implements Screen {
 	}
 	protected void screenGameMenu(){
 		invisible();
+		playerOne = false;
 		singleplayer.setVisible(true);
+		header.setText("Main Menu");
 		header.setVisible(true);
 		multiplayer.setVisible(true);
 		scores.setVisible(true);
 	}
 	protected void screenScore(){
 		invisible();
+		scorePane.setVisible(true);
 		backToChooseGame.setVisible(true);
+		headerScore.setVisible(true);
 	}
 	protected void screenPreferences(){
 		invisible();
@@ -224,6 +252,14 @@ public class MainMenuScene implements Screen {
 	}
 	private void screenMultiplayer(){
 		invisible();
+		signIn.setVisible(true);
+		header.setText("Opponent");
+		header.setVisible(true);
+		staticText.setVisible(true);
+		username.setText("Username");
+		username.setVisible(true);
+		registerUsername.setText(" desired username");
+		register.setVisible(true);
 		backToChooseGame.setVisible(true);
 	}
 	
@@ -236,6 +272,8 @@ public class MainMenuScene implements Screen {
 
 	 * multiplayer: goes to multiplayerScreen screen (= signIn + "Log in or register as player 2")
 	 * 
+	 * 
+	 *sign up button: If first player: True, if second -> false
 	 * 
 	 * textfield -> inputlistener
 	 */
@@ -265,11 +303,10 @@ private void addListeners(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
-				//Stian ->  if (valid input){
+				if (playerOne){
 				screenGameMenu();
-				//}
-				//else -> errormessage
 				signInListener();
+				}
 			}
 			
 		});
@@ -279,9 +316,37 @@ private void addListeners(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
-				//Stian -> add username
 				screenRegister();
 				registerListener();
+			}
+			
+		});
+	}
+	private void registerUserNameListener(){
+		registerUsername.addListener(new ClickListener(){
+			// String name = registerUsername.getText();
+			// Boolean exists = filehandler.checkIfNameExists(name);
+			@Override
+			public void touchUp(InputEvent e, float x, float y, int point, int button)
+			{
+				if (playerOne){
+					/**
+					 * Pseudokode:
+					 * if (exists)	{error}
+					 * else{ 
+					 * 		filehandler.setName(name);
+					 * 		game.setPlayerOne(name);
+					 *}
+					 */
+				}
+				else {
+					/*
+					 * if (exists)	{error}
+					 * else{
+					 * 		filehandler.setName(name);
+					 * 		game.setPlayerOne(name);
+					 */
+				}
 			}
 			
 		});
@@ -327,6 +392,8 @@ private void addListeners(){
 		scores.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
+				//Pseudokode: 
+				//scoreList.setItems(Filehandler.getScores());
 				screenScore();
 				multiplayerListener();
 			}
