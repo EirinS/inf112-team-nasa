@@ -184,4 +184,12 @@ public class Checkerboard extends DragListener {
             highlightGroup.addActor(highlight);
         }
     }
+    
+    public int getPos() {
+    		return (int)boardImg.getX();
+    }
+    
+    public int getSize() {
+    		return (int)boardImg.getWidth();
+    }
 }
