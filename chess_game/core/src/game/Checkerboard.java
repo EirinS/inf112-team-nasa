@@ -2,6 +2,8 @@ package game;
 
 import boardstructure.Move;
 import boardstructure.Square;
+import game.listeners.CheckerboardListener;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;

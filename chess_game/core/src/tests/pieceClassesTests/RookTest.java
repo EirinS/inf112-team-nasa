@@ -46,6 +46,7 @@ public class RookTest {
 	
 	
 	//----------------------------------------------------------------------------------------------
+	/*
 	private void setUpForCastlingTests() {
 		cb.getSquare(4, 7).putPiece(k);
 		cb.getSquare(0, 7).putPiece(r);
@@ -94,7 +95,7 @@ public class RookTest {
 		assertEquals(k, cb.getSquare(6, 7).getPiece());
 		assertEquals(r2, next.getPiece());
 	}
-	
+	*/
 	//-----------------------------------------------------------------------------------------------
 	
 	

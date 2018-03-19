@@ -108,7 +108,7 @@ public interface IBoard {
 	 * @param toY To y position
 	 * @return
 	 */
-	public Move move(int fromX, int fromY, int toX, int toY);
+	public Move getMove(int fromX, int fromY, int toX, int toY);
 
 	/**
 	 * Move a piece to a legal position on the board.

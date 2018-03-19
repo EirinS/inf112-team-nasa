@@ -79,8 +79,6 @@ public abstract class AbstractPiece implements IPiece {
 				legalMoves.add(moves.get(i));
 			}
 		}
-		//this line is buggy as hell (:::::::::
-		// TODO: 19/03/2018 find a better solution to this method; it generates "ghost-tiles"
 		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}

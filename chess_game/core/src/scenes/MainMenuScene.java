@@ -22,8 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Chess;
-import game.ChessGame;
 import game.WindowInformation;
+import game.chessGame.ChessGame;
 import register.RegisteredPlayers;
 
 /**

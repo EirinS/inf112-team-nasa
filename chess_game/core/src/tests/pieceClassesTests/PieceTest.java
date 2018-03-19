@@ -67,7 +67,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsvertical() {
-		IBoard newBoard = new Board(5, PieceColor.WHITE);
+		IBoard newBoard = new Board(8, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);
 		
@@ -84,7 +84,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsverticalDoesNotChangePosition() {
-		IBoard newBoard = new Board(5, PieceColor.WHITE);
+		IBoard newBoard = new Board(8, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));

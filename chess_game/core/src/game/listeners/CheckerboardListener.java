@@ -1,4 +1,4 @@
-package game;
+package game.listeners;
 
 public interface CheckerboardListener {
     void onDragPieceStarted(int x, int y);

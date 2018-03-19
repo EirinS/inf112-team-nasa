@@ -11,13 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import game.CheckerboardListener;
+
 import game.Chess;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Checkerboard;
 import game.GameInfo;
+import game.listeners.CheckerboardListener;
 import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
@@ -176,7 +177,7 @@ public class GameScene implements Screen, CheckerboardListener {
 
 	@Override
 	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
-		Move move = board.move(fromX, fromY, toX, toY);
+		Move move = board.getMove(fromX, fromY, toX, toY);
 		if (move == null) {
 			checkerboard.movePieceFailed(fromX, fromY);
 		} else {

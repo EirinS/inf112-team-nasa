@@ -6,6 +6,7 @@ import java.util.List;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Rook;
 
 public class Board implements IBoard {
 
@@ -166,7 +167,7 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public Move move(int fromX, int fromY, int toX, int toY) {
+	public Move getMove(int fromX, int fromY, int toX, int toY) {
 		return move(getSquare(fromX, fromY), getSquare(toX, toY));
 	}
 
@@ -197,12 +198,16 @@ public class Board implements IBoard {
 		if(m.getMoveType() == MoveType.ENPASSANT) {
 			//TODO:
 		} else if (m.getMoveType() == MoveType.KINGSIDECASTLING) {
-			//TODO:
+			IPiece moving = m.getMovingPiece();
+			if(moving instanceof King) {
+				((King) moving).moveCastling(m.getFrom(), m.getTo(), MoveType.KINGSIDECASTLING, this);
+			}
 		} else if(m.getMoveType() == MoveType.QUEENSIDECASTLING) {
-			//TODO:
+			if(m.getMovingPiece() instanceof King) {
+				((King) m.getMovingPiece()).moveCastling(m.getFrom(), m.getTo(), MoveType.QUEENSIDECASTLING, this);
+			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
 			//TODO:
-			
 			//regular moves
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece

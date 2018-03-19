@@ -1,20 +1,33 @@
-package game;
+package game.chessGame;
+
+import java.util.ArrayList;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import game.GameType;
+import game.listeners.ChessGameListener;
+import pieces.IPiece;
 import pieces.PieceColor;
 import player.AILevel;
 import setups.DefaultSetup;
 
-public class ChessGame implements CheckerboardListener {
+public class ChessGame implements IChessGame {
 	IBoard board;
 	String player1;
 	String player2;
 	PieceColor playerOneColor;
+	
+	/**
+	 * GameType gameType. The type of game to be played.
+	 * For instance single-player, multi-player o.l.
+	 */
 	GameType gameType;
 	AILevel level;
-
-	public ChessGame(String player1, String player2, GameType gameType, PieceColor playerOneColor, AILevel level) {
+	PieceColor turn;
+	ChessGameListener listener;
+	
+	
+	public ChessGame(String player1, String player2, GameType gameType, PieceColor playerOneColor, AILevel level, ChessGameListener listener) {
 		this.player1 = player1;
 		if(player2 == null) {
 			this.player2 = "computer";
@@ -22,24 +35,44 @@ public class ChessGame implements CheckerboardListener {
 		}
 		else 
 			this.player2 = player2;
+		
 		this.gameType = gameType;
-
-
 		this.playerOneColor = playerOneColor;
+		this.turn = playerOneColor;
+		this.listener = listener;
 
 		//board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(playerOneColor);
 	}
-
+	
 	@Override
-	public void onDragPieceStarted(int x, int y) {
-
+	public void doTurn(int fromX, int fromY, int toX, int toY) {
+		Move m = board.getMove(fromX, fromY, toX, toY);
+		if(m.getMovingPiece().getColor() != turn) {
+			listener.notYourPieceColor();
+		}
+		if(board.move(m.getFrom(), m.getTo()) == null) {
+			listener.notALegalMove();
+		}
+				
+		//TODO: finish
+		
+		this.turn = getOtherPieceColor(turn);
 	}
-
+	
 	@Override
-	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
-
+	public PieceColor getOtherPieceColor(PieceColor current) {
+		if (current == PieceColor.WHITE)
+			return PieceColor.BLACK;
+		return PieceColor.WHITE;
 	}
+	
+	@Override
+	public GameFinish gameFinished() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 	
 	/**

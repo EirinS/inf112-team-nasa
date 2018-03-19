@@ -24,16 +24,12 @@ public class Rook extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
-		//reachable.add(castling(board.getSquare(x, y), board));
 		return reachable;
 	}
-
-	/**
-	 * Finds a castling move, if there is one, for this rook.
-	 * @param sq, the square this rook is in
-	 * @param board
-	 * @return Move m, that is the castling move, if there is one, null if not.
-	 */
+	
+	//Logic for implementing castling for rook. Working, but not necessary. Simpler 
+	//to just implement castling for king.
+	/*
 	public Move castling(Square sq, IBoard board) {
 		//no castling if piece moved
 		if (hasMoved()) {return null;}
@@ -49,7 +45,7 @@ public class Rook extends AbstractPiece {
 		
 		//check which castling-type
 		boolean kingSide = false;
-		if(sq.getX() == 7) {kingSide = true;}
+		if(sq.getX() > kingSq.getX()) {kingSide = true;}
 		
 		//if king moves through positions in check, no castling.
 		//if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
@@ -63,15 +59,6 @@ public class Rook extends AbstractPiece {
 		else 
 			return new Move(sq, board.getSquare(sq.getX()+3, sq.getY()), this, null, MoveType.QUEENSIDECASTLING);
 	}
-	
-	/**
-	 *  Precondition: All positions that are moved to are empty and possible to move to.
-	 * Castling is an OK move.
-	 * @param origin
-	 * @param next
-	 * @param type
-	 * @param board
-	 */
 	public void moveCastling(Square origin, Square next, MoveType type, IBoard board) {
 		//moves rook
 		next.putPiece(origin.movePiece());
@@ -86,7 +73,8 @@ public class Rook extends AbstractPiece {
 			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
 		}
 	}
-
+	*/
+	
 	/**
 	 * Finds all positions in a straight line from start point, including first
 	 * piece encountered.
