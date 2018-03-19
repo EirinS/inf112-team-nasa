@@ -307,7 +307,7 @@ private void addListeners(){
 				 * else{
 				 * GameScene game = new GameScene(game, filehandler.getPlayerOne, difficulty.getSelected(), PieceColor.BLACK);
 				 */
-				game.setScreen(new GameScene(game));
+				game.setScreen(new GameScene(game, MainMenuScene.this));
 			}
 		});
 	}
@@ -468,7 +468,7 @@ private void addListeners(){
 		scores.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
-				
+				// TODO - kaster nullpointer exception siden filen ikke er opprettet - m� fikses
 				ArrayList<String> highscores = RegisteredPlayers.getHighscores();
 				
 				String[] scores = new String[highscores.size()+1];

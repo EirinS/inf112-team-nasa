@@ -130,6 +130,12 @@ public interface IBoard {
 	 * @return Last move, null if no moves.
 	 */
 	public Move getLastMove();
+	
+	/**
+	 * Makes a copy of this board and the squares in it.
+	 * @return An IBoard board copy
+	 */
+	public IBoard copy();
 
 	/**
 	 *

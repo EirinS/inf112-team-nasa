@@ -5,6 +5,7 @@ import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 /**
@@ -91,6 +92,14 @@ public class Bishop extends AbstractPiece {
 			}
 		}
 		return canBeReached;
+	}
+	
+	@Override
+	public IPiece copy() {
+		Bishop b = new Bishop(this.getColor());
+		if (this.hasMoved())
+			b.pieceMoved();
+		return b;
 	}
 	
 	@Override

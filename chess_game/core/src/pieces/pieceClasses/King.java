@@ -219,6 +219,14 @@ public class King extends AbstractPiece {
 			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
 		}
 	}
+	
+	@Override
+	public IPiece copy() {
+		King k = new King(this.getColor());
+		if (this.hasMoved())
+			k.pieceMoved();
+		return k;
+	}
 
 	@Override
 	public String toString() {

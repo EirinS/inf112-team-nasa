@@ -250,4 +250,20 @@ public class Board implements IBoard {
 		return board;
 	}
 
+
+	@Override
+	public IBoard copy() {
+		IBoard board = new Board(this.getDimension(), PieceColor.WHITE);
+		for(Square sq : getBoard()) {
+			int x = sq.getX(), y = sq.getY();
+			if(sq.isEmpty())
+				continue;
+			IPiece p = sq.getPiece().copy();
+			Square newSq = new Square(x,y);
+			newSq.putPiece(p);
+			board.addSquare(newSq);
+		}
+		return board;
+	}
+
 }

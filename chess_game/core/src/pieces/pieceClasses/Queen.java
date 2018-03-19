@@ -174,6 +174,14 @@ public class Queen extends AbstractPiece {
 		}
 		return ok;
 	}
+	
+	@Override
+	public IPiece copy() {
+		Queen q = new Queen(this.getColor());
+		if (this.hasMoved())
+			q.pieceMoved();
+		return q;
+	}
 
 	@Override
 	public String toString() {
