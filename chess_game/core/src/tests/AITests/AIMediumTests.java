@@ -25,25 +25,45 @@ public class AIMediumTests {
 	Square bks = board.getSquare(2,4);
 	Square wks = board.getSquare(6,4);
 	Square ws = board.getSquare(0, 0);
-	Square bs = board.getSquare(0, 1);
-
+	Square bs = board.getSquare(0, 2);
+	Square br = board.getSquare(0, 3);
+	Square br2 = board.getSquare (7,0);
+	Square br3 = board.getSquare(3, 7);
 
 	@Before
 	public void setUp() throws Exception {
 		ws.putPiece(w);
 		bs.putPiece(b);
-		wks.putPiece(wk);
-		bks.putPiece(bk);
+		wks.putPiece(b);
+		//bs.putPiece(b);
+		//br2.putPiece(b);
+		//br3.putPiece(w);
+		
+		//wks.putPiece(wk);
+		//bks.putPiece(bk);
 	}
-
+	//bugs need to be fixed before the tests are valid, they are not complete.
 	@Test
-	public void testThatMediumAIWithOnlyABishopDetectsAndMovesToFreeBishop(){
+	public void testThatMediumAIWithOnlyARookDetectsAndMovesToFreeRook(){
 		AIMedium ai = new AIMedium(PieceColor.WHITE);
 		Move move = ai.calculateMove(board);
 		org.junit.Assert.assertEquals(move.getMovingPiece().toString(), "R");
 		org.junit.Assert.assertEquals(move.getTo().getX(), 0);
-		org.junit.Assert.assertEquals(move.getTo().getY(), 1);
+		org.junit.Assert.assertEquals(move.getTo().getY(), 2);
 		org.junit.Assert.assertEquals(move.getFrom().getX(), 0);
 		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
 	}
+	
+	@Test
+	public void testThatMediumAIWithOnlyARookDetectsTheBestMove(){
+		
+		AIMedium ai = new AIMedium(PieceColor.WHITE);
+		Move move = ai.calculateMove(board);
+		org.junit.Assert.assertEquals(move.getMovingPiece().toString(), "R");
+		org.junit.Assert.assertEquals(move.getTo().getX(), 7);
+		org.junit.Assert.assertEquals(move.getTo().getY(), 0);
+		org.junit.Assert.assertEquals(move.getFrom().getX(), 0);
+		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
+	}
+	
 }

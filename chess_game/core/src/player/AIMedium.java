@@ -1,16 +1,222 @@
 package player;
 
+import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jonas on 16/03/2018.
+ * Created by Trædal on 18/03/2018.
  */
+public class AIMedium implements AI,Playable {
+
+	PieceColor playerColor;
+	PieceColor opponentColor;
+	int called = 0;
+
+	/**
+	 * 
+	 * @param playerColor color of AI
+	 */
+	public AIMedium(PieceColor playerColor){
+		this.playerColor = playerColor;
+		if (playerColor==PieceColor.WHITE) {
+			this.opponentColor=PieceColor.BLACK;
+		}else this.opponentColor=PieceColor.WHITE;
+	}
+	
+	@Override
+	public Move calculateMove(IBoard currentBoard) { //the two lists will be of equal length, with the possibleMove.get(i) -> possibleBoard.get(i) 
+		Move b = calculateFutureMove(currentBoard);
+		return b;
+	}
+	
+	/**
+	 * 
+	 * @param currentBoard
+	 * @param movesAhead
+	 * @return returns an array of integers {score,i} where score is the score of the best move and i is its placement in currentBoard.getAvailable moves.
+	 */
+	
+	public Move calculateFutureMove(IBoard currentBoard) {//ArrayList<IBoard> logB, ArrayList<Move> logM) {
+		
+		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
+		ArrayList<Board> possibleBoards = getPossibleBoards(currentBoard,possibleMoves);
+		
+		int worstCase = 9999;
+		if(playerColor==PieceColor.BLACK) worstCase=-9999;
+		ArrayList<int[]> theMoves = new ArrayList<int[]>();
+		int[] theMove = {-worstCase, 0};
+		
+		for (int i=0; i<possibleBoards.size(); i++) {
+			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(opponentColor);
+			ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp);
+			ArrayList<int[]> findWorst = new ArrayList<int[]>();
+			int[] worst = {worstCase,0};
+			
+			for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
+				
+				List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
+				ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(i),possibleMovesEnd);
+				int[] best = getBestAIScorePlacement(possibleBoardsEnd);
+				best[1]=i;
+				findWorst.add(best);
+
+			} if (playerColor==PieceColor.WHITE) {
+				for (int u=0; u<findWorst.size(); u++) {
+				if (findWorst.get(u)[0]<worst[0]) {
+					worst=findWorst.get(u);
+					//worst[1] = i;
+					}
+				
+				}theMoves.add(worst);
+			}
+		} for (int i=0; i<theMoves.size();i++) {
+			if (theMoves.get(i)[0]>theMove[0]) {
+				theMove=theMoves.get(i);
+			}
+			
+		}
+		return possibleMoves.get(theMove[1]);
+	}		
+	
+	@Override
+	public Move makeMove(IBoard board, Square from, Square to) {
+		return calculateMove(board);
+	}
+	
+	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. might need to be redone
+		ArrayList<Board> possibleBoards = new ArrayList<Board>();
+ 		for(Move move : possibleMoves) {
+			Board possibleBoard = new Board(currentBoard.getDimension(),opponentColor);
+			for(Square square : currentBoard.getBoard()) {
+				if (move.getFrom()==square) {
+				}else if (move.getTo()==square) {
+					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(move.getMovingPiece());
+				}else if (!square.isEmpty()&&move.getFrom()!=square){
+					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(square.getPiece());
+				}	
+			}
+			possibleBoards.add(possibleBoard);
+		}
+		return possibleBoards;
+		
+	}
+	
+	private int getPositionValue(int row, int column) {
+		int[][] positionWeight =
+				{
+						 {1,1,1,1,1,1,1,1}
+						,{2,2,2,2,2,2,2,2}
+						,{2,2,3,3,3,3,2,2}
+						,{2,2,3,4,4,3,2,2}
+						,{2,2,3,4,4,3,2,2}
+						,{2,2,3,3,3,3,2,2}
+						,{2,2,2,2,2,2,2,2}
+						,{1,1,1,1,1,1,1,1}
+				};
+		return positionWeight[row][column];
+	}
+
+	private int getScoreForPieceType(IPiece piece){
+		switch (piece.toString()) {
+			case "B": return 30;
+			case "K": return 999;
+			case "N": return 30;
+			case "P": return 10;
+			case "Q": return 90;
+			case "R": return 50;
+			default: throw new IllegalArgumentException("Unknown piece type " + piece.toString());
+		}
+	}
+	
+	public int[] getBestAIScorePlacement(ArrayList<Board> possibleBoards) {//
+		int[] scoreAndPlace = {0,0};
+		//int bestPlacement = 0;
+		//int bestScore = 0;
+		int i=0;
+		if (playerColor==PieceColor.WHITE) {
+			scoreAndPlace[0] = -9999;
+			for (Board board : possibleBoards) {
+				if (getAIScore(board)>=scoreAndPlace[0]) {
+					scoreAndPlace[0]=getAIScore(board);
+					scoreAndPlace[1]=i;
+				}
+				i++;
+			}
+		}else {
+			scoreAndPlace[0] = 9999;
+			for (Board board : possibleBoards) {
+				if (getAIScore(board)<=scoreAndPlace[0]) {
+					scoreAndPlace[0]=getAIScore(board);
+					scoreAndPlace[1]=i;
+				}
+				i++;
+			}
+		}
+		//scoreAndPlace[0]=Math.abs(scoreAndPlace[0]);
+		return scoreAndPlace;
+	}
+	
+	public int getAIScore(Board possibleBoard) { // for now negative score is black leading, positive is white leading.
+		int score = 0;
+		ArrayList<Square> squares = possibleBoard.getBoard();
+		for (Square square : squares) {
+			if(!square.isEmpty()) {
+				IPiece piece = square.getPiece();
+				int value = getScoreForPieceType(piece);
+				if (piece.getColor()==PieceColor.WHITE) {
+					score = score + value + getPositionValue(square.getX() ,square.getY());
+				}else score = score - value - getPositionValue(square.getX() ,square.getY());
+			}
+			
+		}
+		called++;
+		return score;
+		
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+/**
+ * Created by jonas on 16/03/2018.
+ *//*
 public class AIMedium implements AI,Playable {
 
 	static final int AI_MOVE_DEPTH = 2;
@@ -189,3 +395,4 @@ public class AIMedium implements AI,Playable {
 	}
 
 }
+*/
