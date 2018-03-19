@@ -81,7 +81,7 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		//this line is buggy as hell (:::::::::
 		// TODO: 19/03/2018 find a better solution to this method; it generates "ghost-tiles"
-		//moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
+		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
 
@@ -138,39 +138,25 @@ public abstract class AbstractPiece implements IPiece {
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
 		else {opponent = PieceColor.WHITE;}
-
-		boolean hasMoved = false;
-		if(origin.getPiece().hasMoved())
-			hasMoved = true;
-
-		IPiece p = null;
+	
 		ArrayList<Move> okMov = new ArrayList<Move>();
-		for(Move move : legalMoves) {
-			Square movSq = move.getTo();
-			//temporary move
-			if (movSq.isEmpty()) {
-				movePiece(origin, movSq);	
-			} else {				
-				p = captureEnemyPieceAndMovePiece(origin, movSq);
-			}
-
-			ArrayList<IPiece> threatened = board.piecesThreatenedByOpponent(getColor(), opponent);
-			//reverts move
-			if(p != null) {
-				revertMove(origin, movSq, p);
+		
+		for (Move m : legalMoves) {
+			IBoard testBoard = board.copy();
+			Square to = testBoard.getSquare(m.getTo().getX(), m.getTo().getY());
+			Square from = testBoard.getSquare(m.getFrom().getX(), m.getFrom().getY());
+			
+			if(to.isEmpty()) {
+				movePiece(from, to);
 			} else {
-				movePiece(movSq, origin);
+				captureEnemyPieceAndMovePiece(from, to);
 			}
-
+			
+			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {
 				//removes illegal move
-				okMov.add(move);
+				okMov.add(m);
 			}
-		}
-
-		//reset field variable
-		if(!hasMoved) {
-			origin.getPiece().setMovedFalse();
 		}
 		return okMov;
 	}

@@ -24,7 +24,6 @@ public class Square {
 	 * Precondition: Square must be within dimensions of board.
 	 * @param x position
 	 * @param y position
-	 * @param color (black, white)
 	 */
 	public Square(int x, int y) {
 		this.x = x;

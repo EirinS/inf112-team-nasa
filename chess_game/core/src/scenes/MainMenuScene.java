@@ -468,17 +468,14 @@ private void addListeners(){
 		scores.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
-				//Pseudokode: 
-				//scoreList.setItems(Filehandler.getScores());
-				
 				// TODO - kaster nullpointer exception siden filen ikke er opprettet - m� fikses
 				ArrayList<String> highscores = RegisteredPlayers.getHighscores();
 				
-				String[] scores = new String[highscores.size()];
-				
+				String[] scores = new String[highscores.size()+1];
+				scores[0] = "Name/Rating/W/L/D";
 				for(int i = 0; i < highscores.size(); i++)
 				{
-					scores[i] = highscores.get(i);
+					scores[i+1] = highscores.get(i);
 				}
 				scoreList.setItems(scores);
 				screenScore();

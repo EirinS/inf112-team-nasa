@@ -7,6 +7,7 @@ import boardstructure.Move;
 import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 /**
@@ -111,6 +112,14 @@ public class Pawn extends AbstractPiece {
 		// TODO: 18/03/2018 midlertidlig imens pawn ikke fynker 
 		reachable.add(getMove(origin, origin.getX(), origin.getY() - 1, board));
 		return reachable;
+	}
+	
+	@Override
+	public IPiece copy() {
+		Pawn p = new Pawn(this.getColor());
+		if (this.hasMoved())
+			p.pieceMoved();
+		return p;
 	}
 	
 	/**

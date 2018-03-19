@@ -5,9 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="735811f2-797e-40ca-96da-734164dafac2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/GameScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/Board.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/Square.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/Square.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" afterPath="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/IPiece.java" afterPath="$PROJECT_DIR$/core/src/pieces/IPiece.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Bishop.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Bishop.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Knight.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Knight.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Queen.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Queen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/boardstructureTests/BoardTest.java" afterPath="$PROJECT_DIR$/core/src/tests/boardstructureTests/BoardTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PieceTest.java" afterPath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PieceTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/playerFileTests/RegisteredPlayersTest.java" afterPath="$PROJECT_DIR$/core/src/tests/playerFileTests/RegisteredPlayersTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -80,31 +92,33 @@
       <file leaf-file-name="Rook.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5">
-              <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+            <state relative-caret-position="10">
+              <caret line="42" column="4" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
               <folding>
-                <element signature="e#518#524#0" expanded="true" />
-                <marker date="1521450320565" expanded="false" signature="4395:4398" ph=" }" />
+                <marker date="1521465335542" expanded="false" signature="4549:4552" ph=" }" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainMenuScene.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainMenuScene.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3708">
-              <caret line="308" column="19" lean-forward="true" selection-start-line="308" selection-start-column="19" selection-end-line="308" selection-end-column="19" />
-              <folding />
+            <state relative-caret-position="144">
+              <caret line="469" column="87" lean-forward="false" selection-start-line="469" selection-start-column="87" selection-end-line="469" selection-end-column="87" />
+              <folding>
+                <element signature="e#13799#14347#0" expanded="true" />
+                <element signature="e#14346#14347#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Board.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Board.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="182" column="0" lean-forward="false" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+            <state relative-caret-position="199">
+              <caret line="167" column="13" lean-forward="false" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
               <folding>
                 <element signature="e#3927#3928#0" expanded="true" />
                 <element signature="e#3991#3992#0" expanded="true" />
@@ -1386,10 +1400,10 @@
         <option value="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
-        <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
         <option value="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
-        <option value="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
+        <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
+        <option value="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
       </list>
     </option>
   </component>
@@ -2107,7 +2121,7 @@
       <workItem from="1521374361245" duration="22981000" />
       <workItem from="1521399356487" duration="13942000" />
       <workItem from="1521415625263" duration="236000" />
-      <workItem from="1521444766006" duration="6522000" />
+      <workItem from="1521444766006" duration="6553000" />
     </task>
     <servers />
   </component>
@@ -2144,7 +2158,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85581000" />
+    <option name="totallyTimeSpent" value="85612000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -2402,9 +2416,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
           <caret line="64" column="23" lean-forward="true" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
-          <folding>
-            <element signature="e#704#710#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2443,8 +2455,6 @@
           <caret line="32" column="18" lean-forward="true" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
           <folding>
             <element signature="e#492#498#0" expanded="false" />
-            <element signature="e#4246#4247#0" expanded="false" />
-            <element signature="e#4263#4264#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2539,21 +2549,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3708">
-          <caret line="308" column="19" lean-forward="true" selection-start-line="308" selection-start-column="19" selection-end-line="308" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5">
-          <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+        <state relative-caret-position="10">
+          <caret line="42" column="4" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
           <folding>
-            <element signature="e#518#524#0" expanded="true" />
-            <marker date="1521450320565" expanded="false" signature="4395:4398" ph=" }" />
+            <marker date="1521465335542" expanded="false" signature="4549:4552" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -2583,11 +2584,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="182" column="0" lean-forward="false" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+        <state relative-caret-position="199">
+          <caret line="167" column="13" lean-forward="false" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
           <folding>
             <element signature="e#3927#3928#0" expanded="true" />
             <element signature="e#3991#3992#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="469" column="87" lean-forward="false" selection-start-line="469" selection-start-column="87" selection-end-line="469" selection-end-column="87" />
+          <folding>
+            <element signature="e#13799#14347#0" expanded="true" />
+            <element signature="e#14346#14347#0" expanded="true" />
           </folding>
         </state>
       </provider>

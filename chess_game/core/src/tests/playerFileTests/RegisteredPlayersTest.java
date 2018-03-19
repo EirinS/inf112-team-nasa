@@ -18,7 +18,7 @@ public class RegisteredPlayersTest {
 	
 	
 	/**
-	 * Tests may fail if run several times, as the players will then be registered
+	 * Tests may fail if run several times
 	 */
 	@Test
 	public void registerAndCheckTest() 
