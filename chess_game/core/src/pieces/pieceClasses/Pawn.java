@@ -66,6 +66,8 @@ public class Pawn extends AbstractPiece {
 		int dy = 0;
 		PieceColor opponentColor = null;
 		if (color == PieceColor.WHITE) {
+		//TODO change from color to playerOne
+		//if (playerOne == PieceColor.WHITE) {
 			dy = -1;
 			opponentColor = PieceColor.BLACK;
 		} else {
@@ -73,7 +75,7 @@ public class Pawn extends AbstractPiece {
 			opponentColor = PieceColor.WHITE;
 		}
 		
-		// Check whether the squares in question are legal positions
+		// Check whether the vertical moves are valid
 		if (y+dy >= 0) {
 			// Check square straight ahead
 			Square oneAhead = board.getSquare(x, y+dy);
@@ -91,6 +93,7 @@ public class Pawn extends AbstractPiece {
 			}
 		}
 		
+		// Check whether diagonal moves are valid
 		if (x != 0) {
 			Square westAhead = board.getSquare(x-1, y+dy);
 			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
@@ -107,9 +110,6 @@ public class Pawn extends AbstractPiece {
 				reachable.add(move);
 			}
 		}
-
-		// TODO: 18/03/2018 midlertidlig imens pawn ikke fynker 
-		//reachable.add(getMove(origin, origin.getX(), origin.getY() - 1, board));
 		return reachable;
 	}
 	
