@@ -8,7 +8,7 @@ public enum SceneEnum {
 
         @Override
         public AbstractScene getScreen(Object... params) {
-            return new MainMenuScene((Chess)params[0]);
+            return MainMenuScene.getInstance((Chess)params[0]);
         }
     },
     GAME {

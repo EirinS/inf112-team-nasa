@@ -14,8 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import game.CheckerboardListener;
 import game.Chess;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import game.Checkerboard;
 import game.GameInfo;
 import pieces.PieceColor;
@@ -101,14 +100,6 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 		addActor(header);
 	}
 
-	private void changeTurn() {
-		if (turn == PieceColor.WHITE) {
-			turn = PieceColor.BLACK;
-		} else {
-			turn = PieceColor.WHITE;
-		}
-	}
-
 	private void addMoveToHistory(Move m) {
 		if (m == null) {
 			System.out.println("Should never happend, @addMoveToHistory");
@@ -122,6 +113,8 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 
 	@Override
 	public void buildStage() {
+		if (built) return;
+		built = true;
 		initialize();
 	}
 

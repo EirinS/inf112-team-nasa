@@ -37,7 +37,9 @@ import register.RegisteredPlayers;
  */
 
 public class MainMenuScene extends AbstractScene {
-	
+
+	private static MainMenuScene instance;
+
 	//necessary components
 	private Chess game;
 	private Skin skin;
@@ -64,8 +66,16 @@ public class MainMenuScene extends AbstractScene {
 		initialize();
 	}
 
+	public static MainMenuScene getInstance(Chess game) {
+		if (instance == null)
+			instance = new MainMenuScene(game);
+		return instance;
+	}
+
 	@Override
 	public void buildStage() {
+		if (built) return;
+		built = true;
 		setUpElements();
 		setUpArrayList();
 		setUpElementSizes();
@@ -302,6 +312,7 @@ private void addListeners(){
 				 * GameScene game = new GameScene(game, filehandler.getPlayerOne, difficulty.getSelected(), PieceColor.BLACK);
 				 */
 				SceneManager.getInstance().showScreen(SceneEnum.GAME, game);
+				startSingleListener();
 			}
 		});
 	}

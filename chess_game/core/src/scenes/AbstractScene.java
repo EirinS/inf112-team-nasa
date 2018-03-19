@@ -8,13 +8,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class AbstractScene extends Stage implements Screen {
 
-
-
     protected AbstractScene() {
         super(new ScreenViewport());
     }
 
-    // Subclasses must load actors in this method
+    protected boolean built;
     public abstract void buildStage();
 
     @Override

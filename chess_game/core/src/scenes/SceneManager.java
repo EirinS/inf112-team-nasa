@@ -36,7 +36,7 @@ public class SceneManager {
         game.setScreen(newScreen);
 
         // Dispose previous screen
-        if (currentScreen != null) {
+        if (currentScreen != null && sceneEnum == SceneEnum.MAIN_MENU) {
             currentScreen.dispose();
         }
     }
