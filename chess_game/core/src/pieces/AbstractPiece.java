@@ -40,7 +40,7 @@ public abstract class AbstractPiece implements IPiece {
 	public boolean isInPlay() {
 		return inPlay;		
 	}
-	
+
 	@Override
 	public void putInPlay() {
 		inPlay = true;
@@ -56,17 +56,22 @@ public abstract class AbstractPiece implements IPiece {
 		inPlay = false;
 		return this;
 	}
-	
+
 	@Override
 	public void setMovedFalse() {
 		hasMoved = false;
 	}
 
 	@Override
-	public ArrayList<Move> getLegalMoves(Square origin, IBoard board) {
+	public ArrayList<Move> getLegalMoves(Square origin, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> legalMoves = new ArrayList<>();
-		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board);
+		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, null);
 		for(int i = 0; i < moves.size(); i++) {
+			// TODO: 18/03/2018 bug here, sometimes getTo is null?
+			if (moves.get(i) == null) {
+				System.out.println("moves.get(i) null");
+				continue;
+			}
 			Square sq = moves.get(i).getTo();
 			if(sq.isEmpty()) {
 				legalMoves.add(moves.get(i));
@@ -74,22 +79,34 @@ public abstract class AbstractPiece implements IPiece {
 				legalMoves.add(moves.get(i));
 			}
 		}
+		//this line is buggy as hell (:::::::::
+		// TODO: 19/03/2018 find a better solution to this method; it generates "ghost-tiles"
 		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
 
-	@Override
-	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
+	protected ArrayList<IPiece> enemiesReached(int x, int y, IBoard board, PieceColor opponent, ArrayList<Move> check) {
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
-		ArrayList<Move> check = allFreeMoves(x, y, board);
 		if (check == null) {return reach;}
 		for(Move mov : check) {
+
+			// TODO: 18/03/2018 possible bug here aswell, mov is sometimes null, why?
+			if (mov == null) {
+				//System.out.println("mov null");
+				continue;
+			}
 			Square sq = mov.getTo();
 			if (!sq.isEmpty())
 				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
 					reach.add(sq.getPiece());
 		}
 		return reach;
+	}
+
+	@Override
+	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
+		ArrayList<Move> check = allFreeMoves(x, y, board, null);
+		return enemiesReached(x, y, board, opponent, check);
 	}
 
 
@@ -112,7 +129,7 @@ public abstract class AbstractPiece implements IPiece {
 	 * Checks for every position that a piece can move to, and makes sure that no 
 	 * open space will result in a position where your own king is in check.
 	 * Does not actually move any pieces (always moves back)
-	 * @param legalPositions, all legal positions you can move to.
+	 * @param legalMoves, all legal positions you can move to.
 	 * @param origin, the square the piece is originally in
 	 * @param board
 	 * @return a updated list of positions where you can move.
@@ -121,39 +138,25 @@ public abstract class AbstractPiece implements IPiece {
 		PieceColor opponent;
 		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
 		else {opponent = PieceColor.WHITE;}
-		
-		boolean hasMoved = false;
-		if(origin.getPiece().hasMoved())
-			hasMoved = true;
-		
-		IPiece p = null;
+	
 		ArrayList<Move> okMov = new ArrayList<Move>();
-		for(Move move : legalMoves) {
-			Square movSq = move.getTo();
-			//temporary move
-			if (movSq.isEmpty()) {
-				movePiece(origin, movSq);	
-			} else {				
-				p = captureEnemyPieceAndMovePiece(origin, movSq);
-			}
+		
+		for (Move m : legalMoves) {
+			IBoard testBoard = board.copy();
+			Square to = testBoard.getSquare(m.getTo().getX(), m.getTo().getY());
+			Square from = testBoard.getSquare(m.getFrom().getX(), m.getFrom().getY());
 			
-			ArrayList<IPiece> threatened = board.piecesThreatenedByOpponent(getColor(), opponent);
-			//reverts move
-			if(p != null) {
-				revertMove(origin, movSq, p);
+			if(to.isEmpty()) {
+				movePiece(from, to);
 			} else {
-				movePiece(movSq, origin);
+				captureEnemyPieceAndMovePiece(from, to);
 			}
 			
+			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {
 				//removes illegal move
-				okMov.add(move);
+				okMov.add(m);
 			}
-		}
-		
-		//reset field variable
-		if(!hasMoved) {
-			origin.getPiece().setMovedFalse();
 		}
 		return okMov;
 	}
@@ -165,7 +168,7 @@ public abstract class AbstractPiece implements IPiece {
 		movePiece(origin, next);
 		return captured;
 	}
-	
+
 	/**
 	 * Reverts a move, and puts taken piece back in place.
 	 * Resets the inPlay field variable of the taken piece
@@ -198,12 +201,13 @@ public abstract class AbstractPiece implements IPiece {
 	 * of the empty reachable fields, and take into account that the
 	 * list will contain the non-empty squares of the reachable
 	 * pieces from this position.
+	 * @param board
+	 * @param playerOne, the PieceColor of first player
 	 * @param x-position of rook
 	 * @param y-position of rook
-	 * @param board
 	 * @return list of all reachable fields in moving direction of piece
 	 */
-	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board);
+	protected abstract ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne);
 
 	/**
 	 * Method to extract moves more easily
@@ -214,24 +218,17 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return Legal move, null if illegal.
 	 */
 	protected Move getMove(Square origin, int x, int y, IBoard board) {
-		Square sq = board.getSquare(x, y);
-		if(sq.isEmpty()) {
-			return new Move(origin, sq, this, null, MoveType.REGULAR);
-		} else if (sq.getPiece().getColor() != getColor()) {
-			return new Move(origin, sq, this, sq.getPiece(), MoveType.REGULAR);
-		}
-		return null;
+		return getMove(origin, board.getSquare(x, y));
 	}
 
 	/**
 	 * Method to extract moves more easily
 	 * @param origin
 	 * @param dest
-	 * @param board
 	 * @return Legal move, null if illegal.
 	 *
 	 */
-	protected Move getMove(Square origin, Square dest, IBoard board) {
+	protected Move getMove(Square origin, Square dest) {
 		if(dest.isEmpty()) {
 			return new Move(origin, dest, this, null, MoveType.REGULAR);
 		} else if (dest.getPiece().getColor() != getColor()) {
@@ -239,4 +236,5 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return null;
 	}
+
 }

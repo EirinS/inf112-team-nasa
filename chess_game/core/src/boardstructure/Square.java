@@ -9,22 +9,21 @@ public class Square {
 	 * X position
 	 */
 	private int x;
-	
+
 	/**
 	 * Y position
 	 */
 	private int y;
-	
+
 	/**
 	 * The piece the square contains (null if nothing)
 	 */
 	private IPiece piece;
-	
+
 	/**
 	 * Precondition: Square must be within dimensions of board.
 	 * @param x position
 	 * @param y position
-	 * @param color (black, white)
 	 */
 	public Square(int x, int y) {
 		this.x = x;
@@ -34,22 +33,44 @@ public class Square {
 
 	String numberToLetter(int num){
 		switch (num) {
-			case 1:
-				return "A";
-			case 2:
-				return "B";
-			case 3:
-				return "C";
-			case 4:
-				return "D";
-			case 5:
-				return "E";
-			case 6:
-				return "F";
-			case 7:
-				return "G";
-			default:
-				return "H";
+		case 7:
+			return "H";
+		case 6:
+			return "G";
+		case 5:
+			return "F";
+		case 4:
+			return "E";
+		case 3:
+			return "D";
+		case 2:
+			return "C";
+		case 1:
+			return "B";
+		default:
+			return "A";
+
+		}
+	}
+
+	private int flipY(int num) {
+		switch (num) {
+		case 7:
+			return 1;
+		case 6:
+			return 2;
+		case 5:
+			return 3;
+		case 4:
+			return 4;
+		case 3:
+			return 5;
+		case 2:
+			return 6;
+		case 1:
+			return 7;
+		default:
+			return 8;
 
 		}
 	}
@@ -67,21 +88,21 @@ public class Square {
 		this.y = y;
 		this.piece = piece;
 	}
-	
+
 	/**
 	 * @return x position
 	 */
 	public int getX() {
 		return x;
 	}
-	
+
 	/**
 	 * @return y position
 	 */
 	public int getY() {
 		return y;
 	}
-	
+
 	/**
 	 * @return true if empty, false otherwise
 	 */
@@ -90,7 +111,7 @@ public class Square {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Put a piece into the square if it is empty. 
 	 * @param piece
@@ -104,7 +125,7 @@ public class Square {
 		}
 		this.piece = piece;				
 	}
-	
+
 	/**
 	 * Removes the piece in this square (if there is one, otherwise do nothing)
 	 * Sets moved state to true and piece field in square to null.
@@ -116,7 +137,7 @@ public class Square {
 		piece = null;
 		return p;
 	}
-	
+
 	/**
 	 * Piece is taken by another chess player.
 	 * @return the piece removed from the board.
@@ -127,17 +148,17 @@ public class Square {
 		piece = null;
 		return p;
 	}
-	
+
 	/**
 	 * @return the piece stored in this square
 	 */
 	public IPiece getPiece() {
 		return piece;
 	}
-	
+
 	@Override
 	public String toString() {
-		return numberToLetter(y)+x;
+		return numberToLetter(x)+flipY(y);
 	}
 
 	@Override
@@ -152,7 +173,6 @@ public class Square {
 
 	@Override
 	public int hashCode() {
-
 		return Objects.hash(x, y, piece);
 	}
 }

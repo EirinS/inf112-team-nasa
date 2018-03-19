@@ -13,11 +13,12 @@ public interface IPiece {
 	 * Should check all the rules of the piece and get the legal positions.
 	 * It also checks that you cannot move to squares containing a piece 
 	 * of your own color.
+	 * @param playerOne TODO
 	 * @param Square square, the position of piece on board.
 	 * @param IBoard board, the board we're playing on.
 	 * @return ArrayList<Move> of legal moves.
 	 */
-	public ArrayList<Move> getLegalMoves(Square square, IBoard board);
+	public ArrayList<Move> getLegalMoves(Square square, IBoard board, PieceColor playerOne);
 	
 	/**
 	 * @return color of this piece
@@ -88,5 +89,9 @@ public interface IPiece {
 	 */
 	public IPiece captureEnemyPieceAndMovePiece(Square cur, Square next);
 	
-
+	/**
+	 * Copy this piece
+	 * @return copy this piece.
+	 */
+	public IPiece copy();
 }

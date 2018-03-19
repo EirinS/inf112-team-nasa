@@ -5,12 +5,14 @@ import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
+
 /**
  * 
  * @author Sofia
  */
-public class Bishop extends AbstractPiece{
+public class Bishop extends AbstractPiece {
 	
 	public Bishop (PieceColor enumColor){
 		color = enumColor;
@@ -18,7 +20,7 @@ public class Bishop extends AbstractPiece{
 	}
 
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(possibleMoves(board.getSquare(x, y), board, true));
 		reachable.addAll(possibleMoves(board.getSquare(x, y), board, false));
@@ -45,7 +47,8 @@ public class Bishop extends AbstractPiece{
 		// Depending on the boolean ascending, the following squares are added to the list:
 		//TRUE: (Ascending x, ascending Y) || FALSE: (Ascending x, descending Y)
 		for(int i = origin.getX()+1; i < board.getDimension(); i++){
-			if (yCoordinate > board.getDimension()){
+			System.out.println("X ASCENDING - x: " + i + " y: " + yCoordinate);
+			if (yCoordinate >= board.getDimension() || yCoordinate < 0) {
 				break;
 			}
 			square = board.getSquare(i, yCoordinate); 
@@ -53,7 +56,7 @@ public class Bishop extends AbstractPiece{
 			else { yCoordinate--;}
 			//Checks if non-empty field is opponent, adds to the list then breaks the loop if true 
 			if (!square.isEmpty() && this.color != square.getPiece().getColor()){
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 				break;
 			}
 			//Checks if square is inhabited by piece of the same team. Breaks the loop if it is.
@@ -62,14 +65,15 @@ public class Bishop extends AbstractPiece{
 			//Empty squares are added
 			}
 			else{
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 			}
 		}
 		yCoordinate = determineY(yAscending, origin.getY());
 		//Logic identical to loop above. 
 		//TRUE: (Descending x, ascending Y) || FALSE: (Decending x, descending Y)
-		for (int i = origin.getX()-1; i > 0; i--){
-			if(yCoordinate < 0){
+		for (int i = origin.getX()-1; i >= 0; i--){
+			System.out.println("X DESCENDING - x: " + i + " y: " + yCoordinate);
+			if (yCoordinate >= board.getDimension() || yCoordinate < 0) {
 				break;
 			}
 			square = board.getSquare(i, yCoordinate);
@@ -79,17 +83,25 @@ public class Bishop extends AbstractPiece{
 			
 			
 			if (!square.isEmpty() && this.color != square.getPiece().getColor()){
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 				break;
 			}
 			else if (!square.isEmpty() && this.color == square.getPiece().getColor()){
 				break;
 			}
 			else{
-				canBeReached.add(getMove(origin, square, board));
+				canBeReached.add(getMove(origin, square));
 			}
 		}
 		return canBeReached;
+	}
+	
+	@Override
+	public IPiece copy() {
+		Bishop b = new Bishop(this.getColor());
+		if (this.hasMoved())
+			b.pieceMoved();
+		return b;
 	}
 	
 	@Override

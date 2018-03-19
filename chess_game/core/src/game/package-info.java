@@ -5,4 +5,4 @@
  * @author sofia
  *
  */
-package chessGame;
+package game;

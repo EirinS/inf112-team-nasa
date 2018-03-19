@@ -18,7 +18,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class PieceTest {
-	IBoard board = new Board(10);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	IPiece rook = new Rook(PieceColor.WHITE);
 	int x = 0,  y = 3;
 	IPiece enemyRook = new Rook(PieceColor.BLACK);
@@ -36,12 +36,12 @@ public class PieceTest {
 	
 	@Test
 	public void canFindLegalPositions() {
-		assertTrue(board.getSquare(x, y).getPiece().getLegalMoves(board.getSquare(x, y), board).size() > 0);
+		assertTrue(board.getSquare(x, y).getPiece().getLegalMoves(board.getSquare(x, y), board, PieceColor.WHITE).size() > 0);
 	}
 	
 	@Test
 	public void legalPositionDoesNotChangeHasMovedFieldVariable() {
-		rook.getLegalMoves(board.getSquare(x, y), board);
+		rook.getLegalMoves(board.getSquare(x, y), board, PieceColor.WHITE);
 		assertFalse(rook.hasMoved());
 	}
 	
@@ -53,40 +53,42 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsHorizontal() {
-		IBoard newBoard = new Board(5);
+		//rook is not in this pos without moving.
+		rook.pieceMoved();
+		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(0, 0).putPiece(enemyRook);
 		newBoard.getSquare(0, 2).putPiece(rook);
 		newBoard.getSquare(0, 3).putPiece(new King(PieceColor.WHITE));
 		Square sq = newBoard.getSquare(0, 2);
-		ArrayList<Move> leg = rook.getLegalMoves(sq, newBoard);
+		ArrayList<Move> leg = rook.getLegalMoves(sq, newBoard, PieceColor.WHITE);
 		//legal position while capturing black, and before black.
 		assertEquals(2, leg.size());
 	}
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsvertical() {
-		IBoard newBoard = new Board(5);
+		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);
 		
 		//has legal moves before placing king
-		assertTrue(rook.getLegalMoves((newBoard.getSquare(2, 0)), newBoard).size() > 0);
+		assertTrue(rook.getLegalMoves((newBoard.getSquare(2, 0)), newBoard, PieceColor.WHITE).size() > 0);
 		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));
 		Square sq = newBoard.getSquare(2, 0);
 		
-		ArrayList<Move> leg = rook.getLegalMoves(sq, newBoard);
+		ArrayList<Move> leg = rook.getLegalMoves(sq, newBoard, PieceColor.WHITE);
 		//legal positions should now become 1, because your king is always reachable by enemyRook if you move, but you can capture enemy rook.
 		assertEquals(1, leg.size());
 	}
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsverticalDoesNotChangePosition() {
-		IBoard newBoard = new Board(5);
+		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));
-		rook.getLegalMoves((newBoard.getSquare(2, 0)), newBoard);
+		rook.getLegalMoves((newBoard.getSquare(2, 0)), newBoard, PieceColor.WHITE);
 		assertEquals(rook, newBoard.getSquare(2, 0).getPiece());
 		assertEquals(enemyRook, newBoard.getSquare(1, 0).getPiece());
 	}

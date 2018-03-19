@@ -16,7 +16,7 @@ import pieces.pieceClasses.Bishop;
 
 public class BishopsTest {
 	
-	IBoard board = new Board(8);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	Bishop wBishop = new Bishop(PieceColor.WHITE);
 	int x = 4, y = 4;
 	Square square = board.getSquare(x, y);
@@ -35,7 +35,7 @@ public class BishopsTest {
 
 	@Test
 	public void legalPositionsMoreThanZero() {
-		assertTrue(square.getPiece().getLegalMoves(square, board).size() > 0);
+		assertTrue(square.getPiece().getLegalMoves(square, board, PieceColor.WHITE).size() > 0);
 	}
 	
 	/**
@@ -46,12 +46,12 @@ public class BishopsTest {
 
 	@Test
 	public void diagonalMove() {
-		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
-	//	int i = 0;
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
+		int i = 0;
 		boolean found = false;
 		for (Move aMove : move) {
-	//		i++;
-	//		System.out.println(i + ". " + aMove.getTo() + " " + board.getSquare(7, 7));
+			i++;
+			System.out.println(i + ". " + aMove.getTo());
 			if (aMove.getTo().equals(board.getSquare(7, 7))){
 				found = true;
 			}
@@ -61,18 +61,18 @@ public class BishopsTest {
 	
 	@Test
 	public void cannotMoveHorisontally(){
-		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
 		for (Move aMove : move) {
-			assertFalse(move.contains(aMove.getTo().equals(board.getSquare(2, 4))));
+			assertFalse(aMove.getTo().equals(board.getSquare(2, 4)));
 		}
 		
 	}
 	
 	@Test 
 	public void cannotMoveVertically(){
-		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
 		for (Move aMove : move) {
-			assertFalse(move.contains(aMove.getTo().equals(board.getSquare(4, 7))));
+			assertFalse(aMove.getTo().equals(board.getSquare(4, 7)));
 		}
 	}
 	
@@ -80,7 +80,7 @@ public class BishopsTest {
 	public void cannotShareSquareWithSameTeam(){
 		Bishop wBishopTwo = new Bishop(PieceColor.WHITE);
 		board.getSquare(6, 6).putPiece(wBishopTwo);
-		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
 		boolean found = false;
 		for (Move aMove : move) {
 			if (aMove.getTo().equals(board.getSquare(7, 7))){
@@ -94,7 +94,7 @@ public class BishopsTest {
 	public void cannotMovePastPiece(){
 		Bishop wBishopTwo = new Bishop(PieceColor.WHITE);
 		board.getSquare(6, 6).putPiece(wBishopTwo);
-		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board);
+		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
 		boolean found = false;
 		for (Move aMove : move) {
 			if (aMove.getTo().equals(board.getSquare(6, 6))){

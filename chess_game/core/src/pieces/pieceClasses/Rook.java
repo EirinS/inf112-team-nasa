@@ -7,6 +7,7 @@ import boardstructure.Move;
 import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Rook extends AbstractPiece {
@@ -19,30 +20,71 @@ public class Rook extends AbstractPiece {
 
 
 	@Override
-	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
+	public ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
+		//reachable.add(castling(board.getSquare(x, y), board));
 		return reachable;
 	}
 
 	/**
-	 * NOT IMPLEMENTED
-	 * 
-	 * @param sq,
-	 *            square of the rook
-	 * @param board,
-	 *            board the rook is on
-	 * @return legal castling square moves.
+	 * Finds a castling move, if there is one, for this rook.
+	 * @param sq, the square this rook is in
+	 * @param board
+	 * @return Move m, that is the castling move, if there is one, null if not.
 	 */
-	private ArrayList<Move> castling(Square sq, IBoard board) {
-		// TODO
-		/*
-		 * CONDITIONS FOR THIS MOVE: - Neither the king, nor rook has moved before - No
-		 * pieces between king and chosen rook - The king never passes through pieces
-		 * where it's in check - King is not in check
-		 */
-		return null;
+	public Move castling(Square sq, IBoard board) {
+		//no castling if piece moved
+		if (hasMoved()) {return null;}
+		
+		Square kingSq = board.getKingPos(getColor());
+		
+		//no king, no castling.
+		if(kingSq == null) {return null;}
+		King k = (King) kingSq.getPiece();
+		
+		//king has moved, no castling.
+		if (k.hasMoved()) {return null;}		
+		
+		//check which castling-type
+		boolean kingSide = false;
+		if(sq.getX() == 7) {kingSide = true;}
+		
+		//if king moves through positions in check, no castling.
+		//if(k.kingMovesThroughCheckPos(kingSq, board, kingSide)) {return null;}
+		
+		//this rook is not on a free path to king
+		if(!k.getFirstPieceHorizontal(kingSq, board).containsKey(this)) {return null;}
+		
+		//castling should now be possible
+		if (kingSide)
+			return new Move(sq, board.getSquare(sq.getX()-2, sq.getY()), this, null, MoveType.KINGSIDECASTLING);
+		else 
+			return new Move(sq, board.getSquare(sq.getX()+3, sq.getY()), this, null, MoveType.QUEENSIDECASTLING);
+	}
+	
+	/**
+	 *  Precondition: All positions that are moved to are empty and possible to move to.
+	 * Castling is an OK move.
+	 * @param origin
+	 * @param next
+	 * @param type
+	 * @param board
+	 */
+	public void moveCastling(Square origin, Square next, MoveType type, IBoard board) {
+		//moves rook
+		next.putPiece(origin.movePiece());
+		
+		Square kingSq = board.getKingPos(getColor());
+		if (type == MoveType.KINGSIDECASTLING) {
+			board.getSquare(kingSq.getX()+2, kingSq.getY()).putPiece(kingSq.movePiece());
+		} else if (type == MoveType.QUEENSIDECASTLING){
+			//moves rook
+			board.getSquare(kingSq.getX()-2, kingSq.getY()).putPiece(kingSq.movePiece());
+		} else {
+			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
+		}
 	}
 
 	/**
@@ -76,10 +118,10 @@ public class Rook extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}
 
@@ -95,10 +137,10 @@ public class Rook extends AbstractPiece {
 
 			if (!dest.isEmpty()) {
 				if (getColor() != dest.getPiece().getColor())
-					ok.add(getMove(origin, dest, board));
+					ok.add(getMove(origin, dest));
 				break;
 			} else {
-				ok.add(getMove(origin, dest, board));
+				ok.add(getMove(origin, dest));
 			}
 		}		
 		return ok;
@@ -109,4 +151,12 @@ public class Rook extends AbstractPiece {
 		return "R";
 	}
 
+
+	@Override
+	public IPiece copy() {
+		Rook r = new Rook(this.getColor());
+		if (this.hasMoved())
+			r.pieceMoved();
+		return r;
+	}
 }

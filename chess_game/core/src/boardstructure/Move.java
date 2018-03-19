@@ -89,7 +89,7 @@ public class Move {
 		if (movingPiece == null) {
 			if (other.movingPiece != null)
 				return false;
-		} else if (!movingPiece.equals(other.movingPiece))
+		} else if (movingPiece.getColor() != (other.movingPiece.getColor()))
 			return false;
 		if (to == null) {
 			if (other.to != null)

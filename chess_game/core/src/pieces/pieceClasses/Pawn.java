@@ -7,6 +7,7 @@ import boardstructure.Move;
 import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 /**
@@ -15,7 +16,6 @@ import pieces.PieceColor;
  *
  */
 public class Pawn extends AbstractPiece {
-	private PieceColor color;
 	private boolean inPlay;
 	private boolean hasMoved;
 	
@@ -30,15 +30,19 @@ public class Pawn extends AbstractPiece {
 	}
 	
 	//TODO en passant
+	//TODO hasMoved logic
+	//TODO pawn promotion
 	
 	/**
 	 * Gets a list of all legal moves for this pawn
 	 */
 	@Override
-	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board) {
-		ArrayList<Move> reachable = new ArrayList<Move>();
-		reachable.addAll(reachableSquares(new Square(x, y), board));
-		return reachable;
+	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
+		ArrayList<Move> m = new ArrayList<>();
+		Square sq = board.getSquare(x, y);
+		m.addAll(reachableSquares(sq, board, playerOne));
+		return m;
+
 	}
 	
 	/**
@@ -48,69 +52,80 @@ public class Pawn extends AbstractPiece {
 	public boolean hasMoved() {
 		return hasMoved;
 	}
-	
+
 	/**
 	 * Builds a list of all legal moves for this pawn
 	 * @param origin the square this pawn moves from
 	 * @param board the board this pawn is placed on
 	 * @return
 	 */
-	public ArrayList<Move> reachableSquares(Square origin, IBoard board) {
+	public ArrayList<Move> reachableSquares(Square origin, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		int x = origin.getX();
 		int y = origin.getY();
-		Square oneAhead = null; // One square ahead
-		Square twoAhead = null; // Two squares ahead
-		Square westAhead = null; // One square ahead and westward
-		Square eastAhead = null; // One square ahead and eastward
+		int dy = 0;
 		PieceColor opponentColor = null;
-		
-		// Check whether the squares in question are legal positions
 		if (color == PieceColor.WHITE) {
-			if (y-1 < 0) oneAhead = new Square(x, y-1);
-			if (y-2 < 0) twoAhead = new Square(x, y-2);
-			if (x != 0) westAhead = new Square(x-1, y-1);
-			if (x != board.getWidth()-1) eastAhead = new Square(x+1, y-1);
+		//TODO change from color to playerOne
+		//if (playerOne == PieceColor.WHITE) {
+			dy = -1;
 			opponentColor = PieceColor.BLACK;
 		} else {
-			if (y+1 > board.getHeight()-1) oneAhead = new Square(x, y+1);
-			if (y+2 > board.getHeight()-1) twoAhead = new Square(x, y+2);
-			if (x != 0) westAhead = new Square(x-1, y+1);
-			if (x != board.getWidth()-1) eastAhead = new Square(x+1, y+1);
+			dy = 1;
 			opponentColor = PieceColor.WHITE;
 		}
 		
-		// Check square straight ahead
-		if (oneAhead != null && oneAhead.isEmpty()) {
-			Move move = new Move(origin, oneAhead, this, null, MoveType.REGULAR);
-			reachable.add(move);
+		// Check whether the vertical moves are valid
+		if (y+dy >= 0) {
+			// Check square straight ahead
+			Square oneAhead = board.getSquare(x, y+dy);
+			if (oneAhead.isEmpty()) {
+				Move move = new Move(origin, oneAhead, this, null, MoveType.REGULAR);
+				reachable.add(move);
+			}
+			// Check if this pawn can move two squares ahead
+			if (y+2*dy >= 0) {
+				Square twoAhead = board.getSquare(x, y+2*dy);
+				if (!hasMoved && oneAhead.isEmpty() && twoAhead.isEmpty()) {
+					Move move = new Move(origin, twoAhead, this, null, MoveType.REGULAR);
+					reachable.add(move);
+				}
+			}
 		}
 		
-		// Check if this pawn can move two squares ahead
-		if (!hasMoved && oneAhead.isEmpty() && twoAhead.isEmpty()) {
-			Move move = new Move(origin, twoAhead, this, null, MoveType.REGULAR);
-			reachable.add(move);
+		// Check whether diagonal moves are valid
+		if (x != 0) {
+			Square westAhead = board.getSquare(x-1, y+dy);
+			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
+				Move move = new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR);
+				reachable.add(move);
+				System.out.println("Pawn: " + origin + ": " + origin.getPiece());
+				System.out.println("Pawn: " + westAhead + ": " + westAhead.getPiece());
+			}
 		}
-
-		// Check for opponent pieces on both sides of the square straight ahead
-		if (westAhead != null && westAhead.getPiece() != null
-				&& westAhead.getPiece().getColor() == opponentColor) {
-			Move move = new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR);
-			reachable.add(move);
+		if (x != board.getWidth()-1) { 
+			Square eastAhead = board.getSquare(x+1, y+dy);
+			if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
+				Move move = new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR);
+				reachable.add(move);
+			}
 		}
-		if (eastAhead != null && eastAhead.getPiece() != null
-				&& eastAhead.getPiece().getColor() == opponentColor) {
-			Move move = new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR);
-			reachable.add(move);
-		}
-
 		return reachable;
+	}
+	
+	@Override
+	public IPiece copy() {
+		Pawn p = new Pawn(this.getColor());
+		if (this.hasMoved())
+			p.pieceMoved();
+		return p;
 	}
 	
 	/**
 	 * Returns a string that represents this pawn.
 	 */
+	@Override
 	public String toString() {
-		return "Pawn [inPlay=" + inPlay + ", color=" + color + "]";
+		return "P";
 	}
 }

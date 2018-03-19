@@ -6,7 +6,7 @@ import org.robovm.apple.uikit.UIApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 
-import chessGame.Chess;
+import game.Chess;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override

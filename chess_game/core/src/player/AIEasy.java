@@ -1,6 +1,7 @@
 package player;
 
 import boardstructure.Board;
+import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import pieces.PieceColor;
@@ -16,8 +17,12 @@ public class AIEasy implements AI,Playable {
 	PieceColor playerColor;
 	Random rand = new Random(System.nanoTime());
 
+	public AIEasy(PieceColor playerColor){
+		this.playerColor = playerColor;
+	}
+
 	@Override
-	public Move calculateMove(Board currentBoard) {
+	public Move calculateMove(IBoard currentBoard) {
 		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
 		int num = rand.nextInt(possibleMoves.size());
 
@@ -25,7 +30,7 @@ public class AIEasy implements AI,Playable {
 	}
 
 	@Override
-	public Move makeMove(Board board, Square from, Square to) {
+	public Move makeMove(IBoard board, Square from, Square to) {
 		return calculateMove(board);
 	}
 

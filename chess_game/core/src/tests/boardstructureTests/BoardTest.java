@@ -17,7 +17,7 @@ import pieces.pieceClasses.Rook;
 
 public class BoardTest {
 	private int dim = 10;
-	private IBoard board = new Board(dim);
+	private IBoard board = new Board(dim, PieceColor.WHITE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -27,11 +27,25 @@ public class BoardTest {
 	public void cantCreateIllegalBoard() {
 		boolean thrown = false;
 		try {
-			IBoard board = new Board(-1);
+			IBoard board = new Board(-1, PieceColor.WHITE);
 		} catch (Exception e){
 			thrown = true;
 		}
 		assertTrue(thrown);
+	}
+	
+	@Test
+	public void getKingPosCanGetPositionWithKing() {
+		Square sq = board.getSquare(3, 3);
+		sq.putPiece(new King(PieceColor.WHITE));
+		assertEquals(sq, board.getKingPos(PieceColor.WHITE));
+	}
+	
+	@Test
+	public void getKingPosCanNotGetPositionWithRook() {
+		Square sq = board.getSquare(3, 3);
+		sq.putPiece(new Rook(PieceColor.WHITE));
+		assertEquals(null, board.getKingPos(PieceColor.WHITE));
 	}
 
 	@Test
@@ -51,7 +65,7 @@ public class BoardTest {
 	
 	@Test
 	public void boardHasNoNullSpots() {
-		assertFalse(board.getBoard().contains(null));		
+		assertFalse(board.getSquares().contains(null));
 	}
 	
 	@Test
@@ -106,10 +120,16 @@ public class BoardTest {
 	
 	@Test
 	public void getAllThreatenedPiecesFindsThreatenedPieces() {
-		IBoard newboard = new Board(5);
+		IBoard newboard = new Board(5, PieceColor.WHITE);
 		IPiece whiteRook = new Rook(PieceColor.WHITE);
 		IPiece blackRook = new Rook(PieceColor.BLACK);
 		IPiece blackKing = new King(PieceColor.BLACK);
+		
+		//pieces is not here unless moved.
+		whiteRook.pieceMoved();
+		blackRook.pieceMoved();
+		blackKing.pieceMoved();
+		
 		newboard.getSquare(0, 0).putPiece(blackKing);
 		newboard.getSquare(0, 1).putPiece(whiteRook);
 		newboard.getSquare(0, 2).putPiece(blackRook);
@@ -122,6 +142,27 @@ public class BoardTest {
 		p = newboard.piecesThreatenedByOpponent(PieceColor.WHITE, PieceColor.BLACK);
 		assertTrue(p.contains(whiteRook));
 		assertEquals(1, p.size());
+	}
+	
+	@Test
+	public void copyBoard() {
+		IBoard board = new Board(8, PieceColor.WHITE);
+		IPiece r = new Rook(PieceColor.WHITE);
+		board.getSquare(5, 3).putPiece(r);
+		IBoard copy = board.copy();
+		
+		board.getSquare(2, 2).putPiece(board.getSquare(5, 3).movePiece());
+		boolean found = false;
+		
+		for(Square sq : copy.getBoard()) {
+			if(!sq.isEmpty()) {
+				found = true;
+				assertEquals(sq.getX(), 5);
+				assertEquals(sq.getY(), 3);
+				assertFalse(sq.getPiece().hasMoved());
+			}
+		}
+		assertTrue(found);
 	}
 	
 	private void setUpForMoveTest() {

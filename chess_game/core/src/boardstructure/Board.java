@@ -5,22 +5,27 @@ import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 
 public class Board implements IBoard {
+
 	private ArrayList<Move> history = new ArrayList<>();
 	private int height;
 	private int width;
 	private ArrayList<Square> board;
+	private PieceColor playerOne;
 
 	/**
 	 * Create new board.
 	 * 
 	 * @param dim
 	 *            Board is always square. Dim is the height and width of board.
+	 * @param playerOne pieceColor of player one (player in lower side of board)	
 	 */
-	public Board(int dim) {
+	public Board(int dim, PieceColor playerOne) {
 		if (dim < 0)
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
+		this.playerOne = playerOne;
 		height = dim;
 		width = dim;
 		board = new ArrayList<Square>();
@@ -30,9 +35,22 @@ public class Board implements IBoard {
 			}
 		}
 	}
+	
 
+	@Override
 	public List<Move> getAvailableMoves(PieceColor playerColor) {
-		return null;
+
+		ArrayList<Move> moves = new ArrayList<>();
+
+		for(Square s : board) {
+			IPiece piece = s.getPiece();
+
+			if(piece != null && piece.getColor() == playerColor) {
+				List<Move> moveList = piece.getLegalMoves(s, this, playerOne);
+				moves.addAll(moveList);
+			}
+		}
+		return moves;
 	}
 
 	@Override
@@ -47,8 +65,10 @@ public class Board implements IBoard {
 
 	@Override
 	public Square getSquare(int x, int y) {
+
+		// TODO: 18/03/2018 Bishop/Knight/etc... bug here
 		if (!withinBoard(x,y)) {
-			throw new IllegalArgumentException("Cannot look for squares outside the board");
+			throw new IllegalArgumentException("Cannot look for squares outside the board: (" + x + ", " + y + ")");
 		}
 		return board.get(x * width + y);
 	}
@@ -61,7 +81,7 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public ArrayList<Square> getBoard() {
+	public ArrayList<Square> getSquares() {
 		return board;
 	}
 
@@ -101,12 +121,13 @@ public class Board implements IBoard {
 		return threatenedPieces(opponent, player);
 	}
 
+
 	/**
 	 * Helper method to get threatened pieces.
 	 * 
-	 * @param PieceColor
+	 * @param opponent
 	 *            threatening, color of the opponent
-	 * @param PieceColor
+	 * @param player
 	 *            gettingThreatened, your color
 	 * @return ArrayList<IPiece> of your threatened pieces
 	 */
@@ -139,13 +160,25 @@ public class Board implements IBoard {
 	}
 
 	@Override
+	public Move getLastMove() {
+		if (history.isEmpty()) return null;
+		return history.get(history.size() - 1);
+	}
+
+	@Override
+	public Move move(int fromX, int fromY, int toX, int toY) {
+		return move(getSquare(fromX, fromY), getSquare(toX, toY));
+	}
+
+	@Override
 	public Move move(Square from, Square to) {
 		if (from == null) {
+			return null;
 			//tell user this is illegal
 		}
 		
 		IPiece moving = from.getPiece();
-		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this);
+		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, null);
 		for(Move m : legalMoves) {
 			if (m.getTo() == to) {
 				return doMove(m);
@@ -157,7 +190,7 @@ public class Board implements IBoard {
 	
 	/**
 	 * Finds and executes the chosen move.
-	 * @param Move m, the move that you'll do
+	 * @param m, the move that you'll do
 	 * @return the move done
 	 */
 	private Move doMove(Move m) {
@@ -174,14 +207,63 @@ public class Board implements IBoard {
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
+			printOutBoard();
 			history.add(m);
 			return m;
 		} else {
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
+			printOutBoard();
 			history.add(m);
 			return m;			
 		}
+		printOutBoard();
 		return null;
+	}
+
+	public void printOutBoard(){
+		System.out.println("--------");
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				IPiece p = getSquare(j,i).getPiece();
+
+				if(p == null) {
+					System.out.print("_");
+				}else {
+					System.out.print(p);
+				}
+			}
+			System.out.println("");
+		}
+	}
+
+	@Override
+	public Square getKingPos(PieceColor kingColor) {
+		for(Square sq : getBoard())
+			if (sq.getPiece() instanceof King && sq.getPiece().getColor() == kingColor) {
+				return sq;
+			}
+		return null;
+	}
+
+	@Override
+	public ArrayList<Square> getBoard() {
+		return board;
+	}
+
+
+	@Override
+	public IBoard copy() {
+		IBoard board = new Board(this.getDimension(), PieceColor.WHITE);
+		for(Square sq : getBoard()) {
+			int x = sq.getX(), y = sq.getY();
+			if(sq.isEmpty())
+				continue;
+			IPiece p = sq.getPiece().copy();
+			Square newSq = new Square(x,y);
+			newSq.putPiece(p);
+			board.addSquare(newSq);
+		}
+		return board;
 	}
 
 }

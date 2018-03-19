@@ -1,6 +1,7 @@
 package boardstructure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -26,6 +27,14 @@ public interface IBoard {
 	public int getDimension();
 	
 	/**
+	 * Find a king on the board.
+	 * @param kingColor, color of king you want to find.
+	 * @return the square the king you want to find is in,
+	 * null if no king was found.
+	 */
+	public Square getKingPos(PieceColor kingColor);
+	
+	/**
 	 * Get a specific square in board
 	 * @return square
 	 */
@@ -43,6 +52,12 @@ public interface IBoard {
 	/**
 	 * Gives all the squares in the board.
 	 * @return all squares in board.
+	 */
+	public ArrayList<Square> getSquares();
+	
+	/**
+	 * Returns the board as a list.
+	 * @return ArrayList<Square> of all squares on the board.
 	 */
 	public ArrayList<Square> getBoard();
 	
@@ -83,9 +98,20 @@ public interface IBoard {
 	 * @return ArrayList<IPiece>, all pieces threatened by white.
 	 */
 	public ArrayList<IPiece> piecesThreatenedByOpponent(PieceColor player, PieceColor opponent);
-	
+
 	/**
-	 * Move a piece to a legal position on the board. 
+	 * Move a piece to a legal position on the board.
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param fromX From x position
+	 * @param fromY From y position
+	 * @param toX To x position
+	 * @param toY To y position
+	 * @return
+	 */
+	public Move move(int fromX, int fromY, int toX, int toY);
+
+	/**
+	 * Move a piece to a legal position on the board.
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
@@ -99,6 +125,22 @@ public interface IBoard {
 	 */
 	public ArrayList<Move> getHistory();
 
+	/**
+	 * This method returns the last successfull move.
+	 * @return Last move, null if no moves.
+	 */
+	public Move getLastMove();
 	
-	
+	/**
+	 * Makes a copy of this board and the squares in it.
+	 * @return An IBoard board copy
+	 */
+	public IBoard copy();
+
+	/**
+	 *
+	 * @param playerColor color of the player you want to have the moves from
+	 * @return available moves for the given player color
+	 */
+	public List<Move> getAvailableMoves(PieceColor playerColor);
 }
