@@ -99,6 +99,7 @@ public class AIMediumTests {
 		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
 	}
 	
+	//this is useless for now
 	@Test
 	public void testThatMediumAIWithOnlyRooksAndKingDoesNotPreformInvalidCastling() {
 		ws.putPiece(w);

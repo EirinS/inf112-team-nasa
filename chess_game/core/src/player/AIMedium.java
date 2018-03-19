@@ -111,7 +111,14 @@ public class AIMedium implements AI,Playable {
 			for(Square square : currentBoard.getBoard()) {
 				if (move.getFrom()==square) {
 				}else if (move.getTo()==square) {
-					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(move.getMovingPiece());
+					String piece = move.getFrom().getPiece().toString();
+					if (piece=="R"||piece=="K"||piece=="R") {
+					IPiece copy = move.getFrom().getPiece().copy();
+					copy.pieceMoved();
+					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(copy);
+					}else {
+						possibleBoard.getSquare(square.getX(), square.getY()).putPiece(move.getMovingPiece());
+					}
 				}else if (!square.isEmpty()&&move.getFrom()!=square){
 					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(square.getPiece());
 				}	
