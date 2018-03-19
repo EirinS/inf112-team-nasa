@@ -69,19 +69,33 @@ public class AIMedium implements AI,Playable {
 
 			} if (playerColor==PieceColor.WHITE) {
 				for (int u=0; u<findWorst.size(); u++) {
-				if (findWorst.get(u)[0]<worst[0]) {
-					worst=findWorst.get(u);
-					//worst[1] = i;
+					if (findWorst.get(u)[0]<worst[0]) {
+						worst=findWorst.get(u);
 					}
-				
+				}theMoves.add(worst);
+			}else {
+				for (int u=0; u<findWorst.size(); u++) {
+					if (findWorst.get(u)[0]>worst[0]) {
+						worst=findWorst.get(u);
+					}
 				}theMoves.add(worst);
 			}
-		} for (int i=0; i<theMoves.size();i++) {
-			if (theMoves.get(i)[0]>theMove[0]) {
-				theMove=theMoves.get(i);
+				
+		}if (playerColor==PieceColor.WHITE) {
+			for (int i=0; i<theMoves.size();i++) {
+				if (theMoves.get(i)[0]>theMove[0]) {
+					theMove=theMoves.get(i);
+				}
+				
 			}
-			
+		}else {
+			for (int i=0; i<theMoves.size();i++) {
+				if (theMoves.get(i)[0]<theMove[0]) {
+					theMove=theMoves.get(i);
+				}
+			}
 		}
+		
 		return possibleMoves.get(theMove[1]);
 	}		
 	

@@ -4,6 +4,10 @@ import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import pieces.PieceColor;
@@ -32,19 +36,14 @@ public class AIMediumTests {
 
 	@Before
 	public void setUp() throws Exception {
+	}
+	
+	@Test
+	public void testThatMediumAIWithOnlyARookDetectsAndMovesToFreeRook(){
 		ws.putPiece(w);
 		bs.putPiece(b);
 		wks.putPiece(b);
-		//bs.putPiece(b);
-		//br2.putPiece(b);
-		//br3.putPiece(w);
 		
-		//wks.putPiece(wk);
-		//bks.putPiece(bk);
-	}
-	//bugs need to be fixed before the tests are valid, they are not complete.
-	@Test
-	public void testThatMediumAIWithOnlyARookDetectsAndMovesToFreeRook(){
 		AIMedium ai = new AIMedium(PieceColor.WHITE);
 		Move move = ai.calculateMove(board);
 		org.junit.Assert.assertEquals(move.getMovingPiece().toString(), "R");
@@ -55,9 +54,43 @@ public class AIMediumTests {
 	}
 	
 	@Test
-	public void testThatMediumAIWithOnlyARookDetectsTheBestMove(){
-		
+	public void getPossibleBoardsTest() {
 		AIMedium ai = new AIMedium(PieceColor.WHITE);
+		List<Move> moves = board.getAvailableMoves(PieceColor.WHITE);
+		ArrayList<Board> boards = ai.getPossibleBoards(board,moves);
+		org.junit.Assert.assertEquals(boards.size(),moves.size());
+		for(int i=0;i< boards.size();i++) {
+			String a = moves.get(i).getFrom().getPiece().toString();
+			String b = boards.get(i).getSquare(moves.get(i).getTo().getX(), moves.get(i).getTo().getY()).getPiece().toString();
+			org.junit.Assert.assertEquals(a, b);
+		}
+	}
+	
+	@Test
+	public void testThatMediumAIWithOnlyRooksDetectsTheBestMoveWhite(){
+		ws.putPiece(w);
+		bs.putPiece(b);
+		wks.putPiece(b);
+		br2.putPiece(b);
+		br3.putPiece(w);
+
+		AIMedium ai = new AIMedium(PieceColor.WHITE);
+		Move move = ai.calculateMove(board);
+		org.junit.Assert.assertEquals(move.getMovingPiece().toString(), "R");
+		org.junit.Assert.assertEquals(move.getTo().getX(), 7);
+		org.junit.Assert.assertEquals(move.getTo().getY(), 0);
+		org.junit.Assert.assertEquals(move.getFrom().getX(), 0);
+		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
+	}
+	@Test
+	public void testThatMediumAIWithOnlyRooksDetectsTheBestMoveBlack(){
+		ws.putPiece(b);
+		bs.putPiece(w);
+		wks.putPiece(w);
+		br2.putPiece(w);
+		br3.putPiece(b);
+
+		AIMedium ai = new AIMedium(PieceColor.BLACK);
 		Move move = ai.calculateMove(board);
 		org.junit.Assert.assertEquals(move.getMovingPiece().toString(), "R");
 		org.junit.Assert.assertEquals(move.getTo().getX(), 7);
