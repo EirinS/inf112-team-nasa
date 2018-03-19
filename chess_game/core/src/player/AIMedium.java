@@ -62,26 +62,40 @@ public class AIMedium implements AI,Playable {
 			for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
 				
 				List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
-				ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(i),possibleMovesEnd);
+				ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd);//i),possibleMovesEnd);
 				int[] best = getBestAIScorePlacement(possibleBoardsEnd);
 				best[1]=i;
 				findWorst.add(best);
 
 			} if (playerColor==PieceColor.WHITE) {
 				for (int u=0; u<findWorst.size(); u++) {
-				if (findWorst.get(u)[0]<worst[0]) {
-					worst=findWorst.get(u);
-					//worst[1] = i;
+					if (findWorst.get(u)[0]<worst[0]) {
+						worst=findWorst.get(u);
 					}
-				
+				}theMoves.add(worst);
+			}else {
+				for (int u=0; u<findWorst.size(); u++) {
+					if (findWorst.get(u)[0]>worst[0]) {
+						worst=findWorst.get(u);
+					}
 				}theMoves.add(worst);
 			}
-		} for (int i=0; i<theMoves.size();i++) {
-			if (theMoves.get(i)[0]>theMove[0]) {
-				theMove=theMoves.get(i);
+				
+		}if (playerColor==PieceColor.WHITE) {
+			for (int i=0; i<theMoves.size();i++) {
+				if (theMoves.get(i)[0]>theMove[0]) {
+					theMove=theMoves.get(i);
+				}
+				
 			}
-			
+		}else {
+			for (int i=0; i<theMoves.size();i++) {
+				if (theMoves.get(i)[0]<theMove[0]) {
+					theMove=theMoves.get(i);
+				}
+			}
 		}
+		
 		return possibleMoves.get(theMove[1]);
 	}		
 	

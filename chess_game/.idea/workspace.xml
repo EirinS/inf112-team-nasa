@@ -5,21 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="735811f2-797e-40ca-96da-734164dafac2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/Board.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/Square.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/Square.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" afterPath="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/IPiece.java" afterPath="$PROJECT_DIR$/core/src/pieces/IPiece.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Bishop.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Bishop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Knight.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Knight.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Queen.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Queen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/Checkerboard.java" afterPath="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" afterPath="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/AbstractScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/AbstractScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/GameScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/boardstructureTests/BoardTest.java" afterPath="$PROJECT_DIR$/core/src/tests/boardstructureTests/BoardTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PieceTest.java" afterPath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PieceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/playerFileTests/RegisteredPlayersTest.java" afterPath="$PROJECT_DIR$/core/src/tests/playerFileTests/RegisteredPlayersTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/SceneEnum.java" afterPath="$PROJECT_DIR$/core/src/scenes/SceneEnum.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/SceneManager.java" afterPath="$PROJECT_DIR$/core/src/scenes/SceneManager.java" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -62,66 +54,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GameScene.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameScene.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="75" column="39" lean-forward="false" selection-start-line="75" selection-start-column="39" selection-end-line="75" selection-end-column="39" />
-              <folding>
-                <element signature="e#2297#2462#0" expanded="true" />
-                <element signature="e#2461#2462#0" expanded="true" />
-                <element signature="e#2701#2866#0" expanded="true" />
-                <element signature="e#2865#2866#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Checkerboard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+            <state relative-caret-position="359">
+              <caret line="115" column="17" lean-forward="false" selection-start-line="115" selection-start-column="17" selection-end-line="115" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Rook.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10">
-              <caret line="42" column="4" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
-              <folding>
-                <marker date="1521465335542" expanded="false" signature="4549:4552" ph=" }" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainMenuScene.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="469" column="87" lean-forward="false" selection-start-line="469" selection-start-column="87" selection-end-line="469" selection-end-column="87" />
-              <folding>
-                <element signature="e#13799#14347#0" expanded="true" />
-                <element signature="e#14346#14347#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Board.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="167" column="13" lean-forward="false" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
-              <folding>
-                <element signature="e#3927#3928#0" expanded="true" />
-                <element signature="e#3991#3992#0" expanded="true" />
+                <element signature="e#1205#1206#0" expanded="true" />
+                <element signature="e#1227#1228#0" expanded="true" />
+                <element signature="e#2028#2235#0" expanded="true" />
+                <element signature="e#2234#2235#0" expanded="true" />
+                <element signature="e#2474#2681#0" expanded="true" />
+                <element signature="e#2680#2681#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -141,17 +86,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>startSingle</find>
-      <find>stage =</find>
-      <find>actors</find>
-      <find>.end</find>
-      <find>getAvai</find>
-      <find>getPiece</find>
-      <find>getAv</find>
-      <find>undo</find>
-      <find>takeP</find>
-      <find>makeMo</find>
-      <find>font</find>
       <find>scene</find>
       <find>scen</find>
       <find>imgBackground</find>
@@ -171,6 +105,17 @@
       <find>removeMo</find>
       <find>getHistory</find>
       <find>history</find>
+      <find>getBoard</find>
+      <find>Label</find>
+      <find>stage</find>
+      <find>turn</find>
+      <find>turn</find>
+      <find>gameMenu</find>
+      <find>show</find>
+      <find>buildSta</find>
+      <find>startSingle</find>
+      <find>startSingleLis</find>
+      <find>buildS</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -1353,10 +1298,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/src/boardstructure/Move.java" />
-        <option value="$PROJECT_DIR$/core/src/boardstructure/Square.java" />
-        <option value="$PROJECT_DIR$/core/src/tests/pieceClassesTests/QueenTest.java" />
-        <option value="$PROJECT_DIR$/core/src/tests/pieceClassesTests/KnightTest.java" />
         <option value="$PROJECT_DIR$/core/src/tests/pieceClassesTests/KingTest.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/styles/Colors.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/styles/Buttons.java" />
@@ -1387,23 +1328,27 @@
         <option value="$PROJECT_DIR$/core/src/tests/pieceClassesTests/BishopsTest.java" />
         <option value="$PROJECT_DIR$/core/src/sprites/SquareTextureLoader.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/styling/Colors.java" />
-        <option value="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" />
         <option value="$PROJECT_DIR$/core/src/styling/Colors.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" />
         <option value="$PROJECT_DIR$/core/src/game/CheckerboardListener.java" />
         <option value="$PROJECT_DIR$/core/src/game/ChessGame.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Knight.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Bishop.java" />
-        <option value="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
         <option value="$PROJECT_DIR$/core/src/setups/DefaultSetup.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Queen.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Rook.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
         <option value="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
-        <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
         <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
+        <option value="$PROJECT_DIR$/core/src/game/Chess.java" />
+        <option value="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" />
+        <option value="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
+        <option value="$PROJECT_DIR$/core/src/scenes/AbstractScene.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
+        <option value="$PROJECT_DIR$/core/src/scenes/SceneEnum.java" />
+        <option value="$PROJECT_DIR$/core/src/scenes/SceneManager.java" />
+        <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
       </list>
     </option>
   </component>
@@ -1473,6 +1418,13 @@
               <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pieces" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -1488,15 +1440,14 @@
               <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="register" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
               <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="pieceClassesTests" type="462c0819:PsiDirectoryNode" />
+              <item name="scenes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -2121,7 +2072,7 @@
       <workItem from="1521374361245" duration="22981000" />
       <workItem from="1521399356487" duration="13942000" />
       <workItem from="1521415625263" duration="236000" />
-      <workItem from="1521444766006" duration="6553000" />
+      <workItem from="1521444766006" duration="12472000" />
     </task>
     <servers />
   </component>
@@ -2158,7 +2109,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85612000" />
+    <option name="totallyTimeSpent" value="91531000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -2216,49 +2167,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/ApplicationListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="25" column="42" lean-forward="true" selection-start-line="25" selection-start-column="42" selection-end-line="25" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/Chess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/InputEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="79" column="22" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/desktop/src/com/mygdx/game/desktop/DesktopLauncher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="83" lean-forward="false" selection-start-line="10" selection-start-column="83" selection-end-line="10" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_45/src.zip!/java/util/ArrayList.java" />
-    <entry file="file://$PROJECT_DIR$/core/src/game/GameInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="31" lean-forward="true" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/tests/AllTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -2324,13 +2232,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/Listener.java" />
-    <entry file="file://$PROJECT_DIR$/core/src/register/RegisteredPlayers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/styling/Styles.java" />
     <entry file="file://$PROJECT_DIR$/core/src/sprites/SquareTextureLoader.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -2343,6 +2244,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2424,13 +2326,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-298">
           <caret line="56" column="32" lean-forward="true" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/ChessGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -2543,8 +2438,19 @@
         <state relative-caret-position="225">
           <caret line="46" column="43" lean-forward="false" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="43" />
           <folding>
-            <element signature="e#3917#3918#0" expanded="true" />
-            <element signature="e#3969#3970#0" expanded="true" />
+            <element signature="e#3917#3918#0" expanded="false" />
+            <element signature="e#3969#3970#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="248" column="37" lean-forward="false" selection-start-line="248" selection-start-column="29" selection-end-line="248" selection-end-column="37" />
+          <folding>
+            <element signature="e#3927#3928#0" expanded="true" />
+            <element signature="e#3991#3992#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2554,52 +2460,158 @@
         <state relative-caret-position="10">
           <caret line="42" column="4" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
           <folding>
-            <marker date="1521465335542" expanded="false" signature="4549:4552" ph=" }" />
+            <element signature="e#540#546#0" expanded="true" />
+            <element signature="e#4402#4403#0" expanded="true" />
+            <element signature="e#4419#4420#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/Screen.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <caret line="25" column="17" lean-forward="false" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/Stage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="64" column="13" lean-forward="false" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/Chess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+          <folding>
+            <element signature="e#583#584#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+            <element signature="e#643#644#0" expanded="true" />
+            <element signature="e#665#666#0" expanded="true" />
+            <element signature="e#705#706#0" expanded="true" />
+            <element signature="e#729#730#0" expanded="true" />
+            <element signature="e#790#791#0" expanded="true" />
+            <element signature="e#815#816#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/ChessGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="4" lean-forward="true" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/register/RegisteredPlayers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="217" column="63" lean-forward="true" selection-start-line="217" selection-start-column="63" selection-end-line="217" selection-end-column="63" />
+          <folding>
+            <element signature="e#5322#5330#0" expanded="true" />
+            <element signature="e#5386#5399#0" expanded="true" />
+            <element signature="e#6501#6528#0" expanded="true" />
+            <marker date="1521470725786" expanded="false" signature="3112:3120" ph="&lt;~&gt;" />
+            <marker date="1521470725786" expanded="false" signature="6997:7009" ph=" { " />
+            <marker date="1521470725786" expanded="false" signature="7027:7034" ph=" }" />
+            <marker date="1521470725786" expanded="false" signature="7063:7075" ph=" { " />
+            <marker date="1521470725786" expanded="false" signature="7089:7096" ph=" }" />
+            <marker date="1521470725786" expanded="false" signature="7128:7140" ph=" { " />
+            <marker date="1521470725786" expanded="false" signature="7152:7159" ph=" }" />
+            <marker date="1521470725786" expanded="false" signature="7193:7205" ph=" { " />
+            <marker date="1521470725786" expanded="false" signature="7219:7226" ph=" }" />
+            <marker date="1521470725786" expanded="false" signature="7259:7271" ph=" { " />
+            <marker date="1521470725786" expanded="false" signature="7284:7291" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/GameInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/scenes/SceneManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="38" column="69" lean-forward="false" selection-start-line="38" selection-start-column="69" selection-end-line="38" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#192#193#0" expanded="true" />
+            <element signature="e#215#216#0" expanded="true" />
+            <element signature="e#463#464#0" expanded="true" />
+            <element signature="e#495#496#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
+    <entry file="file://$PROJECT_DIR$/core/src/scenes/AbstractScene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="75" column="39" lean-forward="false" selection-start-line="75" selection-start-column="39" selection-end-line="75" selection-end-column="39" />
+        <state relative-caret-position="1">
+          <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
           <folding>
-            <element signature="e#2297#2462#0" expanded="true" />
-            <element signature="e#2461#2462#0" expanded="true" />
-            <element signature="e#2701#2866#0" expanded="true" />
-            <element signature="e#2865#2866#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="167" column="13" lean-forward="false" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
-          <folding>
-            <element signature="e#3927#3928#0" expanded="true" />
-            <element signature="e#3991#3992#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#843#844#0" expanded="true" />
+            <element signature="e#900#901#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="469" column="87" lean-forward="false" selection-start-line="469" selection-start-column="87" selection-end-line="469" selection-end-column="87" />
+        <state relative-caret-position="147">
+          <caret line="294" column="35" lean-forward="true" selection-start-line="294" selection-start-column="35" selection-end-line="294" selection-end-column="35" />
           <folding>
-            <element signature="e#13799#14347#0" expanded="true" />
-            <element signature="e#14346#14347#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#9682#10210#0" expanded="true" />
+            <element signature="e#10209#10210#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-759">
+          <caret line="79" column="0" lean-forward="true" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/scenes/SceneEnum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="17" lean-forward="true" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+          <folding>
+            <element signature="e#154#155#0" expanded="true" />
+            <element signature="e#228#229#0" expanded="true" />
+            <element signature="e#324#325#0" expanded="true" />
+            <element signature="e#386#387#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="115" column="17" lean-forward="false" selection-start-line="115" selection-start-column="17" selection-end-line="115" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1205#1206#0" expanded="true" />
+            <element signature="e#1227#1228#0" expanded="true" />
+            <element signature="e#2028#2235#0" expanded="true" />
+            <element signature="e#2234#2235#0" expanded="true" />
+            <element signature="e#2474#2681#0" expanded="true" />
+            <element signature="e#2680#2681#0" expanded="true" />
           </folding>
         </state>
       </provider>

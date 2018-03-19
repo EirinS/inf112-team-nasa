@@ -36,11 +36,12 @@ import register.RegisteredPlayers;
  *
  */
 
-public class MainMenuScene implements Screen {
-	
+public class MainMenuScene extends AbstractScene {
+
+	private static MainMenuScene instance;
+
 	//necessary components
-	private Chess game;	
-	private Stage stage;
+	private Chess game;
 	private Skin skin;
 	//graphical components
 	private static final int defaultHeight = 55;
@@ -63,32 +64,35 @@ public class MainMenuScene implements Screen {
 		game = mainGame;
 		playerOne = true;
 		initialize();
+	}
+
+	public static MainMenuScene getInstance(Chess game) {
+		if (instance == null)
+			instance = new MainMenuScene(game);
+		return instance;
+	}
+
+	@Override
+	public void buildStage() {
+		if (built) return;
+		built = true;
 		setUpElements();
 		setUpArrayList();
 		setUpElementSizes();
 		addListeners();
 		addActorsToStage();
 		screenSignIn();
-		Gdx.input.setInputProcessor(stage);
-		
-	}	
-	
+	}
+
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.getSpriteBatch().begin();
-		stage.act(delta);
-		stage.draw();
-		game.getSpriteBatch().end();
+		super.render(delta);
 	}
 	
 	//Section 1: Set up
 	private void initialize (){
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
 		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
-		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
 	}
 	
 	private void setUpElements(){
@@ -200,9 +204,9 @@ public class MainMenuScene implements Screen {
 	
 	
 	private void addActorsToStage(){
-		stage.addActor(imgBackground);
+		addActor(imgBackground);
 		for(Actor element : actors){
-			stage.addActor(element);
+			addActor(element);
 		}
 	}	
 	
@@ -307,7 +311,8 @@ private void addListeners(){
 				 * else{
 				 * GameScene game = new GameScene(game, filehandler.getPlayerOne, difficulty.getSelected(), PieceColor.BLACK);
 				 */
-				game.setScreen(new GameScene(game, MainMenuScene.this));
+				SceneManager.getInstance().showScreen(SceneEnum.GAME, game);
+				startSingleListener();
 			}
 		});
 	}
@@ -483,22 +488,4 @@ private void addListeners(){
 			}
 		});
 	}
-		
-	@Override
-	public void hide() {}
-
-	@Override
-	public void resize(int width, int height) {}
-	
-	@Override
-	public void pause() {}
-	
-	@Override
-	public void resume() {}
-	
-	@Override
-	public void dispose() {}
-	
-	@Override
-	public void show() {}
 }

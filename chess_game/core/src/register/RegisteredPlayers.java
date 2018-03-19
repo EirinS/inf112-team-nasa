@@ -20,7 +20,6 @@ import java.util.Scanner;
  */
 public class RegisteredPlayers 
 {
-
 	private static final int defaultRating = 1500;
 	private static final int highscoreLength = 10;
 	private static String playerFile;
@@ -90,6 +89,8 @@ public class RegisteredPlayers
 	 */
 	public static void registerPlayer(String playerName) 
 	{
+		playerName = playerName.replaceAll("\\s+","");
+		
 		if(playerIsRegistered(playerName))
 		{
 			return;
@@ -215,7 +216,7 @@ public class RegisteredPlayers
 		File file = new File(playerFile);	
 		Scanner sc = null;	
 		ArrayList<String> highscores = new ArrayList<String>();	
-		PriorityQueue<playerClass<String, Integer>> pq = new PriorityQueue<playerClass<String, Integer>>();
+		PriorityQueue<playerClass> pq = new PriorityQueue<playerClass>();
 		
 		try 
 		{
@@ -230,13 +231,13 @@ public class RegisteredPlayers
 				int losses = Integer.parseInt(line[3]);
 				int draws = Integer.parseInt(line[4]);
 
-				pq.add(new playerClass<String,Integer>(name, rating, wins, losses, draws));
+				pq.add(new playerClass(name, rating, wins, losses, draws));
 			}
 			
 			// Add the highest rated players to the highscores-arrayList
 			for(int i = 0; i < pq.size()+1 && i < highscoreLength; i++)
 			{
-				playerClass<String,Integer> p = pq.poll();
+				playerClass p = pq.poll();
 				highscores.add(p.getPlayerName() + " " + p.getRating() + " " + p.getWins() + " " + p.getLosses() + " " + p.getDraws());
 			}
 		}
@@ -262,7 +263,7 @@ public class RegisteredPlayers
 	 * 	Stores a player using his name and score. 
 	 */
 	@SuppressWarnings("hiding")
-	private static class playerClass<String, Integer> implements Comparable<playerClass<String, Integer>>
+	private static class playerClass implements Comparable<playerClass>
 	{
 		public final String playerName;
 		public final int rating;
@@ -299,7 +300,7 @@ public class RegisteredPlayers
 	        return draws;
 	    }
 	
-	    public int compareTo(playerClass<String, Integer> other) 
+	    public int compareTo(playerClass other)
 	    {
 	    	int b = this.getRating();
 	    	int a = other.getRating();

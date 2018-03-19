@@ -37,8 +37,6 @@ public class Checkerboard extends DragListener {
     private Texture chessMoveTexture, selectedPieceTexture;
     private Group checkerGroup, pieceGroup, highlightGroup;
 
-    private PieceColor turn;
-
     public Checkerboard(Chess game, Stage stage, GameInfo gameInfo, CheckerboardListener listener) {
         this.game = game;
         this.stage = stage;
