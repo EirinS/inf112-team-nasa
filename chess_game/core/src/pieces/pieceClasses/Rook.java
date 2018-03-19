@@ -23,7 +23,7 @@ public class Rook extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		reachable.addAll(reachableSquares(x, y, board.getSquare(x, y), board, true));
 		reachable.addAll(reachableSquares(y, x, board.getSquare(x, y), board, false));
-		reachable.add(castling(board.getSquare(x, y), board));
+		//reachable.add(castling(board.getSquare(x, y), board));
 		return reachable;
 	}
 
