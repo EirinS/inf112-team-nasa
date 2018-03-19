@@ -6,6 +6,8 @@ import register.RegisteredPlayers;
 import scenes.MainMenuScene;
 
 import com.badlogic.gdx.*;
+import scenes.SceneEnum;
+import scenes.SceneManager;
 
 public class Chess extends Game {
 	private SpriteBatch batch;
@@ -14,7 +16,8 @@ public class Chess extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		RegisteredPlayers filehandler = new RegisteredPlayers("playerfile.txt");
-		setScreen(new MainMenuScene(this));
+		SceneManager.getInstance().initialize(this);
+		SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, this);
 	}
 
 	@Override

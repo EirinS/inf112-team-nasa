@@ -20,7 +20,6 @@ import java.util.Scanner;
  */
 public class RegisteredPlayers 
 {
-
 	private static final int defaultRating = 1500;
 	private static final int highscoreLength = 10;
 	private static String playerFile;
