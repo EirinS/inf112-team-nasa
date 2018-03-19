@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import register.RegisteredPlayers;
 import scenes.MainMenuScene;
 
 import com.badlogic.gdx.*;
@@ -12,6 +13,7 @@ public class Chess extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		RegisteredPlayers filehandler = new RegisteredPlayers("playerfile.txt");
 		setScreen(new MainMenuScene(this));
 	}
 

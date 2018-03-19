@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Chess;
 import game.ChessGame;
 import game.WindowInformation;
+import register.RegisteredPlayers;
 
 /**
  * This class sets up and manages the elements in the main menu of the user interface.
@@ -337,32 +338,34 @@ private void addListeners(){
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 	{
 				error.setText("Alias not registered.");
-				// String name = registerUsername.getText();
-				// Boolean exists = filehandler.checkIfNameExists(name);
-				/**
-				if (playerOne){
-					/**
-					 * Pseudokode:
-					 * if (exists){
-					 * 		filehandler.setPlayerOne(name);
-					 * 		game.setPlayerOne(name);
-					 * }
-					 *else{error.setVisible(true)}
+				String name = registerUsername.getText();
+				Boolean exists = RegisteredPlayers.playerIsRegistered(name);
 
-					 *}
-					 
-					 
+				if (playerOne)
+				{					
+					  if (exists)
+					  {
+					  		// TODO - setPlayerOne(name);
+					  		// TODO - game.setPlayerOne(name);
+					  }
+					 else
+					 {
+						 error.setVisible(true);
+					 }
 				}
-				else {
-					/*
-					 * if (exists){
-					 * 		filehandler.setPlayerTwo(name);
-					 * 		game.setPlayerTwo(name);
-					 * 		GameScene game = new GameScene(game, filehandler.getPlayerOne, 
-					 * 			filehandler.getPlayerTwo);
-					 * else{error.setVisible(true)}	
-					 *}
-				*/
+				else 
+				{				
+					  if (exists)
+					  {
+					 		// TODO - setPlayerTwo(name);
+					  		// TODO - game.setPlayerTwo(name);
+					  		// TODO - GameScene game = new GameScene(game, getPlayerOne(),getPlayerTwo());
+					  }
+					  else
+					  {
+						  error.setVisible(true);
+					  }						 
+				}
 				
 				if (playerOne){
 				screenGameMenu();
@@ -389,29 +392,36 @@ private void addListeners(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
-				// String name = registerUsername.getText();
-				// Boolean exists = filehandler.checkIfNameExists(name);
+				 String name = registerUsername.getText();
+				 Boolean exists = RegisteredPlayers.playerIsRegistered(name);
+				 
 				error.setText("This alias already exists! Please choose another one.");
 				if (playerOne){
-					/**
-					 * Pseudokode:
-					 * if (exists)	{error}
-					 * else{ 
-					 * 		filehandler.setPlayerOne(name);
-					 * 		filehandler.registername(name);
-					 * 		Game
-					 *}
-					 */
+					
+
+					 if (exists)
+					 {
+						 error.setVisible(true);
+					 }
+					 else
+					 { 
+					  		RegisteredPlayers.registerPlayer(name);
+					  		// TODO - Game.setPlayerOne(name);
+					 }
+					 
 				}
 				else {
-					/*
-					 * if (exists)	{error}
-					 * else{
-					 * 		filehandler.setPlayerTwo(name);
-					 * 		filehandler.registerName(name);
-					 * 		game.setPlayerTwo(name);
-					 */
-				}
+					
+					  if (exists)	
+					  {
+						  error.setVisible(true);
+					  }
+					  else
+					  {
+					  		RegisteredPlayers.registerPlayer(name);
+					  		// TODO - game.setPlayerTwo(name);
+					  }
+				}	
 				registerUserNameListener();
 			}
 			
@@ -460,6 +470,17 @@ private void addListeners(){
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
 				//Pseudokode: 
 				//scoreList.setItems(Filehandler.getScores());
+				
+				// TODO - kaster nullpointer exception siden filen ikke er opprettet - må fikses
+				ArrayList<String> highscores = RegisteredPlayers.getHighscores();
+				
+				String[] scores = new String[highscores.size()];
+				
+				for(int i = 0; i < highscores.size(); i++)
+				{
+					scores[i] = highscores.get(i);
+				}
+				scoreList.setItems(scores);
 				screenScore();
 				multiplayerListener();
 			}
