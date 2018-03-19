@@ -11,14 +11,21 @@ import game.CheckerboardListener;
 import game.Chess;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.Checkerboard;
 import game.GameInfo;
+import game.WindowInformation;
 import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -37,6 +44,8 @@ public class GameScene implements Screen, CheckerboardListener {
 	private String player1 = "triki";
 	private String player2 = "wagle";
 	private PieceColor turn;
+	
+	private TextButton quitBtn, resignBtn;
 
 	public GameScene (Chess mainGame){
 		game = mainGame;
@@ -56,6 +65,31 @@ public class GameScene implements Screen, CheckerboardListener {
 		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
 		turn = PieceColor.WHITE;
 		checkerboard = new Checkerboard(game, stage, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
+	
+		quitBtn = new TextButton("Quit", skin, "default");
+		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
+		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
+		resignBtn = new TextButton("Resign", skin, "default");
+		resignBtn.setSize(resignBtn.getWidth() * 1.5f, resignBtn.getHeight());
+		resignBtn.setPosition(quitBtn.getX() + quitBtn.getWidth() + 5, quitBtn.getY());
+		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
+		
+		stage.addActor(quitBtn);
+		stage.addActor(resignBtn);
+		
+		List<ArrayList<Move>> list = new List(skin);
+		list.setItems(board.getHistory());
+		list.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
+		ScrollPane scrollPane = new ScrollPane(list, skin);
+		scrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
+		scrollPane.setSize(buttonsWidth, list.getHeight());
+		stage.addActor(scrollPane);
+		
+		
+		Label header = new Label("History", skin,"title-plain");
+		header.setPosition(scrollPane.getX() + ((scrollPane.getWidth() - header.getWidth()) / 2), scrollPane.getY() + scrollPane.getHeight() - header.getHeight() + 25);
+		
+		stage.addActor(header);
 	}
 
 	private void changeTurn() {

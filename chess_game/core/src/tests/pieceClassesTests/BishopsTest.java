@@ -47,11 +47,11 @@ public class BishopsTest {
 	@Test
 	public void diagonalMove() {
 		ArrayList<Move> move = square.getPiece().getLegalMoves(square, board, PieceColor.WHITE);
-	//	int i = 0;
+		int i = 0;
 		boolean found = false;
 		for (Move aMove : move) {
-	//		i++;
-	//		System.out.println(i + ". " + aMove.getTo() + " " + board.getSquare(7, 7));
+			i++;
+			System.out.println(i + ". " + aMove.getTo());
 			if (aMove.getTo().equals(board.getSquare(7, 7))){
 				found = true;
 			}
