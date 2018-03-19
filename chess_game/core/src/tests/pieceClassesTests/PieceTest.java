@@ -18,7 +18,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 
 public class PieceTest {
-	IBoard board = new Board(10, PieceColor.WHITE);
+	IBoard board = new Board(8, PieceColor.WHITE);
 	IPiece rook = new Rook(PieceColor.WHITE);
 	int x = 0,  y = 3;
 	IPiece enemyRook = new Rook(PieceColor.BLACK);

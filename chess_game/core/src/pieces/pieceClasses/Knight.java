@@ -6,6 +6,7 @@ import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Knight extends AbstractPiece {
@@ -67,6 +68,14 @@ public class Knight extends AbstractPiece {
 		}
 
 		return ok;
+	}
+	
+	@Override
+	public IPiece copy() {
+		Knight k = new Knight(this.getColor());
+		if (this.hasMoved())
+			k.pieceMoved();
+		return k;
 	}
 
 	@Override

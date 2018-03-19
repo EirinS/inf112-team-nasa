@@ -7,6 +7,7 @@ import boardstructure.Move;
 import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.AbstractPiece;
+import pieces.IPiece;
 import pieces.PieceColor;
 
 public class Rook extends AbstractPiece {
@@ -148,5 +149,14 @@ public class Rook extends AbstractPiece {
 	@Override
 	public String toString() {
 		return "R";
+	}
+
+
+	@Override
+	public IPiece copy() {
+		Rook r = new Rook(this.getColor());
+		if (this.hasMoved())
+			r.pieceMoved();
+		return r;
 	}
 }

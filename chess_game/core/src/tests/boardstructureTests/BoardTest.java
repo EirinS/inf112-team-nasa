@@ -144,6 +144,27 @@ public class BoardTest {
 		assertEquals(1, p.size());
 	}
 	
+	@Test
+	public void copyBoard() {
+		IBoard board = new Board(8, PieceColor.WHITE);
+		IPiece r = new Rook(PieceColor.WHITE);
+		board.getSquare(5, 3).putPiece(r);
+		IBoard copy = board.copy();
+		
+		board.getSquare(2, 2).putPiece(board.getSquare(5, 3).movePiece());
+		boolean found = false;
+		
+		for(Square sq : copy.getBoard()) {
+			if(!sq.isEmpty()) {
+				found = true;
+				assertEquals(sq.getX(), 5);
+				assertEquals(sq.getY(), 3);
+				assertFalse(sq.getPiece().hasMoved());
+			}
+		}
+		assertTrue(found);
+	}
+	
 	private void setUpForMoveTest() {
 		IPiece rook = new Rook(PieceColor.WHITE);
 		board.getSquare(5, 5).putPiece(rook);
