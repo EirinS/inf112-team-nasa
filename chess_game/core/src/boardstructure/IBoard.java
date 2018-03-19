@@ -125,6 +125,11 @@ public interface IBoard {
 	 */
 	public ArrayList<Move> getHistory();
 
+	/**
+	 * This method returns the last successfull move.
+	 * @return Last move, null if no moves.
+	 */
+	public Move getLastMove();
 
 	/**
 	 *

@@ -160,6 +160,12 @@ public class Board implements IBoard {
 	}
 
 	@Override
+	public Move getLastMove() {
+		if (history.isEmpty()) return null;
+		return history.get(history.size() - 1);
+	}
+
+	@Override
 	public Move move(int fromX, int fromY, int toX, int toY) {
 		return move(getSquare(fromX, fromY), getSquare(toX, toY));
 	}

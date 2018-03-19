@@ -250,7 +250,8 @@ public class RegisteredPlayers
 			{
 				sc.close();
 			}
-		}		
+		}	
+
 		return highscores;
 	}
 	
