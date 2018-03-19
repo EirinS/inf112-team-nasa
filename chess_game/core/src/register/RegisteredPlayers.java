@@ -89,6 +89,8 @@ public class RegisteredPlayers
 	 */
 	public static void registerPlayer(String playerName) 
 	{
+		playerName = playerName.replaceAll("\\s+","");
+		
 		if(playerIsRegistered(playerName))
 		{
 			return;

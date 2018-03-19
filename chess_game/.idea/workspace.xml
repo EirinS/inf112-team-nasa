@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="735811f2-797e-40ca-96da-734164dafac2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/scenes/AbstractScene.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/scenes/SceneEnum.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/scenes/SceneManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PawnTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/playerfile.txt" afterPath="$PROJECT_DIR$/core/assets/playerfile.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/Chess.java" afterPath="$PROJECT_DIR$/core/src/game/Chess.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" afterPath="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/GameScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -75,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SceneEnum.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SceneEnum.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/scenes/SceneEnum.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="11" selection-end-column="9" />
+            <state relative-caret-position="330">
+              <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
               <folding>
                 <element signature="e#154#155#0" expanded="true" />
                 <element signature="e#220#221#0" expanded="true" />
@@ -127,19 +125,43 @@
       <file leaf-file-name="RegisteredPlayers.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/register/RegisteredPlayers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="21" column="1" lean-forward="false" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
-              <folding />
+            <state relative-caret-position="240">
+              <caret line="23" column="21" lean-forward="true" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+              <folding>
+                <marker date="1521470298112" expanded="false" signature="3112:3120" ph="&lt;~&gt;" />
+                <marker date="1521470298112" expanded="false" signature="5322:5330" ph="&lt;~&gt;" />
+                <marker date="1521470298112" expanded="false" signature="5403:5433" ph="&lt;~&gt;" />
+                <marker date="1521470298112" expanded="false" signature="6567:6594" ph="/hiding/" />
+                <marker date="1521470298112" expanded="false" signature="7097:7109" ph=" { " />
+                <marker date="1521470298112" expanded="false" signature="7127:7134" ph=" }" />
+                <marker date="1521470298112" expanded="false" signature="7163:7175" ph=" { " />
+                <marker date="1521470298112" expanded="false" signature="7189:7196" ph=" }" />
+                <marker date="1521470298112" expanded="false" signature="7228:7240" ph=" { " />
+                <marker date="1521470298112" expanded="false" signature="7252:7259" ph=" }" />
+                <marker date="1521470298112" expanded="false" signature="7293:7305" ph=" { " />
+                <marker date="1521470298112" expanded="false" signature="7319:7326" ph=" }" />
+                <marker date="1521470298112" expanded="false" signature="7359:7371" ph=" { " />
+                <marker date="1521470298112" expanded="false" signature="7384:7391" ph=" }" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Chess.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Chess.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/game/Chess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="19" column="73" lean-forward="false" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
-              <folding />
+            <state relative-caret-position="165">
+              <caret line="17" column="34" lean-forward="false" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+              <folding>
+                <element signature="e#583#584#0" expanded="true" />
+                <element signature="e#604#605#0" expanded="true" />
+                <element signature="e#643#644#0" expanded="true" />
+                <element signature="e#665#666#0" expanded="true" />
+                <element signature="e#705#706#0" expanded="true" />
+                <element signature="e#729#730#0" expanded="true" />
+                <element signature="e#790#791#0" expanded="true" />
+                <element signature="e#815#816#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1480,9 +1502,9 @@
         <option value="$PROJECT_DIR$/core/src/scenes/SceneManager.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/AbstractScene.java" />
         <option value="$PROJECT_DIR$/core/src/register/RegisteredPlayers.java" />
-        <option value="$PROJECT_DIR$/core/src/game/Chess.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
+        <option value="$PROJECT_DIR$/core/src/game/Chess.java" />
       </list>
     </option>
   </component>
@@ -2206,7 +2228,7 @@
       <workItem from="1521374361245" duration="22981000" />
       <workItem from="1521399356487" duration="13942000" />
       <workItem from="1521415625263" duration="236000" />
-      <workItem from="1521444766006" duration="10171000" />
+      <workItem from="1521444766006" duration="10239000" />
     </task>
     <servers />
   </component>
@@ -2243,7 +2265,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="89230000" />
+    <option name="totallyTimeSpent" value="89298000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -2633,14 +2655,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/Chess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="19" column="73" lean-forward="false" selection-start-line="19" selection-start-column="73" selection-end-line="19" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -2669,14 +2683,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="4" lean-forward="true" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/register/RegisteredPlayers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="21" column="1" lean-forward="false" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -2731,13 +2737,53 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/SceneEnum.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="11" selection-end-column="9" />
+        <state relative-caret-position="330">
+          <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
           <folding>
             <element signature="e#154#155#0" expanded="true" />
             <element signature="e#220#221#0" expanded="true" />
             <element signature="e#316#317#0" expanded="true" />
             <element signature="e#378#379#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/register/RegisteredPlayers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="23" column="21" lean-forward="true" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+          <folding>
+            <marker date="1521470298112" expanded="false" signature="3112:3120" ph="&lt;~&gt;" />
+            <marker date="1521470298112" expanded="false" signature="5322:5330" ph="&lt;~&gt;" />
+            <marker date="1521470298112" expanded="false" signature="5403:5433" ph="&lt;~&gt;" />
+            <marker date="1521470298112" expanded="false" signature="6567:6594" ph="/hiding/" />
+            <marker date="1521470298112" expanded="false" signature="7097:7109" ph=" { " />
+            <marker date="1521470298112" expanded="false" signature="7127:7134" ph=" }" />
+            <marker date="1521470298112" expanded="false" signature="7163:7175" ph=" { " />
+            <marker date="1521470298112" expanded="false" signature="7189:7196" ph=" }" />
+            <marker date="1521470298112" expanded="false" signature="7228:7240" ph=" { " />
+            <marker date="1521470298112" expanded="false" signature="7252:7259" ph=" }" />
+            <marker date="1521470298112" expanded="false" signature="7293:7305" ph=" { " />
+            <marker date="1521470298112" expanded="false" signature="7319:7326" ph=" }" />
+            <marker date="1521470298112" expanded="false" signature="7359:7371" ph=" { " />
+            <marker date="1521470298112" expanded="false" signature="7384:7391" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/Chess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="17" column="34" lean-forward="false" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+          <folding>
+            <element signature="e#583#584#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+            <element signature="e#643#644#0" expanded="true" />
+            <element signature="e#665#666#0" expanded="true" />
+            <element signature="e#705#706#0" expanded="true" />
+            <element signature="e#729#730#0" expanded="true" />
+            <element signature="e#790#791#0" expanded="true" />
+            <element signature="e#815#816#0" expanded="true" />
           </folding>
         </state>
       </provider>

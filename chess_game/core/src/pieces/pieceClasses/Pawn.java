@@ -30,6 +30,8 @@ public class Pawn extends AbstractPiece {
 	}
 	
 	//TODO en passant
+	//TODO hasMoved logic
+	//TODO pawn promotion
 	
 	/**
 	 * Gets a list of all legal moves for this pawn
@@ -89,12 +91,13 @@ public class Pawn extends AbstractPiece {
 			}
 		}
 		
-		//TODO 19/03/2018 Bug: west/eastAhead.getPiece() returns null
 		if (x != 0) {
 			Square westAhead = board.getSquare(x-1, y+dy);
 			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
 				Move move = new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR);
 				reachable.add(move);
+				System.out.println("Pawn: " + origin + ": " + origin.getPiece());
+				System.out.println("Pawn: " + westAhead + ": " + westAhead.getPiece());
 			}
 		}
 		if (x != board.getWidth()-1) { 
@@ -106,7 +109,7 @@ public class Pawn extends AbstractPiece {
 		}
 
 		// TODO: 18/03/2018 midlertidlig imens pawn ikke fynker 
-		reachable.add(getMove(origin, origin.getX(), origin.getY() - 1, board));
+		//reachable.add(getMove(origin, origin.getX(), origin.getY() - 1, board));
 		return reachable;
 	}
 	
