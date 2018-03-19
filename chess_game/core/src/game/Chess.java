@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import register.RegisteredPlayers;
 import scenes.MainMenuScene;
-
 import com.badlogic.gdx.*;
+
 
 public class Chess extends Game {
 	private SpriteBatch batch;
