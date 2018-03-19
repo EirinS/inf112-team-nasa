@@ -99,4 +99,17 @@ public class AIMediumTests {
 		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
 	}
 	
+	@Test
+	public void testThatMediumAIWithOnlyRooksAndKingDoesNotPreformInvalidCastling() {
+		ws.putPiece(w);
+		bs.putPiece(wk);
+		wks.putPiece(b);
+		//br2.putPiece(b);
+		br3.putPiece(w);
+
+		AIMedium ai = new AIMedium(PieceColor.WHITE);
+		Move move = ai.calculateMove(board);
+	}
+	
+	
 }

@@ -62,7 +62,7 @@ public class AIMedium implements AI,Playable {
 			for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
 				
 				List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
-				ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(i),possibleMovesEnd);
+				ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd);//i),possibleMovesEnd);
 				int[] best = getBestAIScorePlacement(possibleBoardsEnd);
 				best[1]=i;
 				findWorst.add(best);
