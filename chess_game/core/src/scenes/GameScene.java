@@ -7,7 +7,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import game.CheckerboardListener;
 import game.Chess;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 public class GameScene implements Screen, CheckerboardListener {
 
 	private Chess game;
+	private Screen parent;
 	private Stage stage;
 
 	private Skin skin;
@@ -40,10 +43,12 @@ public class GameScene implements Screen, CheckerboardListener {
 	private PieceColor turn;
 
 	private VerticalGroup historyGroup;
+	private ScrollPane historyScrollPane;
 	private TextButton quitBtn, resignBtn;
 
-	public GameScene (Chess mainGame){
+	public GameScene (Chess mainGame, Screen parent){
 		game = mainGame;
+		this.parent = parent;
 		initialize();
 	}
 
@@ -64,23 +69,40 @@ public class GameScene implements Screen, CheckerboardListener {
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
+		quitBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.setScreen(parent);
+				super.clicked(event, x, y);
+			}
+		});
 		resignBtn = new TextButton("Resign", skin, "default");
 		resignBtn.setSize(resignBtn.getWidth() * 1.5f, resignBtn.getHeight());
 		resignBtn.setPosition(quitBtn.getX() + quitBtn.getWidth() + 5, quitBtn.getY());
+		resignBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.setScreen(parent);
+				super.clicked(event, x, y);
+			}
+		});
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
 		
 		stage.addActor(quitBtn);
 		stage.addActor(resignBtn);
 
 		historyGroup = new VerticalGroup();
-		historyGroup.setFillParent(true);
-		ScrollPane scrollPane = new ScrollPane(historyGroup, skin);
-		scrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
-		scrollPane.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
-		stage.addActor(scrollPane);
+		//historyGroup.setFillParent(true);
+		historyGroup.align(Align.top);
+		historyScrollPane = new ScrollPane(historyGroup, skin);
+		historyScrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
+		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
+		stage.addActor(historyScrollPane);
 		
 		Label header = new Label("History", skin,"title-plain");
-		header.setPosition(scrollPane.getX() + ((scrollPane.getWidth() - header.getWidth()) / 2), scrollPane.getY() + scrollPane.getHeight() - header.getHeight() + 25);
+		header.setPosition(historyScrollPane.getX() + ((historyScrollPane.getWidth() - header.getWidth()) / 2), historyScrollPane.getY() + historyScrollPane.getHeight() - header.getHeight() + 25);
 		
 		stage.addActor(header);
 	}
@@ -99,8 +121,9 @@ public class GameScene implements Screen, CheckerboardListener {
 			return;
 		}
 		Label line = new Label(m.toString(), skin, "title-plain");
-		line.setAlignment(Align.left);
 		historyGroup.addActor(line);
+		historyScrollPane.layout();
+		historyScrollPane.scrollTo(0, 0, 0, 0);
 	}
 
 	@Override
