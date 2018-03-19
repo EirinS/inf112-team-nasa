@@ -47,7 +47,7 @@ public class MainMenuScene implements Screen {
 	private static final int centreWidth = (WindowInformation.WIDTH/2)-(defaultWidth/2);
 	private ArrayList<Actor> actors;
 	private Image imgBackground;
-	private Label staticText, header, headerScore;
+	private Label staticText, header, headerScore, error;
 	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
 		black, white, signInP2;
 	private TextField username, registerUsername;
@@ -111,6 +111,8 @@ public class MainMenuScene implements Screen {
 		signUp.setPosition(centreWidth, WindowInformation.HEIGHT/2);
 		registerUsername = new TextField(" desired username", skin, "default");
 		registerUsername.setPosition(centreWidth, WindowInformation.HEIGHT/2.5f);
+		error = new Label ("default", skin, "error");
+		error.setPosition(centreWidth, WindowInformation.HEIGHT/1.5f);
 
 		//Elements in gamemenu
 		header = new Label ("Main menu", skin, "title-plain");
@@ -177,6 +179,7 @@ public class MainMenuScene implements Screen {
 		actors.add(white);
 		actors.add(scorePane);
 		actors.add(headerScore);
+		actors.add(error);
 	}
 	
 	private void setUpElementSizes(){
@@ -329,33 +332,36 @@ private void addListeners(){
 
 	private void signInListener(){
 		signIn.addListener(new ClickListener(){
-			// String name = registerUsername.getText();
-			// Boolean exists = filehandler.checkIfNameExists(name);
+			
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
-			{
+	{
+				error.setText("Alias not registered.");
+				// String name = registerUsername.getText();
+				// Boolean exists = filehandler.checkIfNameExists(name);
 				/**
 				if (playerOne){
 					/**
 					 * Pseudokode:
-					 * if (exists)	{error}
-					 * else{ 
+					 * if (exists){
 					 * 		filehandler.setPlayerOne(name);
 					 * 		game.setPlayerOne(name);
-					 * 		
+					 * }
+					 *else{error.setVisible(true)}
+
 					 *}
 					 
 					 
 				}
 				else {
 					/*
-					 * if (exists)	{error}
-					 * else{
+					 * if (exists){
 					 * 		filehandler.setPlayerTwo(name);
 					 * 		game.setPlayerTwo(name);
 					 * 		GameScene game = new GameScene(game, filehandler.getPlayerOne, 
 					 * 			filehandler.getPlayerTwo);
-					 * 		
+					 * else{error.setVisible(true)}	
+					 *}
 				*/
 				
 				if (playerOne){
@@ -379,11 +385,13 @@ private void addListeners(){
 	}
 	private void registerUserNameListener(){
 		registerUsername.addListener(new ClickListener(){
-			// String name = registerUsername.getText();
-			// Boolean exists = filehandler.checkIfNameExists(name);
+			
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
+				// String name = registerUsername.getText();
+				// Boolean exists = filehandler.checkIfNameExists(name);
+				error.setText("This alias already exists! Please choose another one.");
 				if (playerOne){
 					/**
 					 * Pseudokode:
@@ -404,6 +412,7 @@ private void addListeners(){
 					 * 		game.setPlayerTwo(name);
 					 */
 				}
+				registerUserNameListener();
 			}
 			
 		});
