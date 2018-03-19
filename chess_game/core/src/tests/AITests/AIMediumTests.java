@@ -16,6 +16,7 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Rook;
 import player.AIEasy;
 import player.AIMedium;
+import setups.DefaultSetup;
 
 /**
  * Created by jonas on 17/03/2018.
@@ -110,6 +111,24 @@ public class AIMediumTests {
 
 		AIMedium ai = new AIMedium(PieceColor.WHITE);
 		Move move = ai.calculateMove(board);
+	}
+	
+	//failes sometimes, pawn spam prints stuff.
+	@Test 
+	public void testAIEasyVSAIMedium10Moves() {
+		DefaultSetup d = new DefaultSetup();
+		Board boardT = d.getInitialPosition(PieceColor.WHITE);
+		//boardT.toString();
+		AIMedium p1 = new AIMedium(PieceColor.WHITE);
+		AIEasy p2 = new AIEasy(PieceColor.BLACK);
+		for (int i=0;i<10;i++) {
+			Move p1Move = p1.calculateMove(boardT);
+			boardT.move(p1Move.getFrom(), p1Move.getTo());
+			Move p2Move = p2.calculateMove(boardT);
+			boardT.move(p2Move.getFrom(), p2Move.getTo());
+		}
+		System.out.println("AIMedium values this position as "+p1.getAIScore(boardT));
+		//boardT.toString();
 	}
 	
 	
