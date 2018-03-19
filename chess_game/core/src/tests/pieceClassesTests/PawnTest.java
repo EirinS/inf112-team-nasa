@@ -49,7 +49,6 @@ public class PawnTest {
 		Square opponentSq = board.getSquare(2,5);
 		opponentSq.putPiece(opponentPawn);
 		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		
 		boolean canCaptureBlack = false;
 		for (Move m : moves)
 			if (m.getTo().equals(opponentSq)) canCaptureBlack = true;
@@ -61,9 +60,9 @@ public class PawnTest {
 		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
 		for (Move m : moves)
 			if (m.getTo().getX() != sq.getX())
-				fail("Pawn should not be able to move diagonally without the presence on enemies there");
+				fail("Pawn should not be able to move diagonally without the presence of enemies"
+						+ "on the immidiate diagonal squares");
 	}
-	
 	
 	@Test
 	public void pawnCannotMoveThroughOtherPieces() {
