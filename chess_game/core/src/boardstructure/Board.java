@@ -122,7 +122,6 @@ public class Board implements IBoard {
 	}
 
 
-
 	/**
 	 * Helper method to get threatened pieces.
 	 * 
@@ -161,13 +160,14 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public Move move(Move m) {
-		return move(m.getFrom(), m.getTo());
+	public Move move(int fromX, int fromY, int toX, int toY) {
+		return move(getSquare(fromX, fromY), getSquare(toX, toY));
 	}
 
 	@Override
 	public Move move(Square from, Square to) {
 		if (from == null) {
+			return null;
 			//tell user this is illegal
 		}
 		
@@ -201,27 +201,32 @@ public class Board implements IBoard {
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
+			printOutBoard();
 			history.add(m);
 			return m;
 		} else {
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
+			printOutBoard();
 			history.add(m);
 			return m;			
 		}
+		printOutBoard();
 		return null;
 	}
 
 	public void printOutBoard(){
+		System.out.println("--------");
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				IPiece p = getSquare(i,j).getPiece();
+				IPiece p = getSquare(j,i).getPiece();
 
 				if(p == null) {
-					System.out.println(" ");
+					System.out.print("_");
 				}else {
-					System.out.println(p);
+					System.out.print(p);
 				}
 			}
+			System.out.println("");
 		}
 	}
 

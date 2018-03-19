@@ -4,20 +4,20 @@ import boardstructure.Move;
 import boardstructure.Square;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import pieces.PieceColor;
 import styling.Colors;
 import sprites.SquareTextureLoader;
 
 import java.util.ArrayList;
 
-public class Checkerboard {
+public class Checkerboard extends DragListener {
 
-    private final int SQUARE_COUNT = 8;
     private final int SQUARE_WIDTH = 55;
     private final int SQUARE_HEIGHT = 58;
 
@@ -89,12 +89,21 @@ public class Checkerboard {
     }
 
     private float calcScreenY(int boardY) {
-        return ((boardY - boardImg.getX() - LEFT_MARIGN) / SQUARE_WIDTH - 7) * (-1);
+        return (((boardY - boardImg.getY() - TOP_MARIGN) / SQUARE_HEIGHT) - 7) * (-1);
+    }
+
+    private Vector2 calcBoardCoords(Actor actor) {
+        Vector2 vector2 = actor.localToStageCoordinates(new Vector2(0,0));
+        int x = Math.round(calcScreenX((int)vector2.x));
+        int y = Math.round(calcScreenY((int)vector2.y));
+        return new Vector2(x, y);
     }
 
     private void initPieces() {
         pieceGroup = new Group();
         pieceGroup.setZIndex(2);
+
+        System.out.println(calcScreenX((int)calcBoardX(2)));
 
         for (Square square : gameInfo.getSquares()) {
             if (square.getPiece() == null) continue;
@@ -104,70 +113,75 @@ public class Checkerboard {
             Image img = new Image(texture);
             img.setSize(54, 54);
             img.setPosition(calcBoardX(square.getX()), calcBoardY(square.getY()));
-            img.setName("" + square.getX() + square.getY());
-            img.addListener(new ClickListener() {
-
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    return super.touchDown(event, x, y, pointer, button);
-                }
-
-                @Override
-                public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                    super.touchDragged(event, x, y, pointer);
-                }
-
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    super.touchUp(event, x, y, pointer, button);
-                }
-
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if (event.getButton() != 0) return; // Force left-click.
-                    System.out.println(x + ", " + y);
-                    Vector2 vector2 = img.localToStageCoordinates(new Vector2(x, y));
-                    listener.onPieceClick((int)calcScreenX((int)vector2.x), (int)calcScreenY(54-(int)vector2.y));
-                }
-            });
-
+            img.setName(square.getX() + "," + square.getY());
+            img.addListener(this);
             pieceGroup.addActor(img);
         }
         stage.addActor(pieceGroup);
     }
 
-    public void showMoves(Square selectedSquare, ArrayList<Move> moves) {
-        if (selectedSquare == null && moves == null) {
-            selectedPiece.setVisible(false);
-            highlightGroup.clear();
-            return;
+    @Override
+    public void dragStart(InputEvent event, float x, float y, int pointer) {
+        Actor actor = event.getTarget();
+        Vector2 v = calcBoardCoords(actor);
+        actor.setName((int)v.x + "," + (int)v.y);
+        listener.onDragPieceStarted((int)v.x, (int)v.y);
+        super.dragStart(event, x, y, pointer);
+    }
+
+    @Override
+    public void drag(InputEvent event, float x, float y, int pointer) {
+        Actor actor = event.getTarget();
+        actor.moveBy(x - actor.getWidth() / 2, y - actor.getHeight() / 2);
+        super.drag(event, x, y, pointer);
+    }
+
+    @Override
+    public void dragStop(InputEvent event, float x, float y, int pointer) {
+        Actor actor = event.getTarget();
+        String[] posSplit = actor.getName().split(",");
+        int oldX = Integer.parseInt(posSplit[0]);
+        int oldY = Integer.parseInt(posSplit[1]);
+        Vector2 newPos = calcBoardCoords(actor);
+
+        if (newPos.x >= 0 && newPos.x < 8 && newPos.y >= 0 && newPos.y < 8) {
+            listener.onMoveRequested(oldX, oldY, (int)newPos.x, (int)newPos.y);
+        } else {
+            actor.setPosition(calcBoardX(oldX), calcBoardY(oldY));
         }
-        selectedPiece.setPosition(calcBoardX(selectedSquare.getX()), calcBoardY(selectedSquare.getY()));
-        selectedPiece.setVisible(true);
+        highlightGroup.clear();
+        super.dragStop(event, x, y, pointer);
+    }
+
+    private void movePieceTo(Actor actor, int toX, int toY) {
+        int newX = (int)calcBoardX(toX);
+        int newY = (int)calcBoardY(toY);
+        actor.setPosition(newX, newY);
+        actor.setName(newX + "," + newY);
+    }
+
+    public void movePieceFailed(int fromX, int fromY) {
+        Image from = pieceGroup.findActor(fromX + "," + fromY);
+        movePieceTo(from, fromX, fromY);
+    }
+
+    public void movePiece(int fromX, int fromY, int toX, int toY) {
+        Image from = pieceGroup.findActor(fromX + "," + fromY);
+        Image to = pieceGroup.findActor(toX + "," + toY);
+        if (to != null) {
+            to.remove();
+        }
+        movePieceTo(from, toX, toY);
+    }
+
+    public void showMoves(ArrayList<Move> moves) {
         highlightGroup.clear();
         for (Move m : moves) {
             Image highlight = new Image(chessMoveTexture);
             float boardX = calcBoardX(m.getTo().getX());
             float boardY = calcBoardY(m.getTo().getY());
             highlight.setPosition(boardX, boardY);
-            highlight.addListener(new ClickListener() {
-
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if (event.getButton() != 0) return; // Force left-click.
-                    listener.onMoveRequested(m);
-                }
-            });
             highlightGroup.addActor(highlight);
         }
-    }
-
-    public void movePiece(Move move) {
-        Image from = pieceGroup.findActor("" + move.getFrom().getX() + move.getFrom().getY());
-        Image to = pieceGroup.findActor("" + move.getTo().getX() + move.getTo().getY());
-        if (to != null) {
-            to.remove();
-        }
-        from.setPosition(calcBoardX(move.getTo().getX()), calcBoardY(move.getTo().getY()));
     }
 }

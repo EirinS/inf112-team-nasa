@@ -79,10 +79,12 @@ public abstract class AbstractPiece implements IPiece {
 				legalMoves.add(moves.get(i));
 			}
 		}
-		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
+		//this line is buggy as hell (:::::::::
+		// TODO: 19/03/2018 find a better solution to this method; it generates "ghost-tiles"
+		//moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
-	
+
 	protected ArrayList<IPiece> enemiesReached(int x, int y, IBoard board, PieceColor opponent, ArrayList<Move> check) {
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
 		if (check == null) {return reach;}
@@ -230,24 +232,17 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return Legal move, null if illegal.
 	 */
 	protected Move getMove(Square origin, int x, int y, IBoard board) {
-		Square sq = board.getSquare(x, y);
-		if(sq.isEmpty()) {
-			return new Move(origin, sq, this, null, MoveType.REGULAR);
-		} else if (sq.getPiece().getColor() != getColor()) {
-			return new Move(origin, sq, this, sq.getPiece(), MoveType.REGULAR);
-		}
-		return null;
+		return getMove(origin, board.getSquare(x, y));
 	}
 
 	/**
 	 * Method to extract moves more easily
 	 * @param origin
 	 * @param dest
-	 * @param board
 	 * @return Legal move, null if illegal.
 	 *
 	 */
-	protected Move getMove(Square origin, Square dest, IBoard board) {
+	protected Move getMove(Square origin, Square dest) {
 		if(dest.isEmpty()) {
 			return new Move(origin, dest, this, null, MoveType.REGULAR);
 		} else if (dest.getPiece().getColor() != getColor()) {

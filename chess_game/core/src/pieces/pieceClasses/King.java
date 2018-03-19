@@ -67,13 +67,13 @@ public class King extends AbstractPiece {
 		if(!rookPositions.isEmpty()) {
 			for(Square square : rookPositions) {
 				if(square.getX() > origin.getX()) {
-					if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
+					//if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
 						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()+2, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
-					}
+					//}
 				} if (square.getX() < origin.getX()) {
-					if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
+					//if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
 						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()-2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
-					}
+				//	}
 				}
 			}
 			return legalCastlingMoves;
@@ -208,9 +208,11 @@ public class King extends AbstractPiece {
 		//moves king
 		next.putPiece(origin.movePiece());
 		if (type == MoveType.KINGSIDECASTLING) {
+			//moves rook
 			Square rooksq = board.getSquare(board.getWidth()-1, origin.getY());
 			board.getSquare(rooksq.getX()-2, rooksq.getY()).putPiece(rooksq.movePiece());
 		} else if (type == MoveType.QUEENSIDECASTLING){
+			//moves rook
 			Square rooksq = board.getSquare(0, origin.getY());
 			board.getSquare(rooksq.getX()+3, rooksq.getY()).putPiece(rooksq.movePiece());
 		} else {

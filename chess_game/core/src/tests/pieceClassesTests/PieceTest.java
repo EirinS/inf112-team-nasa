@@ -53,6 +53,8 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsHorizontal() {
+		//rook is not in this pos without moving.
+		rook.pieceMoved();
 		IBoard newBoard = new Board(5, PieceColor.WHITE);
 		newBoard.getSquare(0, 0).putPiece(enemyRook);
 		newBoard.getSquare(0, 2).putPiece(rook);

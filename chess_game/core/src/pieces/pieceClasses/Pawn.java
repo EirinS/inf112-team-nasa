@@ -35,7 +35,12 @@ public class Pawn extends AbstractPiece {
 	 */
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
-		return reachableSquares(new Square(x, y), board);
+		ArrayList<Move> m = new ArrayList<>();
+		Square sq = board.getSquare(x, y);
+		m.addAll(reachableSquares(board.getSquare(x, y), board));
+		m.add(getMove(sq, sq.getX(), sq.getY()-1, board));
+		return m;
+		//return reachableSquares(board.getSquare(x, y), board);
 	}
 	
 	/**
@@ -101,6 +106,8 @@ public class Pawn extends AbstractPiece {
 			reachable.add(move);
 		}
 
+		// TODO: 18/03/2018 midlertidlig imens pawn ikke fynker 
+		reachable.add(getMove(origin, origin.getX(), origin.getY() - 1, board));
 		return reachable;
 	}
 	
