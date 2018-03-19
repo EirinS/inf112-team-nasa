@@ -406,7 +406,7 @@ private void addListeners(){
 					 else
 					 { 
 					  		RegisteredPlayers.registerPlayer(name);
-					  		// TODO - Game.setPlayerOne(name);
+					  		// TODO - GameScene.setPlayerOne(name);
 					 }
 					 
 				}
@@ -484,7 +484,7 @@ private void addListeners(){
 		});
 	}
 		
-		@Override
+	@Override
 	public void hide() {}
 
 	@Override
