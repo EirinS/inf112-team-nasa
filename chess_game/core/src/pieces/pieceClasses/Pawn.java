@@ -35,17 +35,8 @@ public class Pawn extends AbstractPiece {
 	 */
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
-<<<<<<< Updated upstream
-		ArrayList<Move> m = new ArrayList<>();
-		Square sq = board.getSquare(x, y);
-		m.addAll(reachableSquares(board.getSquare(x, y), board));
-		m.add(getMove(sq, sq.getX(), sq.getY()-1, board));
-		return m;
-		//return reachableSquares(board.getSquare(x, y), board);
-=======
 		//System.out.println("Color: " + playerOne);
 		return reachableSquares(new Square(x, y), board, playerOne);
->>>>>>> Stashed changes
 	}
 	
 	/**
@@ -75,16 +66,16 @@ public class Pawn extends AbstractPiece {
 		
 		// Check whether the squares in question are legal positions
 		if (color == PieceColor.WHITE) {
-			if (y-1 >= 0) oneAhead = new Square(x, y-1);
-			if (y-2 >= 0) twoAhead = new Square(x, y-2);
-			if (x != 0) westAhead = new Square(x-1, y-1);
-			if (x != board.getWidth()-1) eastAhead = new Square(x+1, y-1);
+			if (y-1 >= 0) oneAhead = board.getSquare(x, y-1);
+			if (y-2 >= 0) twoAhead = board.getSquare(x, y-2);
+			if (x != 0) westAhead = board.getSquare(x-1, y-1);
+			if (x != board.getWidth()-1) eastAhead = board.getSquare(x+1, y-1);
 			opponentColor = PieceColor.BLACK;
 		} else {
-			if (y+1 <= board.getHeight()-1) oneAhead = new Square(x, y+1);
-			if (y+2 <= board.getHeight()-1) twoAhead = new Square(x, y+2);
+			if (y+1 <= board.getHeight()-1) oneAhead = board.getSquare(x, y+1);
+			if (y+2 <= board.getHeight()-1) twoAhead = board.getSquare(x, y+2);
 			if (x != 0) westAhead = new Square(x-1, y+1);
-			if (x != board.getWidth()-1) eastAhead = new Square(x+1, y+1);
+			if (x != board.getWidth()-1) eastAhead = board.getSquare(x+1, y+1);
 			opponentColor = PieceColor.WHITE;
 		}
 		
