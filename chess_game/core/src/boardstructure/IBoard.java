@@ -106,18 +106,18 @@ public interface IBoard {
 	 * @param fromY From y position
 	 * @param toX To x position
 	 * @param toY To y position
-	 * @return
+	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
-	public Move getMove(int fromX, int fromY, int toX, int toY);
+	public ArrayList<Move> getMove(int fromX, int fromY, int toX, int toY);
 
 	/**
 	 * Move a piece to a legal position on the board.
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
-	 * @return Move move, the move that was done.
+	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
-	public Move move(Square start, Square end);
+	public ArrayList<Move> move(Square start, Square end);
 	
 	/**
 	 * This method returns the algebraic notation of all moves made.

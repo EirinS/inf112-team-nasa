@@ -47,12 +47,14 @@ public class ChessGame implements IChessGame {
 	
 	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
-		Move m = board.getMove(fromX, fromY, toX, toY);
-		if(m.getMovingPiece().getColor() != turn) {
-			listener.notYourPieceColor();
-		}
-		if(board.move(m.getFrom(), m.getTo()) == null) {
-			listener.notALegalMove();
+		ArrayList<Move> moves = board.getMove(fromX, fromY, toX, toY);
+		for (Move m : moves) {
+			if (m.getMovingPiece().getColor() != turn) {
+				listener.notYourPieceColor();
+			}
+			if (board.move(m.getFrom(), m.getTo()) == null) {
+				listener.notALegalMove();
+			}
 		}
 				
 		//TODO: finish

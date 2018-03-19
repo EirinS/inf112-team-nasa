@@ -22,6 +22,7 @@ import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -128,12 +129,12 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 
 	@Override
 	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
-		Move move = board.getMove(fromX, fromY, toX, toY);
-		if (move == null) {
+		ArrayList<Move> moves = board.getMove(fromX, fromY, toX, toY);
+		if (moves.isEmpty()) {
 			checkerboard.movePieceFailed(fromX, fromY);
 		} else {
 			addMoveToHistory(board.getLastMove());
-			checkerboard.movePiece(fromX, fromY, toX, toY);
+			checkerboard.movePieces(moves);
 		}
 	}
 }

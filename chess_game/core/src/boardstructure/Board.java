@@ -167,14 +167,14 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public Move getMove(int fromX, int fromY, int toX, int toY) {
+	public ArrayList<Move> getMove(int fromX, int fromY, int toX, int toY) {
 		return move(getSquare(fromX, fromY), getSquare(toX, toY));
 	}
 
 	@Override
-	public Move move(Square from, Square to) {
+	public ArrayList<Move> move(Square from, Square to) {
 		if (from == null) {
-			return null;
+			return new ArrayList<>();
 			//tell user this is illegal
 		}
 		
@@ -186,7 +186,7 @@ public class Board implements IBoard {
 			}
 		}
 		// error message to tell user move is illegal.
-		return null;
+		return new ArrayList<>();
 	}
 	
 	/**
@@ -194,17 +194,26 @@ public class Board implements IBoard {
 	 * @param m, the move that you'll do
 	 * @return the move done
 	 */
-	private Move doMove(Move m) {
+	private ArrayList<Move> doMove(Move m) {
+		ArrayList<Move> moves = new ArrayList<>();
 		if(m.getMoveType() == MoveType.ENPASSANT) {
 			//TODO:
 		} else if (m.getMoveType() == MoveType.KINGSIDECASTLING) {
 			IPiece moving = m.getMovingPiece();
 			if(moving instanceof King) {
-				((King) moving).moveCastling(m.getFrom(), m.getTo(), MoveType.KINGSIDECASTLING, this);
+				Move rookMove = ((King) moving).moveCastling(m.getFrom(), m.getTo(), MoveType.KINGSIDECASTLING, this);
+				if (rookMove != null) {
+					moves.add(m);
+					moves.add(rookMove);
+				}
 			}
 		} else if(m.getMoveType() == MoveType.QUEENSIDECASTLING) {
 			if(m.getMovingPiece() instanceof King) {
-				((King) m.getMovingPiece()).moveCastling(m.getFrom(), m.getTo(), MoveType.QUEENSIDECASTLING, this);
+				Move rookMove = ((King) m.getMovingPiece()).moveCastling(m.getFrom(), m.getTo(), MoveType.QUEENSIDECASTLING, this);
+				if (rookMove != null) {
+					moves.add(m);
+					moves.add(rookMove);
+				}
 			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
 			//TODO:
@@ -214,15 +223,15 @@ public class Board implements IBoard {
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
 			printOutBoard();
 			history.add(m);
-			return m;
+			moves.add(m);
 		} else {
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
 			printOutBoard();
 			history.add(m);
-			return m;			
+			moves.add(m);
 		}
 		printOutBoard();
-		return null;
+		return moves;
 	}
 
 	public void printOutBoard(){

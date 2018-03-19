@@ -103,8 +103,6 @@ public class Checkerboard extends DragListener {
         pieceGroup = new Group();
         pieceGroup.setZIndex(2);
 
-        System.out.println(calcScreenX((int)calcBoardX(2)));
-
         for (Square square : gameInfo.getSquares()) {
             if (square.getPiece() == null) continue;
             String pieceColor = square.getPiece().getColor() == PieceColor.WHITE ? "w" : "b";
@@ -165,13 +163,15 @@ public class Checkerboard extends DragListener {
         movePieceTo(from, fromX, fromY);
     }
 
-    public void movePiece(int fromX, int fromY, int toX, int toY) {
-        Image from = pieceGroup.findActor(fromX + "," + fromY);
-        Image to = pieceGroup.findActor(toX + "," + toY);
-        if (to != null) {
-            to.remove();
+    public void movePieces(ArrayList<Move> moves) {
+        for (Move m : moves) {
+            Image from = pieceGroup.findActor(m.getFrom().getX() + "," + m.getFrom().getY());
+            Image to = pieceGroup.findActor(m.getTo().getX() + "," + m.getTo().getY());
+            if (to != null) {
+                to.remove();
+            }
+            movePieceTo(from, m.getTo().getX(), m.getTo().getY());
         }
-        movePieceTo(from, toX, toY);
     }
 
     public void showMoves(ArrayList<Move> moves) {
