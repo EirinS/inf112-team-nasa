@@ -69,9 +69,9 @@ public class GameTest {
 		Square two = board.getSquare(0, 2);
 		for(int i = 0; i < moves; i++) {
 			if(i % 2 == 0)
-				board.move(one, two);
+				board.move(one, two, true);
 			else 
-				board.move(two, one);
+				board.move(two, one, true);
 		}
 		assertEquals(moves, board.getHistory().size());
 		assertTrue(game.fiftyMoves());
@@ -88,14 +88,14 @@ public class GameTest {
 			if(i == 25) {
 				Pawn p = new Pawn(PieceColor.WHITE);
 				board.getSquare(5, 5).putPiece(p);
-				board.move(board.getSquare(5, 5), board.getSquare(5, 4));
-				board.move(two, one);
+				board.move(board.getSquare(5, 5), board.getSquare(5, 4),true);
+				board.move(two, one,true);
 			}
 			else {
 				if(i % 2 == 0)
-					board.move(one, two);
+					board.move(one, two, true);
 				else 
-					board.move(two, one);
+					board.move(two, one,true);
 			}
 		}
 		//does two moves at 25
