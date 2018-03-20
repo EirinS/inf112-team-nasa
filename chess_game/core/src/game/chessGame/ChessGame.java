@@ -28,9 +28,6 @@ public class ChessGame implements IChessGame {
 
 	private ChessGameListener listener;
 
-	private ArrayList<Move> p1history = new ArrayList<>();
-	private ArrayList<Move> p2history = new ArrayList<>();
-
 	private ArrayList<IBoard> boardHistory = new ArrayList<>(); 
 
 	private int playerSeconds, opponentSeconds;
@@ -77,13 +74,7 @@ public class ChessGame implements IChessGame {
 			listener.illegalMovePerformed(fromX, fromY);
 			return;
 		}
-		for (Move m : moves) {
-			if(board.getTurn() == gameInfo.getPlayerColor())
-				p1history.add(m);
-			else p2history.add(m);
-		}
 
-		//to check for threefold repetition
 		boardHistory.add(board);
 		listener.moveOk(moves);
 
@@ -121,24 +112,26 @@ public class ChessGame implements IChessGame {
 	public boolean threefoldRepetition() {
 		//no threefoldrepetition if no player made 3 moves
 		if(boardHistory.size() < 5) {return false;}
-		
+
 		//current board;
 		IBoard current = boardHistory.get(boardHistory.size()-1);
 		int count = 1;
-		outerLoop:
 		for(int i = boardHistory.size()-3; i >= 0; i-=2) {
+			boolean equal = true;
 			//assumes all boards exists and have same size
 			for(Square sq : boardHistory.get(i).getBoard()) {
 				if (!contains(current, sq)) {
-					continue outerLoop;
+					equal = false;
+					break;
 				}
 			}
 			//found equal board.
-			count++;
-			//found threefold-repetition
-			if (count >= 3)
-				return true;
-
+			if(equal) {
+				count++;
+				//found threefold-repetition
+				if (count >= 3)
+					return true;
+			}
 		}
 		return false;
 	}
