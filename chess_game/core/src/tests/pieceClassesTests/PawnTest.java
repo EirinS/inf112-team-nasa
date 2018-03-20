@@ -37,7 +37,7 @@ public class PawnTest {
 	
 	@Test
 	public void pawnCanCaptureOpponentToTheEast() {
-		IPiece opponentPawn = new Pawn(BLACK);
+		IPiece opponentPawn = new Pawn(playerTwo);
 		Square opponentSq = board.getSquare(4,5);
 		opponentSq.putPiece(opponentPawn);
 		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
@@ -50,7 +50,7 @@ public class PawnTest {
 	
 	@Test
 	public void pawnCanCaptureOpponentToTheWest() {
-		IPiece opponentPawn = new Pawn(PieceColor.BLACK);
+		IPiece opponentPawn = new Pawn(playerTwo);
 		Square opponentSq = board.getSquare(2,5);
 		opponentSq.putPiece(opponentPawn);
 		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
@@ -62,28 +62,23 @@ public class PawnTest {
 	
 	@Test
 	public void pawnCannotMoveDiagonallyWithoutEnemiesPresent() {
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
-		for (Move m : moves)
-			if (m.getTo().getX() != sq.getX())
-				fail("Pawn should not be able to move diagonally without the presence of enemies"
-						+ "on the immidiate diagonal squares");
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getX() != sq.getX()))
+			fail("Pawn should not be able to move diagonally without the presence of enemies"
+					+ "on the immidiate diagonal squares");
 	}
 	
 	@Test
 	public void pawnCannotMoveThroughOtherPieces() {
-		IPiece otherPawn = new Pawn(PieceColor.WHITE);
+		IPiece otherPawn = new Pawn(playerOne);
 		Square otherSq = board.getSquare(3,5);
 		otherSq.putPiece(otherPawn);
 		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
 		boolean canMoveAhead = false;
+		
 		for (Move m : moves)
 			if (m.getTo().equals(otherSq)) canMoveAhead = true;
 		assertFalse(canMoveAhead);
-	}
-	
-	@Test
-	public void pawnCannotMoveTwoSquaresIfItHasMovedPreviously() {
-		//TODO must implement hasMoved logic properly in Pawn first
 	}
 	
 	@Test
