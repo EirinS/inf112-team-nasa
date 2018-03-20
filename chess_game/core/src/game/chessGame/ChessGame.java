@@ -104,13 +104,7 @@ public class ChessGame implements IChessGame {
 	public boolean threefoldRepetition() {
 		//TODO: not sure about this one yet.
 		boolean even = (boardHistory.size()-1) % 2 == 0;
-		int start;
-
-		//TODO: might be opposite
-		if(even)
-			start = 0;
-		else 
-			start = 1;
+		
 		//must be same player to move. same player always moved every other time.
 
 		//current board;
@@ -119,7 +113,9 @@ public class ChessGame implements IChessGame {
 		//no threefoldrepetition if no player made 3 moves
 		if(boardHistory.size() < 6) {return false;}
 		int count;
-		for(int i = boardHistory.size()-3; i >= start; i-=2) {
+		for(int i = boardHistory.size()-3; i >= 0; i-=2) {
+			System.out.println(i);
+			System.out.println(boardHistory.get(i));
 			count = 0;
 			//assumes all boards exists and have same size
 			for(Square sq : boardHistory.get(i).getBoard()) {
@@ -128,6 +124,7 @@ public class ChessGame implements IChessGame {
 			}
 			//found equal board.
 			count++;
+			System.out.println(count + "coun");
 			//found threefold-repetition
 			if (count >= 3)
 				return true;
@@ -323,5 +320,11 @@ public class ChessGame implements IChessGame {
 
 	public Move getLastMove() {
 		return board.getLastMove();
+	}
+
+	@Override
+	public void setBoardHistory(ArrayList<IBoard> boardHistory) {
+		this.boardHistory = boardHistory;
+		
 	}
 }

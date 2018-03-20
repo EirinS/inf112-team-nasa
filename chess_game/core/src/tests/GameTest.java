@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import game.chessGame.GameInfo;
 
 import org.junit.Before;
@@ -198,6 +200,26 @@ public class GameTest {
 		board.getSquare(2, 2).putPiece(new King(PieceColor.BLACK));
 		assertFalse(game.checkmate());
 		assertTrue(game.stalemate());
+	}
+	
+	@Test
+	public void threeFoldRepetitionWithEqualBoards() {
+		IBoard board = new Board(8, PieceColor.WHITE);
+		/*IBoard board1 = new Board(8, PieceColor.WHITE);
+		IBoard board2 = new Board(8, PieceColor.WHITE);
+		IBoard board3 = new Board(8, PieceColor.BLACK);
+		IBoard board4 = new Board(8, PieceColor.WHITE);
+		IBoard board5 = new Board(8, PieceColor.WHITE);
+		*/
+		ArrayList<IBoard> bh = new ArrayList<>();
+		bh.add(board);
+		bh.add(board);
+		bh.add(board);
+		bh.add(board);
+		bh.add(board);
+		bh.add(board);
+		game.setBoardHistory(bh);
+		assertTrue(game.threefoldRepetition());
 	}
 
 

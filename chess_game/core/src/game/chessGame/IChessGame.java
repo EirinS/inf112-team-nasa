@@ -122,4 +122,10 @@ public interface IChessGame {
 	 * @param board, IBoard board, the desired board.
 	 */
 	public void setBoard(IBoard board);
+	
+	/**
+	 * Set the board history of this game to the desired board.
+	 * @param boardHistory, ArrayList<IBoard> boardHistory , the desired board.
+	 */
+	public void setBoardHistory(ArrayList<IBoard> boardHistory);
 }
