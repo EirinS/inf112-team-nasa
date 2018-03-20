@@ -6,6 +6,7 @@ import java.util.List;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Queen;
 
 public class Board implements IBoard {
 
@@ -249,35 +250,30 @@ public class Board implements IBoard {
 			if(moving instanceof King) {
 				Move rookMove = ((King) moving).moveCastling(m.getFrom(), m.getTo(), MoveType.KINGSIDECASTLING, this);
 				if (rookMove != null) {
-					moves.add(m);
 					moves.add(rookMove);
 				}
-				history.add(m);
 			}
 		} else if(m.getMoveType() == MoveType.QUEENSIDECASTLING) {
 			if(m.getMovingPiece() instanceof King) {
 				Move rookMove = ((King) m.getMovingPiece()).moveCastling(m.getFrom(), m.getTo(), MoveType.QUEENSIDECASTLING, this);
 				if (rookMove != null) {
-					moves.add(m);
 					moves.add(rookMove);
 				}
-				history.add(m);
 			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
-			//TODO: implement promotion
-			//regular moves
+			m.getTo().putPiece(new Queen(m.getMovingPiece().getColor()));
+			m.getFrom().takePiece();
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
 			//printOutBoard();
-			history.add(m);
-			moves.add(m);
 		} else {
+			//regular move
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
 			//printOutBoard();
-			history.add(m);
-			moves.add(m);
 		}
+		history.add(m);
+		moves.add(m);
 		//printOutBoard();
 		turn = turn.getOpposite();
 		return moves;

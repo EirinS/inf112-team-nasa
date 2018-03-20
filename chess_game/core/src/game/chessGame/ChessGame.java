@@ -125,15 +125,15 @@ public class ChessGame implements IChessGame {
 		IBoard current = boardHistory.get(boardHistory.size()-1);
 
 		//no threefoldrepetition if no player made 3 moves
-		if(boardHistory.size() < 6) {return false;}
+		if(boardHistory.size() < 5) {return false;}
 		int count = 1;
+		
+		outerLoop:
 		for(int i = boardHistory.size()-3; i >= 0; i-=2) {
-			System.out.println(count);
 			//assumes all boards exists and have same size
 			for(Square sq : boardHistory.get(i).getBoard()) {
 				if (!contains(current, sq)) {
-					System.out.println("here!");
-					break;
+					continue outerLoop;
 				}
 			}
 			//found equal board.
