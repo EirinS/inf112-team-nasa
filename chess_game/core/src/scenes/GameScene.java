@@ -90,17 +90,22 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		addActor(resignBtn);
 
 		historyGroup = new VerticalGroup();
-		//historyGroup.setFillParent(true);
 		historyGroup.align(Align.top);
 		historyScrollPane = new ScrollPane(historyGroup, skin);
 		historyScrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
 		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
 		addActor(historyScrollPane);
-		
-		Label header = new Label("History", skin,"title-plain");
-		header.setPosition(historyScrollPane.getX() + ((historyScrollPane.getWidth() - header.getWidth()) / 2), historyScrollPane.getY() + historyScrollPane.getHeight() - header.getHeight() + 25);
 
-		addActor(header);
+		Label playerName = new Label(gameInfo.getPlayerName(), skin, "title-plain");
+		playerName.setPosition(historyScrollPane.getX() , historyScrollPane.getY() + historyScrollPane.getHeight() - playerName.getHeight() + 25);
+		// + ((historyScrollPane.getWidth() - playerName.getWidth()) / 2)
+
+		// String readable = String.format("%d:%02d", s/60, s%60);
+		Label playerTime = new Label(Integer.toString(chessGame.getPlayerSeconds()), skin, "title-plain");
+
+		Label opponentTime = new Label(Integer.toString(chessGame.getOpponentSeconds()), skin, "title-plain");
+
+		addActor(playerName);
 
 		// Perform first AI move if needed.
 		chessGame.aiMove();

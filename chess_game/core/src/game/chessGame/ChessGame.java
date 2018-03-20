@@ -1,6 +1,7 @@
 package game.chessGame;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
@@ -32,9 +33,16 @@ public class ChessGame implements IChessGame {
 
 	private ArrayList<IBoard> boardHistory = new ArrayList<>(); 
 
+	private int playerSeconds, opponentSeconds;
+	private Timer playerTimer, opponentTimer;
+
 	public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
 		this.gameInfo = gameInfo;
 		this.listener = listener;
+		playerSeconds = 300;
+		playerTimer = new Timer();
+		opponentSeconds = 300;
+		opponentTimer = new Timer();
 
 		// Set first turn and board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
@@ -334,5 +342,13 @@ public class ChessGame implements IChessGame {
 
 	public Move getLastMove() {
 		return board.getLastMove();
+	}
+
+	public int getPlayerSeconds() {
+		return playerSeconds;
+	}
+
+	public int getOpponentSeconds() {
+		return opponentSeconds;
 	}
 }
