@@ -99,23 +99,19 @@ public class PawnTest {
 	public void playerOnePawnMovesNorth() {
 		IPiece playerOnePawn = new Pawn(playerOne);
 		Square playerOneSq = board.getSquare(1,5);
-		playerOneSq.putPiece(playerOnePawn);
-		ArrayList<Move> moves = playerOnePawn.getLegalMoves(playerOneSq, board, playerOne);
-		for (Move m : moves) {
-			if (m.getTo().getY() >= playerOneSq.getY())
-				fail("Pawns belonging to player one should move north");
-		}
+		playerOneSq.putPiece(playerOnePawn);	
+		if (playerOnePawn.getLegalMoves(playerOneSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getY() >= playerOneSq.getY()))
+			fail("Pawns belonging to player one should move north");
 	}
-	
 	
 	@Test
 	public void playerTwoPawnMovesSouth() {
 		IPiece playerTwoPawn = new Pawn(playerTwo);
 		Square playerTwoSq = board.getSquare(1,1);
 		playerTwoSq.putPiece(playerTwoPawn);
-		ArrayList<Move> moves = playerTwoPawn.getLegalMoves(playerTwoSq, board, playerOne);
-		for (Move m : moves)
-			if (m.getTo().getY() <= playerTwoSq.getY())
-				fail("Pawns belonging to player two should move south");
+		if (playerTwoPawn.getLegalMoves(playerTwoSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getY() <= playerTwoSq.getY()))
+			fail("Pawns belonging to player two should move south");
 	}
 }
