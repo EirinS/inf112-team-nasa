@@ -12,13 +12,21 @@ import java.util.Random;
 /**
  * Created by jonas on 12/03/2018.
  */
-public class AIEasy implements AI,Playable {
+public class AIEasy implements AI, Playable {
 
-	PieceColor playerColor;
+	private static AIEasy instance;
+
+	private PieceColor playerColor;
 	Random rand = new Random(System.nanoTime());
 
 	public AIEasy(PieceColor playerColor){
 		this.playerColor = playerColor;
+	}
+
+	public static AIEasy getInstance(PieceColor playerColor) {
+		if (instance == null)
+			instance = new AIEasy(playerColor);
+		return instance;
 	}
 
 	@Override
@@ -27,6 +35,11 @@ public class AIEasy implements AI,Playable {
 		int num = rand.nextInt(possibleMoves.size());
 
 		return possibleMoves.get(num);
+	}
+
+	@Override
+	public PieceColor getPieceColor() {
+		return playerColor;
 	}
 
 	@Override

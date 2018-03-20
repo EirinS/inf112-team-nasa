@@ -269,11 +269,12 @@ public class MainMenuScene extends AbstractScene {
 		header.setText("Opponent");
 		header.setVisible(true);
 		staticText.setVisible(true);
-		username.setText("Username");
+		username.setText("testSpiller2");
 		username.setVisible(true);
 		registerUsername.setText(" desired username");
 		register.setVisible(true);
 		backToChooseGame.setVisible(true);
+		playerOne = false;
 	}
 
 	//Section 3: Buttonlisteners
@@ -293,6 +294,7 @@ public class MainMenuScene extends AbstractScene {
 	private void addListeners(){
 		signInListener();
 		registerListener();
+		registerUserNameListener();
 		returnSignInListener();
 		singleplayerListener();
 		backToChooseGameListener();
@@ -360,12 +362,14 @@ public class MainMenuScene extends AbstractScene {
 				}
 				else
 				{
-					String name = registerUsername.getText();
+					String name = username.getText();
 					Boolean exists = RegisteredPlayers.playerIsRegistered(name);
 					if (exists)
 					{
 						gameInfo.setOpponentName(name);
 						gameInfo.setGameType(GameType.MULTIPLAYER);
+						gameInfo.setPlayerColor(PieceColor.WHITE);
+						SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
 					}
 					else
 					{

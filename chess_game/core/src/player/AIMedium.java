@@ -13,11 +13,13 @@ import java.util.List;
 /**
  * Created by Trædal on 18/03/2018.
  */
-public class AIMedium implements AI,Playable {
+public class AIMedium implements AI, Playable {
 
-	PieceColor playerColor;
-	PieceColor opponentColor;
-	int called = 0;
+	private static AIMedium instance;
+
+	private PieceColor playerColor;
+	private PieceColor opponentColor;
+	private int called = 0;
 
 	/**
 	 * 
@@ -25,9 +27,13 @@ public class AIMedium implements AI,Playable {
 	 */
 	public AIMedium(PieceColor playerColor){
 		this.playerColor = playerColor;
-		if (playerColor==PieceColor.WHITE) {
-			this.opponentColor=PieceColor.BLACK;
-		}else this.opponentColor=PieceColor.WHITE;
+		opponentColor = playerColor.getOpposite();
+	}
+
+	public static AIMedium getInstance(PieceColor playerColor) {
+		if (instance == null)
+			instance = new AIMedium(playerColor);
+		return instance;
 	}
 	
 	@Override
@@ -35,7 +41,12 @@ public class AIMedium implements AI,Playable {
 		Move b = calculateFutureMove(currentBoard);
 		return b;
 	}
-	
+
+	@Override
+	public PieceColor getPieceColor() {
+		return playerColor;
+	}
+
 	/**
 	 * 
 	 * @param currentBoard

@@ -16,12 +16,14 @@ import pieces.pieceClasses.Pawn;
 
 import pieces.pieceClasses.Rook;
 
+import player.AI;
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
 
 	private GameInfo gameInfo;
 	private IBoard board;
+	private AI computerAI;
 
 	private ChessGameListener listener;
 
@@ -33,6 +35,9 @@ public class ChessGame implements IChessGame {
 	public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
 		this.gameInfo = gameInfo;
 		this.listener = listener;
+		if (gameInfo.getLevel() != null) {
+			computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
+		}
 
 		// Set first turn and board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
@@ -41,12 +46,6 @@ public class ChessGame implements IChessGame {
 	@Override
 	public ArrayList<Move> getLegalMoves(int x, int y) {
 		Square square = board.getSquare(x, y);
-
-		// TODO: 20.03.2018 weird bug here
-		if (square.getPiece() == null) {
-			System.out.println("bug here");
-			((Board)board).printOutBoard();
-		}
 		if (square.getPiece().getColor() != board.getTurn()) return new ArrayList<>();
 		return square.getPiece().getLegalMoves(square, board, gameInfo.getPlayerColor());
 	}
@@ -69,7 +68,6 @@ public class ChessGame implements IChessGame {
 			return;
 		}
 		for (Move m : moves) {
-
 			if(board.getTurn() == gameInfo.getPlayerColor())
 				p1history.add(m);
 			else p2history.add(m);
@@ -78,6 +76,17 @@ public class ChessGame implements IChessGame {
 		//to check for threefold repetition
 		boardHistory.add(board);
 		listener.moveOk(moves);
+
+		// Check if AI should do move
+		aiMove();
+	}
+
+	private void aiMove() {
+		if (computerAI == null) return;
+		if (computerAI.getPieceColor() == board.getTurn()) {
+			Move move = computerAI.calculateMove(board);
+			doTurn(move.getFrom().getX(), move.getFrom().getY(), move.getTo().getX(), move.getTo().getY());
+		}
 	}
 	
 	@Override
