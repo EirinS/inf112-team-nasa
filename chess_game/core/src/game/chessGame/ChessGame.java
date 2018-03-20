@@ -54,11 +54,15 @@ public class ChessGame implements IChessGame {
 	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
 		//this player is in checkmate, game is finished
-		if(checkmate())
+		if(checkmate()) {
 			finishGame(board.getTurn());
-		if(isTie())
+			return;
+		}
+		if(isTie()) {
 			finishGame(null);
-		
+			return;
+		}
+
 		ArrayList<Move> moves = board.move(fromX, fromY, toX, toY);
 		if (moves.isEmpty()) {
 			listener.illegalMovePerformed(fromX, fromY);

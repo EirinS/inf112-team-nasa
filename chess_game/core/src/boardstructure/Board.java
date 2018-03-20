@@ -203,27 +203,38 @@ public class Board implements IBoard {
 
 	@Override
 	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY) {
-		return move(getSquare(fromX, fromY), getSquare(toX, toY));
+		return move(fromX, fromY, toX, toY, false);
+	}
+
+	@Override
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY, boolean ignoreTurn) {
+		return move(getSquare(fromX, fromY), getSquare(toX, toY), ignoreTurn);
 	}
 
 	@Override
 	public ArrayList<Move> move(Square from, Square to) {
+		return move(from, to, false);
+	}
+
+	@Override
+	public ArrayList<Move> move(Square from, Square to, boolean ignoreTurn) {
 		if (from == null || to == null) {
 			return new ArrayList<>();
 			//tell user this is illegal
 		}
-		
+
 		IPiece moving = from.getPiece();
 		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, playerOne);
 		for(Move m : legalMoves) {
-			if (m.getFrom().getPiece().getColor() == turn && m.getTo() == to) {
+			if (!ignoreTurn && m.getFrom().getPiece().getColor() != turn) continue;
+			if (m.getTo() == to) {
 				return doMove(m);
 			}
 		}
 		// error message to tell user move is illegal.
 		return new ArrayList<>();
 	}
-	
+
 	/**
 	 * Finds and executes the chosen move.
 	 * @param m, the move that you'll do
