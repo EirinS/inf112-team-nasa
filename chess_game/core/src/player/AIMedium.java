@@ -49,38 +49,63 @@ public class AIMedium implements AI,Playable {
 		ArrayList<Board> possibleBoards = getPossibleBoards(currentBoard,possibleMoves);
 		
 		int worstCase = 9999;
-		if(playerColor==PieceColor.BLACK) worstCase=-9999;
+		int loss = -99999;//this is only used in to evaluate moves where loss is inevitable
+		if(playerColor==PieceColor.BLACK) {worstCase=-9999; loss=99999;}
 		ArrayList<int[]> theMoves = new ArrayList<int[]>();
 		int[] theMove = {-worstCase, 0};
 		
 		for (int i=0; i<possibleBoards.size(); i++) {
 			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(opponentColor);
-			ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp);
-			ArrayList<int[]> findWorst = new ArrayList<int[]>();
-			int[] worst = {worstCase,0};
 			
-			for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
-				
-				List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
-				ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd);//i),possibleMovesEnd);
-				int[] best = getBestAIScorePlacement(possibleBoardsEnd);
-				best[1]=i;
-				findWorst.add(best);
-
-			} if (playerColor==PieceColor.WHITE) {
-				for (int u=0; u<findWorst.size(); u++) {
-					if (findWorst.get(u)[0]<worst[0]) {
-						worst=findWorst.get(u);
+			if (possibleMovesOpp.isEmpty()) {//needs more work
+				ArrayList<IPiece> allPieces= possibleBoards.get(i).piecesThreatenedByOpponent(opponentColor, playerColor);
+				for (IPiece piece : allPieces) {
+					if (piece.toString()=="K") {
+						return possibleMoves.get(i);//this will be a winning move!
 					}
-				}theMoves.add(worst);
+				}
+				int score = getAIScore(currentBoard);
+				if  ((score<0&&playerColor==PieceColor.WHITE)||(score>0&&playerColor==PieceColor.BLACK)) {//if AI is under in score and can get a draw, it will do it.
+					return possibleMoves.get(i);
+				}else {//if it is ahead in score, draw is bad
+					int[] forcedDraw = {-worstCase,i};
+					theMoves.add(forcedDraw);
+				}
+				
+				//int[] winOrDraw = {9999,i};
+				//theMoves.add(winOrDraw);
+				System.out.println("There are no moves opponent is checkmate or there is a draw, this case needs more work ");
 			}else {
-				for (int u=0; u<findWorst.size(); u++) {
-					if (findWorst.get(u)[0]>worst[0]) {
-						worst=findWorst.get(u);
-					}
-				}theMoves.add(worst);
-			}
+				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp);
+				ArrayList<int[]> findWorst = new ArrayList<int[]>();
+				int[] worst = {worstCase,0};
 				
+				for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
+					List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
+					if(possibleMovesEnd.isEmpty()) {
+						int[] lostCase = {loss, i};
+						findWorst.add(lostCase);
+					}else {
+						ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd);//i),possibleMovesEnd);
+						int[] best = getBestAIScorePlacement(possibleBoardsEnd);
+						best[1]=i;
+						findWorst.add(best);
+					}
+					
+				} if (playerColor==PieceColor.WHITE) {
+					for (int u=0; u<findWorst.size(); u++) {
+						if (findWorst.get(u)[0]<worst[0]) {
+							worst=findWorst.get(u);
+						}
+					}theMoves.add(worst);
+				}else {
+					for (int u=0; u<findWorst.size(); u++) {
+						if (findWorst.get(u)[0]>worst[0]) {
+							worst=findWorst.get(u);
+						}
+					}theMoves.add(worst);
+				}
+			}	
 		}if (playerColor==PieceColor.WHITE) {
 			for (int i=0; i<theMoves.size();i++) {
 				if (theMoves.get(i)[0]>theMove[0]) {
@@ -184,7 +209,7 @@ public class AIMedium implements AI,Playable {
 		return scoreAndPlace;
 	}
 	
-	public int getAIScore(Board possibleBoard) { // for now negative score is black leading, positive is white leading.
+	public int getAIScore(IBoard possibleBoard) { // for now negative score is black leading, positive is white leading.
 		int score = 0;
 		ArrayList<Square> squares = possibleBoard.getBoard();
 		for (Square square : squares) {

@@ -4,8 +4,10 @@ import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
+import pieces.IPiece;
 import pieces.PieceColor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +26,20 @@ public class AIEasy implements AI,Playable {
 	@Override
 	public Move calculateMove(IBoard currentBoard) {
 		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
+		
+		/////////////////////////////////this is just for testing
+		if (possibleMoves.isEmpty()) {
+			String outpt = "AIEasy has no moves, game is draw";
+			PieceColor opp = PieceColor.BLACK;
+			if (playerColor==PieceColor.BLACK) {opp=PieceColor.WHITE;}
+			ArrayList<IPiece> allPieces= currentBoard.piecesThreatenedByOpponent(playerColor,opp);
+			for (IPiece piece : allPieces) {
+				if (piece.toString()=="K") {
+					outpt = "AIEasy is checkmate.";
+									}
+			}System.out.println(outpt);
+		}
+		///////////////////////////////
 		int num = rand.nextInt(possibleMoves.size());
 
 		return possibleMoves.get(num);
