@@ -15,9 +15,14 @@ import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Pawn;
 
+import static pieces.PieceColor.WHITE;
+import static pieces.PieceColor.BLACK;
+
 public class PawnTest {
-	IBoard board = new Board(8, PieceColor.WHITE);
-	IPiece whitePawn = new Pawn(PieceColor.WHITE);
+	PieceColor playerOne = WHITE;
+	PieceColor playerTwo = BLACK;
+	IBoard board = new Board(8, playerOne);
+	IPiece whitePawn = new Pawn(playerOne);
 	Square sq = board.getSquare(3,6);
 	
 	@Before
@@ -32,10 +37,10 @@ public class PawnTest {
 	
 	@Test
 	public void pawnCanCaptureOpponentToTheEast() {
-		IPiece opponentPawn = new Pawn(PieceColor.BLACK);
+		IPiece opponentPawn = new Pawn(BLACK);
 		Square opponentSq = board.getSquare(4,5);
 		opponentSq.putPiece(opponentPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
+		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
 		
 		boolean canCaptureBlack = false;
 		for (Move m : moves)
@@ -48,7 +53,7 @@ public class PawnTest {
 		IPiece opponentPawn = new Pawn(PieceColor.BLACK);
 		Square opponentSq = board.getSquare(2,5);
 		opponentSq.putPiece(opponentPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
+		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
 		boolean canCaptureBlack = false;
 		for (Move m : moves)
 			if (m.getTo().equals(opponentSq)) canCaptureBlack = true;
@@ -57,7 +62,7 @@ public class PawnTest {
 	
 	@Test
 	public void pawnCannotMoveDiagonallyWithoutEnemiesPresent() {
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
+		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
 		for (Move m : moves)
 			if (m.getTo().getX() != sq.getX())
 				fail("Pawn should not be able to move diagonally without the presence of enemies"
@@ -69,11 +74,10 @@ public class PawnTest {
 		IPiece otherPawn = new Pawn(PieceColor.WHITE);
 		Square otherSq = board.getSquare(3,5);
 		otherSq.putPiece(otherPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
+		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
 		boolean canMoveAhead = false;
-		for (Move m : moves) {
+		for (Move m : moves)
 			if (m.getTo().equals(otherSq)) canMoveAhead = true;
-		}
 		assertFalse(canMoveAhead);
 	}
 	
@@ -84,22 +88,34 @@ public class PawnTest {
 	
 	@Test
 	public void pawnCanOnlyMoveForwardsWhenNotCapturing() {
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		for (Move m : moves) {
+		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
+		for (Move m : moves)
 			if (m.getTo().getX() != sq.getX())
 				fail("A pawn that does not threaten any opponent pieces should"
 						+ "either have no legal moves or only be able to move forward");
-		}
 	}
 	
 	@Test
 	public void playerOnePawnMovesNorth() {
-		//TODO
+		IPiece playerOnePawn = new Pawn(playerOne);
+		Square playerOneSq = board.getSquare(1,5);
+		playerOneSq.putPiece(playerOnePawn);
+		ArrayList<Move> moves = playerOnePawn.getLegalMoves(playerOneSq, board, playerOne);
+		for (Move m : moves) {
+			if (m.getTo().getY() >= playerOneSq.getY())
+				fail("Pawns belonging to player one should move north");
+		}
 	}
 	
 	
 	@Test
 	public void playerTwoPawnMovesSouth() {
-		//TODO
+		IPiece playerTwoPawn = new Pawn(playerTwo);
+		Square playerTwoSq = board.getSquare(1,1);
+		playerTwoSq.putPiece(playerTwoPawn);
+		ArrayList<Move> moves = playerTwoPawn.getLegalMoves(playerTwoSq, board, playerOne);
+		for (Move m : moves)
+			if (m.getTo().getY() <= playerTwoSq.getY())
+				fail("Pawns belonging to player two should move south");
 	}
 }
