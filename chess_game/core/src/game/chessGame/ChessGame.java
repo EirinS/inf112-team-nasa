@@ -23,7 +23,6 @@ public class ChessGame implements IChessGame {
 	private GameInfo gameInfo;
 	private IBoard board;
 
-	private PieceColor turn;
 	private ChessGameListener listener;
 
 	private ArrayList<Move> p1history = new ArrayList<>();
@@ -36,7 +35,6 @@ public class ChessGame implements IChessGame {
 		this.listener = listener;
 
 		// Set first turn and board for standard chess
-		turn = gameInfo.getPlayerColor();
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
 	}
 
@@ -49,7 +47,7 @@ public class ChessGame implements IChessGame {
 			System.out.println("bug here");
 			((Board)board).printOutBoard();
 		}
-		if (square.getPiece().getColor() != turn) return new ArrayList<>();
+		if (square.getPiece().getColor() != board.getTurn()) return new ArrayList<>();
 		return square.getPiece().getLegalMoves(square, board, gameInfo.getPlayerColor());
 	}
 
@@ -61,19 +59,14 @@ public class ChessGame implements IChessGame {
 			return;
 		}
 		for (Move m : moves) {
-			if (m.getMovingPiece().getColor() != turn) {
-				listener.illegalMovePerformed(fromX, fromY);
-				return;
-			}
 
-			if(turn == gameInfo.getPlayerColor())
+			if(board.getTurn() == gameInfo.getPlayerColor())
 				p1history.add(m);
 			else p2history.add(m);
 		}
 
 		//to check for threefold repetition
 		boardHistory.add(board);
-		this.turn = turn.getOpposite();
 		listener.moveOk(moves);
 	}
 
@@ -161,8 +154,8 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public boolean checkmate() {
-		if (board.getAvailableMoves(turn).isEmpty()) {
-			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, turn.getOpposite());
+		if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
+			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(board.getTurn(), board.getTurn().getOpposite());
 			for(IPiece p : threat) {
 				if (p instanceof King) {
 					return true;
@@ -226,7 +219,7 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public boolean stalemate() {
-		if (board.getAvailableMoves(turn).isEmpty()) {
+		if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
 			//put in if you need check for stale-mate (king not in check)
 			/*
 			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
@@ -242,7 +235,7 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public void resign() {
-		finishGame(turn);
+		finishGame(board.getTurn());
 	}
 
 	// WAYS TO END GAMES - END ---------------------------------------------------------
@@ -312,10 +305,6 @@ public class ChessGame implements IChessGame {
 	@Override
 	public void setBoard(IBoard board) {
 		this.board = board;
-	}
-
-	public PieceColor getTurn() {
-		return turn;
 	}
 
 	public Move getLastMove() {
