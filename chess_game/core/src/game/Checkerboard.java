@@ -77,26 +77,26 @@ public class Checkerboard extends DragListener {
         stage.addActor(highlightGroup);
     }
 
-    private float calcBoardX(int squareX) {
+    private float calcBoardX(float squareX) {
         return boardImg.getX() + LEFT_MARIGN + squareX * SQUARE_WIDTH;
     }
 
-    private float calcScreenX(int boardX) {
+    private float calcScreenX(float  boardX) {
         return (boardX - boardImg.getX() - LEFT_MARIGN) / SQUARE_WIDTH;
     }
 
-    private float calcBoardY(int squareY) {
+    private float calcBoardY(float  squareY) {
         return boardImg.getY() + TOP_MARIGN + (7 - squareY) * SQUARE_HEIGHT;
     }
 
-    private float calcScreenY(int boardY) {
+    private float calcScreenY(float  boardY) {
         return (((boardY - boardImg.getY() - TOP_MARIGN) / SQUARE_HEIGHT) - 7) * (-1);
     }
 
     private Vector2 calcBoardCoords(Actor actor) {
         Vector2 vector2 = actor.localToStageCoordinates(new Vector2(0,0));
-        int x = Math.round(calcScreenX((int)vector2.x));
-        int y = Math.round(calcScreenY((int)vector2.y));
+        int x = Math.round(calcScreenX(vector2.x));
+        int y = Math.round(calcScreenY(vector2.y));
         return new Vector2(x, y);
     }
 

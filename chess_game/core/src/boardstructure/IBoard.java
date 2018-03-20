@@ -108,7 +108,7 @@ public interface IBoard {
 	 * @param toY To y position
 	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
-	public ArrayList<Move> getMove(int fromX, int fromY, int toX, int toY);
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY);
 
 	/**
 	 * Move a piece to a legal position on the board.

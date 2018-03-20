@@ -2,6 +2,7 @@ package game.chessGame;
 
 import java.util.ArrayList;
 
+import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
@@ -12,7 +13,9 @@ import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
 import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
+
 import pieces.pieceClasses.Rook;
+
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
@@ -38,18 +41,31 @@ public class ChessGame implements IChessGame {
 	}
 
 	@Override
+	public ArrayList<Move> getLegalMoves(int x, int y) {
+		Square square = board.getSquare(x, y);
+
+		// TODO: 20.03.2018 weird bug here
+		if (square.getPiece() == null) {
+			System.out.println("bug here");
+			((Board)board).printOutBoard();
+		}
+		if (square.getPiece().getColor() != turn) return new ArrayList<>();
+		return square.getPiece().getLegalMoves(square, board, gameInfo.getPlayerColor());
+	}
+
+	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
-		ArrayList<Move> moves = board.getMove(fromX, fromY, toX, toY);
+		ArrayList<Move> moves = board.move(fromX, fromY, toX, toY);
+		if (moves.isEmpty()) {
+			listener.illegalMovePerformed(fromX, fromY);
+			return;
+		}
 		for (Move m : moves) {
 			if (m.getMovingPiece().getColor() != turn) {
-				listener.notYourPieceColor();
+				listener.illegalMovePerformed(fromX, fromY);
 				return;
 			}
-			if (board.move(m.getFrom(), m.getTo()).isEmpty()) { //returns empty arrayList
-				listener.notALegalMove();
-				return;
-			}
-			board.move(m.getFrom(), m.getTo());	
+
 			if(turn == gameInfo.getPlayerColor())
 				p1history.add(m);
 			else p2history.add(m);
@@ -58,6 +74,7 @@ public class ChessGame implements IChessGame {
 		//to check for threefold repetition
 		boardHistory.add(board);
 		this.turn = turn.getOpposite();
+		listener.moveOk(moves);
 	}
 
 	// WAYS TO END GAMES ---------------------------------------------------------
@@ -301,7 +318,13 @@ public class ChessGame implements IChessGame {
 	@Override
 	public void setBoard(IBoard board) {
 		this.board = board;
-		
 	}
 
+	public PieceColor getTurn() {
+		return turn;
+	}
+
+	public Move getLastMove() {
+		return board.getLastMove();
+	}
 }
