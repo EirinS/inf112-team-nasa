@@ -201,16 +201,10 @@ public class GameTest {
 		assertFalse(game.checkmate());
 		assertTrue(game.stalemate());
 	}
-	
+
 	@Test
 	public void threeFoldRepetitionWithEqualBoards() {
 		IBoard board = new Board(8, PieceColor.WHITE);
-		/*IBoard board1 = new Board(8, PieceColor.WHITE);
-		IBoard board2 = new Board(8, PieceColor.WHITE);
-		IBoard board3 = new Board(8, PieceColor.BLACK);
-		IBoard board4 = new Board(8, PieceColor.WHITE);
-		IBoard board5 = new Board(8, PieceColor.WHITE);
-		*/
 		ArrayList<IBoard> bh = new ArrayList<>();
 		bh.add(board);
 		bh.add(board);
@@ -221,6 +215,5 @@ public class GameTest {
 		game.setBoardHistory(bh);
 		assertTrue(game.threefoldRepetition());
 	}
-
 
 }

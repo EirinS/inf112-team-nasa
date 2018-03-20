@@ -16,12 +16,14 @@ import pieces.pieceClasses.Pawn;
 
 import pieces.pieceClasses.Rook;
 
+import player.AI;
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
 
 	private GameInfo gameInfo;
 	private IBoard board;
+	private AI computerAI;
 
 	private ChessGameListener listener;
 
@@ -36,17 +38,16 @@ public class ChessGame implements IChessGame {
 
 		// Set first turn and board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
+
+		// Load AI
+		if (gameInfo.getLevel() != null) {
+			computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
+		}
 	}
 
 	@Override
 	public ArrayList<Move> getLegalMoves(int x, int y) {
 		Square square = board.getSquare(x, y);
-
-		// TODO: 20.03.2018 weird bug here
-		if (square.getPiece() == null) {
-			System.out.println("bug here");
-			((Board)board).printOutBoard();
-		}
 		if (square.getPiece().getColor() != board.getTurn()) return new ArrayList<>();
 		return square.getPiece().getLegalMoves(square, board, gameInfo.getPlayerColor());
 	}
@@ -62,14 +63,13 @@ public class ChessGame implements IChessGame {
 			finishGame(null);
 			return;
 		}
-		
+
 		ArrayList<Move> moves = board.move(fromX, fromY, toX, toY);
 		if (moves.isEmpty()) {
 			listener.illegalMovePerformed(fromX, fromY);
 			return;
 		}
 		for (Move m : moves) {
-
 			if(board.getTurn() == gameInfo.getPlayerColor())
 				p1history.add(m);
 			else p2history.add(m);
@@ -78,8 +78,19 @@ public class ChessGame implements IChessGame {
 		//to check for threefold repetition
 		boardHistory.add(board);
 		listener.moveOk(moves);
+
+		// Check if AI should do move
+		aiMove();
 	}
-	
+
+	public void aiMove() {
+		if (computerAI == null) return;
+		if (computerAI.getPieceColor() == board.getTurn()) {
+			Move move = computerAI.calculateMove(board);
+			doTurn(move.getFrom().getX(), move.getFrom().getY(), move.getTo().getX(), move.getTo().getY());
+		}
+	}
+
 	@Override
 	public void finishGame(PieceColor turn) {
 		if(turn == null) {
@@ -92,39 +103,33 @@ public class ChessGame implements IChessGame {
 	}
 
 	// WAYS TO END GAMES ---------------------------------------------------------
-	
+
 	@Override
 	public boolean isTie() {
 		return fiftyMoves() || impossibleCheckmate() || stalemate();
 	}
-	
+
 	/**
 	 * Not sure about this yet.
 	 */
 	public boolean threefoldRepetition() {
-		//TODO: not sure about this one yet.
-		boolean even = (boardHistory.size()-1) % 2 == 0;
-		
-		//must be same player to move. same player always moved every other time.
-
 		//current board;
 		IBoard current = boardHistory.get(boardHistory.size()-1);
 
 		//no threefoldrepetition if no player made 3 moves
 		if(boardHistory.size() < 6) {return false;}
-		int count;
+		int count = 1;
 		for(int i = boardHistory.size()-3; i >= 0; i-=2) {
-			System.out.println(i);
-			System.out.println(boardHistory.get(i));
-			count = 0;
+			System.out.println(count);
 			//assumes all boards exists and have same size
 			for(Square sq : boardHistory.get(i).getBoard()) {
-				if (!contains(current, sq))
+				if (!contains(current, sq)) {
+					System.out.println("here!");
 					break;
+				}
 			}
 			//found equal board.
 			count++;
-			System.out.println(count + "coun");
 			//found threefold-repetition
 			if (count >= 3)
 				return true;
@@ -136,8 +141,12 @@ public class ChessGame implements IChessGame {
 	@Override
 	public boolean contains(IBoard board, Square sq) {
 		for(Square other : board.getBoard()) {
-			if (sq.getX() == other.getX() && sq.getY() == other.getY() && piecesAreEqual(sq.getPiece(), other.getPiece()))
-				return true;
+			if (sq.getX() == other.getX() && sq.getY() == other.getY()) {
+				if (sq.isEmpty() && other.isEmpty())
+					return true;
+				if (piecesAreEqual(sq.getPiece(), other.getPiece()))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -174,7 +183,7 @@ public class ChessGame implements IChessGame {
 		}
 		return false;
 	}
-	
+
 
 	@Override
 	public boolean checkmate() {
@@ -189,8 +198,8 @@ public class ChessGame implements IChessGame {
 		return false;
 
 	}
-	
-	
+
+
 	@Override
 	public boolean impossibleCheckmate() {
 		ArrayList<Square> pieceSqs = new ArrayList<>();  
@@ -198,7 +207,7 @@ public class ChessGame implements IChessGame {
 			if(!sq.isEmpty())
 				pieceSqs.add(sq);
 		}
-		
+
 		//only way to have 2 pieces left, is 2 kings.
 		if(pieceSqs.size() == 2) {
 			return true;
@@ -212,7 +221,7 @@ public class ChessGame implements IChessGame {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks if the two pieces besides the king are two
 	 * bishops that are on the same color-squares, but for
@@ -325,6 +334,6 @@ public class ChessGame implements IChessGame {
 	@Override
 	public void setBoardHistory(ArrayList<IBoard> boardHistory) {
 		this.boardHistory = boardHistory;
-		
+
 	}
 }

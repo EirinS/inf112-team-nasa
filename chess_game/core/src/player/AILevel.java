@@ -1,7 +1,29 @@
 package player;
 
+import pieces.PieceColor;
+
 public enum AILevel {
-	EASY, INTERMEDIATE, HARD;
+	EASY {
+
+		@Override
+		public AI getAI(PieceColor pieceColor) {
+			return AIEasy.getInstance(pieceColor);
+		}
+	}, INTERMEDIATE {
+
+		@Override
+		public AI getAI(PieceColor pieceColor) {
+			return AIMedium.getInstance(pieceColor);
+		}
+	}, HARD {
+
+		@Override
+		public AI getAI(PieceColor pieceColor) {
+			return null; // TODO: 20.03.2018 implement this when Hard is complete.
+		}
+	};
+
+	public abstract AI getAI(PieceColor pieceColor);
 
 	public static AILevel getAILevel(String str) {
 		for (AILevel aiLevel : AILevel.values()) {
@@ -9,7 +31,7 @@ public enum AILevel {
 				return aiLevel;
 		}
 
-		// TODO: 20.03.2018 dette burde aldri skje, men grei å ha.
+		// Dette burde aldri skje, men grei å ha.
 		throw new IllegalStateException();
 	}
 
@@ -24,7 +46,7 @@ public enum AILevel {
 				return "Hard (not implemented yet)";
 		}
 
-		// TODO: 20.03.2018 dette burde aldri skje, men grei å ha.
+		// Dette burde aldri skje, men grei å ha.
 		throw new IllegalStateException();
 	}
 }

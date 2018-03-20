@@ -27,7 +27,7 @@ public class Board implements IBoard {
 		if (dim < 0)
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
 		this.playerOne = playerOne;
-		turn = playerOne;
+		turn = PieceColor.WHITE;
 		height = dim;
 		width = dim;
 		board = new ArrayList<Square>();

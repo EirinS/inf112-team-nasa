@@ -153,10 +153,10 @@ public class Checkerboard extends DragListener {
     }
 
     private void movePieceTo(Actor actor, int toX, int toY) {
-        int newX = (int)calcBoardX(toX);
-        int newY = (int)calcBoardY(toY);
-        actor.setPosition(newX, newY);
-        actor.setName(newX + "," + newY);
+        int boardX = (int)calcBoardX(toX);
+        int boardY = (int)calcBoardY(toY);
+        actor.setPosition(boardX, boardY);
+        actor.setName(toX + "," + toY);
     }
 
     public void movePieceFailed(int fromX, int fromY) {

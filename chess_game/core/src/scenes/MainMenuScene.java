@@ -269,11 +269,12 @@ public class MainMenuScene extends AbstractScene {
 		header.setText("Opponent");
 		header.setVisible(true);
 		staticText.setVisible(true);
-		username.setText("Username");
+		username.setText("testSpiller2");
 		username.setVisible(true);
 		registerUsername.setText(" desired username");
 		register.setVisible(true);
 		backToChooseGame.setVisible(true);
+		playerOne = false;
 	}
 
 	//Section 3: Buttonlisteners
@@ -293,6 +294,7 @@ public class MainMenuScene extends AbstractScene {
 	private void addListeners(){
 		signInListener();
 		registerListener();
+		registerUserNameListener();
 		returnSignInListener();
 		singleplayerListener();
 		backToChooseGameListener();
@@ -360,12 +362,14 @@ public class MainMenuScene extends AbstractScene {
 				}
 				else
 				{
-					String name = registerUsername.getText();
+					String name = username.getText();
 					Boolean exists = RegisteredPlayers.playerIsRegistered(name);
 					if (exists)
 					{
 						gameInfo.setOpponentName(name);
 						gameInfo.setGameType(GameType.MULTIPLAYER);
+						gameInfo.setPlayerColor(PieceColor.WHITE);
+						SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
 					}
 					else
 					{
@@ -477,7 +481,6 @@ public class MainMenuScene extends AbstractScene {
 		scores.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
-				// TODO - kaster nullpointer exception siden filen ikke er opprettet - m� fikses
 				ArrayList<String> highscores = RegisteredPlayers.getHighscores();
 
 				String[] scores = new String[highscores.size()+1];
