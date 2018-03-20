@@ -55,7 +55,7 @@ public class ChessGame implements IChessGame {
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
 		//this player is in checkmate, game is finished
 		if(checkmate())
-			finishGame(turn);
+			finishGame(board.getTurn());
 		if(isTie())
 			finishGame(null);
 		
