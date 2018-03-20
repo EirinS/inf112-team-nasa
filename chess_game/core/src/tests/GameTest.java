@@ -95,7 +95,7 @@ public class GameTest {
 				if(i % 2 == 0)
 					board.move(one, two, true);
 				else 
-					board.move(two, one,true);
+					board.move(two, one, true);
 			}
 		}
 		//does two moves at 25
@@ -105,19 +105,19 @@ public class GameTest {
 	
 	@Test
 	public void canFindCheckMate() {
-		King k = new King(PieceColor.BLACK);
+		King k = new King(PieceColor.WHITE);
 		board.getSquare(3, 0).putPiece(k);
-		board.getSquare(3, 1).putPiece(new Queen(PieceColor.WHITE));
-		board.getSquare(4, 2).putPiece(new King(PieceColor.WHITE));
+		board.getSquare(3, 1).putPiece(new Queen(PieceColor.BLACK));
+		board.getSquare(4, 2).putPiece(new King(PieceColor.BLACK));
 		assertTrue(game.checkmate());
 	}
 	
 	@Test
 	public void cantFindCheckMateIfNotCheckMateIfYouCantMoveOnOtherPlayersTurn() {
-		King k = new King(PieceColor.WHITE);
+		King k = new King(PieceColor.BLACK);
 		board.getSquare(3, 0).putPiece(k);
-		board.getSquare(3, 1).putPiece(new Queen(PieceColor.BLACK));
-		board.getSquare(4, 2).putPiece(new King(PieceColor.BLACK));
+		board.getSquare(3, 1).putPiece(new Queen(PieceColor.WHITE));
+		board.getSquare(4, 2).putPiece(new King(PieceColor.WHITE));
 		assertFalse(game.checkmate());
 	}
 	
@@ -193,9 +193,9 @@ public class GameTest {
 	
 	@Test
 	public void stalemateIfNotCheckMate() {
-		board.getSquare(1, 0).putPiece(new King(PieceColor.BLACK));
-		board.getSquare(0, 2).putPiece(new Queen(PieceColor.WHITE));
-		board.getSquare(2, 2).putPiece(new King(PieceColor.WHITE));
+		board.getSquare(1, 0).putPiece(new King(PieceColor.WHITE));
+		board.getSquare(0, 2).putPiece(new Queen(PieceColor.BLACK));
+		board.getSquare(2, 2).putPiece(new King(PieceColor.BLACK));
 		assertFalse(game.checkmate());
 		assertTrue(game.stalemate());
 	}
