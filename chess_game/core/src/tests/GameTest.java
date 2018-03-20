@@ -202,7 +202,7 @@ public class GameTest {
 		assertTrue(game.stalemate());
 	}
 
-	//@Test
+	@Test
 	public void threeFoldRepetitionWithEqualBoards() {
 		IBoard board = new Board(8, PieceColor.WHITE);
 		ArrayList<IBoard> bh = new ArrayList<>();
@@ -216,7 +216,7 @@ public class GameTest {
 		assertTrue(game.threefoldRepetition());
 	}
 	
-	//@Test
+	@Test
 	public void notThreeFoldRepetitionFourTurns() {
 		IBoard board = new Board(8, PieceColor.WHITE);
 		ArrayList<IBoard> bh = new ArrayList<>();
@@ -228,7 +228,7 @@ public class GameTest {
 		assertFalse(game.threefoldRepetition());
 	}
 	
-	//@Test
+	@Test
 	public void threeFoldRepetitionFiveTurnsDifferentBoardsForDifferentPlayers() {
 		IBoard board = new Board(8, PieceColor.WHITE);
 		IBoard other = new Board(8, PieceColor.WHITE);
@@ -257,5 +257,27 @@ public class GameTest {
 		game.setBoardHistory(bh);
 		assertFalse(game.threefoldRepetition());
 	}
+	
+	@Test
+	public void threeFoldRepetitionAllDifferentButEqualBoards() {
+		IBoard board = new Board(8, PieceColor.WHITE);
+		IBoard other = new Board(8, PieceColor.WHITE);
+		
+		other.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
+		IBoard other1 = new Board(8, PieceColor.WHITE);
+		other1.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
+		IBoard other2 = new Board(8, PieceColor.WHITE);
+		other2.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
+		ArrayList<IBoard> bh = new ArrayList<>();
+		bh.add(board);
+		bh.add(other1);
+		bh.add(other);
+		bh.add(other2);
+		bh.add(board);
+		bh.add(other);
+		game.setBoardHistory(bh);
+		assertTrue(game.threefoldRepetition());
+	}
+	
 
 }
