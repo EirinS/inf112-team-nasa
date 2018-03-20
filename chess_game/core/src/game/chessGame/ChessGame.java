@@ -114,18 +114,17 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public boolean isTie() {
-		return fiftyMoves() || impossibleCheckmate() || stalemate() || threefoldRepetition();
+		return fiftyMoves() || impossibleCheckmate() || stalemate();
 	}
 
 	@Override
 	public boolean threefoldRepetition() {
-		//current board;
-		IBoard current = boardHistory.get(boardHistory.size()-1);
-
 		//no threefoldrepetition if no player made 3 moves
 		if(boardHistory.size() < 5) {return false;}
-		int count = 1;
 		
+		//current board;
+		IBoard current = boardHistory.get(boardHistory.size()-1);
+		int count = 1;
 		outerLoop:
 		for(int i = boardHistory.size()-3; i >= 0; i-=2) {
 			//assumes all boards exists and have same size

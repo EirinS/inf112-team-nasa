@@ -72,7 +72,10 @@ public class Pawn extends AbstractPiece {
 			// Check square straight ahead
 			Square oneAhead = board.getSquare(x, y+dy);
 			if (oneAhead.isEmpty())
-				reachable.add(new Move(origin, oneAhead, this, null, MoveType.REGULAR));
+				if((dy == -1 && (dy+y) == 0) || (dy == 1 && (dy+y) == board.getHeight()-1) )
+					reachable.add(new Move(origin, oneAhead, this, null, MoveType.PROMOTION));
+				else 
+					reachable.add(new Move(origin, oneAhead, this, null, MoveType.REGULAR));
 			// Check whether this pawn can move two squares ahead
 			if (board.withinBoard(x, y + 2*dy)) {
 				Square twoAhead = board.getSquare(x, y+2*dy);
@@ -88,8 +91,7 @@ public class Pawn extends AbstractPiece {
 				if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor)
 					reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR));
 			}
-		}
-		if (x != board.getWidth()-1) { 
+
 			if(board.withinBoard(x+1, y + dy)) {
 				Square eastAhead = board.getSquare(x+1, y+dy);
 				if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor)

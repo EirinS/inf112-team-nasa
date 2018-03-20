@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -25,6 +27,32 @@ public class PawnTest {
 	@Before
 	public void setUp() {
 		sq.putPiece(whitePawn);
+	}
+	
+	@Test
+	public void blackPawnOnRowOneCanFindPromotion() {
+		IBoard board = new Board(8, playerTwo);
+		Pawn p = new Pawn(playerTwo);
+		Square sq = board.getSquare(0, 1);
+		sq.putPiece(p);
+		
+		for(Move m : p.getLegalMoves(sq, board, playerTwo))
+			if (m.getMoveType() == MoveType.PROMOTION)
+				return;
+		fail("No promotion move found.");		
+	}
+	
+	@Test
+	public void whitwPawnOnRowSixCanFindPromotion() {
+		IBoard board = new Board(8, playerOne);
+		Pawn p = new Pawn(playerOne);
+		Square sq = board.getSquare(0, 6);
+		sq.putPiece(p);
+		
+		for(Move m : p.getLegalMoves(sq, board, playerTwo))
+			if (m.getMoveType() == MoveType.PROMOTION)
+				return;		
+		fail("No promotion move found.");
 	}
 	
 	@Test
