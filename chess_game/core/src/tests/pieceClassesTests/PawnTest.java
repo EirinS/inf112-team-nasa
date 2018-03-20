@@ -2,14 +2,11 @@ package tests.pieceClassesTests;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
-import boardstructure.Move;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -40,12 +37,11 @@ public class PawnTest {
 		IPiece opponentPawn = new Pawn(playerTwo);
 		Square opponentSq = board.getSquare(4,5);
 		opponentSq.putPiece(opponentPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
-		
 		boolean canCaptureBlack = false;
-		for (Move m : moves)
-			if (m.getTo().equals(opponentSq)) canCaptureBlack = true;
-		assertTrue(canCaptureBlack);
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
+			canCaptureBlack = true;
+		assert(canCaptureBlack);
 	}
 	
 	@Test
@@ -53,10 +49,10 @@ public class PawnTest {
 		IPiece opponentPawn = new Pawn(playerTwo);
 		Square opponentSq = board.getSquare(2,5);
 		opponentSq.putPiece(opponentPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
 		boolean canCaptureBlack = false;
-		for (Move m : moves)
-			if (m.getTo().equals(opponentSq)) canCaptureBlack = true;
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
+			canCaptureBlack = true;
 		assert(canCaptureBlack);
 	}
 	
@@ -73,21 +69,18 @@ public class PawnTest {
 		IPiece otherPawn = new Pawn(playerOne);
 		Square otherSq = board.getSquare(3,5);
 		otherSq.putPiece(otherPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
-		boolean canMoveAhead = false;
-		
-		for (Move m : moves)
-			if (m.getTo().equals(otherSq)) canMoveAhead = true;
-		assertFalse(canMoveAhead);
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(otherSq)))
+			fail("A pawn should not be able to move to the square ahead if"
+					+ " it is occupied by another piece of the same color");
 	}
 	
 	@Test
 	public void pawnCanOnlyMoveForwardsWhenNotCapturing() {
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, playerOne);
-		for (Move m : moves)
-			if (m.getTo().getX() != sq.getX())
-				fail("A pawn that does not threaten any opponent pieces should"
-						+ "either have no legal moves or only be able to move forward");
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getX() != sq.getX()))
+			fail("A pawn that does not threaten any opponents should"
+					+ " either have no legal moves or only be able to move forward");
 	}
 	
 	@Test
