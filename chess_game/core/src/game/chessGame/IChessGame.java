@@ -44,12 +44,18 @@ public interface IChessGame {
 	public boolean fiftyMoves();
 	
 	/**
-	 * Automatic draw if no capture or pawn move 
-	 * has been made in the last fifty moves
-	 * @param IBoard board, the board you want to check
-	 * @return true if 50-move rule, false else.
+	 * Precondition: you can never capture king 
+	 * (check-mate happens before and game is ended),
+	 * hence, two kings will always be on the board.
+	 * Automatic draw if:
+	 * - Only kings left on the board
+	 * - King and bishop vs king
+	 * - King and knight vs king
+	 * - King and bishop vs king and bishop (bishops on same colored squares)
+	 * @return true if draw, false else
 	 */
-	boolean fiftyMoves(IBoard board);
+	public boolean impossibleCheckmate();
+	
 	
 	/**
 	 * Precondition: check for check-mate first! This method 
@@ -100,5 +106,11 @@ public interface IChessGame {
 	 * @return IBoard board
 	 */
 	public IBoard getBoard();
+	
+	/**
+	 * Set the board of this game to the desired board.
+	 * @param board, IBoard board, the desired board.
+	 */
+	public void setBoard(IBoard board);
 
 }
