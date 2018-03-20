@@ -1,5 +1,8 @@
 package pieces;
 
+import static pieces.PieceColor.BLACK;
+import static pieces.PieceColor.WHITE;
+
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
@@ -66,7 +69,7 @@ public abstract class AbstractPiece implements IPiece {
 	@Override
 	public ArrayList<Move> getLegalMoves(Square origin, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> legalMoves = new ArrayList<>();
-		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, null);
+		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, playerOne);
 		for(int i = 0; i < moves.size(); i++) {
 			// TODO: 18/03/2018 bug here, sometimes getTo is null?
 			if (moves.get(i) == null) {
@@ -104,7 +107,8 @@ public abstract class AbstractPiece implements IPiece {
 
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
-		ArrayList<Move> check = allFreeMoves(x, y, board, null);
+		PieceColor color = opponent == WHITE ? BLACK : WHITE;
+		ArrayList<Move> check = allFreeMoves(x, y, board, color);
 		return enemiesReached(x, y, board, opponent, check);
 	}
 
@@ -134,9 +138,7 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return a updated list of positions where you can move.
 	 */
 	protected ArrayList<Move> removeMovesThatPutYourselfInCheck(ArrayList<Move> legalMoves, Square origin, IBoard board){
-		PieceColor opponent;
-		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
-		else {opponent = PieceColor.WHITE;}
+		PieceColor opponent = getColor().getOpposite();
 	
 		ArrayList<Move> okMov = new ArrayList<Move>();
 		

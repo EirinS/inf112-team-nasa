@@ -29,13 +29,6 @@ public interface IChessGame {
 	void doTurn(int fromX, int fromY, int toX, int toY);
 	
 	/**
-	 * Simple method to return opposite of the PieceColor you give
-	 * @param PieceColor current
-	 * @return PieceColor opposite
-	 */
-	public PieceColor getOtherPieceColor(PieceColor current);
-	
-	/**
 	 * Finishes a game, and performs the 
 	 * necessary steps.
 	 * @param PieceColor turn, the player that loses.

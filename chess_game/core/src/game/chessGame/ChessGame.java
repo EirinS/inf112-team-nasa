@@ -13,6 +13,9 @@ import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
 import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
+
+import pieces.pieceClasses.Rook;
+
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
@@ -70,7 +73,7 @@ public class ChessGame implements IChessGame {
 
 		//to check for threefold repetition
 		boardHistory.add(board);
-		this.turn = getOtherPieceColor(turn);
+		this.turn = turn.getOpposite();
 		listener.moveOk(moves);
 	}
 
@@ -130,8 +133,9 @@ public class ChessGame implements IChessGame {
 			return false;
 		if (piece.getColor() != other.getColor())
 			return false;
-		if (piece.hasMoved() != other.hasMoved())
-			return false;
+		if (piece instanceof Pawn || piece instanceof Rook || piece instanceof King)
+			if(piece.hasMoved() != other.hasMoved())
+				return false;
 		if(piece.isInPlay() != other.isInPlay())
 			return false;
 		return true;
@@ -158,7 +162,7 @@ public class ChessGame implements IChessGame {
 	@Override
 	public boolean checkmate() {
 		if (board.getAvailableMoves(turn).isEmpty()) {
-			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
+			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, turn.getOpposite());
 			for(IPiece p : threat) {
 				if (p instanceof King) {
 					return true;
@@ -199,11 +203,11 @@ public class ChessGame implements IChessGame {
 	 * @param pieceSqs
 	 * @return true if draw, false else
 	 */
-	private boolean fourPiecesCausesAutomaticDraw(ArrayList<Square> pieceSqs) {
+	public boolean fourPiecesCausesAutomaticDraw(ArrayList<Square> pieceSqs) {
 		ArrayList<Square> bishops = new ArrayList<>();
 		//find bishops
 		for(Square sq : pieceSqs) {
-			if(!(sq.getPiece() instanceof Bishop && !(sq.getPiece() instanceof King)))
+			if(!(sq.getPiece() instanceof Bishop) && !(sq.getPiece() instanceof King))
 				return false;
 			if(sq.getPiece() instanceof Bishop) {
 				bishops.add(sq);
@@ -252,13 +256,6 @@ public class ChessGame implements IChessGame {
 		} else {
 			//player2 lost
 		}
-	}
-
-	@Override
-	public PieceColor getOtherPieceColor(PieceColor current) {
-		if (current == PieceColor.WHITE)
-			return PieceColor.BLACK;
-		return PieceColor.WHITE;
 	}
 
 

@@ -18,9 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.Chess;
+
 import game.chessGame.GameInfo;
 import game.GameType;
 import game.WindowInformation;
+
 import pieces.PieceColor;
 import player.AILevel;
 import register.RegisteredPlayers;
