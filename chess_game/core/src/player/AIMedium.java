@@ -33,6 +33,7 @@ public class AIMedium implements AI, Playable {
 	public static AIMedium getInstance(PieceColor playerColor) {
 		if (instance == null)
 			instance = new AIMedium(playerColor);
+		instance.playerColor = playerColor;
 		return instance;
 	}
 	

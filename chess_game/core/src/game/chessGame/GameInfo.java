@@ -13,8 +13,7 @@ public class GameInfo {
 
     public GameInfo(String playerName) {
         this.playerName = playerName;
-        opponentName = "Computer";
-        gameType = GameType.SINGLEPLAYER;
+        reset();
     }
 
     public GameInfo(String playerName, String opponentName, PieceColor playerColor, GameType gameType, AILevel level) {
@@ -23,6 +22,14 @@ public class GameInfo {
         this.playerColor = playerColor;
         this.gameType = gameType;
         this.level = level;
+    }
+
+    public void reset() {
+        opponentName = "Computer";
+        gameType = GameType.SINGLEPLAYER;
+        playerColor = null;
+        opponentName = null;
+        level = null;
     }
 
     public PieceColor getPlayerColor() {

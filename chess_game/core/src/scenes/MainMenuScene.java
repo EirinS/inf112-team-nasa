@@ -77,6 +77,7 @@ public class MainMenuScene extends AbstractScene {
 
 	@Override
 	public void buildStage() {
+		if (gameInfo != null) gameInfo.reset();
 		if (built) return;
 		built = true;
 		setUpElements();

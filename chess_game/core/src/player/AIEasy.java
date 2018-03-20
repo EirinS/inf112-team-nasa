@@ -1,6 +1,5 @@
 package player;
 
-import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
@@ -26,6 +25,7 @@ public class AIEasy implements AI, Playable {
 	public static AIEasy getInstance(PieceColor playerColor) {
 		if (instance == null)
 			instance = new AIEasy(playerColor);
+		instance.playerColor = playerColor;
 		return instance;
 	}
 
