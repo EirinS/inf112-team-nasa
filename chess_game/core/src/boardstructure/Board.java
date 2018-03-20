@@ -246,7 +246,7 @@ public class Board implements IBoard {
 				history.add(m);
 			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
-			//TODO:
+			//TODO: implement promotion
 			//regular moves
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece

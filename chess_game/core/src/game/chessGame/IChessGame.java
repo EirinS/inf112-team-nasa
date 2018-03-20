@@ -43,13 +43,6 @@ public interface IChessGame {
 	 */
 	public boolean fiftyMoves();
 	
-	/**
-	 * Automatic draw if no capture or pawn move 
-	 * has been made in the last fifty moves
-	 * @param IBoard board, the board you want to check
-	 * @return true if 50-move rule, false else.
-	 */
-	boolean fiftyMoves(IBoard board);
 	
 	/**
 	 * Precondition: check for check-mate first! This method 
@@ -100,5 +93,11 @@ public interface IChessGame {
 	 * @return IBoard board
 	 */
 	public IBoard getBoard();
+	
+	/**
+	 * Set the board of this game to the desired board.
+	 * @param board, IBoard board, the desired board.
+	 */
+	public void setBoard(IBoard board);
 
 }

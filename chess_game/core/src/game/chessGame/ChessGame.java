@@ -72,7 +72,6 @@ public class ChessGame implements IChessGame {
 
 		//to check for threefold repetition
 		boardHistory.add(board);
-
 		this.turn = getOtherPieceColor(turn);
 	}
 
@@ -156,21 +155,6 @@ public class ChessGame implements IChessGame {
 		return false;
 	}
 	
-	@Override
-	public boolean fiftyMoves(IBoard board) {
-		ArrayList<Move> moves = board.getHistory();
-		int count = 0;
-		for (int i = moves.size()-1; i >= 0; i--) {
-			//if a piece was captured, or pawn moved, no draw.
-			if (moves.get(i).getCapturedPiece() != null || moves.get(i).getMovingPiece() instanceof Pawn) {
-				return false;
-			}
-			count++;
-			if(count >= 50)
-				return true;
-		}
-		return false;
-	}
 
 	@Override
 	public boolean checkmate() {
@@ -276,6 +260,12 @@ public class ChessGame implements IChessGame {
 	@Override
 	public IBoard getBoard() {
 		return board;
+	}
+
+	@Override
+	public void setBoard(IBoard board) {
+		this.board = board;
+		
 	}
 
 }

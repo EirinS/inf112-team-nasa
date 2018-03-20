@@ -54,6 +54,7 @@ public class GameTest {
 	@Test
 	public void fiftyMoveRuleIffiftyMovesOnlyRook() {
 		int moves = 50;
+		IBoard board = new Board(8, PieceColor.WHITE);
 		IPiece r = new Rook(PieceColor.WHITE);
 		board.getSquare(0, 0).putPiece(r);
 		Square one = board.getSquare(0, 0);
@@ -66,7 +67,8 @@ public class GameTest {
 			
 		}
 		assertEquals(moves, board.getHistory().size());
-		assertTrue(game.fiftyMoves(board));
+		game.setBoard(board);
+		assertTrue(game.fiftyMoves());
 	}
 
 
