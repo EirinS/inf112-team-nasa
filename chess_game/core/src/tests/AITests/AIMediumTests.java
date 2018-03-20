@@ -39,6 +39,7 @@ public class AIMediumTests {
 	public void setUp() throws Exception {
 	}
 	
+	/*//no longer a valid test, pieces are missing on the board.
 	@Test
 	public void testThatMediumAIWithOnlyARookDetectsAndMovesToFreeRook(){
 		ws.putPiece(w);
@@ -52,7 +53,7 @@ public class AIMediumTests {
 		org.junit.Assert.assertEquals(move.getTo().getY(), 2);
 		org.junit.Assert.assertEquals(move.getFrom().getX(), 0);
 		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
-	}
+	}*/
 	
 	@Test
 	public void getPossibleBoardsTest() {
@@ -100,36 +101,34 @@ public class AIMediumTests {
 		org.junit.Assert.assertEquals(move.getFrom().getY(), 0);
 	}
 	
-	//this is useless for now
-	@Test
-	public void testThatMediumAIWithOnlyRooksAndKingDoesNotPreformInvalidCastling() {
-		ws.putPiece(w);
-		bs.putPiece(wk);
-		wks.putPiece(b);
-		//br2.putPiece(b);
-		br3.putPiece(w);
-
-		AIMedium ai = new AIMedium(PieceColor.WHITE);
-		Move move = ai.calculateMove(board);
-	}
-	
-	//failes sometimes, still something with pawn.
-	//there is a bug in AIEasy giving negative numbers?(checkmate??)
+	//now ends successfully if game is over, fails if something bugs, or ends if the 20 moves are made. Prints a small message
 	@Test 
 	public void testAIEasyVSAIMedium20Moves() {
 		DefaultSetup d = new DefaultSetup();
 		Board boardT = d.getInitialPosition(PieceColor.WHITE);
-		//boardT.toString();
+		String msg1 = "The test ended after ";
+		String msg2 = " moves. ";
+		String nr = "20";
 		AIMedium p1 = new AIMedium(PieceColor.WHITE);
 		AIEasy p2 = new AIEasy(PieceColor.BLACK);
 		for (int i=0;i<20;i++) {
-			Move p1Move = p1.calculateMove(boardT);
-			boardT.move(p1Move.getFrom(), p1Move.getTo());
-			Move p2Move = p2.calculateMove(boardT);
-			boardT.move(p2Move.getFrom(), p2Move.getTo());
+			if (boardT.getAvailableMoves(p1.getPieceColor()).isEmpty()) {
+				nr = i+"";
+				msg2 = msg2 + "AIMedium has no moves (is checkmate or there is a draw)";
+				break;
+			}else {
+				Move p1Move = p1.calculateMove(boardT);
+				boardT.move(p1Move.getFrom(), p1Move.getTo());
+			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
+				nr = i+"";
+				msg2 = msg2 + "AIEasy has no moves (is checkmate or there is a draw)";
+				break;
+			}else {
+				Move p2Move = p2.calculateMove(boardT);
+				boardT.move(p2Move.getFrom(), p2Move.getTo());
+			}
 		}
-		//System.out.println("AIMedium values this position as "+p1.getAIScore(boardT));
-		//System.out.println(boardT.toString());
+		System.out.println(msg1 + nr + msg2);
 	}
 	
 	
