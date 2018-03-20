@@ -68,7 +68,7 @@ public class AIMedium implements AI, Playable {
 		for (int i=0; i<possibleBoards.size(); i++) {
 			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(opponentColor);
 			
-			if (possibleMovesOpp.isEmpty()) {//needs more work
+			if (possibleMovesOpp.isEmpty()) {
 				ArrayList<IPiece> allPieces= possibleBoards.get(i).piecesThreatenedByOpponent(opponentColor, playerColor);
 				for (IPiece piece : allPieces) {
 					if (piece.toString()=="K") {
@@ -82,10 +82,6 @@ public class AIMedium implements AI, Playable {
 					int[] forcedDraw = {-worstCase,i};
 					theMoves.add(forcedDraw);
 				}
-				
-				//int[] winOrDraw = {9999,i};
-				//theMoves.add(winOrDraw);
-				System.out.println("There are no moves opponent is checkmate or there is a draw, this case needs more work ");
 			}else {
 				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp);
 				ArrayList<int[]> findWorst = new ArrayList<int[]>();
