@@ -16,4 +16,10 @@ public interface ChessGameListener {
 	 * @param moves All moves that has been executed on the board.
 	 */
 	void moveOk(ArrayList<Move> moves);
+	
+	/**
+	 * Called when a game is a draw.
+	 */
+	void draw();
+	
 }

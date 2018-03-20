@@ -55,6 +55,12 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
+		//this player is in checkmate, game is finished
+		if(checkmate())
+			finishGame(turn);
+		if(isTie())
+			finishGame(null);
+		
 		ArrayList<Move> moves = board.move(fromX, fromY, toX, toY);
 		if (moves.isEmpty()) {
 			listener.illegalMovePerformed(fromX, fromY);
@@ -75,6 +81,17 @@ public class ChessGame implements IChessGame {
 		boardHistory.add(board);
 		this.turn = turn.getOpposite();
 		listener.moveOk(moves);
+	}
+	
+	@Override
+	public void finishGame(PieceColor turn) {
+		if(turn == null) {
+			listener.draw();
+		} else if (turn == gameInfo.getPlayerColor()) {
+			//player1 lost
+		} else {
+			//player2 lost
+		}
 	}
 
 	// WAYS TO END GAMES ---------------------------------------------------------
@@ -252,19 +269,6 @@ public class ChessGame implements IChessGame {
 	}
 
 	// WAYS TO END GAMES - END ---------------------------------------------------------
-
-	@Override
-	public void finishGame(PieceColor turn) {
-		if(turn == null) {
-			//draw
-		} else if (turn == gameInfo.getPlayerColor()) {
-			//player1 lost
-		} else {
-			//player2 lost
-		}
-	}
-
-
 
 
 	/**
