@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="735811f2-797e-40ca-96da-734164dafac2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/Board.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" afterPath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/GameTest.java" afterPath="$PROJECT_DIR$/core/src/tests/GameTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/Checkerboard.java" afterPath="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -83,29 +80,40 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Checkerboard.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2010">
+              <caret line="157" column="36" lean-forward="false" selection-start-line="157" selection-start-column="36" selection-end-line="157" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Board.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="216" column="0" lean-forward="false" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
+            <state relative-caret-position="128">
+              <caret line="219" column="68" lean-forward="true" selection-start-line="219" selection-start-column="68" selection-end-line="219" selection-end-column="68" />
               <folding>
                 <element signature="e#1381#1382#0" expanded="true" />
                 <element signature="e#1399#1400#0" expanded="true" />
                 <element signature="e#4673#4674#0" expanded="true" />
                 <element signature="e#4722#4723#0" expanded="true" />
                 <element signature="e#4968#4969#0" expanded="true" />
+                <element signature="e#5003#5004#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/tests/GameTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="759">
-              <caret line="90" column="76" lean-forward="false" selection-start-line="90" selection-start-column="76" selection-end-line="90" selection-end-column="76" />
+            <state relative-caret-position="-745">
+              <caret line="11" column="29" lean-forward="true" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <marker date="1521557477743" expanded="true" signature="5957:6028" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -114,8 +122,8 @@
       <file leaf-file-name="IBoard.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/boardstructure/IBoard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="135" column="53" lean-forward="true" selection-start-line="135" selection-start-column="53" selection-end-line="135" selection-end-column="53" />
+            <state relative-caret-position="-24">
+              <caret line="125" column="53" lean-forward="true" selection-start-line="125" selection-start-column="53" selection-end-line="125" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -1394,7 +1402,6 @@
         <option value="$PROJECT_DIR$/core/src/player/AILevel.java" />
         <option value="$PROJECT_DIR$/core/src/game/listeners/ChessGameListener.java" />
         <option value="$PROJECT_DIR$/core/src/game/chessGame/IChessGame.java" />
-        <option value="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
         <option value="$PROJECT_DIR$/core/src/tests/AITests/AIMediumTests.java" />
@@ -1402,6 +1409,7 @@
         <option value="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
         <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
         <option value="$PROJECT_DIR$/core/src/tests/GameTest.java" />
+        <option value="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
       </list>
     </option>
   </component>
@@ -1571,7 +1579,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.GameTest">
+  <component name="RunManager" selected="Application.DesktopLauncher">
     <configuration name="AIEasyTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -2123,10 +2131,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.GameTest" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.GameTest.fiftyMoveRuleIffiftyMovesOnlyRook" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.tests in core" />
-        <item index="3" class="java.lang.String" itemvalue="Application.DesktopLauncher" />
+        <item index="0" class="java.lang.String" itemvalue="Application.DesktopLauncher" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.GameTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.GameTest.fiftyMoveRuleIffiftyMovesOnlyRook" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.tests in core" />
         <item index="4" class="java.lang.String" itemvalue="JUnit.AllTests" />
       </list>
     </recent_temporary>
@@ -2160,13 +2168,13 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BishopsTest - 2018.03.18 at 17h 23m 16s.xml">
-      <configuration name="BishopsTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="GameTest - 2018.03.20 at 15h 43m 20s.xml">
       <configuration name="GameTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="GameTest - 2018.03.20 at 15h 43m 55s.xml">
+      <configuration name="GameTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="GameTest - 2018.03.20 at 15h 44m 54s.xml">
       <configuration name="GameTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="GameTest_fiftyMoveRuleIffiftyMovesOnlyRook - 2018.03.20 at 15h 43m 14s.xml">
@@ -2192,7 +2200,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106076000" />
+    <option name="totallyTimeSpent" value="107635000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -2206,7 +2214,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32765958" sideWeight="0.503125" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22978723" sideWeight="0.496875" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3319149" sideWeight="0.496875" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -2272,7 +2280,7 @@
           <option name="timeStamp" value="89" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="122" />
+      <option name="time" value="128" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2608,21 +2616,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1751">
-          <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
-          <folding>
-            <element signature="e#2786#2787#0" expanded="true" />
-            <element signature="e#2863#2864#0" expanded="true" />
-            <element signature="e#2911#2912#0" expanded="true" />
-            <element signature="e#2989#2990#0" expanded="true" />
-            <element signature="e#3037#3038#0" expanded="true" />
-            <element signature="e#3120#3121#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/tests/AITests/AIMediumTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1635">
@@ -2647,16 +2640,8 @@
           <caret line="59" column="9" lean-forward="true" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2393#2394#0" expanded="true" />
-            <element signature="e#2459#2460#0" expanded="true" />
-            <element signature="e#6743#6744#0" expanded="true" />
-            <element signature="e#6777#6778#0" expanded="true" />
-            <element signature="e#7978#7979#0" expanded="true" />
-            <element signature="e#8003#8004#0" expanded="true" />
-            <element signature="e#8033#8034#0" expanded="true" />
-            <element signature="e#8066#8067#0" expanded="true" />
-            <marker date="1521556394739" expanded="false" signature="7908:7913" ph=" { " />
-            <marker date="1521556394739" expanded="false" signature="7926:7929" ph=" }" />
+            <marker date="1521557477742" expanded="false" signature="7910:7915" ph=" { " />
+            <marker date="1521557477742" expanded="false" signature="7928:7931" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -2680,33 +2665,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/IBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="135" column="53" lean-forward="true" selection-start-line="135" selection-start-column="53" selection-end-line="135" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3589">
           <caret line="18" column="46" lean-forward="true" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="216" column="0" lean-forward="false" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
-          <folding>
-            <element signature="e#1381#1382#0" expanded="true" />
-            <element signature="e#1399#1400#0" expanded="true" />
-            <element signature="e#4673#4674#0" expanded="true" />
-            <element signature="e#4722#4723#0" expanded="true" />
-            <element signature="e#4968#4969#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2720,11 +2683,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/tests/GameTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="759">
-          <caret line="90" column="76" lean-forward="false" selection-start-line="90" selection-start-column="76" selection-end-line="90" selection-end-column="76" />
+        <state relative-caret-position="-745">
+          <caret line="11" column="29" lean-forward="true" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1521557477743" expanded="true" signature="5957:6028" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/IBoard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-24">
+          <caret line="125" column="53" lean-forward="true" selection-start-line="125" selection-start-column="53" selection-end-line="125" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="219" column="68" lean-forward="true" selection-start-line="219" selection-start-column="68" selection-end-line="219" selection-end-column="68" />
+          <folding>
+            <element signature="e#1381#1382#0" expanded="true" />
+            <element signature="e#1399#1400#0" expanded="true" />
+            <element signature="e#4673#4674#0" expanded="true" />
+            <element signature="e#4722#4723#0" expanded="true" />
+            <element signature="e#4968#4969#0" expanded="true" />
+            <element signature="e#5003#5004#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2010">
+          <caret line="157" column="36" lean-forward="false" selection-start-line="157" selection-start-column="36" selection-end-line="157" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
