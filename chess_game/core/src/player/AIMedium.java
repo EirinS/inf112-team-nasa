@@ -89,9 +89,25 @@ public class AIMedium implements AI, Playable {
 				
 				for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
 					List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
-					if(possibleMovesEnd.isEmpty()) {
-						int[] lostCase = {loss, i};
-						findWorst.add(lostCase);
+					if(possibleMovesEnd.isEmpty()) {////// TODO fix draw!
+						boolean added = false;
+						ArrayList<IPiece> allPieces= possibleBoards.get(i).piecesThreatenedByOpponent(playerColor, opponentColor);
+						for (IPiece piece : allPieces) {
+							if (piece.toString()=="K") {
+								int[] lostCase = {loss, i};
+								findWorst.add(lostCase);
+								added=true;
+							}
+						}
+						if (!added) {
+							int score = getAIScore(currentBoard);
+							if  ((score<0&&playerColor==PieceColor.WHITE)||(score>0&&playerColor==PieceColor.BLACK)) {//if AI is under in score and can get a draw, it will do it.
+								return possibleMoves.get(i);
+							}else {//if it is ahead in score, draw is bad
+								int[] forcedDraw = {-worstCase,i};
+								theMoves.add(forcedDraw);
+							}
+						}
 					}else {
 						ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd);//i),possibleMovesEnd);
 						int[] best = getBestAIScorePlacement(possibleBoardsEnd);
