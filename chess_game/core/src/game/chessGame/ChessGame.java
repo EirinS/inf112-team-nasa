@@ -57,7 +57,7 @@ public class ChessGame implements IChessGame {
 
 		//to check for threefold repetition
 		boardHistory.add(board);
-		this.turn = getOtherPieceColor(turn);
+		this.turn = turn.getOpposite();
 	}
 
 	// WAYS TO END GAMES ---------------------------------------------------------
@@ -145,7 +145,7 @@ public class ChessGame implements IChessGame {
 	@Override
 	public boolean checkmate() {
 		if (board.getAvailableMoves(turn).isEmpty()) {
-			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
+			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, turn.getOpposite());
 			for(IPiece p : threat) {
 				if (p instanceof King) {
 					return true;
@@ -239,13 +239,6 @@ public class ChessGame implements IChessGame {
 		} else {
 			//player2 lost
 		}
-	}
-
-	@Override
-	public PieceColor getOtherPieceColor(PieceColor current) {
-		if (current == PieceColor.WHITE)
-			return PieceColor.BLACK;
-		return PieceColor.WHITE;
 	}
 
 

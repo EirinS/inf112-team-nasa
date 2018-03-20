@@ -138,9 +138,7 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return a updated list of positions where you can move.
 	 */
 	protected ArrayList<Move> removeMovesThatPutYourselfInCheck(ArrayList<Move> legalMoves, Square origin, IBoard board){
-		PieceColor opponent;
-		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
-		else {opponent = PieceColor.WHITE;}
+		PieceColor opponent = getColor().getOpposite();
 	
 		ArrayList<Move> okMov = new ArrayList<Move>();
 		
