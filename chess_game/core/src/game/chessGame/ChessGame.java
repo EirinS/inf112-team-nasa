@@ -144,15 +144,14 @@ public class ChessGame implements IChessGame {
 	public boolean fiftyMoves() {
 		ArrayList<Move> moves = board.getHistory();
 		int count = 0;
-		for (int i = moves.size()-1; i <= 0; i--) {
+		for (int i = moves.size()-1; i >= 0; i--) {
 			//if a piece was captured, or pawn moved, no draw.
-			if (moves.get(i).getCapturedPiece() == null && moves.get(i).getMovingPiece() instanceof Pawn) {
+			if (moves.get(i).getCapturedPiece() != null || moves.get(i).getMovingPiece() instanceof Pawn) {
 				return false;
 			}
-			if(count >= 50) {
-				return true;
-			}
 			count++;
+			if(count >= 50)
+				return true;
 		}
 		return false;
 	}
@@ -167,9 +166,8 @@ public class ChessGame implements IChessGame {
 				return false;
 			}
 			count++;
-			if(count >= 50) {
+			if(count >= 50)
 				return true;
-			}
 		}
 		return false;
 	}
