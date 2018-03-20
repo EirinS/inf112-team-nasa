@@ -33,25 +33,25 @@ public interface IChessGame {
 	 * necessary steps.
 	 * @param PieceColor turn, the player that loses.
 	 */
-	public void finishGame(PieceColor turn);
+	void finishGame(PieceColor turn);
 	
 	/**
 	 * Player whose turn it is, resigns game.
 	 */
-	public void resign();
+	void resign();
 	
 	/**
 	 * Automatic draw if no capture or pawn move 
 	 * has been made in the last fifty moves
 	 * @return true if 50-move rule, false else.
 	 */
-	public boolean fiftyMoves();
+	boolean fiftyMoves();
 	
 	/**
 	 * Combines all methods that check if game is tied.
 	 * @return true if game is tied, false else
 	 */
-	public boolean isTie();
+	boolean isTie();
 	
 	/**
 	 * Precondition: you can never capture king 
@@ -64,7 +64,7 @@ public interface IChessGame {
 	 * - King and bishop vs king and bishop (bishops on same colored squares)
 	 * @return true if draw, false else
 	 */
-	public boolean impossibleCheckmate();
+	boolean impossibleCheckmate();
 	
 	
 	/**
@@ -76,32 +76,37 @@ public interface IChessGame {
 	 * but isn't in check
 	 * @return true if stale-mate, false else.
 	 */
-	public boolean stalemate();
+	boolean stalemate();
 	
 	/**
 	 * Draw if the same position occurs three times with the
 	 * same player to move (can be any time during the game)
 	 * @return true if threefoldRepetition, false else.
 	 */
-	public boolean threefoldRepetition();
+	boolean threefoldRepetition();
 
 	/**
 	 * This equality only holds for threefold repetition.
-	 * (For instance when you find which pieces you can capture, 
+	 * It makes sure that pieces have the same legal moves.
+	 * (Reason why it doesn't hold otherwise:
+	 * For instance when you find which pieces you can capture, 
 	 * if you can capture one pawn that hasn't moved, you can't capture all).
 	 * @param piece
 	 * @param other
 	 * @return true if they have the same field variables, false else.
 	 */
-	public boolean piecesAreEqual(IPiece piece, IPiece other);
+	boolean piecesAreEqual(IPiece piece, IPiece other);
 	
 	/**
-	 * Check if a board contains a square with equal field variables.
+	 * Check if a board contains a square with equal field variables,
+	 * and either both is empty, or contains the same piece (see:
+	 * piecesAreEqual()). This is also for threefold-repetiton 
+	 * purposes. Not to be used for other equality purposes.
 	 * @param board, the IBoard to check in
 	 * @param sq, the Square to check for
 	 * @return true if it is in board, false else.
 	 */
-	public boolean contains(IBoard board, Square sq);
+	boolean contains(IBoard board, Square sq);
 	
 	/**
 	 * Check if it is checkmate.
@@ -109,23 +114,23 @@ public interface IChessGame {
 	 * positions can be made.
 	 * @return true, if checkmate, false else
 	 */
-	public boolean checkmate();
+	boolean checkmate();
 	
 	/**
 	 * Get the board connected to this game
 	 * @return IBoard board
 	 */
-	public IBoard getBoard();
+	IBoard getBoard();
 	
 	/**
 	 * Set the board of this game to the desired board.
 	 * @param board, IBoard board, the desired board.
 	 */
-	public void setBoard(IBoard board);
+	void setBoard(IBoard board);
 	
 	/**
 	 * Set the board history of this game to the desired board.
 	 * @param boardHistory, ArrayList<IBoard> boardHistory , the desired board.
 	 */
-	public void setBoardHistory(ArrayList<IBoard> boardHistory);
+	void setBoardHistory(ArrayList<IBoard> boardHistory);
 }

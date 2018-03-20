@@ -114,12 +114,10 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public boolean isTie() {
-		return fiftyMoves() || impossibleCheckmate() || stalemate();
+		return fiftyMoves() || impossibleCheckmate() || stalemate() || threefoldRepetition();
 	}
 
-	/**
-	 * Not sure about this yet.
-	 */
+	@Override
 	public boolean threefoldRepetition() {
 		//current board;
 		IBoard current = boardHistory.get(boardHistory.size()-1);
