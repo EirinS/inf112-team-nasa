@@ -43,6 +43,19 @@ public interface IChessGame {
 	 */
 	public boolean fiftyMoves();
 	
+	/**
+	 * Precondition: you can never capture king 
+	 * (check-mate happens before and game is ended),
+	 * hence, two kings will always be on the board.
+	 * Automatic draw if:
+	 * - Only kings left on the board
+	 * - King and bishop vs king
+	 * - King and knight vs king
+	 * - King and bishop vs king and bishop (bishops on same colored squares)
+	 * @return true if draw, false else
+	 */
+	public boolean impossibleCheckmate();
+	
 	
 	/**
 	 * Precondition: check for check-mate first! This method 

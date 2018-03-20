@@ -9,7 +9,9 @@ import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
 import player.AILevel;
 import setups.DefaultSetup;
@@ -168,6 +170,57 @@ public class ChessGame implements IChessGame {
 		}
 		return false;
 
+	}
+	
+	
+	@Override
+	public boolean impossibleCheckmate() {
+		ArrayList<Square> pieceSqs = new ArrayList<>();  
+		for(Square sq : board.getBoard()) {
+			if(!sq.isEmpty())
+				pieceSqs.add(sq);
+		}
+		
+		//only way to have 2 pieces left, is 2 kings.
+		if(pieceSqs.size() == 2) {
+			return true;
+		} else if(pieceSqs.size() == 3) {
+			for(Square p : pieceSqs)
+				//if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
+				if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight)
+					return true;
+		} else if(pieceSqs.size() == 4) {
+			return fourPiecesCausesAutomaticDraw(pieceSqs)	;		
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if the two pieces besides the king are two
+	 * bishops that are on the same color-squares, but for
+	 * different players.
+	 * @param pieceSqs
+	 * @return true if draw, false else
+	 */
+	private boolean fourPiecesCausesAutomaticDraw(ArrayList<Square> pieceSqs) {
+		ArrayList<Square> bishops = new ArrayList<>();
+		//find bishops
+		for(Square sq : pieceSqs) {
+			if(!(sq.getPiece() instanceof Bishop && !(sq.getPiece() instanceof King)))
+				return false;
+			if(sq.getPiece() instanceof Bishop) {
+				bishops.add(sq);
+			}
+		}
+		//need two bishops for further checks
+		if(bishops.size() != 2)
+			return false;
+		if(bishops.get(0).getPiece().getColor() == bishops.get(1).getPiece().getColor())
+			return false;
+		if(bishops.get(0).squareIsWhite() != bishops.get(1).squareIsWhite()) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
