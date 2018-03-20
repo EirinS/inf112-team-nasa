@@ -106,6 +106,7 @@ public interface IBoard {
 	 * @param fromY From y position
 	 * @param toX To x position
 	 * @param toY To y position
+	 * @param turn Current turn
 	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
 	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY);
@@ -115,6 +116,7 @@ public interface IBoard {
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
+	 * @param turn Current turn
 	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
 	public ArrayList<Move> move(Square start, Square end);
@@ -143,4 +145,10 @@ public interface IBoard {
 	 * @return available moves for the given player color
 	 */
 	public List<Move> getAvailableMoves(PieceColor playerColor);
+
+	/**
+	 * Gets the current turn.
+	 * @return Turn
+	 */
+	public PieceColor getTurn();
 }

@@ -14,6 +14,7 @@ public class Board implements IBoard {
 	private int width;
 	private ArrayList<Square> board;
 	private PieceColor playerOne;
+	private PieceColor turn;
 
 	/**
 	 * Create new board.
@@ -26,6 +27,7 @@ public class Board implements IBoard {
 		if (dim < 0)
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
 		this.playerOne = playerOne;
+		turn = playerOne;
 		height = dim;
 		width = dim;
 		board = new ArrayList<Square>();
@@ -51,6 +53,11 @@ public class Board implements IBoard {
 			}
 		}
 		return moves;
+	}
+
+	@Override
+	public PieceColor getTurn() {
+		return turn;
 	}
 
 	@Override
@@ -209,7 +216,7 @@ public class Board implements IBoard {
 		IPiece moving = from.getPiece();
 		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, playerOne);
 		for(Move m : legalMoves) {
-			if (m.getTo() == to) {
+			if (m.getFrom().getPiece().getColor() == turn && m.getTo() == to) {
 				return doMove(m);
 			}
 		}
@@ -261,6 +268,7 @@ public class Board implements IBoard {
 			moves.add(m);
 		}
 		//printOutBoard();
+		turn = turn.getOpposite();
 		return moves;
 	}
 

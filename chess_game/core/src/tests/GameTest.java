@@ -72,7 +72,6 @@ public class GameTest {
 				board.move(one, two);
 			else 
 				board.move(two, one);
-
 		}
 		assertEquals(moves, board.getHistory().size());
 		assertTrue(game.fiftyMoves());
