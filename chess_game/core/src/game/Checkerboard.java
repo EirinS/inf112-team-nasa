@@ -17,6 +17,7 @@ import styling.Colors;
 import sprites.SquareTextureLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Checkerboard extends DragListener {
 
@@ -27,9 +28,9 @@ public class Checkerboard extends DragListener {
     private final int TOP_MARIGN = 24;
     private final int LEFT_MARIGN = 38;
 
-    private Chess game;
     private Stage stage;
-    private GameInfo gameInfo;
+    private HashMap<String, Texture> sprites;
+    private ArrayList<Square> initialSquares;
     private CheckerboardListener listener;
 
     private Image boardImg;
@@ -37,10 +38,10 @@ public class Checkerboard extends DragListener {
     private Texture chessMoveTexture, selectedPieceTexture;
     private Group checkerGroup, pieceGroup, highlightGroup;
 
-    public Checkerboard(Chess game, Stage stage, GameInfo gameInfo, CheckerboardListener listener) {
-        this.game = game;
+    public Checkerboard(Stage stage, HashMap<String, Texture> sprites, ArrayList<Square> initialSquares, CheckerboardListener listener) {
         this.stage = stage;
-        this.gameInfo = gameInfo;
+        this.sprites = sprites;
+        this.initialSquares = initialSquares;
         this.listener = listener;
         addActors();
     }
@@ -103,11 +104,11 @@ public class Checkerboard extends DragListener {
         pieceGroup = new Group();
         pieceGroup.setZIndex(2);
 
-        for (Square square : gameInfo.getSquares()) {
+        for (Square square : initialSquares) {
             if (square.getPiece() == null) continue;
             String pieceColor = square.getPiece().getColor() == PieceColor.WHITE ? "w" : "b";
 
-            Texture texture = gameInfo.getSprites().get(pieceColor + square.getPiece().toString().toLowerCase());
+            Texture texture = sprites.get(pieceColor + square.getPiece().toString().toLowerCase());
             Image img = new Image(texture);
             img.setSize(54, 54);
             img.setPosition(calcBoardX(square.getX()), calcBoardY(square.getY()));
