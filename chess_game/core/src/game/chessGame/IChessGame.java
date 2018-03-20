@@ -1,13 +1,24 @@
 package game.chessGame;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Rook;
 
+import java.util.ArrayList;
+
 public interface IChessGame {
-	
+
+	/**
+	 * Gets all the legal moves from a given x and y.
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @return Legal moves from (x, y).
+	 */
+	ArrayList<Move> getLegalMoves(int x, int y);
+
 	/**
 	 * Do one turn
 	 * @param fromX
@@ -15,7 +26,7 @@ public interface IChessGame {
 	 * @param toX
 	 * @param toY
 	 */
-	public void doTurn(int fromX, int fromY, int toX, int toY);
+	void doTurn(int fromX, int fromY, int toX, int toY);
 	
 	/**
 	 * Simple method to return opposite of the PieceColor you give
@@ -112,5 +123,4 @@ public interface IChessGame {
 	 * @param board, IBoard board, the desired board.
 	 */
 	public void setBoard(IBoard board);
-
 }

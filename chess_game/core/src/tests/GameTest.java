@@ -2,7 +2,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import game.GameInfo;
+import game.chessGame.GameInfo;
 import org.junit.Before;
 import org.junit.Test;
 

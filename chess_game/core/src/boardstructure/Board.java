@@ -195,7 +195,7 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public ArrayList<Move> getMove(int fromX, int fromY, int toX, int toY) {
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY) {
 		return move(getSquare(fromX, fromY), getSquare(toX, toY));
 	}
 

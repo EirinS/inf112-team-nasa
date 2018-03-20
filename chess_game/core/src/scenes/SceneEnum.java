@@ -1,7 +1,7 @@
 package scenes;
 
 import game.Chess;
-import game.GameInfo;
+import game.chessGame.GameInfo;
 
 public enum SceneEnum {
 
