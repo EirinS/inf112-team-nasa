@@ -35,12 +35,14 @@ public class ChessGame implements IChessGame {
 	public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
 		this.gameInfo = gameInfo;
 		this.listener = listener;
-		if (gameInfo.getLevel() != null) {
-			computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
-		}
 
 		// Set first turn and board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
+
+		// Load AI
+		if (gameInfo.getLevel() != null) {
+			computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
+		}
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class ChessGame implements IChessGame {
 		aiMove();
 	}
 
-	private void aiMove() {
+	public void aiMove() {
 		if (computerAI == null) return;
 		if (computerAI.getPieceColor() == board.getTurn()) {
 			Move move = computerAI.calculateMove(board);

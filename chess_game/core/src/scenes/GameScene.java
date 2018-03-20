@@ -101,6 +101,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		header.setPosition(historyScrollPane.getX() + ((historyScrollPane.getWidth() - header.getWidth()) / 2), historyScrollPane.getY() + historyScrollPane.getHeight() - header.getHeight() + 25);
 
 		addActor(header);
+
+		// Perform first AI move if needed.
+		chessGame.aiMove();
 	}
 
 	private void addMoveToHistory(Move m) {

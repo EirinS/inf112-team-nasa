@@ -481,7 +481,6 @@ public class MainMenuScene extends AbstractScene {
 		scores.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
-				// TODO - kaster nullpointer exception siden filen ikke er opprettet - m� fikses
 				ArrayList<String> highscores = RegisteredPlayers.getHighscores();
 
 				String[] scores = new String[highscores.size()+1];
