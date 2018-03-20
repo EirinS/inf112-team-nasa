@@ -37,6 +37,12 @@ public interface IChessGame {
 	public boolean fiftyMoves();
 	
 	/**
+	 * Combines all methods that check if game is tied.
+	 * @return true if game is tied, false else
+	 */
+	public boolean isTie();
+	
+	/**
 	 * Precondition: you can never capture king 
 	 * (check-mate happens before and game is ended),
 	 * hence, two kings will always be on the board.

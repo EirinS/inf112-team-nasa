@@ -61,6 +61,12 @@ public class ChessGame implements IChessGame {
 	}
 
 	// WAYS TO END GAMES ---------------------------------------------------------
+	
+	@Override
+	public boolean isTie() {
+		return fiftyMoves() || impossibleCheckmate() || stalemate();
+	}
+	
 	/**
 	 * Not sure about this yet.
 	 */
