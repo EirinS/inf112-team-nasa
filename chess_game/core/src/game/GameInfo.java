@@ -1,48 +1,66 @@
 package game;
 
-import boardstructure.Square;
-import com.badlogic.gdx.graphics.Texture;
 import pieces.PieceColor;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import player.AILevel;
 
 public class GameInfo {
 
     private PieceColor playerColor;
     private String playerName, opponentName;
-    private HashMap<String, Texture> sprites;
-    private ArrayList<Square> squares;
+    private GameType gameType;
+    private AILevel level;
 
-    public GameInfo(PieceColor playerColor, String playerName, String opponentName, HashMap<String, Texture> sprites, ArrayList<Square> squares) {
-        this.playerColor = playerColor;
+    public GameInfo(String playerName) {
+        this.playerName = playerName;
+        opponentName = "Computer";
+        gameType = GameType.SINGLEPLAYER;
+    }
+
+    public GameInfo(String playerName, String opponentName, PieceColor playerColor, GameType gameType, AILevel level) {
         this.playerName = playerName;
         this.opponentName = opponentName;
-        this.sprites = sprites;
-        this.squares = squares;
+        this.playerColor = playerColor;
+        this.gameType = gameType;
+        this.level = level;
     }
 
     public PieceColor getPlayerColor() {
         return playerColor;
     }
 
+    public void setPlayerColor(PieceColor playerColor) {
+        this.playerColor = playerColor;
+    }
+
     public String getPlayerName() {
         return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
     public String getOpponentName() {
         return opponentName;
     }
 
-    public HashMap<String, Texture> getSprites() {
-        return sprites;
+    public void setOpponentName(String opponentName) {
+        this.opponentName = opponentName;
     }
 
-    public void setSprites(HashMap<String, Texture> sprites) {
-        this.sprites = sprites;
+    public GameType getGameType() {
+        return gameType;
     }
 
-    public ArrayList<Square> getSquares() {
-        return squares;
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public AILevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(AILevel level) {
+        this.level = level;
     }
 }

@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import game.GameInfo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import pieces.PieceColor;
 import pieces.pieceClasses.Rook;
 
 public class GameTest {
-	IChessGame game = new ChessGame(null, null, null, null, null, null);
+	IChessGame game = new ChessGame(new GameInfo(null, null, null, null, null), null);
 	IBoard board = new Board(8, PieceColor.WHITE);
 	IBoard other = new Board(8, PieceColor.WHITE);
 

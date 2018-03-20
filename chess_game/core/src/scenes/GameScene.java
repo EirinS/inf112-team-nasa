@@ -29,6 +29,7 @@ import java.util.HashMap;
 public class GameScene extends AbstractScene implements CheckerboardListener {
 
 	private Chess game;
+	private GameInfo gameInfo;
 
 	private Skin skin;
 
@@ -45,8 +46,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 	private ScrollPane historyScrollPane;
 	private TextButton quitBtn, resignBtn;
 
-	public GameScene (Chess mainGame){
-		game = mainGame;
+	public GameScene (Chess game, GameInfo gameInfo){
+		this.game = game;
+		this.gameInfo = gameInfo;
 	}
 
 	private void initialize() {
@@ -58,9 +60,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 		// Init sprites and checkerboard.
 		sprites = PieceSpriteLoader.loadDefaultPieces();
 		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
+		checkerboard = new Checkerboard(this,  sprites, board.getSquares(), this);
+
 		turn = PieceColor.WHITE;
-		checkerboard = new Checkerboard(game, this, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
-	
+
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());

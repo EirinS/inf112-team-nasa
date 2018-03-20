@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
+import game.GameInfo;
 import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
@@ -15,17 +16,10 @@ import player.AILevel;
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
-	private IBoard board;
-	private String player1;
-	private String player2;
-	private PieceColor playerOneColor;
 
-	/**
-	 * GameType gameType. The type of game to be played.
-	 * For instance single-player, multi-player o.l.
-	 */
-	private GameType gameType;
-	private AILevel level;
+	private GameInfo gameInfo;
+	private IBoard board;
+
 	private PieceColor turn;
 	private ChessGameListener listener;
 
@@ -34,22 +28,13 @@ public class ChessGame implements IChessGame {
 
 	private ArrayList<IBoard> boardHistory = new ArrayList<>(); 
 
-	public ChessGame(String player1, String player2, GameType gameType, PieceColor playerOneColor, AILevel level, ChessGameListener listener) {
-		this.player1 = player1;
-		if(player2 == null) {
-			this.player2 = "computer";
-			this.level = level;
-		}
-		else 
-			this.player2 = player2;
-
-		this.gameType = gameType;
-		this.playerOneColor = playerOneColor;
-		this.turn = playerOneColor;
+	public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
+		this.gameInfo = gameInfo;
 		this.listener = listener;
 
-		//board for standard chess
-		this.board = (new DefaultSetup()).getInitialPosition(playerOneColor);
+		// Set first turn and board for standard chess
+		turn = gameInfo.getPlayerColor();
+		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
 	}
 
 	@Override
@@ -65,7 +50,7 @@ public class ChessGame implements IChessGame {
 				return;
 			}
 			board.move(m.getFrom(), m.getTo());	
-			if(turn == playerOneColor)
+			if(turn == gameInfo.getPlayerColor())
 				p1history.add(m);
 			else p2history.add(m);
 		}
@@ -213,7 +198,7 @@ public class ChessGame implements IChessGame {
 	public void finishGame(PieceColor turn) {
 		if(turn == null) {
 			//draw
-		} else if (turn == playerOneColor) {
+		} else if (turn == gameInfo.getPlayerColor()) {
 			//player1 lost
 		} else {
 			//player2 lost
