@@ -16,6 +16,8 @@ import pieces.pieceClasses.Rook;
 
 public class GameTest {
 	IChessGame game = new ChessGame(null, null, null, null, null, null);
+	IBoard board = new Board(8, PieceColor.WHITE);
+	IBoard other = new Board(8, PieceColor.WHITE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -35,9 +37,7 @@ public class GameTest {
 	
 	@Test
 	public void containsWorksWithDifferentBoardsButEqualFieldVariablesForSquare() {
-		IBoard board = new Board(8, PieceColor.WHITE);
 		board.getSquare(1, 1).putPiece(new Rook(PieceColor.WHITE));
-		IBoard other = new Board(8, PieceColor.WHITE);
 		Square sq = other.getSquare(1, 1);
 		sq.putPiece(new Rook(PieceColor.WHITE));
 		assertTrue(game.contains(board, sq));	
@@ -45,12 +45,28 @@ public class GameTest {
 	
 	@Test
 	public void containsFailsIfSquareIsNotInBoard() {
-		IBoard board = new Board(8, PieceColor.WHITE);
 		board.getSquare(1, 1).putPiece(new Rook(PieceColor.WHITE));
-		IBoard other = new Board(8, PieceColor.WHITE);
 		Square sq = other.getSquare(1, 1);
 		sq.putPiece(new Rook(PieceColor.BLACK));
 		assertFalse(game.contains(board, sq));	
+	}
+	
+	@Test
+	public void fiftyMoveRuleIffiftyMovesOnlyRook() {
+		int moves = 50;
+		IPiece r = new Rook(PieceColor.WHITE);
+		board.getSquare(0, 0).putPiece(r);
+		Square one = board.getSquare(0, 0);
+		Square two = board.getSquare(0, 2);
+		for(int i = 0; i < moves; i++) {
+			if(i % 2 == 0)
+				board.move(one, two);
+			else 
+				board.move(two, one);
+			
+		}
+		assertEquals(moves, board.getHistory().size());
+		assertTrue(game.fiftyMoves(board));
 	}
 
 

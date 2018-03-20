@@ -44,9 +44,21 @@ public interface IChessGame {
 	public boolean fiftyMoves();
 	
 	/**
+	 * Automatic draw if no capture or pawn move 
+	 * has been made in the last fifty moves
+	 * @param IBoard board, the board you want to check
+	 * @return true if 50-move rule, false else.
+	 */
+	boolean fiftyMoves(IBoard board);
+	
+	/**
+	 * Precondition: check for check-mate first! This method 
+	 * does not take account for whether the king is in check or not,
+	 * so it'll return true for check-mate and stale-mate, if you don't
+	 * check for check-mate first!
 	 * The player whose turn it is has no legal move,
 	 * but isn't in check
-	 * @return true if stalemate, false else.
+	 * @return true if stale-mate, false else.
 	 */
 	public boolean stalemate();
 	
@@ -74,5 +86,19 @@ public interface IChessGame {
 	 * @return true if it is in board, false else.
 	 */
 	public boolean contains(IBoard board, Square sq);
+	
+	/**
+	 * Check if it is checkmate.
+	 * Checkmate occurs if you're in check and no legal
+	 * positions can be made.
+	 * @return true, if checkmate, false else
+	 */
+	public boolean checkmate();
+	
+	/**
+	 * Get the board connected to this game
+	 * @return IBoard board
+	 */
+	public IBoard getBoard();
 
 }

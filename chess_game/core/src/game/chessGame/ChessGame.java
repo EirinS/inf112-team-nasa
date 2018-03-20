@@ -9,6 +9,7 @@ import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 import pieces.pieceClasses.Pawn;
 import player.AILevel;
 import setups.DefaultSetup;
@@ -18,7 +19,7 @@ public class ChessGame implements IChessGame {
 	private String player1;
 	private String player2;
 	private PieceColor playerOneColor;
-	
+
 	/**
 	 * GameType gameType. The type of game to be played.
 	 * For instance single-player, multi-player o.l.
@@ -27,12 +28,12 @@ public class ChessGame implements IChessGame {
 	private AILevel level;
 	private PieceColor turn;
 	private ChessGameListener listener;
-	
+
 	private ArrayList<Move> p1history = new ArrayList<>();
 	private ArrayList<Move> p2history = new ArrayList<>();
-	
+
 	private ArrayList<IBoard> boardHistory = new ArrayList<>(); 
-	
+
 	public ChessGame(String player1, String player2, GameType gameType, PieceColor playerOneColor, AILevel level, ChessGameListener listener) {
 		this.player1 = player1;
 		if(player2 == null) {
@@ -41,7 +42,7 @@ public class ChessGame implements IChessGame {
 		}
 		else 
 			this.player2 = player2;
-		
+
 		this.gameType = gameType;
 		this.playerOneColor = playerOneColor;
 		this.turn = playerOneColor;
@@ -50,7 +51,7 @@ public class ChessGame implements IChessGame {
 		//board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(playerOneColor);
 	}
-	
+
 	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
 		ArrayList<Move> moves = board.getMove(fromX, fromY, toX, toY);
@@ -68,13 +69,13 @@ public class ChessGame implements IChessGame {
 				p1history.add(m);
 			else p2history.add(m);
 		}
-		
+
 		//to check for threefold repetition
 		boardHistory.add(board);
-		
+
 		this.turn = getOtherPieceColor(turn);
 	}
-	
+
 	// WAYS TO END GAMES ---------------------------------------------------------
 	/**
 	 * Not sure about this yet.
@@ -83,17 +84,17 @@ public class ChessGame implements IChessGame {
 		//TODO: not sure about this one yet.
 		boolean even = (boardHistory.size()-1) % 2 == 0;
 		int start;
-		
+
 		//TODO: might be opposite
 		if(even)
 			start = 0;
 		else 
 			start = 1;
 		//must be same player to move. same player always moved every other time.
-		
+
 		//current board;
 		IBoard current = boardHistory.get(boardHistory.size()-1);
-		
+
 		//no threefoldrepetition if no player made 3 moves
 		if(boardHistory.size() < 6) {return false;}
 		int count;
@@ -109,11 +110,11 @@ public class ChessGame implements IChessGame {
 			//found threefold-repetition
 			if (count >= 3)
 				return true;
-			
+
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean contains(IBoard board, Square sq) {
 		for(Square other : board.getBoard()) {
@@ -122,7 +123,7 @@ public class ChessGame implements IChessGame {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean piecesAreEqual(IPiece piece, IPiece other) {
 		if(piece == null || other == null && !(piece == null && other == null))
@@ -137,8 +138,8 @@ public class ChessGame implements IChessGame {
 			return false;
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public boolean fiftyMoves() {
 		ArrayList<Move> moves = board.getHistory();
@@ -157,20 +158,59 @@ public class ChessGame implements IChessGame {
 	}
 	
 	@Override
+	public boolean fiftyMoves(IBoard board) {
+		ArrayList<Move> moves = board.getHistory();
+		int count = 0;
+		for (int i = moves.size()-1; i >= 0; i--) {
+			//if a piece was captured, or pawn moved, no draw.
+			if (moves.get(i).getCapturedPiece() != null || moves.get(i).getMovingPiece() instanceof Pawn) {
+				return false;
+			}
+			count++;
+			if(count >= 50) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean checkmate() {
+		if (board.getAvailableMoves(turn).isEmpty()) {
+			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
+			for(IPiece p : threat) {
+				if (p instanceof King) {
+					return true;
+				}
+			}
+		}
+		return false;
+
+	}
+
+	@Override
 	public boolean stalemate() {
 		if (board.getAvailableMoves(turn).isEmpty()) {
+			//put in if you need check for stale-mate (king not in check)
+			/*
+			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
+			for(IPiece p : threat) {
+				if (p instanceof King) {
+					return false;
+				}
+			} */
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void resign() {
 		finishGame(turn);
 	}
-	
+
 	// WAYS TO END GAMES - END ---------------------------------------------------------
-	
+
 	@Override
 	public void finishGame(PieceColor turn) {
 		if(turn == null) {
@@ -181,17 +221,17 @@ public class ChessGame implements IChessGame {
 			//player2 lost
 		}
 	}
-	
+
 	@Override
 	public PieceColor getOtherPieceColor(PieceColor current) {
 		if (current == PieceColor.WHITE)
 			return PieceColor.BLACK;
 		return PieceColor.WHITE;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Method that calculates the new rating for a player after a game
 	 * 
@@ -207,16 +247,16 @@ public class ChessGame implements IChessGame {
 		{
 			throw new IllegalArgumentException("Illegal input on win_lose_draw - Must be either 1, 2 or 3");
 		}
-				
+
 		// Sensitivity parameter
 		int K = 32;
-		
+
 		// Intermediary calculations
 		double r1 = Math.pow(10, rating1/400.0);
 		double r2 = Math.pow(10, rating2/400.0);		
 		double expectedScore1 = r1 / (r1 + r2);		
 		double s;
-		
+
 		if(win_lose_draw == 1) 		 // win
 		{
 			s = 1;
@@ -229,10 +269,15 @@ public class ChessGame implements IChessGame {
 		{
 			s = 0.5;
 		}
-			
+
 		double newRating = rating1 + ( K * (s - expectedScore1));
-		
+
 		return (int) newRating;
+	}
+
+	@Override
+	public IBoard getBoard() {
+		return board;
 	}
 
 }
