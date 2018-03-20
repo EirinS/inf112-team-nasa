@@ -13,10 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import game.Chess;
+import game.chessGame.GameInfo;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import game.Checkerboard;
-import game.GameInfo;
 import game.listeners.CheckerboardListener;
 import pieces.PieceColor;
 import setups.DefaultSetup;

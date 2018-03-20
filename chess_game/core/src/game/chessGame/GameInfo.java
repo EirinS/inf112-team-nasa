@@ -1,5 +1,6 @@
-package game;
+package game.chessGame;
 
+import game.GameType;
 import pieces.PieceColor;
 import player.AILevel;
 

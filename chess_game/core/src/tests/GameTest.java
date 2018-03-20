@@ -2,7 +2,6 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import game.GameInfo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,19 +9,25 @@ import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Square;
 import game.chessGame.ChessGame;
+import game.chessGame.GameInfo;
 import game.chessGame.IChessGame;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Bishop;
+import pieces.pieceClasses.King;
+import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
+import pieces.pieceClasses.Queen;
 import pieces.pieceClasses.Rook;
 
 public class GameTest {
-	IChessGame game = new ChessGame(new GameInfo(null, null, null, null, null), null);
+	IChessGame game = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, null), null);
 	IBoard board = new Board(8, PieceColor.WHITE);
 	IBoard other = new Board(8, PieceColor.WHITE);
 
 	@Before
 	public void setUp() throws Exception {
+		game.setBoard(board);
 	}
 
 	@Test
@@ -56,7 +61,6 @@ public class GameTest {
 	@Test
 	public void fiftyMoveRuleIffiftyMovesOnlyRook() {
 		int moves = 50;
-		IBoard board = new Board(8, PieceColor.WHITE);
 		IPiece r = new Rook(PieceColor.WHITE);
 		board.getSquare(0, 0).putPiece(r);
 		Square one = board.getSquare(0, 0);
@@ -69,14 +73,12 @@ public class GameTest {
 
 		}
 		assertEquals(moves, board.getHistory().size());
-		game.setBoard(board);
 		assertTrue(game.fiftyMoves());
 	}
 
 	@Test
 	public void notFiftyMoveRuleIfPawnMoves() {
 		int moves = 50;
-		IBoard board = new Board(8, PieceColor.WHITE);
 		IPiece r = new Rook(PieceColor.WHITE);
 		board.getSquare(0, 0).putPiece(r);
 		Square one = board.getSquare(0, 0);
@@ -97,8 +99,104 @@ public class GameTest {
 		}
 		//does two moves at 25
 		assertEquals(moves+1, board.getHistory().size());
-		game.setBoard(board);
 		assertFalse(game.fiftyMoves());
+	}
+	
+	@Test
+	public void canFindCheckMate() {
+		King k = new King(PieceColor.BLACK);
+		board.getSquare(3, 0).putPiece(k);
+		board.getSquare(3, 1).putPiece(new Queen(PieceColor.WHITE));
+		board.getSquare(4, 2).putPiece(new King(PieceColor.WHITE));
+		assertTrue(game.checkmate());
+	}
+	
+	@Test
+	public void cantFindCheckMateIfNotCheckMateIfYouCantMoveOnOtherPlayersTurn() {
+		King k = new King(PieceColor.WHITE);
+		board.getSquare(3, 0).putPiece(k);
+		board.getSquare(3, 1).putPiece(new Queen(PieceColor.BLACK));
+		board.getSquare(4, 2).putPiece(new King(PieceColor.BLACK));
+		assertFalse(game.checkmate());
+	}
+	
+	private void impossibleCheckMateSetup() {
+		board.getSquare(3, 3).putPiece(new King(PieceColor.WHITE));
+		board.getSquare(5, 5).putPiece(new King(PieceColor.BLACK));
+	}
+	
+	@Test
+	public void impossibleCheckMateWhenTwoKings() {
+		impossibleCheckMateSetup();
+		assertTrue(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void impossibleCheckMateWhenTwoKingsOneBishopBlack() {
+		impossibleCheckMateSetup();
+		board.getSquare(6, 0).putPiece(new Bishop(PieceColor.BLACK));
+		assertTrue(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void impossibleCheckMateWhenTwoKingsOneBishopWhite() {
+		impossibleCheckMateSetup();
+		board.getSquare(6, 0).putPiece(new Bishop(PieceColor.WHITE));
+		assertTrue(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void impossibleCheckMateWhenTwoKingsOneKnightBlack() {
+		impossibleCheckMateSetup();
+		board.getSquare(6, 0).putPiece(new Knight(PieceColor.BLACK));
+		assertTrue(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void impossibleCheckMateWhenTwoKingsOneKnightWhite() {
+		impossibleCheckMateSetup();
+		board.getSquare(6, 0).putPiece(new Knight(PieceColor.WHITE));
+		assertTrue(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void impossibleCheckMateWhenTwoKingsTwoBishopsSameSquareColorDifferentPlayers() {
+		impossibleCheckMateSetup();
+		Square one = board.getSquare(0, 0);
+		Square two = board.getSquare(2, 0);
+		one.putPiece(new Bishop(PieceColor.WHITE));
+		two.putPiece(new Bishop(PieceColor.BLACK));
+		assertTrue(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void notImpossibleCheckMateWhenTwoKingsTwoBishopsDifferentSquareColorDifferentPlayers() {
+		impossibleCheckMateSetup();
+		Square one = board.getSquare(0, 0);
+		Square two = board.getSquare(1, 0);
+		one.putPiece(new Bishop(PieceColor.WHITE));
+		two.putPiece(new Bishop(PieceColor.BLACK));
+		assertFalse(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void notImpossibleCheckMateWhenTwoKingsTwoBishopsSamePlayer() {
+		//obs should never happen anyway, but good to test
+		impossibleCheckMateSetup();
+		Square one = board.getSquare(0, 0);
+		Square two = board.getSquare(2, 0);
+		one.putPiece(new Bishop(PieceColor.WHITE));
+		two.putPiece(new Bishop(PieceColor.WHITE));
+		assertFalse(game.impossibleCheckmate());
+	}
+	
+	@Test
+	public void stalemateIfNotCheckMate() {
+		board.getSquare(1, 0).putPiece(new King(PieceColor.BLACK));
+		board.getSquare(0, 2).putPiece(new Queen(PieceColor.WHITE));
+		board.getSquare(2, 2).putPiece(new King(PieceColor.WHITE));
+		assertFalse(game.checkmate());
+		assertTrue(game.stalemate());
 	}
 
 

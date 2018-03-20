@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
-import game.GameInfo;
-import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -14,7 +12,7 @@ import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
 import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
-import player.AILevel;
+import pieces.pieceClasses.Rook;
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
@@ -118,8 +116,9 @@ public class ChessGame implements IChessGame {
 			return false;
 		if (piece.getColor() != other.getColor())
 			return false;
-		if (piece.hasMoved() != other.hasMoved())
-			return false;
+		if (piece instanceof Pawn || piece instanceof Rook || piece instanceof King)
+			if(piece.hasMoved() != other.hasMoved())
+				return false;
 		if(piece.isInPlay() != other.isInPlay())
 			return false;
 		return true;
@@ -187,11 +186,11 @@ public class ChessGame implements IChessGame {
 	 * @param pieceSqs
 	 * @return true if draw, false else
 	 */
-	private boolean fourPiecesCausesAutomaticDraw(ArrayList<Square> pieceSqs) {
+	public boolean fourPiecesCausesAutomaticDraw(ArrayList<Square> pieceSqs) {
 		ArrayList<Square> bishops = new ArrayList<>();
 		//find bishops
 		for(Square sq : pieceSqs) {
-			if(!(sq.getPiece() instanceof Bishop && !(sq.getPiece() instanceof King)))
+			if(!(sq.getPiece() instanceof Bishop) && !(sq.getPiece() instanceof King))
 				return false;
 			if(sq.getPiece() instanceof Bishop) {
 				bishops.add(sq);
