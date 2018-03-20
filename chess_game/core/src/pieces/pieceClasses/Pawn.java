@@ -10,14 +10,16 @@ import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
 
+import static pieces.PieceColor.WHITE;
+import static pieces.PieceColor.BLACK;
+
+
 /**
  * This class represents a pawn in the chess game.
  * @author marianne
  *
  */
 public class Pawn extends AbstractPiece {
-	private boolean inPlay;
-	private boolean hasMoved;
 	
 	/**
 	 * Constructs a pawn
@@ -25,12 +27,11 @@ public class Pawn extends AbstractPiece {
 	 */
 	public Pawn(PieceColor color) {
 		this.color = color;
-		this.inPlay = true;
 		this.hasMoved = false;
+		this.inPlay = true;
 	}
 	
 	//TODO en passant
-	//TODO hasMoved logic
 	//TODO pawn promotion
 	
 	/**
@@ -42,7 +43,6 @@ public class Pawn extends AbstractPiece {
 		Square sq = board.getSquare(x, y);
 		m.addAll(reachableSquares(sq, board, playerOne));
 		return m;
-
 	}
 	
 	/**
@@ -64,10 +64,12 @@ public class Pawn extends AbstractPiece {
 		int x = origin.getX();
 		int y = origin.getY();
 		int dy = 0;
-		PieceColor opponentColor = null;
+		PieceColor opponentColor = color == WHITE ? BLACK : WHITE;
+		
 		if (color == PieceColor.WHITE) {
 		//TODO change from color to playerOne
-		//if (playerOne == PieceColor.WHITE) {
+		
+		//if (playerOne == WHITE) {
 			dy = -1;
 			opponentColor = PieceColor.BLACK;
 		} else {
@@ -99,8 +101,6 @@ public class Pawn extends AbstractPiece {
 			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
 				Move move = new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR);
 				reachable.add(move);
-				System.out.println("Pawn: " + origin + ": " + origin.getPiece());
-				System.out.println("Pawn: " + westAhead + ": " + westAhead.getPiece());
 			}
 		}
 		if (x != board.getWidth()-1) { 
