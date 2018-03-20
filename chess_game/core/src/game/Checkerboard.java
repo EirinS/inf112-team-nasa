@@ -17,6 +17,7 @@ import styling.Colors;
 import sprites.SquareTextureLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Checkerboard extends DragListener {
 
@@ -27,9 +28,9 @@ public class Checkerboard extends DragListener {
     private final int TOP_MARIGN = 24;
     private final int LEFT_MARIGN = 38;
 
-    private Chess game;
     private Stage stage;
-    private GameInfo gameInfo;
+    private HashMap<String, Texture> sprites;
+    private ArrayList<Square> initialSquares;
     private CheckerboardListener listener;
 
     private Image boardImg;
@@ -37,10 +38,10 @@ public class Checkerboard extends DragListener {
     private Texture chessMoveTexture, selectedPieceTexture;
     private Group checkerGroup, pieceGroup, highlightGroup;
 
-    public Checkerboard(Chess game, Stage stage, GameInfo gameInfo, CheckerboardListener listener) {
-        this.game = game;
+    public Checkerboard(Stage stage, HashMap<String, Texture> sprites, ArrayList<Square> initialSquares, CheckerboardListener listener) {
         this.stage = stage;
-        this.gameInfo = gameInfo;
+        this.sprites = sprites;
+        this.initialSquares = initialSquares;
         this.listener = listener;
         addActors();
     }
@@ -76,26 +77,26 @@ public class Checkerboard extends DragListener {
         stage.addActor(highlightGroup);
     }
 
-    private float calcBoardX(int squareX) {
+    private float calcBoardX(float squareX) {
         return boardImg.getX() + LEFT_MARIGN + squareX * SQUARE_WIDTH;
     }
 
-    private float calcScreenX(int boardX) {
+    private float calcScreenX(float  boardX) {
         return (boardX - boardImg.getX() - LEFT_MARIGN) / SQUARE_WIDTH;
     }
 
-    private float calcBoardY(int squareY) {
+    private float calcBoardY(float  squareY) {
         return boardImg.getY() + TOP_MARIGN + (7 - squareY) * SQUARE_HEIGHT;
     }
 
-    private float calcScreenY(int boardY) {
+    private float calcScreenY(float  boardY) {
         return (((boardY - boardImg.getY() - TOP_MARIGN) / SQUARE_HEIGHT) - 7) * (-1);
     }
 
     private Vector2 calcBoardCoords(Actor actor) {
         Vector2 vector2 = actor.localToStageCoordinates(new Vector2(0,0));
-        int x = Math.round(calcScreenX((int)vector2.x));
-        int y = Math.round(calcScreenY((int)vector2.y));
+        int x = Math.round(calcScreenX(vector2.x));
+        int y = Math.round(calcScreenY(vector2.y));
         return new Vector2(x, y);
     }
 
@@ -103,11 +104,11 @@ public class Checkerboard extends DragListener {
         pieceGroup = new Group();
         pieceGroup.setZIndex(2);
 
-        for (Square square : gameInfo.getSquares()) {
+        for (Square square : initialSquares) {
             if (square.getPiece() == null) continue;
             String pieceColor = square.getPiece().getColor() == PieceColor.WHITE ? "w" : "b";
 
-            Texture texture = gameInfo.getSprites().get(pieceColor + square.getPiece().toString().toLowerCase());
+            Texture texture = sprites.get(pieceColor + square.getPiece().toString().toLowerCase());
             Image img = new Image(texture);
             img.setSize(54, 54);
             img.setPosition(calcBoardX(square.getX()), calcBoardY(square.getY()));
@@ -152,10 +153,10 @@ public class Checkerboard extends DragListener {
     }
 
     private void movePieceTo(Actor actor, int toX, int toY) {
-        int newX = (int)calcBoardX(toX);
-        int newY = (int)calcBoardY(toY);
-        actor.setPosition(newX, newY);
-        actor.setName(newX + "," + newY);
+        int boardX = (int)calcBoardX(toX);
+        int boardY = (int)calcBoardY(toY);
+        actor.setPosition(boardX, boardY);
+        actor.setName(toX + "," + toY);
     }
 
     public void movePieceFailed(int fromX, int fromY) {

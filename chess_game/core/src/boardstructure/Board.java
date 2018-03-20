@@ -14,6 +14,7 @@ public class Board implements IBoard {
 	private int width;
 	private ArrayList<Square> board;
 	private PieceColor playerOne;
+	private PieceColor turn;
 
 	/**
 	 * Create new board.
@@ -26,6 +27,7 @@ public class Board implements IBoard {
 		if (dim < 0)
 			throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
 		this.playerOne = playerOne;
+		turn = PieceColor.WHITE;
 		height = dim;
 		width = dim;
 		board = new ArrayList<Square>();
@@ -51,6 +53,11 @@ public class Board implements IBoard {
 			}
 		}
 		return moves;
+	}
+
+	@Override
+	public PieceColor getTurn() {
+		return turn;
 	}
 
 	@Override
@@ -195,20 +202,31 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public ArrayList<Move> getMove(int fromX, int fromY, int toX, int toY) {
-		return move(getSquare(fromX, fromY), getSquare(toX, toY));
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY) {
+		return move(fromX, fromY, toX, toY, false);
+	}
+
+	@Override
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY, boolean ignoreTurn) {
+		return move(getSquare(fromX, fromY), getSquare(toX, toY), ignoreTurn);
 	}
 
 	@Override
 	public ArrayList<Move> move(Square from, Square to) {
+		return move(from, to, false);
+	}
+
+	@Override
+	public ArrayList<Move> move(Square from, Square to, boolean ignoreTurn) {
 		if (from == null || to == null) {
 			return new ArrayList<>();
 			//tell user this is illegal
 		}
-		
+
 		IPiece moving = from.getPiece();
 		ArrayList<Move> legalMoves = moving.getLegalMoves(from, this, playerOne);
 		for(Move m : legalMoves) {
+			if (!ignoreTurn && m.getFrom().getPiece().getColor() != turn) continue;
 			if (m.getTo() == to) {
 				return doMove(m);
 			}
@@ -216,7 +234,7 @@ public class Board implements IBoard {
 		// error message to tell user move is illegal.
 		return new ArrayList<>();
 	}
-	
+
 	/**
 	 * Finds and executes the chosen move.
 	 * @param m, the move that you'll do
@@ -246,21 +264,22 @@ public class Board implements IBoard {
 				history.add(m);
 			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
-			//TODO:
+			//TODO: implement promotion
 			//regular moves
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
-			printOutBoard();
+			//printOutBoard();
 			history.add(m);
 			moves.add(m);
 		} else {
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
-			printOutBoard();
+			//printOutBoard();
 			history.add(m);
 			moves.add(m);
 		}
 		//printOutBoard();
+		turn = turn.getOpposite();
 		return moves;
 	}
 

@@ -1,13 +1,24 @@
 package game.chessGame;
 
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Rook;
 
+import java.util.ArrayList;
+
 public interface IChessGame {
-	
+
+	/**
+	 * Gets all the legal moves from a given x and y.
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @return Legal moves from (x, y).
+	 */
+	ArrayList<Move> getLegalMoves(int x, int y);
+
 	/**
 	 * Do one turn
 	 * @param fromX
@@ -15,14 +26,7 @@ public interface IChessGame {
 	 * @param toX
 	 * @param toY
 	 */
-	public void doTurn(int fromX, int fromY, int toX, int toY);
-	
-	/**
-	 * Simple method to return opposite of the PieceColor you give
-	 * @param PieceColor current
-	 * @return PieceColor opposite
-	 */
-	public PieceColor getOtherPieceColor(PieceColor current);
+	void doTurn(int fromX, int fromY, int toX, int toY);
 	
 	/**
 	 * Finishes a game, and performs the 
@@ -44,12 +48,24 @@ public interface IChessGame {
 	public boolean fiftyMoves();
 	
 	/**
-	 * Automatic draw if no capture or pawn move 
-	 * has been made in the last fifty moves
-	 * @param IBoard board, the board you want to check
-	 * @return true if 50-move rule, false else.
+	 * Combines all methods that check if game is tied.
+	 * @return true if game is tied, false else
 	 */
-	boolean fiftyMoves(IBoard board);
+	public boolean isTie();
+	
+	/**
+	 * Precondition: you can never capture king 
+	 * (check-mate happens before and game is ended),
+	 * hence, two kings will always be on the board.
+	 * Automatic draw if:
+	 * - Only kings left on the board
+	 * - King and bishop vs king
+	 * - King and knight vs king
+	 * - King and bishop vs king and bishop (bishops on same colored squares)
+	 * @return true if draw, false else
+	 */
+	public boolean impossibleCheckmate();
+	
 	
 	/**
 	 * Precondition: check for check-mate first! This method 
@@ -100,5 +116,10 @@ public interface IChessGame {
 	 * @return IBoard board
 	 */
 	public IBoard getBoard();
-
+	
+	/**
+	 * Set the board of this game to the desired board.
+	 * @param board, IBoard board, the desired board.
+	 */
+	public void setBoard(IBoard board);
 }

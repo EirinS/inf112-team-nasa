@@ -116,7 +116,7 @@ public class AIMediumTests {
 	//failes sometimes, still something with pawn.
 	//there is a bug in AIEasy giving negative numbers?(checkmate??)
 	@Test 
-	public void testAIEasyVSAIMedium10Moves() {
+	public void testAIEasyVSAIMedium20Moves() {
 		DefaultSetup d = new DefaultSetup();
 		Board boardT = d.getInitialPosition(PieceColor.WHITE);
 		//boardT.toString();
@@ -128,7 +128,7 @@ public class AIMediumTests {
 			Move p2Move = p2.calculateMove(boardT);
 			boardT.move(p2Move.getFrom(), p2Move.getTo());
 		}
-		System.out.println("AIMedium values this position as "+p1.getAIScore(boardT));
+		//System.out.println("AIMedium values this position as "+p1.getAIScore(boardT));
 		//System.out.println(boardT.toString());
 	}
 	

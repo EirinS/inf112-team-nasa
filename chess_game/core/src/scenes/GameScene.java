@@ -4,7 +4,6 @@ import boardstructure.Board;
 import boardstructure.Move;
 import boardstructure.Square;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,11 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import game.Chess;
+import game.chessGame.GameInfo;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import game.Checkerboard;
-import game.GameInfo;
+
+import game.chessGame.ChessGame;
+import game.chessGame.GameInfo;
+
 import game.listeners.CheckerboardListener;
+import game.listeners.ChessGameListener;
 import pieces.PieceColor;
 import setups.DefaultSetup;
 import sprites.PieceSpriteLoader;
@@ -26,27 +31,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class GameScene extends AbstractScene implements CheckerboardListener {
+public class GameScene extends AbstractScene implements CheckerboardListener, ChessGameListener {
 
 	private Chess game;
+	private GameInfo gameInfo;
 
 	private Skin skin;
-
-	private HashMap<String, Texture> sprites;
+	private ChessGame chessGame;
 	private Checkerboard checkerboard;
-	private Board board;
-
-	// TODO: 15.03.2018 this is temp; just to have something to draw.
-	private String player1 = "triki";
-	private String player2 = "wagle";
-	private PieceColor turn;
 
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane;
 	private TextButton quitBtn, resignBtn;
 
-	public GameScene (Chess mainGame){
-		game = mainGame;
+	public GameScene (Chess game, GameInfo gameInfo){
+		this.game = game;
+		this.gameInfo = gameInfo;
 	}
 
 	private void initialize() {
@@ -55,12 +55,13 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
 		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
 
+		// Init ChessGame
+		chessGame = new ChessGame(gameInfo, this);
+
 		// Init sprites and checkerboard.
-		sprites = PieceSpriteLoader.loadDefaultPieces();
-		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
-		turn = PieceColor.WHITE;
-		checkerboard = new Checkerboard(game, this, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
-	
+		HashMap<String, Texture> sprites = PieceSpriteLoader.loadDefaultPieces();
+		checkerboard = new Checkerboard(this, sprites, chessGame.getBoard().getSquares(), this);
+
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
@@ -100,6 +101,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 		header.setPosition(historyScrollPane.getX() + ((historyScrollPane.getWidth() - header.getWidth()) / 2), historyScrollPane.getY() + historyScrollPane.getHeight() - header.getHeight() + 25);
 
 		addActor(header);
+
+		// Perform first AI move if needed.
+		chessGame.aiMove();
 	}
 
 	private void addMoveToHistory(Move m) {
@@ -115,26 +119,28 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 
 	@Override
 	public void buildStage() {
-		if (built) return;
-		built = true;
 		initialize();
 	}
 
 	@Override
 	public void onDragPieceStarted(int x, int y) {
-		Square square = board.getSquare(x, y);
-		if (square.getPiece().getColor() != turn) return; // Ignore if we click on opponent pieces.
-		checkerboard.showMoves(square.getPiece().getLegalMoves(square, board, PieceColor.WHITE));
+		ArrayList<Move> legalMoves = chessGame.getLegalMoves(x, y);
+		if (!legalMoves.isEmpty()) checkerboard.showMoves(legalMoves);
 	}
 
 	@Override
 	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
-		ArrayList<Move> moves = board.getMove(fromX, fromY, toX, toY);
-		if (moves.isEmpty()) {
-			checkerboard.movePieceFailed(fromX, fromY);
-		} else {
-			addMoveToHistory(board.getLastMove());
-			checkerboard.movePieces(moves);
-		}
+		chessGame.doTurn(fromX, fromY, toX, toY);
+	}
+
+	@Override
+	public void illegalMovePerformed(int originX, int originY) {
+		checkerboard.movePieceFailed(originX, originY);
+	}
+
+	@Override
+	public void moveOk(ArrayList<Move> moves) {
+		addMoveToHistory(chessGame.getLastMove());
+		checkerboard.movePieces(moves);
 	}
 }

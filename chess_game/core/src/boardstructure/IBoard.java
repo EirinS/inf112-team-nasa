@@ -108,16 +108,39 @@ public interface IBoard {
 	 * @param toY To y position
 	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
-	public ArrayList<Move> getMove(int fromX, int fromY, int toX, int toY);
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY);
+
+	/**
+	 * Move a piece to a legal position on the board.
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param fromX From x position
+	 * @param fromY From y position
+	 * @param toX To x position
+	 * @param toY To y position
+	 * @param ignoreTurn Wether the board should ignore who's turn it is.
+	 * @return List of moves executed on the board, empty if no illegal move.
+	 */
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY, boolean ignoreTurn);
 
 	/**
 	 * Move a piece to a legal position on the board.
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
+	 * @param turn Current turn
 	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
 	public ArrayList<Move> move(Square start, Square end);
+
+	/**
+	 * Move a piece to a legal position on the board.
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param start, the position the piece had
+	 * @param end, the position the piece goes to.
+	 * @param ignoreTurn Wether the board should ignore who's turn it is.
+	 * @return List of moves executed on the board, empty if no illegal move.
+	 */
+	public ArrayList<Move> move(Square start, Square end, boolean ignoreTurn);
 	
 	/**
 	 * This method returns the algebraic notation of all moves made.
@@ -143,4 +166,10 @@ public interface IBoard {
 	 * @return available moves for the given player color
 	 */
 	public List<Move> getAvailableMoves(PieceColor playerColor);
+
+	/**
+	 * Gets the current turn.
+	 * @return Turn
+	 */
+	public PieceColor getTurn();
 }

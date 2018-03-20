@@ -48,6 +48,17 @@ public class SquareTest {
 	}
 	
 	@Test
+	public void blackSquareReturnsFalseForSquareIsWhite() {
+		assertFalse(sq.squareIsWhite());
+	}
+	
+	@Test
+	public void whiteSquareReturnsTrueForSquareIsWhite() {
+		Square sq = new Square(0,0);
+		assertTrue(sq.squareIsWhite());
+	}
+	
+	@Test
 	public void movePieceLeavesSquareEmpty() {
 		sq.putPiece(piece);
 		assertFalse(sq.isEmpty());

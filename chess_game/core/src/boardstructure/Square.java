@@ -160,6 +160,14 @@ public class Square {
 	public String toString() {
 		return numberToLetter(x)+flipY(y);
 	}
+	
+	/**
+	 * Checks if the color of this square is white.
+	 * @return true if white, false else
+	 */
+	public boolean squareIsWhite() {
+		return (getY() % 2) == (getX() % 2);
+	}
 
 	@Override
 	public boolean equals(Object o) {

@@ -6,5 +6,18 @@ package pieces;
  *
  */
 public enum PieceColor {
-	WHITE, BLACK
+
+	WHITE {
+		@Override
+		public PieceColor getOpposite() {
+			return BLACK;
+		}
+	}, BLACK {
+		@Override
+		public PieceColor getOpposite() {
+			return WHITE;
+		}
+	};
+
+	public abstract PieceColor getOpposite();
 }

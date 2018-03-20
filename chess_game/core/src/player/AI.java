@@ -1,13 +1,24 @@
 package player;
 
-import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
-import boardstructure.Square;
+import pieces.PieceColor;
 
 /**
  * Created by jonas on 12/03/2018.
  */
 public interface AI {
-	public Move calculateMove(IBoard currentBoard);
+
+	/**
+	 * Calculates the best move and returns it.
+	 * @param currentBoard Board we're using.
+	 * @return Best move.
+	 */
+	Move calculateMove(IBoard currentBoard);
+
+	/**
+	 * Gets the AI piece color
+	 * @return Piece color.
+	 */
+	PieceColor getPieceColor();
 }

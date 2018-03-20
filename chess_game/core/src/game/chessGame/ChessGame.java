@@ -2,31 +2,29 @@ package game.chessGame;
 
 import java.util.ArrayList;
 
+import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
-import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
-import player.AILevel;
+
+import pieces.pieceClasses.Rook;
+
+import player.AI;
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
-	private IBoard board;
-	private String player1;
-	private String player2;
-	private PieceColor playerOneColor;
 
-	/**
-	 * GameType gameType. The type of game to be played.
-	 * For instance single-player, multi-player o.l.
-	 */
-	private GameType gameType;
-	private AILevel level;
-	private PieceColor turn;
+	private GameInfo gameInfo;
+	private IBoard board;
+	private AI computerAI;
+
 	private ChessGameListener listener;
 
 	private ArrayList<Move> p1history = new ArrayList<>();
@@ -34,49 +32,83 @@ public class ChessGame implements IChessGame {
 
 	private ArrayList<IBoard> boardHistory = new ArrayList<>(); 
 
-	public ChessGame(String player1, String player2, GameType gameType, PieceColor playerOneColor, AILevel level, ChessGameListener listener) {
-		this.player1 = player1;
-		if(player2 == null) {
-			this.player2 = "computer";
-			this.level = level;
-		}
-		else 
-			this.player2 = player2;
-
-		this.gameType = gameType;
-		this.playerOneColor = playerOneColor;
-		this.turn = playerOneColor;
+	public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
+		this.gameInfo = gameInfo;
 		this.listener = listener;
 
-		//board for standard chess
-		this.board = (new DefaultSetup()).getInitialPosition(playerOneColor);
+		// Set first turn and board for standard chess
+		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
+
+		// Load AI
+		if (gameInfo.getLevel() != null) {
+			computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
+		}
+	}
+
+	@Override
+	public ArrayList<Move> getLegalMoves(int x, int y) {
+		Square square = board.getSquare(x, y);
+		if (square.getPiece().getColor() != board.getTurn()) return new ArrayList<>();
+		return square.getPiece().getLegalMoves(square, board, gameInfo.getPlayerColor());
 	}
 
 	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
-		ArrayList<Move> moves = board.getMove(fromX, fromY, toX, toY);
+		//this player is in checkmate, game is finished
+		if(checkmate()) {
+			finishGame(board.getTurn());
+			return;
+		}
+		if(isTie()) {
+			finishGame(null);
+			return;
+		}
+		
+		ArrayList<Move> moves = board.move(fromX, fromY, toX, toY);
+		if (moves.isEmpty()) {
+			listener.illegalMovePerformed(fromX, fromY);
+			return;
+		}
 		for (Move m : moves) {
-			if (m.getMovingPiece().getColor() != turn) {
-				listener.notYourPieceColor();
-				return;
-			}
-			if (board.move(m.getFrom(), m.getTo()).isEmpty()) { //returns empty arrayList
-				listener.notALegalMove();
-				return;
-			}
-			board.move(m.getFrom(), m.getTo());	
-			if(turn == playerOneColor)
+			if(board.getTurn() == gameInfo.getPlayerColor())
 				p1history.add(m);
 			else p2history.add(m);
 		}
 
 		//to check for threefold repetition
 		boardHistory.add(board);
+		listener.moveOk(moves);
 
-		this.turn = getOtherPieceColor(turn);
+		// Check if AI should do move
+		aiMove();
+	}
+
+	public void aiMove() {
+		if (computerAI == null) return;
+		if (computerAI.getPieceColor() == board.getTurn()) {
+			Move move = computerAI.calculateMove(board);
+			doTurn(move.getFrom().getX(), move.getFrom().getY(), move.getTo().getX(), move.getTo().getY());
+		}
+	}
+	
+	@Override
+	public void finishGame(PieceColor turn) {
+		if(turn == null) {
+			listener.draw();
+		} else if (turn == gameInfo.getPlayerColor()) {
+			//player1 lost
+		} else {
+			//player1 lost
+		}
 	}
 
 	// WAYS TO END GAMES ---------------------------------------------------------
+	
+	@Override
+	public boolean isTie() {
+		return fiftyMoves() || impossibleCheckmate() || stalemate();
+	}
+	
 	/**
 	 * Not sure about this yet.
 	 */
@@ -132,8 +164,9 @@ public class ChessGame implements IChessGame {
 			return false;
 		if (piece.getColor() != other.getColor())
 			return false;
-		if (piece.hasMoved() != other.hasMoved())
-			return false;
+		if (piece instanceof Pawn || piece instanceof Rook || piece instanceof King)
+			if(piece.hasMoved() != other.hasMoved())
+				return false;
 		if(piece.isInPlay() != other.isInPlay())
 			return false;
 		return true;
@@ -156,26 +189,11 @@ public class ChessGame implements IChessGame {
 		return false;
 	}
 	
-	@Override
-	public boolean fiftyMoves(IBoard board) {
-		ArrayList<Move> moves = board.getHistory();
-		int count = 0;
-		for (int i = moves.size()-1; i >= 0; i--) {
-			//if a piece was captured, or pawn moved, no draw.
-			if (moves.get(i).getCapturedPiece() != null || moves.get(i).getMovingPiece() instanceof Pawn) {
-				return false;
-			}
-			count++;
-			if(count >= 50)
-				return true;
-		}
-		return false;
-	}
 
 	@Override
 	public boolean checkmate() {
-		if (board.getAvailableMoves(turn).isEmpty()) {
-			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
+		if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
+			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(board.getTurn(), board.getTurn().getOpposite());
 			for(IPiece p : threat) {
 				if (p instanceof King) {
 					return true;
@@ -185,10 +203,61 @@ public class ChessGame implements IChessGame {
 		return false;
 
 	}
+	
+	
+	@Override
+	public boolean impossibleCheckmate() {
+		ArrayList<Square> pieceSqs = new ArrayList<>();  
+		for(Square sq : board.getBoard()) {
+			if(!sq.isEmpty())
+				pieceSqs.add(sq);
+		}
+		
+		//only way to have 2 pieces left, is 2 kings.
+		if(pieceSqs.size() == 2) {
+			return true;
+		} else if(pieceSqs.size() == 3) {
+			for(Square p : pieceSqs)
+				//if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
+				if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight)
+					return true;
+		} else if(pieceSqs.size() == 4) {
+			return fourPiecesCausesAutomaticDraw(pieceSqs)	;		
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if the two pieces besides the king are two
+	 * bishops that are on the same color-squares, but for
+	 * different players.
+	 * @param pieceSqs
+	 * @return true if draw, false else
+	 */
+	public boolean fourPiecesCausesAutomaticDraw(ArrayList<Square> pieceSqs) {
+		ArrayList<Square> bishops = new ArrayList<>();
+		//find bishops
+		for(Square sq : pieceSqs) {
+			if(!(sq.getPiece() instanceof Bishop) && !(sq.getPiece() instanceof King))
+				return false;
+			if(sq.getPiece() instanceof Bishop) {
+				bishops.add(sq);
+			}
+		}
+		//need two bishops for further checks
+		if(bishops.size() != 2)
+			return false;
+		if(bishops.get(0).getPiece().getColor() == bishops.get(1).getPiece().getColor())
+			return false;
+		if(bishops.get(0).squareIsWhite() != bishops.get(1).squareIsWhite()) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public boolean stalemate() {
-		if (board.getAvailableMoves(turn).isEmpty()) {
+		if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
 			//put in if you need check for stale-mate (king not in check)
 			/*
 			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
@@ -204,30 +273,10 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public void resign() {
-		finishGame(turn);
+		finishGame(board.getTurn());
 	}
 
 	// WAYS TO END GAMES - END ---------------------------------------------------------
-
-	@Override
-	public void finishGame(PieceColor turn) {
-		if(turn == null) {
-			//draw
-		} else if (turn == playerOneColor) {
-			//player1 lost
-		} else {
-			//player2 lost
-		}
-	}
-
-	@Override
-	public PieceColor getOtherPieceColor(PieceColor current) {
-		if (current == PieceColor.WHITE)
-			return PieceColor.BLACK;
-		return PieceColor.WHITE;
-	}
-
-
 
 
 	/**
@@ -278,4 +327,12 @@ public class ChessGame implements IChessGame {
 		return board;
 	}
 
+	@Override
+	public void setBoard(IBoard board) {
+		this.board = board;
+	}
+
+	public Move getLastMove() {
+		return board.getLastMove();
+	}
 }
