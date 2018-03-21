@@ -1,5 +1,7 @@
 package register;
 
+import game.Chess;
+
 /**
  * Simple helper-class for the getHighscores method, which allows the priority queue to be used.
  * Stores a player using his name and score.
@@ -30,6 +32,10 @@ public class Player implements Comparable<Player> {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public void loadRating() {
+        rating = Chess.getPlayerRegister().getPlayer(name).getRating();
     }
 
     public int getWins() {

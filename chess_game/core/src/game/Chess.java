@@ -2,6 +2,9 @@ package game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import game.chessGame.GameInfo;
+import pieces.PieceColor;
+import register.Player;
 import register.PlayerRegister;
 import com.badlogic.gdx.*;
 import scenes.SceneEnum;
@@ -16,8 +19,18 @@ public class Chess extends Game {
     public void create() {
         batch = new SpriteBatch();
         SceneManager.getInstance().initialize(this);
-        //SceneManager.getInstance().showScreen(SceneEnum.VICTORY, this);
         SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, this);
+
+        // TODO: 21/03/2018 temp for showing victory screen
+        /*SceneManager.getInstance().showScreen(SceneEnum.VICTORY, this,
+                new GameInfo(
+                        new Player("testSpiller", 1500, 1, 2, 2),
+                        new Player("Eirin", 1300, 2, 2, 2),
+                        PieceColor.WHITE,
+                        GameType.MULTIPLAYER,
+                        null
+                ), true);
+        */
     }
 
     @Override

@@ -55,6 +55,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
 		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
 
+        Image imgBackground = new Image(new Texture("board/game_bg.png"));
+        imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
+        addActor(imgBackground);
+
 		// Init ChessGame
 		chessGame = new ChessGame(gameInfo, this);
 
@@ -69,9 +73,6 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	}
 
 	private void addActors() {
-        Image imgBackground = new Image(new Texture("board/game_bg.png"));
-        imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
-        addActor(imgBackground);
 
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
@@ -92,7 +93,6 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				chessGame.resign();
-				SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, game);
 				super.clicked(event, x, y);
 			}
 		});
@@ -192,13 +192,11 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void win() {
-		// TODO: implement?
-        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game);
+        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, true);
 	}
 
 	@Override
 	public void loss() {
-		// TODO: implement?
-        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game);
+        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, false);
 	}
 }

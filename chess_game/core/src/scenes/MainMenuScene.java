@@ -323,8 +323,11 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Chess.getPlayerRegister().loadPlayers(); // Force-reload.
                 gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
                 gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
+                gameInfo.getPlayer().loadRating();
+                if (gameInfo.getOpponent() != null) gameInfo.getOpponent().loadRating();
                 SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                 startSingleListener();
             }
@@ -382,9 +385,11 @@ public class MainMenuScene extends AbstractScene {
                         return;
                     }
                     else if (exists) {
+                        Chess.getPlayerRegister().loadPlayers(); // Force-reload.
                         gameInfo.setOpponent(Chess.getPlayerRegister().getPlayer(name));
                         gameInfo.setGameType(GameType.MULTIPLAYER);
                         gameInfo.setPlayerColor(PieceColor.WHITE);
+                        gameInfo.getPlayer().loadRating();
                         SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                         signInListener();
                     } else {

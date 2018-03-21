@@ -146,7 +146,8 @@ public class ChessGame implements IChessGame {
 	@Override
 	public void finishGame(PieceColor turn) {
 		//stop clock
-		playerTimer.cancel(); opponentTimer.cancel();
+		if (playerTimerRunning) playerTimer.cancel();
+		if (opponentTimerRunning) opponentTimer.cancel();
 		
 		Player p = gameInfo.getPlayer();
 		Player o = gameInfo.getOpponent();
@@ -400,7 +401,7 @@ public class ChessGame implements IChessGame {
 		
 		PlayerRegister pr = Chess.getPlayerRegister();
 		
-		int op_win_lose_draw = 0;
+		int op_win_lose_draw;
 		if(win_lose_draw == 1)
 			op_win_lose_draw = win_lose_draw+1;
 		else if(win_lose_draw == 2)
