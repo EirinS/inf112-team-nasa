@@ -107,8 +107,7 @@ public abstract class AbstractPiece implements IPiece {
 
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
-		PieceColor color = opponent == WHITE ? BLACK : WHITE;
-		ArrayList<Move> check = allFreeMoves(x, y, board, color);
+		ArrayList<Move> check = allFreeMoves(x, y, board, board.getPlayerOne());
 		return enemiesReached(x, y, board, opponent, check);
 	}
 
@@ -155,7 +154,7 @@ public abstract class AbstractPiece implements IPiece {
 			
 			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {
-				//adds legal move
+				//removes illegal move
 				okMov.add(m);
 			}
 		}
@@ -168,21 +167,6 @@ public abstract class AbstractPiece implements IPiece {
 		next.takePiece();
 		movePiece(origin, next);
 		return captured;
-	}
-
-	/**
-	 * Reverts a move, and puts taken piece back in place.
-	 * Resets the inPlay field variable of the taken piece
-	 * @param origin, the position moved from
-	 * @param movedTo, the position moved to
-	 * @param taken, the piece that was captured, but is put back
-	 */
-	protected void revertMove(Square origin, Square movedTo, IPiece taken) {
-		movePiece(movedTo, origin);
-		if(taken != null) {
-			movedTo.putPiece(taken);
-			taken.putInPlay();
-		}
 	}
 
 

@@ -340,4 +340,10 @@ public class Board implements IBoard {
 		return board;
 	}
 
+
+	@Override
+	public PieceColor getPlayerOne() {
+		return playerOne;
+	}
+
 }

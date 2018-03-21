@@ -166,4 +166,9 @@ public interface IBoard {
 	 * @return Turn
 	 */
 	public PieceColor getTurn();
+	
+	/**
+	 * @return PieceColor color of playerOne in this game.
+	 */
+	public PieceColor getPlayerOne();
 }
