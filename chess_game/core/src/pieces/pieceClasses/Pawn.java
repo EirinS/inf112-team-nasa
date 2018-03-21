@@ -63,8 +63,8 @@ public class Pawn extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		int x = origin.getX();
 		int y = origin.getY();
-		int dy = ((playerOne == WHITE && color == WHITE)
-				|| (playerOne == BLACK && color == BLACK)) ? -1 : 1;
+		int dy = (playerOne == WHITE && color == WHITE
+				|| playerOne == BLACK && color == BLACK) ? -1 : 1;
 		PieceColor opponentColor = playerOne.getOpposite();
 
 		// Check whether the vertical moves are valid
@@ -74,7 +74,6 @@ public class Pawn extends AbstractPiece {
 			if (oneAhead.isEmpty())
 				if((dy == -1 && (dy+y) == 0) || (dy == 1 && (dy+y) == board.getHeight()-1) )
 					reachable.add(new Move(origin, oneAhead, this, null, MoveType.PROMOTION));
-				else 
 					reachable.add(new Move(origin, oneAhead, this, null, MoveType.REGULAR));
 			// Check whether this pawn can move two squares ahead
 			if (board.withinBoard(x, y + 2*dy)) {

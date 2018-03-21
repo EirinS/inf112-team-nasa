@@ -261,8 +261,9 @@ public class Board implements IBoard {
 				}
 			}
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
+			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
+			m.getTo().takePiece();
 			m.getTo().putPiece(new Queen(m.getMovingPiece().getColor()));
-			m.getFrom().takePiece();
 			printOutBoard();
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
