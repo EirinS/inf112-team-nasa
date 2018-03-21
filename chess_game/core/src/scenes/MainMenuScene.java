@@ -307,7 +307,7 @@ public class MainMenuScene extends AbstractScene {
     private void addListeners() {
         signInListener();
         registerListener();
-        registerUserNameListener();
+        signUpListener();
         returnSignInListener();
         singleplayerListener();
         backToChooseGameListener();
@@ -401,18 +401,17 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
-    private void registerUserNameListener() {
-        registerUsername.addListener(new ClickListener() {
+
+    private void signUpListener() {
+        signUp.addListener(new ClickListener() {
 
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
                 String name = registerUsername.getText();
                 Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
-
+                    
                 error.setText("This alias already exists! Please choose another one.");
                 if (playerOne) {
-
-
                     if (exists) {
                         error.setVisible(true);
                     } else {
@@ -426,12 +425,11 @@ public class MainMenuScene extends AbstractScene {
                         error.setVisible(true);
                     } else {
                         Chess.getPlayerRegister().registerPlayer(name);
-                        screenGameMenu();
+                        screenSignIn();
                     }
                 }
-                registerUserNameListener();
+                signUpListener();
             }
-
         });
     }
 
