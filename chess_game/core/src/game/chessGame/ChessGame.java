@@ -105,7 +105,7 @@ public class ChessGame implements IChessGame {
 	@Override
 	public ArrayList<Move> getLegalMoves(int x, int y) {
 		// TODO: 21/03/2018 sometimes this bugs, not sure why. NullPointerException
-		// I think it's because AI looks for move, and there is none. This is when check-mate.
+		// TODON'T: I think it's because AI looks for move, and there is none. This is when check-mate.
 		// also if you look for move. I don't really think it's a bug. It's just not done yet.
 		Square square = board.getSquare(x, y);
 		if (square.getPiece().getColor() != board.getTurn()) return new ArrayList<>();
@@ -114,16 +114,6 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public void doTurn(int fromX, int fromY, int toX, int toY) {
-		//this player is in checkmate, game is finished
-		if (checkmate()) {
-			finishGame(board.getTurn());
-			return;
-		}
-		if (isTie()) {
-			finishGame(null);
-			return;
-		}
-
 		ArrayList<Move> moves = board.move(fromX, fromY, toX, toY);
 		if (moves.isEmpty()) {
 			listener.illegalMovePerformed(fromX, fromY);
@@ -132,6 +122,16 @@ public class ChessGame implements IChessGame {
 		listener.moveOk(moves);
 		turnTimer();
 		boardHistory.add(board.copy());
+		
+		//this player is in checkmate, game is finished
+		if (checkmate()) {
+			finishGame(board.getTurn().getOpposite());
+			return;
+		}
+		if (isTie()) {
+			finishGame(null);
+			return;
+		}
 
 		// Check if AI should do move
 		aiMove();
@@ -147,6 +147,9 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public void finishGame(PieceColor turn) {
+		//stop clock
+		playerTimer.cancel(); opponentTimer.cancel();
+		
 		Player p = gameInfo.getPlayer();
 		Player o = gameInfo.getOpponent();
 		if (turn == null) {
@@ -396,8 +399,6 @@ public class ChessGame implements IChessGame {
 		String oName = o.getName();  	
 		int pRating = p.getRating();
 		int oRating = o.getRating();
-		int pNewRating;
-		int oNewRating;
 		
 		PlayerRegister pr = Chess.getPlayerRegister();
 		
@@ -409,8 +410,8 @@ public class ChessGame implements IChessGame {
 		else 
 			op_win_lose_draw = win_lose_draw;
 			
-		pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
-		oNewRating = calculateNewRating(oRating, pRating, op_win_lose_draw);
+		int pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
+		int oNewRating = calculateNewRating(oRating, pRating, op_win_lose_draw);
 		
 		pr.updatePlayerRating(pName, pNewRating, win_lose_draw);
 		pr.updatePlayerRating(oName, oNewRating, op_win_lose_draw);
