@@ -8,6 +8,8 @@ import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
+import game.Chess;
+import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -19,6 +21,8 @@ import pieces.pieceClasses.Pawn;
 import pieces.pieceClasses.Rook;
 
 import player.AI;
+import register.Player;
+import register.PlayerRegister;
 import setups.DefaultSetup;
 
 public class ChessGame implements IChessGame {
@@ -142,13 +146,32 @@ public class ChessGame implements IChessGame {
 
     @Override
     public void finishGame(PieceColor turn) {
-        if (turn == null) {
-            listener.draw();
-        } else if (turn == gameInfo.getPlayerColor()) {
-            //player1 lost
-        } else {
-            //player1 lost
-        }
+    	Player p = gameInfo.getPlayer();
+		Player o = gameInfo.getOpponent();
+		
+		// TODO - What happens to the players rating when he beats an AI? Should the AI have a predetermined rating?
+		if(gameInfo.getGameType() == GameType.SINGLEPLAYER){			
+			if (turn == null) {
+	            listener.draw();
+	        } else if (turn == gameInfo.getPlayerColor()) {
+	            //player1 lost
+	        } else {
+	            //player1 (2?) lost
+	        }
+    	}
+    	else{
+    			
+    		if (turn == null) {
+    			updateRatings(p, o, 3);
+    			listener.draw();
+    		} else if (turn == gameInfo.getPlayerColor()) {
+    			//player1 lost
+    			updateRatings(p, o, 2);
+    		} else {
+    			//player1 (2?) lost
+    			updateRatings(p, o, 1);
+    		}
+    	}
     }
 
     // WAYS TO END GAMES ---------------------------------------------------------
@@ -360,6 +383,46 @@ public class ChessGame implements IChessGame {
         double newRating = rating1 + (K * (s - expectedScore1));
 
         return (int) newRating;
+    }
+    
+    
+    /**
+     * (Ugly) method for updating two players' statistics after a game
+     *  
+     * @param p player
+     * @param o opponent
+     * @param win_lose_draw 1 if player wins, 2 if player loses, 3 if it is a draw
+     */
+    public void updateRatings(Player p, Player o, int win_lose_draw) {
+    	
+    	String pName = p.getName();
+    	String oName = o.getName();  	
+    	int pRating = p.getRating();
+    	int oRating = o.getRating();
+    	int pNewRating;
+    	int oNewRating;
+    	PlayerRegister pr = Chess.getPlayerRegister();
+    	
+    	if(win_lose_draw == 1){
+    		pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
+    		oNewRating = calculateNewRating(oRating, pRating, win_lose_draw+1);
+    		
+    		pr.updatePlayerRating(pName, pNewRating, win_lose_draw);
+    		pr.updatePlayerRating(oName, oNewRating, win_lose_draw+1);
+    		
+    	}else if(win_lose_draw == 2){
+    		pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
+    		oNewRating = calculateNewRating(oRating, pRating, win_lose_draw-1);
+    		
+    		pr.updatePlayerRating(pName, pNewRating, win_lose_draw);
+    		pr.updatePlayerRating(oName, oNewRating, win_lose_draw-1);
+    	}else{
+    		pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
+    		oNewRating = calculateNewRating(oRating, pRating, win_lose_draw);
+    		
+    		pr.updatePlayerRating(pName, pNewRating, win_lose_draw);
+    		pr.updatePlayerRating(oName, oNewRating, win_lose_draw);
+    	}  	
     }
 
     @Override
