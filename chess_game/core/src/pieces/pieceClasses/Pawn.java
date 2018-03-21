@@ -103,7 +103,7 @@ public class Pawn extends AbstractPiece {
             Square westAhead = board.getSquare(x - 1, y + dy);
             if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
                 if (pawnPromotionIsValid(y, dy, board))
-                    reachable.add(new Move(origin, westAhead, this, null, MoveType.PROMOTION));
+                    reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.PROMOTION));
                 reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR));
             }
         }
@@ -112,7 +112,7 @@ public class Pawn extends AbstractPiece {
             Square eastAhead = board.getSquare(x + 1, y + dy);
             if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
                 if (pawnPromotionIsValid(y, dy, board))
-                    reachable.add(new Move(origin, eastAhead, this, null, MoveType.PROMOTION));
+                    reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.PROMOTION));
                 reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR));
             }
         }
