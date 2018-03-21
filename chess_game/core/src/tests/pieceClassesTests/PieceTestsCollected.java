@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ PieceTest.class, RookTest.class, KnightTest.class, QueenTest.class, KingTest.class })
+@SuiteClasses({ PieceTest.class, RookTest.class, KnightTest.class, QueenTest.class, KingTest.class, PawnTest.class, BishopsTest.class })
 public class PieceTestsCollected {
 
 }
