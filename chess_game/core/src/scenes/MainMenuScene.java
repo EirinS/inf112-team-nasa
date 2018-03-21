@@ -360,7 +360,7 @@ public class MainMenuScene extends AbstractScene {
                 error.setVisible(false);
 
                 if (playerOne) {
-                    String name = username.getText();
+                    String name = username.getText().replaceAll("\\s+", "");;
                     Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
                     if (exists) {
                         gameInfo = new GameInfo(Chess.getPlayerRegister().getPlayer(name));
@@ -372,7 +372,7 @@ public class MainMenuScene extends AbstractScene {
                         return;
                     }
                 } else {
-                    String name = username.getText();
+                    String name = username.getText().replaceAll("\\s+", "");;
                     Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
                     
                     if(name.equals(gameInfo.getPlayer().getName())){
@@ -415,7 +415,7 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                String name = registerUsername.getText();
+                String name = registerUsername.getText().replaceAll("\\s+", "");;
                 Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
                     
                 error.setText("This alias already exists! Please choose another one.");
