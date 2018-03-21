@@ -15,6 +15,9 @@ import pieces.PieceColor;
 import pieces.pieceClasses.Pawn;
 
 import static pieces.PieceColor.WHITE;
+
+import java.util.ArrayList;
+
 import static pieces.PieceColor.BLACK;
 
 public class PawnTest {
@@ -27,6 +30,30 @@ public class PawnTest {
 	@Before
 	public void setUp() {
 		sq.putPiece(whitePawn);
+	}
+	
+	@Test
+	public void blackPawnCanCaptureOpponentToTheEast() {
+		IPiece blackPawn = new Pawn(playerTwo);
+		Square blackSq = board.getSquare(2,5);
+		blackSq.putPiece(blackPawn);
+		boolean canCaptureWhite = false;
+		if (blackPawn.getLegalMoves(blackSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(sq)))
+			canCaptureWhite = true;
+		assert(canCaptureWhite);
+	}
+	
+	@Test
+	public void blackPawnCanCaptureOpponentToTheWest() {
+		IPiece blackPawn = new Pawn(BLACK);
+		Square blackSq = board.getSquare(4,5);
+		blackSq.putPiece(blackPawn);
+		boolean canCaptureWhite = false;
+		if (blackPawn.getLegalMoves(blackSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(sq)))
+			canCaptureWhite = true;
+		assert(canCaptureWhite);
 	}
 	
 	@Test
@@ -43,7 +70,7 @@ public class PawnTest {
 	}
 	
 	@Test
-	public void whitwPawnOnRowSixCanFindPromotion() {
+	public void whitePawnOnRowSixCanFindPromotion() {
 		IBoard board = new Board(8, playerOne);
 		Pawn p = new Pawn(playerOne);
 		Square sq = board.getSquare(0, 6);
@@ -58,30 +85,6 @@ public class PawnTest {
 	@Test
 	public void pawnAppearsCorrectlyOnTheBoard() {
 		assertEquals(whitePawn, sq.getPiece());
-	}
-	
-	@Test
-	public void pawnCanCaptureOpponentToTheEast() {
-		IPiece opponentPawn = new Pawn(playerTwo);
-		Square opponentSq = board.getSquare(4,5);
-		opponentSq.putPiece(opponentPawn);
-		boolean canCaptureBlack = false;
-		if (whitePawn.getLegalMoves(sq, board, playerOne)
-				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
-			canCaptureBlack = true;
-		assert(canCaptureBlack);
-	}
-	
-	@Test
-	public void pawnCanCaptureOpponentToTheWest() {
-		IPiece opponentPawn = new Pawn(playerTwo);
-		Square opponentSq = board.getSquare(2,5);
-		opponentSq.putPiece(opponentPawn);
-		boolean canCaptureBlack = false;
-		if (whitePawn.getLegalMoves(sq, board, playerOne)
-				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
-			canCaptureBlack = true;
-		assert(canCaptureBlack);
 	}
 	
 	@Test
@@ -129,5 +132,39 @@ public class PawnTest {
 		if (playerTwoPawn.getLegalMoves(playerTwoSq, board, playerOne)
 				.stream().anyMatch(m -> m.getTo().getY() <= playerTwoSq.getY()))
 			fail("Pawns belonging to player two should move south");
+	}
+	
+	@Test
+	public void whitePawnCanCaptureOpponentToTheEast() {
+		IPiece opponentPawn = new Pawn(playerTwo);
+		Square opponentSq = board.getSquare(4,5);
+		opponentSq.putPiece(opponentPawn);
+		boolean canCaptureBlack = false;
+		
+//		System.out.println(sq);
+//		for (Move m : whitePawn.getLegalMoves(sq, board, playerOne))
+//			System.out.println(m.getTo());
+//		
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
+			canCaptureBlack = true;
+		assert(canCaptureBlack);
+	}
+	
+	@Test
+	public void whitePawnCanCaptureOpponentToTheWest() {
+		IPiece opponentPawn = new Pawn(playerTwo);
+		Square opponentSq = board.getSquare(2,5);
+		opponentSq.putPiece(opponentPawn);
+		boolean canCaptureBlack = false;
+		
+//		System.out.println(sq);
+//		for (Move m : whitePawn.getLegalMoves(sq, board, playerOne))
+//			System.out.println(m.getTo());
+		
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
+			canCaptureBlack = true;
+		assert(canCaptureBlack);
 	}
 }
