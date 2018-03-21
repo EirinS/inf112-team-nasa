@@ -184,11 +184,15 @@ public class PawnTest {
 		IBoard newboard = new Board(8, PieceColor.WHITE);
 		Pawn p = new Pawn(PieceColor.WHITE);
 		King k = new King(PieceColor.BLACK);
-		newboard.getSquare(0, 7).putPiece(p);
-		newboard.getSquare(1, 6).putPiece(k);
+		//pawn in edge of board, second row from bottom, pawn moving upwards
+		newboard.getSquare(0, 6).putPiece(p);
+		//king in edge of board, third row from bottom
+		newboard.getSquare(0, 5).putPiece(k);
+		
+		//king should not be allowed to move to a diagonal square from pawn
 		boolean isLegal = false;
-		for(Move m : p.getLegalMoves(newboard.getSquare(1, 6), newboard, PieceColor.WHITE)) {
-			if (m.getTo().getX() == 0 && m.getTo().getY() == 6)
+		for(Move m : k.getLegalMoves(newboard.getSquare(0, 5), newboard, PieceColor.WHITE)) {
+			if (m.getTo().getX() == 1 && m.getTo().getY() == 5)
 				isLegal = true;
 		}
 		assertFalse(isLegal);	
