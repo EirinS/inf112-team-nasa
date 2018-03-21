@@ -117,11 +117,17 @@ public interface IChessGame {
 	boolean checkmate();
 	
 	/**
-	 * Get the board connected to this game
-	 * @return IBoard board
+	 * Get the squares of the board connected to this game
+	 * @return All the squares
 	 */
-	IBoard getBoard();
-	
+	ArrayList<Square> getSquares();
+
+	/**
+	 * Gets the current turn
+	 * @return Current turn
+	 */
+	PieceColor getTurn();
+
 	/**
 	 * Set the board of this game to the desired board.
 	 * @param board, IBoard board, the desired board.

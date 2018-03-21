@@ -51,7 +51,6 @@ public class AIMedium implements AI, Playable {
 	/**
 	 * 
 	 * @param currentBoard
-	 * @param movesAhead
 	 * @return returns an array of integers {score,i} where score is the score of the best move and i is its placement in currentBoard.getAvailable moves.
 	 */
 	
@@ -157,7 +156,7 @@ public class AIMedium implements AI, Playable {
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
 			Board possibleBoard = new Board(currentBoard.getDimension(),opponentColor);
-			for(Square square : currentBoard.getBoard()) {
+			for(Square square : currentBoard.getSquares()) {
 				if (move.getFrom()==square) {
 				}else if (move.getTo()==square) {
 					String piece = move.getFrom().getPiece().toString();
@@ -235,7 +234,7 @@ public class AIMedium implements AI, Playable {
 	
 	public int getAIScore(IBoard possibleBoard) { // for now negative score is black leading, positive is white leading.
 		int score = 0;
-		ArrayList<Square> squares = possibleBoard.getBoard();
+		ArrayList<Square> squares = possibleBoard.getSquares();
 		for (Square square : squares) {
 			if(!square.isEmpty()) {
 				IPiece piece = square.getPiece();

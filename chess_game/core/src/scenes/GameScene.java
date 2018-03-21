@@ -1,11 +1,11 @@
 package scenes;
 
-import boardstructure.Board;
 import boardstructure.Move;
-import boardstructure.Square;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
 
+import com.badlogic.gdx.Gdx;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,17 +19,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import game.Checkerboard;
 
 import game.chessGame.ChessGame;
-import game.chessGame.GameInfo;
 
 import game.listeners.CheckerboardListener;
 import game.listeners.ChessGameListener;
-import pieces.PieceColor;
-import setups.DefaultSetup;
+
 import sprites.PieceSpriteLoader;
+import styling.Colors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 public class GameScene extends AbstractScene implements CheckerboardListener, ChessGameListener {
 
@@ -42,6 +40,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane;
+	private Label playerTime, opponentTime;
 	private TextButton quitBtn, resignBtn;
 
 	public GameScene (Chess game, GameInfo gameInfo){
@@ -60,8 +59,15 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 		// Init sprites and checkerboard.
 		HashMap<String, Texture> sprites = PieceSpriteLoader.loadDefaultPieces();
-		checkerboard = new Checkerboard(this, sprites, chessGame.getBoard().getSquares(), this);
+		checkerboard = new Checkerboard(this, sprites, chessGame.getSquares(), this);
 
+		addActors();
+
+		// Perform first AI move if needed.
+		chessGame.aiMove();
+	}
+
+	private void addActors() {
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
@@ -85,30 +91,47 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			}
 		});
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
-		
+
 		addActor(quitBtn);
 		addActor(resignBtn);
 
 		historyGroup = new VerticalGroup();
 		historyGroup.align(Align.top);
 		historyScrollPane = new ScrollPane(historyGroup, skin);
-		historyScrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
-		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
+		historyScrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 125);
+		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - resignBtn.getHeight() - 200);
 		addActor(historyScrollPane);
 
-		Label playerName = new Label(gameInfo.getPlayerName(), skin, "title-plain");
-		playerName.setPosition(historyScrollPane.getX() , historyScrollPane.getY() + historyScrollPane.getHeight() - playerName.getHeight() + 25);
-		// + ((historyScrollPane.getWidth() - playerName.getWidth()) / 2)
-
-		// String readable = String.format("%d:%02d", s/60, s%60);
-		Label playerTime = new Label(Integer.toString(chessGame.getPlayerSeconds()), skin, "title-plain");
-
-		Label opponentTime = new Label(Integer.toString(chessGame.getOpponentSeconds()), skin, "title-plain");
-
+		Label playerName = new Label(gameInfo.getPlayer().getNameRating(), skin, "title-plain");
+		playerName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + checkerboard.getSize() - playerName.getHeight());
 		addActor(playerName);
 
-		// Perform first AI move if needed.
-		chessGame.aiMove();
+		playerTime = new Label(chessGame.formatTime(chessGame.getPlayerSeconds()), skin, "title-plain");
+		playerTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - playerTime.getWidth(), historyScrollPane.getY() + historyScrollPane.getHeight());
+		addActor(playerTime);
+
+		opponentTime = new Label(chessGame.formatTime(chessGame.getOpponentSeconds()), skin, "title-plain");
+		opponentTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - opponentTime.getWidth(), historyScrollPane.getY() - opponentTime.getHeight());
+		addActor(opponentTime);
+		setNameColors();
+
+		String opponent = "Computer";
+		if (gameInfo.getLevel() == null) {
+			opponent = gameInfo.getOpponent().getNameRating();
+		}
+		Label opponentName = new Label(opponent, skin, "title-plain");
+		opponentName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + opponentName.getHeight() + 50);
+		addActor(opponentName);
+	}
+
+	private void setNameColors() {
+		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
+			playerTime.setColor(Colors.turnColor);
+			opponentTime.setColor(Color.WHITE);
+		} else {
+			playerTime.setColor(Color.WHITE);
+			opponentTime.setColor(Colors.turnColor);
+		}
 	}
 
 	private void addMoveToHistory(Move m) {
@@ -146,6 +169,17 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	@Override
 	public void moveOk(ArrayList<Move> moves) {
 		addMoveToHistory(chessGame.getLastMove());
+		setNameColors();
 		checkerboard.movePieces(moves);
+	}
+
+	@Override
+	public void turnTimerElapsed() {
+		if (playerTime == null || opponentTime == null) return;
+		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
+			playerTime.setText(chessGame.formatTime(chessGame.getPlayerSeconds()));
+		} else {
+			opponentTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
+		}
 	}
 }

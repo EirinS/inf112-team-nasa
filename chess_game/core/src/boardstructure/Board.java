@@ -312,23 +312,18 @@ public class Board implements IBoard {
 
 	@Override
 	public Square getKingPos(PieceColor kingColor) {
-		for(Square sq : getBoard())
+		for(Square sq : board)
 			if (sq.getPiece() instanceof King && sq.getPiece().getColor() == kingColor) {
 				return sq;
 			}
 		return null;
 	}
 
-	@Override
-	public ArrayList<Square> getBoard() {
-		return board;
-	}
-
 
 	@Override
 	public IBoard copy() {
 		IBoard board = new Board(this.getDimension(), PieceColor.WHITE);
-		for(Square sq : getBoard()) {
+		for(Square sq : getSquares()) {
 			int x = sq.getX(), y = sq.getY();
 			if(sq.isEmpty())
 				continue;

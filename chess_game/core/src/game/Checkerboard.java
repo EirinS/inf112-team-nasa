@@ -2,6 +2,7 @@ package game;
 
 import boardstructure.Move;
 import boardstructure.Square;
+import com.badlogic.gdx.graphics.Color;
 import game.listeners.CheckerboardListener;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,7 @@ import pieces.PieceColor;
 import styling.Colors;
 import sprites.SquareTextureLoader;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,7 +37,7 @@ public class Checkerboard extends DragListener {
 
     private Image boardImg;
     private Image selectedPiece;
-    private Texture chessMoveTexture, selectedPieceTexture;
+    private Texture chessMoveTexture, castlingMoveTexture, selectedPieceTexture;
     private Group checkerGroup, pieceGroup, highlightGroup;
 
     public Checkerboard(Stage stage, HashMap<String, Texture> sprites, ArrayList<Square> initialSquares, CheckerboardListener listener) {
@@ -65,6 +67,7 @@ public class Checkerboard extends DragListener {
         initPieces();
 
         chessMoveTexture = SquareTextureLoader.createSquare(SQUARE_WIDTH, SQUARE_HEIGHT, Colors.chessMoveColor);
+        castlingMoveTexture = SquareTextureLoader.createSquare(SQUARE_WIDTH, SQUARE_HEIGHT, Colors.castlingMoveColor);
         selectedPieceTexture = SquareTextureLoader.createSquare(SQUARE_WIDTH, SQUARE_HEIGHT, Colors.selectedPieceColor);
 
         selectedPiece = new Image(selectedPieceTexture);
@@ -178,7 +181,21 @@ public class Checkerboard extends DragListener {
     public void showMoves(ArrayList<Move> moves) {
         highlightGroup.clear();
         for (Move m : moves) {
-            Image highlight = new Image(chessMoveTexture);
+            Texture texture = chessMoveTexture;
+            switch (m.getMoveType()) {
+                case ENPASSANT:
+                case REGULAR:
+                    texture = chessMoveTexture;
+                    break;
+                case QUEENSIDECASTLING:
+                case KINGSIDECASTLING:
+                    texture = castlingMoveTexture;
+                    break;
+                case PROMOTION:
+                    texture = chessMoveTexture; // TODO: 21/03/2018 make promotion color maybe, for fun?
+                    break;
+            }
+            Image highlight = new Image(texture);
             float boardX = calcBoardX(m.getTo().getX());
             float boardY = calcBoardY(m.getTo().getY());
             highlight.setPosition(boardX, boardY);
