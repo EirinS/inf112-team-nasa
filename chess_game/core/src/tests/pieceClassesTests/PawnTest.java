@@ -10,6 +10,7 @@ import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.MoveType;
 import boardstructure.Square;
+import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
@@ -192,5 +193,23 @@ public class PawnTest {
 				isLegal = true;
 		}
 		assertFalse(isLegal);	
+	}
+	
+	@Test
+	public void pawnCannotThreatenKingForward() {
+		board.getSquare(3, 5).putPiece(new King(PieceColor.BLACK));
+		assertFalse(((AbstractPiece) whitePawn).threatensKing(whitePawn.enemyPiecesReached(3, 6, board, PieceColor.BLACK)));
+	}
+	
+	@Test
+	public void pawnCanThreatenKingEast() {
+		board.getSquare(4, 5).putPiece(new King(PieceColor.BLACK));
+		assertTrue(((AbstractPiece) whitePawn).threatensKing(whitePawn.enemyPiecesReached(3, 6, board, PieceColor.BLACK)));
+	}
+	
+	@Test
+	public void pawnCanThreatenKingWest() {
+		board.getSquare(2, 5).putPiece(new King(PieceColor.BLACK));
+		assertTrue(((AbstractPiece) whitePawn).threatensKing(whitePawn.enemyPiecesReached(3, 6, board, PieceColor.BLACK)));
 	}
 }
