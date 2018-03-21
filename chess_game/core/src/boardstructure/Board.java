@@ -272,15 +272,13 @@ public class Board implements IBoard {
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
-			//printOutBoard();
 		} else {
 			//regular move
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
-			//printOutBoard();
 		}
 		history.add(m);
 		moves.add(m);
-		printOutBoard();
+		//printOutBoard();
 		turn = turn.getOpposite();
 		return moves;
 	}

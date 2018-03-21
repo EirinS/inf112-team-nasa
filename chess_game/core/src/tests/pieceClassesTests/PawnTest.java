@@ -159,10 +159,6 @@ public class PawnTest {
 		opponentSq.putPiece(opponentPawn);
 		boolean canCaptureBlack = false;
 		
-//		System.out.println(sq);
-//		for (Move m : whitePawn.getLegalMoves(sq, board, playerOne))
-//			System.out.println(m.getTo());
-		
 		if (whitePawn.getLegalMoves(sq, board, playerOne)
 				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
 			canCaptureBlack = true;
