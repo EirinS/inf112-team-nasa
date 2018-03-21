@@ -67,7 +67,6 @@ public class ChessGame implements IChessGame {
 						playerSeconds -= 1;
 						if (listener != null) listener.turnTimerElapsed();
 						if (playerSeconds == 0) {
-							playerTimer.cancel();
 							finishGame(board.getTurn());
 						}
 					}
@@ -88,7 +87,6 @@ public class ChessGame implements IChessGame {
 						opponentSeconds -= 1;
 						if (listener != null) listener.turnTimerElapsed();
 						if (opponentSeconds == 0) {
-							opponentTimer.cancel();
 							finishGame(gameInfo.getPlayerColor().getOpposite());
 						}
 					}
@@ -134,7 +132,7 @@ public class ChessGame implements IChessGame {
 		}
 
 		// Check if AI should do move
-		aiMove();
+		//aiMove();
 	}
 
 	public void aiMove() {

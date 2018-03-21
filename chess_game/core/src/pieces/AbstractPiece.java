@@ -155,7 +155,7 @@ public abstract class AbstractPiece implements IPiece {
 			
 			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {
-				//removes illegal move
+				//adds legal move
 				okMov.add(m);
 			}
 		}
