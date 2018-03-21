@@ -129,7 +129,7 @@ public class ChessGame implements IChessGame {
         boardHistory.add(board.copy());
 
         // Check if AI should do move
-        aiMove();
+        //aiMove();
     }
 
     public void aiMove() {

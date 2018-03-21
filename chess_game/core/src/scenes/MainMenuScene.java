@@ -449,6 +449,7 @@ public class MainMenuScene extends AbstractScene {
 
 		});
 	}
+	
 	private void returnSignInListener(){
 		backToLogIn.addListener(new ClickListener(){
 			@Override
@@ -468,6 +469,7 @@ public class MainMenuScene extends AbstractScene {
 			}
 		});
 	}
+	
 	private void backToChooseGameListener(){
 		backToChooseGame.addListener(new ClickListener(){
 			@Override
@@ -486,6 +488,7 @@ public class MainMenuScene extends AbstractScene {
 			}
 		});
 	}
+	
 	private void scoreListener(){
 		scores.addListener(new ClickListener(){
 			@Override
