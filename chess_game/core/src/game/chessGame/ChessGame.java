@@ -68,7 +68,7 @@ public class ChessGame implements IChessGame {
                         if (listener != null) listener.turnTimerElapsed();
                         if (playerSeconds == 0) {
                             playerTimer.cancel();
-                            // TODO: 21/03/2018 time ran out, player lost.
+                            finishGame(board.getTurn());
                         }
                     }
                 },0, 1000);
@@ -89,7 +89,7 @@ public class ChessGame implements IChessGame {
                         if (listener != null) listener.turnTimerElapsed();
                         if (opponentSeconds == 0) {
                             opponentTimer.cancel();
-                            // TODO: 21/03/2018 time ran out, opponent lost.
+                            finishGame(gameInfo.getPlayerColor().getOpposite());
                         }
                     }
                 },0, 1000);
@@ -150,25 +150,29 @@ public class ChessGame implements IChessGame {
 		Player o = gameInfo.getOpponent();
 		
 		// TODO - What happens to the players rating when he beats an AI? Should the AI have a predetermined rating?
+		// TODO: - Yes, based on difficulty-level, maybe a field variable in AI should contain rating?
 		if(gameInfo.getGameType() == GameType.SINGLEPLAYER){			
 			if (turn == null) {
 	            listener.draw();
 	        } else if (turn == gameInfo.getPlayerColor()) {
-	            //player1 lost
+	        	listener.loss();
+	        	//player, whose color is turn, lost
 	        } else {
-	            //player1 (2?) lost
+	        	listener.win();
+	        	//player, whose color is turn, won
 	        }
     	}
     	else{
-    			
     		if (turn == null) {
     			updateRatings(p, o, 3);
     			listener.draw();
     		} else if (turn == gameInfo.getPlayerColor()) {
-    			//player1 lost
+    			//player, whose color is turn, lost
+    			listener.loss();
     			updateRatings(p, o, 2);
     		} else {
-    			//player1 (2?) lost
+    			//player, whose color is turn, won
+    			listener.win();
     			updateRatings(p, o, 1);
     		}
     	}

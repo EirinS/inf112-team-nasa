@@ -22,6 +22,16 @@ public interface ChessGameListener {
 	 * Called when a game is a draw.
 	 */
 	void draw();
+	
+	/**
+	 * Called when player won
+	 */
+	void win();
+	
+	/**
+	 * Called when player lost
+	 */
+	void loss();
 
 	/**
 	 * Called when the turn timer elapses.
