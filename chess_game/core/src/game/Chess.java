@@ -16,6 +16,7 @@ public class Chess extends Game {
     public void create() {
         batch = new SpriteBatch();
         SceneManager.getInstance().initialize(this);
+        //SceneManager.getInstance().showScreen(SceneEnum.VICTORY, this);
         SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, this);
     }
 

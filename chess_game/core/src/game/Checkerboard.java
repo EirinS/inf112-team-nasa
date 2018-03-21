@@ -53,12 +53,8 @@ public class Checkerboard extends DragListener {
 
     private void addActors() {
 
-        // Contains background, board and pieces
+        // Contains board and pieces
         checkerGroup = new Group();
-
-        Image imgBackground = new Image(new Texture("board/game_bg.png"));
-        imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
-        checkerGroup.addActor(imgBackground);
 
         boardImg = new Image(new Texture("board/checkerboard.png"));
         boardImg.setSize(512, 512);

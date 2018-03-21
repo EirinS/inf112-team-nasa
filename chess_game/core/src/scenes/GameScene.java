@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import game.Chess;
+import game.WindowInformation;
 import game.chessGame.GameInfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -68,6 +69,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	}
 
 	private void addActors() {
+        Image imgBackground = new Image(new Texture("board/game_bg.png"));
+        imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
+        addActor(imgBackground);
+
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
@@ -188,13 +193,12 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	@Override
 	public void win() {
 		// TODO: implement?
-		
+        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game);
 	}
 
 	@Override
 	public void loss() {
 		// TODO: implement?
-		
+        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game);
 	}
-
 }

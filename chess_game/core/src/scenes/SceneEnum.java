@@ -18,6 +18,13 @@ public enum SceneEnum {
         public AbstractScene getScreen(Object... params) {
             return new GameScene((Chess)params[0], (GameInfo)params[1]);
         }
+    },
+    VICTORY {
+
+        @Override
+        public AbstractScene getScreen(Object... params) {
+            return new VictoryScene((Chess)params[0]);
+        }
     };
 
     public abstract AbstractScene getScreen(Object... params);
