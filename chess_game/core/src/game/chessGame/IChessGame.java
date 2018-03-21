@@ -6,6 +6,7 @@ import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Rook;
+import register.Player;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,15 @@ public interface IChessGame {
 	 * @return Legal moves from (x, y).
 	 */
 	ArrayList<Move> getLegalMoves(int x, int y);
+	
+	/**
+	 * Method for updating two players' statistics after a game
+	 *  
+	 * @param p player
+	 * @param o opponent
+	 * @param win_lose_draw 1 if player wins, 2 if player loses, 3 if it is a draw
+	 */
+	public void updateRatings(Player p, Player o, int win_lose_draw);
 
 	/**
 	 * Do one turn

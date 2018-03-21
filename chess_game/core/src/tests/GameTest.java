@@ -13,6 +13,7 @@ import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
+import game.Chess;
 import game.chessGame.ChessGame;
 import game.chessGame.GameInfo;
 import game.chessGame.IChessGame;
@@ -24,9 +25,12 @@ import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
 import pieces.pieceClasses.Queen;
 import pieces.pieceClasses.Rook;
+import player.AILevel;
+import register.Player;
+import register.PlayerRegister;
 
 public class GameTest {
-	IChessGame game = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, null), null);
+	IChessGame game = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, AILevel.EASY), null);
 	IBoard board = new Board(8, PieceColor.WHITE);
 	IBoard other = new Board(8, PieceColor.WHITE);
 
@@ -44,14 +48,29 @@ public class GameTest {
 		assertFalse(((ChessGame) game).isSame(current, other));
 	}
 	
-	/*@Test
-	public void twoDifferentBoardsAreDifferentWithIsSame() {
-		ChessGame g = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, null), null);
-		ArrayList<Move> m = g.getSquares().getSquare(1, 0).getPiece().getLegalMoves(board.getSquare(1, 0), g.getBoard(), PieceColor.BLACK);
-		g.getSquares().move(m.get(0).getFrom(), m.get(0).getTo());
-		ChessGame g1 = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, null), null);
-		assertFalse(g.isSame(g.getSquares(), g1.getSquares()));
-	}*/
+	@Test
+	public void canUpdateSinglePlayerGameScore() {
+		PlayerRegister pr = Chess.getPlayerRegister();
+		String name = "Ubrukt";
+		pr.registerPlayer(name);
+		int r = pr.getPlayer(name).getRating();
+		game.updateRatings(pr.getPlayer(name), null, 2);
+		assertNotEquals(r, pr.getPlayer(name).getRating());
+	}
+	
+	@Test
+	public void canUpdateMultiPlayerGameScore() {
+		PlayerRegister pr = Chess.getPlayerRegister();
+		String n1 = "p1";
+		String n2 = "p2";
+		pr.registerPlayer(n1);
+		pr.registerPlayer(n2);
+		game.updateRatings(pr.getPlayer(n1), pr.getPlayer(n2), 1);
+		//n1 won, should have higher score than n2
+		assertNotEquals(pr.getPlayer(n1).getRating(), pr.getPlayer(n2).getRating());
+		assertTrue(pr.getPlayer(n1).getRating() > pr.getPlayer(n2).getRating());
+	}
+
 
 
 	@Test

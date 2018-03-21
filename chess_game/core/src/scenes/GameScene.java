@@ -187,13 +187,13 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void win() {
-		// TODO Auto-generated method stub
+		// TODO: implement?
 		
 	}
 
 	@Override
 	public void loss() {
-		// TODO Auto-generated method stub
+		// TODO: implement?
 		
 	}
 

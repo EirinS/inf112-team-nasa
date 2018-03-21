@@ -14,6 +14,7 @@ import java.util.Random;
 public class AIEasy implements AI, Playable {
 
 	private static AIEasy instance;
+	private static int rating = 500;
 
 	private PieceColor playerColor;
 	Random rand = new Random(System.nanoTime());
@@ -45,6 +46,11 @@ public class AIEasy implements AI, Playable {
 	@Override
 	public Move makeMove(IBoard board, Square from, Square to) {
 		return calculateMove(board);
+	}
+
+	@Override
+	public int getRating() {
+		return rating;
 	}
 
 }

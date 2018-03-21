@@ -16,6 +16,7 @@ import java.util.List;
 public class AIMedium implements AI, Playable {
 
 	private static AIMedium instance;
+	private static int rating = 1500;
 
 	private PieceColor playerColor;
 	private PieceColor opponentColor;
@@ -248,6 +249,11 @@ public class AIMedium implements AI, Playable {
 		called++;
 		return score;
 		
+	}
+
+	@Override
+	public int getRating() {
+		return rating;
 	}
 
 }

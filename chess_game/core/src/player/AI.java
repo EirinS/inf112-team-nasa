@@ -21,4 +21,9 @@ public interface AI {
 	 * @return Piece color.
 	 */
 	PieceColor getPieceColor();
+	
+	/**
+	 * @return int rating of this AI
+	 */
+	int getRating();
 }
