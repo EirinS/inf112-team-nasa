@@ -54,6 +54,17 @@ public class Pawn extends AbstractPiece {
     public boolean hasMoved() {
         return hasMoved;
     }
+    
+	/**
+	 * Checks whether this pawn has reached the other end of the board.
+	 * @param y the y coordinate of this pawn
+	 * @param dy the difference between origin and destination
+	 * @param board the board this pawn is placed upon
+	 * @return whether pawn promotion should be triggered now
+	 */
+	private boolean pawnPromotionIsValid(int y, int dy, IBoard board) {
+		return (dy == -1 && (y + dy) == 0) || (dy == 1 && (y + dy) == (board.getHeight() - 1));
+	}
 
     /**
      * Builds a list of all legal moves for this pawn
@@ -75,7 +86,7 @@ public class Pawn extends AbstractPiece {
             // Check square straight ahead
             Square oneAhead = board.getSquare(x, y + dy);
             if (oneAhead.isEmpty())
-                if ((dy == -1 && (dy + y) == 0) || (dy == 1 && (dy + y) == board.getHeight() - 1))
+                if (pawnPromotionIsValid(y, dy, board))
                     reachable.add(new Move(origin, oneAhead, this, null, MoveType.PROMOTION));
                 else
                     reachable.add(new Move(origin, oneAhead, this, null, MoveType.REGULAR));
@@ -92,7 +103,7 @@ public class Pawn extends AbstractPiece {
         if (board.withinBoard(x - 1, y + dy)) {
             Square westAhead = board.getSquare(x - 1, y + dy);
             if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
-                if ((dy == -1 && (dy + y) == 0) || (dy == 1 && (dy + y) == board.getHeight() - 1))
+                if (pawnPromotionIsValid(y, dy, board))
                     reachable.add(new Move(origin, westAhead, this, null, MoveType.PROMOTION));
                 reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR));
             }
@@ -101,7 +112,7 @@ public class Pawn extends AbstractPiece {
         if (board.withinBoard(x + 1, y + dy)) {
             Square eastAhead = board.getSquare(x + 1, y + dy);
             if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
-                if ((dy == -1 && (dy + y) == 0) || (dy == 1 && (dy + y) == board.getHeight() - 1))
+                if (pawnPromotionIsValid(y, dy, board))
                     reachable.add(new Move(origin, eastAhead, this, null, MoveType.PROMOTION));
                 reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR));
             }
