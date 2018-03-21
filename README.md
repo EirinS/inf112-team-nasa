@@ -22,5 +22,7 @@ Paraneetharan Sabaratnam (psa028)
 
 Sofia Eika (sei019)
 
+Jonas Trædal (jtr009)
+
 # Issue Tracker
 [Link here](https://docs.google.com/document/d/1ni2kgMJWXSGN1bigxjvA0nLvWJidNImeU7CP-rQk50U/edit?usp=sharing)
