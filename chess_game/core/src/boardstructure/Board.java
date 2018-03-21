@@ -263,7 +263,7 @@ public class Board implements IBoard {
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
 			m.getTo().putPiece(new Queen(m.getMovingPiece().getColor()));
 			m.getFrom().takePiece();
-			//printOutBoard();
+			printOutBoard();
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
@@ -275,7 +275,7 @@ public class Board implements IBoard {
 		}
 		history.add(m);
 		moves.add(m);
-		//printOutBoard();
+		printOutBoard();
 		turn = turn.getOpposite();
 		return moves;
 	}

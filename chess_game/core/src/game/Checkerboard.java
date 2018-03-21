@@ -1,8 +1,11 @@
 package game;
 
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import game.listeners.CheckerboardListener;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -155,16 +158,20 @@ public class Checkerboard extends DragListener {
         super.dragStop(event, x, y, pointer);
     }
 
-    private void movePieceTo(Actor actor, int toX, int toY) {
+    private void movePieceTo(Actor actor, int toX, int toY, MoveType moveType, PieceColor color) {
         int boardX = (int)calcBoardX(toX);
         int boardY = (int)calcBoardY(toY);
         actor.setPosition(boardX, boardY);
         actor.setName(toX + "," + toY);
+        if (moveType != null && moveType == MoveType.PROMOTION) {
+            Texture queenTexture = sprites.get((color == PieceColor.WHITE ? "w" : "b") + "q");
+            ((Image)actor).setDrawable(new SpriteDrawable(new Sprite(queenTexture)));
+        }
     }
 
     public void movePieceFailed(int fromX, int fromY) {
         Image from = pieceGroup.findActor(fromX + "," + fromY);
-        movePieceTo(from, fromX, fromY);
+        movePieceTo(from, fromX, fromY, null, null);
     }
 
     public void movePieces(ArrayList<Move> moves) {
@@ -174,7 +181,7 @@ public class Checkerboard extends DragListener {
             if (to != null) {
                 to.remove();
             }
-            movePieceTo(from, m.getTo().getX(), m.getTo().getY());
+            movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor());
         }
     }
 
