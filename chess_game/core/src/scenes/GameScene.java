@@ -184,4 +184,17 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			topTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
 		}
 	}
+
+	@Override
+	public void win() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loss() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
