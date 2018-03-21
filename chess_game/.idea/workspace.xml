@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="735811f2-797e-40ca-96da-734164dafac2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" afterPath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -51,7 +52,7 @@
       <file leaf-file-name="GameScene.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="220">
               <caret line="170" column="50" lean-forward="true" selection-start-line="170" selection-start-column="50" selection-end-line="170" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -70,7 +71,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChessGame.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ChessGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
@@ -80,12 +81,38 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Pawn.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Board.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="283">
+              <caret line="262" column="59" lean-forward="false" selection-start-line="262" selection-start-column="59" selection-end-line="262" selection-end-column="59" />
+              <folding>
+                <element signature="e#4714#4715#0" expanded="true" />
+                <element signature="e#4763#4764#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Square.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Square.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Pawn.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
-              <folding />
+            <state relative-caret-position="269">
+              <caret line="82" column="89" lean-forward="false" selection-start-line="82" selection-start-column="89" selection-end-line="82" selection-end-column="89" />
+              <folding>
+                <element signature="e#1111#1112#0" expanded="true" />
+                <element signature="e#1133#1134#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -124,7 +151,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>buildS</find>
       <find>inishGame</find>
       <find>file</find>
       <find>turn</find>
@@ -154,6 +180,7 @@
       <find>username</find>
       <find>show</find>
       <find>promotion</find>
+      <find>moveAi</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -1384,9 +1411,9 @@
         <option value="$PROJECT_DIR$/core/src/setups/DefaultSetup.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
         <option value="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
-        <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
-        <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
         <option value="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
+        <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
+        <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
       </list>
     </option>
   </component>
@@ -2141,7 +2168,7 @@
       <workItem from="1521415625263" duration="236000" />
       <workItem from="1521444766006" duration="12472000" />
       <workItem from="1521478042559" duration="2604000" />
-      <workItem from="1521625234192" duration="2257000" />
+      <workItem from="1521625234192" duration="2720000" />
     </task>
     <servers />
   </component>
@@ -2178,7 +2205,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119110000" />
+    <option name="totallyTimeSpent" value="119573000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2285,12 +2312,6 @@
           <line>265</line>
           <properties />
           <option name="timeStamp" value="189" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java</url>
-          <line>75</line>
-          <properties />
-          <option name="timeStamp" value="190" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="192" />
@@ -2631,17 +2652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Square.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="167" column="19" lean-forward="false" selection-start-line="167" selection-start-column="19" selection-end-line="167" selection-end-column="19" />
-          <folding>
-            <element signature="e#2751#2752#0" expanded="true" />
-            <element signature="e#2793#2794#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/utils/SpriteDrawable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="173">
@@ -2658,30 +2668,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="176" column="43" lean-forward="false" selection-start-line="176" selection-start-column="43" selection-end-line="176" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/boardstructure/IBoard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2355">
@@ -2690,9 +2676,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="131" column="8" lean-forward="false" selection-start-line="131" selection-start-column="8" selection-end-line="131" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
+        <state relative-caret-position="220">
           <caret line="170" column="50" lean-forward="true" selection-start-line="170" selection-start-column="50" selection-end-line="170" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -2710,11 +2704,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java">
+    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Square.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="131" column="8" lean-forward="false" selection-start-line="131" selection-start-column="8" selection-end-line="131" selection-end-column="8" />
+        <state relative-caret-position="165">
+          <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/boardstructure/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="262" column="59" lean-forward="false" selection-start-line="262" selection-start-column="59" selection-end-line="262" selection-end-column="59" />
+          <folding>
+            <element signature="e#4714#4715#0" expanded="true" />
+            <element signature="e#4763#4764#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/Checkerboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="176" column="43" lean-forward="false" selection-start-line="176" selection-start-column="43" selection-end-line="176" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="82" column="89" lean-forward="false" selection-start-line="82" selection-start-column="89" selection-end-line="82" selection-end-column="89" />
+          <folding>
+            <element signature="e#1111#1112#0" expanded="true" />
+            <element signature="e#1133#1134#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
