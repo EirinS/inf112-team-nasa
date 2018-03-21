@@ -58,7 +58,7 @@ public class Pawn extends AbstractPiece {
 	/**
 	 * Checks whether this pawn has reached the other end of the board.
 	 * @param y the y coordinate of this pawn
-	 * @param dy the difference between origin and destination
+	 * @param dy the difference in y direction between origin and destination
 	 * @param board the board this pawn is placed upon
 	 * @return whether pawn promotion should be triggered now
 	 */
@@ -68,9 +68,9 @@ public class Pawn extends AbstractPiece {
 
     /**
      * Builds a list of all legal moves for this pawn
-     *
      * @param origin the square this pawn moves from
      * @param board  the board this pawn is placed on
+     * @param playerOne the color of player one's pieces
      * @return the list of all currently legal moves
      */
     public ArrayList<Move> reachableSquares(Square origin, IBoard board, PieceColor playerOne) {
@@ -79,7 +79,7 @@ public class Pawn extends AbstractPiece {
         int y = origin.getY();
         int dy = (playerOne == WHITE && color == WHITE
                 || playerOne == BLACK && color == BLACK) ? -1 : 1;
-        PieceColor opponentColor = playerOne.getOpposite();
+        PieceColor opponentColor = color.getOpposite();
 
         // Check whether the vertical moves are valid
         if (board.withinBoard(x, y + dy)) {
@@ -97,7 +97,6 @@ public class Pawn extends AbstractPiece {
                     reachable.add(new Move(origin, twoAhead, this, null, MoveType.REGULAR));
             }
         }
-
 
         // Check whether diagonal moves are valid
         if (board.withinBoard(x - 1, y + dy)) {
