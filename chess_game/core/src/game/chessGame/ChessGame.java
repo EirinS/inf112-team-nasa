@@ -74,12 +74,11 @@ public class ChessGame implements IChessGame {
 			listener.illegalMovePerformed(fromX, fromY);
 			return;
 		}
-
-		boardHistory.add(board);
 		listener.moveOk(moves);
 
 		// Check if AI should do move
-		aiMove();
+		//aiMove();
+		boardHistory.add(board.copy());
 	}
 
 	public void aiMove() {
@@ -105,35 +104,46 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public boolean isTie() {
-		return fiftyMoves() || impossibleCheckmate() || stalemate();
+		return fiftyMoves() || impossibleCheckmate() || stalemate() || threefoldRepetition();
 	}
 
 	@Override
 	public boolean threefoldRepetition() {
 		//no threefoldrepetition if no player made 3 moves
-		if(boardHistory.size() < 5) {return false;}
+		if(boardHistory.size() < 5) {
+			return false;
+			}
+		System.out.println("START");
+		for(IBoard b : boardHistory)
+			((Board) b).printOutBoard();
 
 		//current board;
 		IBoard current = boardHistory.get(boardHistory.size()-1);
 		int count = 1;
+		//assumes all boards exists and have same size
 		for(int i = boardHistory.size()-3; i >= 0; i-=2) {
-			boolean equal = true;
-			//assumes all boards exists and have same size
-			for(Square sq : boardHistory.get(i).getBoard()) {
-				if (!contains(current, sq)) {
-					equal = false;
-					break;
-				}
-			}
-			//found equal board.
-			if(equal) {
+			if(isSame(current, boardHistory.get(i))) {
+				//found equal board.
 				count++;
 				//found threefold-repetition
-				if (count >= 3)
+				if (count >= 3) {
 					return true;
+				}
 			}
 		}
 		return false;
+	}
+
+	public boolean isSame(IBoard board, IBoard other) {
+		for(Square sq : board.getBoard())
+			if(!contains(other, sq)) {
+				return false;
+			}
+		/*
+		for(Square sq : other.getBoard())
+			if(!contains(board, sq))
+				return false; */
+		return true;
 	}
 
 	@Override
@@ -142,27 +152,12 @@ public class ChessGame implements IChessGame {
 			if (sq.getX() == other.getX() && sq.getY() == other.getY()) {
 				if (sq.isEmpty() && other.isEmpty())
 					return true;
-				if (piecesAreEqual(sq.getPiece(), other.getPiece()))
-					return true;
+				if(!sq.isEmpty() && !other.isEmpty())
+					if (sq.getClass() == other.getClass() && sq.getPiece().getColor() == other.getPiece().getColor())
+						return true;
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public boolean piecesAreEqual(IPiece piece, IPiece other) {
-		if(piece == null || other == null && !(piece == null && other == null))
-			return false;
-		if (piece.getClass() != other.getClass())
-			return false;
-		if (piece.getColor() != other.getColor())
-			return false;
-		if (piece instanceof Pawn || piece instanceof Rook || piece instanceof King)
-			if(piece.hasMoved() != other.hasMoved())
-				return false;
-		if(piece.isInPlay() != other.isInPlay())
-			return false;
-		return true;
 	}
 
 
@@ -342,5 +337,10 @@ public class ChessGame implements IChessGame {
 
 	public int getOpponentSeconds() {
 		return opponentSeconds;
+	}
+
+	@Override
+	public ArrayList<IBoard> getBoardHistory() {
+		return boardHistory;
 	}
 }

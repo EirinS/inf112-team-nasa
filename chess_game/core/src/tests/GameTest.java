@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
+import boardstructure.Move;
 import boardstructure.Square;
 import game.chessGame.ChessGame;
 import game.chessGame.GameInfo;
@@ -33,24 +34,32 @@ public class GameTest {
 	public void setUp() throws Exception {
 		game.setBoard(board);
 	}
-
+	
 	@Test
-	public void piecesAreEqualWhenEqualFieldVariablesPiece() {
-		assertTrue(game.piecesAreEqual(new Rook(PieceColor.WHITE),(new Rook(PieceColor.WHITE))));
+	public void twoDifferentBoardsAreDifferent() {
+		IBoard current = new Board(8, PieceColor.WHITE);
+		IBoard other = new Board(8, PieceColor.WHITE);
+		other.getSquare(1, 1).putPiece(new Pawn(PieceColor.BLACK));
+		other.getSquare(1, 0).putPiece(new Rook(PieceColor.BLACK));
+		assertFalse(((ChessGame) game).isSame(current, other));
+	}
+	
+	@Test
+	public void twoDifferentBoardsAreDifferentWithIsSame() {
+		ChessGame g = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, null), null);
+		ArrayList<Move> m = g.getBoard().getSquare(1, 0).getPiece().getLegalMoves(board.getSquare(1, 0), g.getBoard(), PieceColor.BLACK);
+		g.getBoard().move(m.get(0).getFrom(), m.get(0).getTo());
+		ChessGame g1 = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, null), null);
+		assertFalse(g.isSame(g.getBoard(), g1.getBoard()));
 	}
 
-	@Test
-	public void piecesAreNotEqualWhenNotEqualFieldVariablesPiece() {
-		IPiece rook = new Rook(PieceColor.WHITE);
-		rook.pieceMoved();
-		assertFalse(game.piecesAreEqual(rook, (new Rook(PieceColor.WHITE))));
-	}
 
 	@Test
 	public void containsWorksWithDifferentBoardsButEqualFieldVariablesForSquare() {
-		board.getSquare(1, 1).putPiece(new Rook(PieceColor.WHITE));
+		IPiece rook = new Rook (PieceColor.WHITE);
+		board.getSquare(1, 1).putPiece(rook);
 		Square sq = other.getSquare(1, 1);
-		sq.putPiece(new Rook(PieceColor.WHITE));
+		sq.putPiece(rook);
 		assertTrue(game.contains(board, sq));	
 	}
 
@@ -231,14 +240,16 @@ public class GameTest {
 	@Test
 	public void threeFoldRepetitionFiveTurnsDifferentBoardsForDifferentPlayers() {
 		IBoard board = new Board(8, PieceColor.WHITE);
+		IBoard board1 = new Board(8, PieceColor.WHITE);
+		IBoard board2 = new Board(8, PieceColor.WHITE);
 		IBoard other = new Board(8, PieceColor.WHITE);
 		other.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
 		ArrayList<IBoard> bh = new ArrayList<>();
 		bh.add(board);
 		bh.add(other);
-		bh.add(board);
+		bh.add(board1);
 		bh.add(other);
-		bh.add(board);
+		bh.add(board2);
 		game.setBoardHistory(bh);
 		assertTrue(game.threefoldRepetition());
 	}

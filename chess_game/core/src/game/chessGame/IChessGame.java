@@ -95,7 +95,7 @@ public interface IChessGame {
 	 * @param other
 	 * @return true if they have the same field variables, false else.
 	 */
-	boolean piecesAreEqual(IPiece piece, IPiece other);
+	//boolean piecesAreEqual(IPiece piece, IPiece other);
 	
 	/**
 	 * Check if a board contains a square with equal field variables,
@@ -133,4 +133,10 @@ public interface IChessGame {
 	 * @param boardHistory, ArrayList<IBoard> boardHistory , the desired board.
 	 */
 	void setBoardHistory(ArrayList<IBoard> boardHistory);
+	
+	/**
+	 * Get the board history of this game
+	 * @return ArrayList<IBoard> boardHistory
+	 */
+	ArrayList<IBoard> getBoardHistory();
 }
