@@ -17,9 +17,6 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Pawn;
 
 import static pieces.PieceColor.WHITE;
-
-import java.util.ArrayList;
-
 import static pieces.PieceColor.BLACK;
 
 public class PawnTest {
@@ -39,11 +36,10 @@ public class PawnTest {
 		IPiece blackPawn = new Pawn(playerTwo);
 		Square blackSq = board.getSquare(2,5);
 		blackSq.putPiece(blackPawn);
-		boolean canCaptureWhite = false;
 		if (blackPawn.getLegalMoves(blackSq, board, playerOne)
 				.stream().anyMatch(m -> m.getTo().equals(sq)))
-			canCaptureWhite = true;
-		assert(canCaptureWhite);
+			return;
+		fail("Black pawn could not capture present opponent to the east");
 	}
 	
 	@Test
@@ -51,11 +47,10 @@ public class PawnTest {
 		IPiece blackPawn = new Pawn(BLACK);
 		Square blackSq = board.getSquare(4,5);
 		blackSq.putPiece(blackPawn);
-		boolean canCaptureWhite = false;
 		if (blackPawn.getLegalMoves(blackSq, board, playerOne)
 				.stream().anyMatch(m -> m.getTo().equals(sq)))
-			canCaptureWhite = true;
-		assert(canCaptureWhite);
+			return;
+		fail("Black pawn could not capture present opponent to the west");
 	}
 	
 	@Test
@@ -141,16 +136,10 @@ public class PawnTest {
 		IPiece opponentPawn = new Pawn(playerTwo);
 		Square opponentSq = board.getSquare(4,5);
 		opponentSq.putPiece(opponentPawn);
-		boolean canCaptureBlack = false;
-		
-//		System.out.println(sq);
-//		for (Move m : whitePawn.getLegalMoves(sq, board, playerOne))
-//			System.out.println(m.getTo());
-//		
 		if (whitePawn.getLegalMoves(sq, board, playerOne)
 				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
-			canCaptureBlack = true;
-		assert(canCaptureBlack);
+			return;
+		fail("White pawn could not capture present opponent to the east");
 	}
 	
 	@Test
@@ -158,12 +147,10 @@ public class PawnTest {
 		IPiece opponentPawn = new Pawn(playerTwo);
 		Square opponentSq = board.getSquare(2,5);
 		opponentSq.putPiece(opponentPawn);
-		boolean canCaptureBlack = false;
-		
 		if (whitePawn.getLegalMoves(sq, board, playerOne)
 				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
-			canCaptureBlack = true;
-		assert(canCaptureBlack);
+			return;
+		fail("White pawn could not capture present opponent to the west");
 	}
 	
 	@Test
