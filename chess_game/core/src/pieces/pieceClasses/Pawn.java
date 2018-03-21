@@ -130,11 +130,12 @@ public class Pawn extends AbstractPiece {
 				//System.out.println("mov null");
 				continue;
 			}
-			Square sq = mov.getTo();
-			if(sq.getX() != x) {
-				if (!sq.isEmpty())
-					if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))
-						reach.add(sq.getPiece());
+			Square to = mov.getTo();
+			Square from = mov.getFrom();
+			if(to.getX() != from.getX()) {
+				if (!to.isEmpty())
+					if (to.getPiece().getColor() == opponent && !reach.contains(to.getPiece()))
+						reach.add(to.getPiece());
 			}
 		}
 		return reach;
