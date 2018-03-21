@@ -276,7 +276,7 @@ public class Board implements IBoard {
 		}
 		history.add(m);
 		moves.add(m);
-		//printOutBoard();
+		printOutBoard();
 		turn = turn.getOpposite();
 		return moves;
 	}
