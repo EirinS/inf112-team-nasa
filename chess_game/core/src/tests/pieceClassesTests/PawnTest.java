@@ -12,6 +12,7 @@ import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 import pieces.pieceClasses.Pawn;
 
 import static pieces.PieceColor.WHITE;
@@ -166,5 +167,15 @@ public class PawnTest {
 				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
 			canCaptureBlack = true;
 		assert(canCaptureBlack);
+	}
+	
+	@Test
+	public void canThreatenKing() {
+		IBoard newboard = new Board(8, PieceColor.WHITE);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		King k = new King(PieceColor.BLACK);
+		newboard.getSquare(0, 7).putPiece(p);
+		newboard.getSquare(1, 6).putPiece(k);
+		assertTrue(p.threatensKing(p.enemyPiecesReached(0, 7, newboard, PieceColor.BLACK)));
 	}
 }

@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="735811f2-797e-40ca-96da-734164dafac2" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/core/src/scenes/VictoryScene.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/core/assets/playerfile.txt" afterPath="$PROJECT_DIR$/core/assets/playerfile.txt" />
-      <change beforePath="$PROJECT_DIR$/core/src/game/Checkerboard.java" afterPath="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/game/Chess.java" afterPath="$PROJECT_DIR$/core/src/game/Chess.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/scenes/GameScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
-      <change beforePath="$PROJECT_DIR$/core/src/scenes/SceneEnum.java" afterPath="$PROJECT_DIR$/core/src/scenes/SceneEnum.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" afterPath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" afterPath="$PROJECT_DIR$/core/src/pieces/AbstractPiece.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PawnTest.java" afterPath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PawnTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -1353,7 +1351,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/src/gui/GameInfo.java" />
         <option value="$PROJECT_DIR$/core/src/gui/PieceSpriteLoader.java" />
         <option value="$PROJECT_DIR$/core/src/chessGame/Chess.java" />
         <option value="$PROJECT_DIR$/core/src/gui/Checkerboard.java" />
@@ -1404,6 +1401,7 @@
         <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
         <option value="$PROJECT_DIR$/core/src/scenes/VictoryScene.java" />
         <option value="$PROJECT_DIR$/core/src/game/Chess.java" />
+        <option value="$PROJECT_DIR$/core/assets/playerfile.txt" />
       </list>
     </option>
   </component>
@@ -1450,6 +1448,12 @@
               <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
               <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
@@ -2089,7 +2093,7 @@
       <workItem from="1521444766006" duration="12472000" />
       <workItem from="1521478042559" duration="2604000" />
       <workItem from="1521625234192" duration="7004000" />
-      <workItem from="1521644423220" duration="3901000" />
+      <workItem from="1521644423220" duration="3933000" />
     </task>
     <servers />
   </component>
@@ -2126,7 +2130,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="127758000" />
+    <option name="totallyTimeSpent" value="127790000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2508,13 +2512,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/assets/playerfile.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="16" lean-forward="true" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar!/com/badlogic/gdx/scenes/scene2d/Actor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="173">
@@ -2606,6 +2603,14 @@
             <element signature="e#422#423#0" expanded="true" />
             <element signature="e#454#455#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/assets/playerfile.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
