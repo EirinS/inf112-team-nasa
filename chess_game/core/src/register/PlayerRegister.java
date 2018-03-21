@@ -173,7 +173,7 @@ public class PlayerRegister {
         PriorityQueue<Player> pq = new PriorityQueue<>(players); // Adds all the players to the priority queue.
 
         // Add the highest rated players to the highscores-arrayList
-        for (int i = 0; i < pq.size() + 1 && i < highscoreLength; i++) {
+        for (int i = 0; i < players.size() && i < highscoreLength; i++) {
             highscores.add(pq.poll().toString());
         }
 
