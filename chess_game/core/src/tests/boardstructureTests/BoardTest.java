@@ -159,7 +159,7 @@ public class BoardTest {
 		board.getSquare(2, 2).putPiece(board.getSquare(5, 3).movePiece());
 		boolean found = false;
 		
-		for(Square sq : copy.getBoard()) {
+		for(Square sq : copy.getSquares()) {
 			if(!sq.isEmpty()) {
 				found = true;
 				assertEquals(sq.getX(), 5);

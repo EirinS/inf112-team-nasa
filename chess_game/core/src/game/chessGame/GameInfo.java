@@ -3,23 +3,23 @@ package game.chessGame;
 import game.GameType;
 import pieces.PieceColor;
 import player.AILevel;
+import register.Player;
 
 public class GameInfo {
 
     private PieceColor playerColor;
-    private String playerName, opponentName;
+    private Player player, opponent;
     private GameType gameType;
     private AILevel level;
 
-    public GameInfo(String playerName) {
-        this.playerName = playerName;
-        opponentName = "Computer";
+    public GameInfo(Player player) {
+        this.player = player;
         gameType = GameType.SINGLEPLAYER;
     }
 
-    public GameInfo(String playerName, String opponentName, PieceColor playerColor, GameType gameType, AILevel level) {
-        this.playerName = playerName;
-        this.opponentName = opponentName;
+    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level) {
+        this.player = player;
+        this.opponent = opponent;
         this.playerColor = playerColor;
         this.gameType = gameType;
         this.level = level;
@@ -33,20 +33,20 @@ public class GameInfo {
         this.playerColor = playerColor;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
-    public String getOpponentName() {
-        return opponentName;
+    public Player getOpponent() {
+        return opponent;
     }
 
-    public void setOpponentName(String opponentName) {
-        this.opponentName = opponentName;
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
     }
 
     public GameType getGameType() {

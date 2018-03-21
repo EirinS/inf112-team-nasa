@@ -25,7 +25,6 @@ import game.WindowInformation;
 
 import pieces.PieceColor;
 import player.AILevel;
-import register.RegisteredPlayers;
 
 /**
  * This class sets up and manages the elements in the main menu of the user interface.
@@ -50,7 +49,7 @@ public class MainMenuScene extends AbstractScene {
 	private static final int centreWidth = (WindowInformation.WIDTH/2)-(defaultWidth/2);
 	private ArrayList<Actor> actors;
 	private Image imgBackground;
-	private Label staticText, header, headerScore, error;
+	private Label staticText, mainMenu, headerScore, error;
 	private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
 			black, white, signInP2;
 	private TextField username, registerUsername;
@@ -77,14 +76,23 @@ public class MainMenuScene extends AbstractScene {
 
 	@Override
 	public void buildStage() {
-		if (built) return;
-		built = true;
-		setUpElements();
-		setUpArrayList();
-		setUpElementSizes();
-		addListeners();
-		addActorsToStage();
-		screenSignIn();
+		if (built) {
+			screenGameMenu();
+			Chess.getPlayerRegister().loadPlayers();
+			if (gameInfo != null) {
+				gameInfo.setPlayerColor(null);
+				gameInfo.setOpponent(null);
+				gameInfo.setLevel(null);
+			}
+		} else {
+			built = true;
+			setUpElements();
+			setUpArrayList();
+			setUpElementSizes();
+			addListeners();
+			addActorsToStage();
+			screenSignIn();
+		}
 	}
 
 	@Override
@@ -123,8 +131,8 @@ public class MainMenuScene extends AbstractScene {
 		error.setPosition(centreWidth, WindowInformation.HEIGHT/1.5f);
 
 		//Elements in gamemenu
-		header = new Label ("Main menu", skin, "title-plain");
-		header.setPosition((centreWidth+(defaultWidth/4)), WindowInformation.HEIGHT/1.6f);
+		mainMenu = new Label ("Main menu", skin, "title-plain");
+		mainMenu.setPosition((centreWidth+(defaultWidth/4)), WindowInformation.HEIGHT/1.6f);
 		singleplayer = new TextButton("Singleplayer", skin, "default");
 		singleplayer.setPosition(centreWidth, WindowInformation.HEIGHT/2);
 		multiplayer = new TextButton("Multiplayer", skin, "default");
@@ -180,7 +188,7 @@ public class MainMenuScene extends AbstractScene {
 		actors.add(singleplayer);
 		actors.add(multiplayer);
 		actors.add(scores);
-		actors.add(header);
+		actors.add(mainMenu);
 		actors.add(startSingle);
 		actors.add(difficulty);
 		actors.add(black);
@@ -244,8 +252,8 @@ public class MainMenuScene extends AbstractScene {
 		invisible();
 		playerOne = false;
 		singleplayer.setVisible(true);
-		header.setText("Main Menu");
-		header.setVisible(true);
+		mainMenu.setText("Main Menu");
+		mainMenu.setVisible(true);
 		multiplayer.setVisible(true);
 		scores.setVisible(true);
 	}
@@ -266,8 +274,8 @@ public class MainMenuScene extends AbstractScene {
 	private void screenMultiplayer(){
 		invisible();
 		signIn.setVisible(true);
-		header.setText("Opponent");
-		header.setVisible(true);
+		mainMenu.setText("Opponent");
+		mainMenu.setVisible(true);
 		staticText.setVisible(true);
 		username.setText("testSpiller2");
 		username.setVisible(true);
@@ -348,10 +356,10 @@ public class MainMenuScene extends AbstractScene {
 				if (playerOne)
 				{
 					String name = username.getText();
-					Boolean exists = RegisteredPlayers.playerIsRegistered(name);
+					Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
 					if (exists)
 					{
-						gameInfo = new GameInfo(name);
+						gameInfo = new GameInfo(Chess.getPlayerRegister().getPlayer(name));
 					}
 					else
 					{
@@ -363,13 +371,14 @@ public class MainMenuScene extends AbstractScene {
 				else
 				{
 					String name = username.getText();
-					Boolean exists = RegisteredPlayers.playerIsRegistered(name);
+					Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
 					if (exists)
 					{
-						gameInfo.setOpponentName(name);
+						gameInfo.setOpponent(Chess.getPlayerRegister().getPlayer(name));
 						gameInfo.setGameType(GameType.MULTIPLAYER);
 						gameInfo.setPlayerColor(PieceColor.WHITE);
 						SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+						signInListener();
 					}
 					else
 					{
@@ -405,7 +414,7 @@ public class MainMenuScene extends AbstractScene {
 			public void touchUp(InputEvent e, float x, float y, int point, int button)
 			{
 				String name = registerUsername.getText();
-				Boolean exists = RegisteredPlayers.playerIsRegistered(name);
+				Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
 
 				error.setText("This alias already exists! Please choose another one.");
 				if (playerOne){
@@ -417,8 +426,8 @@ public class MainMenuScene extends AbstractScene {
 					}
 					else
 					{
-						RegisteredPlayers.registerPlayer(name);
-						gameInfo = new GameInfo(name);
+						Chess.getPlayerRegister().registerPlayer(name);
+						gameInfo = new GameInfo(Chess.getPlayerRegister().getPlayer(name));
 					}
 
 				}
@@ -430,8 +439,8 @@ public class MainMenuScene extends AbstractScene {
 					}
 					else
 					{
-						RegisteredPlayers.registerPlayer(name);
-						gameInfo.setOpponentName(name);
+						Chess.getPlayerRegister().registerPlayer(name);
+						gameInfo.setOpponent(Chess.getPlayerRegister().getPlayer(name));
 						gameInfo.setGameType(GameType.MULTIPLAYER);
 					}
 				}
@@ -481,7 +490,8 @@ public class MainMenuScene extends AbstractScene {
 		scores.addListener(new ClickListener(){
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
-				ArrayList<String> highscores = RegisteredPlayers.getHighscores();
+				Chess.getPlayerRegister().loadPlayers(); // Force-reload.
+				ArrayList<String> highscores = Chess.getPlayerRegister().getHighscores();
 
 				String[] scores = new String[highscores.size()+1];
 				scores[0] = "Name/Rating/W/L/D";

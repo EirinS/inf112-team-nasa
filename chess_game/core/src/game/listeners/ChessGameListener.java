@@ -1,6 +1,7 @@
 package game.listeners;
 
 import boardstructure.Move;
+import pieces.PieceColor;
 
 import java.util.ArrayList;
 
@@ -21,5 +22,9 @@ public interface ChessGameListener {
 	 * Called when a game is a draw.
 	 */
 	void draw();
-	
+
+	/**
+	 * Called when the turn timer elapses.
+	 */
+	void turnTimerElapsed();
 }

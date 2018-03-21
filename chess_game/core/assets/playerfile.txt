@@ -1,5 +1,6 @@
 testSpiller 1500 0 0 0
 testSpiller2 1600 0 0 0
-testSpiller3 900 10 0 0desiredusername 1500 0 0 0
+testSpiller3 900 10 0 0
+desiredusername 1500 0 0 0
 desiredusername 1500 0 0 0
 Eirin 1500 0 0 0

@@ -56,12 +56,6 @@ public interface IBoard {
 	public ArrayList<Square> getSquares();
 	
 	/**
-	 * Returns the board as a list.
-	 * @return ArrayList<Square> of all squares on the board.
-	 */
-	public ArrayList<Square> getBoard();
-	
-	/**
 	 * Check if a piece is inside the board, and if there is no other piece there.
 	 * @param sq, square you are checking
 	 * @return true if legal move, false else
