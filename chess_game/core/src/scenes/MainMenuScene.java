@@ -374,13 +374,21 @@ public class MainMenuScene extends AbstractScene {
                 } else {
                     String name = username.getText();
                     Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
-                    if (exists) {
+                    
+                    if(name.equals(gameInfo.getPlayer().getName())){
+                    	error.setText("Already signed in");
+                        error.setVisible(true);
+                        signInListener();
+                        return;
+                    }
+                    else if (exists) {
                         gameInfo.setOpponent(Chess.getPlayerRegister().getPlayer(name));
                         gameInfo.setGameType(GameType.MULTIPLAYER);
                         gameInfo.setPlayerColor(PieceColor.WHITE);
                         SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                         signInListener();
                     } else {
+                    	error.setText("Alias not registered.");
                         error.setVisible(true);
                         signInListener();
                         return;
