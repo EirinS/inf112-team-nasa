@@ -40,7 +40,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane;
-	private Label playerTime, opponentTime;
+	private Label topTime, bottomTime;
 	private TextButton quitBtn, resignBtn;
 
 	public GameScene (Chess game, GameInfo gameInfo){
@@ -102,35 +102,36 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - resignBtn.getHeight() - 200);
 		addActor(historyScrollPane);
 
-		Label playerName = new Label(gameInfo.getPlayer().getNameRating(), skin, "title-plain");
-		playerName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + checkerboard.getSize() - playerName.getHeight());
-		addActor(playerName);
-
-		playerTime = new Label(chessGame.formatTime(chessGame.getPlayerSeconds()), skin, "title-plain");
-		playerTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - playerTime.getWidth(), historyScrollPane.getY() + historyScrollPane.getHeight());
-		addActor(playerTime);
-
-		opponentTime = new Label(chessGame.formatTime(chessGame.getOpponentSeconds()), skin, "title-plain");
-		opponentTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - opponentTime.getWidth(), historyScrollPane.getY() - opponentTime.getHeight());
-		addActor(opponentTime);
-		setNameColors();
-
 		String opponent = "Computer";
 		if (gameInfo.getLevel() == null) {
 			opponent = gameInfo.getOpponent().getNameRating();
 		}
-		Label opponentName = new Label(opponent, skin, "title-plain");
-		opponentName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + opponentName.getHeight() + 50);
-		addActor(opponentName);
+
+		Label topName = new Label(opponent, skin, "title-plain");
+		topName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + checkerboard.getSize() - topName.getHeight());
+		addActor(topName);
+
+		Label bottomName = new Label(gameInfo.getPlayer().getNameRating(), skin, "title-plain");
+		bottomName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + bottomName.getHeight() + 50);
+		addActor(bottomName);
+
+		topTime = new Label(chessGame.formatTime(chessGame.getOpponentSeconds()), skin, "title-plain");
+		topTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - topTime.getWidth(), historyScrollPane.getY() + historyScrollPane.getHeight());
+		addActor(topTime);
+
+		bottomTime = new Label(chessGame.formatTime(chessGame.getPlayerSeconds()), skin, "title-plain");
+		bottomTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - bottomTime.getWidth(), historyScrollPane.getY() - bottomTime.getHeight());
+		addActor(bottomTime);
+		setNameColors();
 	}
 
 	private void setNameColors() {
 		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
-			playerTime.setColor(Colors.turnColor);
-			opponentTime.setColor(Color.WHITE);
+			topTime.setColor(Color.WHITE);
+			bottomTime.setColor(Colors.turnColor);
 		} else {
-			playerTime.setColor(Color.WHITE);
-			opponentTime.setColor(Colors.turnColor);
+			topTime.setColor(Colors.turnColor);
+			bottomTime.setColor(Color.WHITE);
 		}
 	}
 
@@ -175,11 +176,11 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void turnTimerElapsed() {
-		if (playerTime == null || opponentTime == null) return;
+		if (topTime == null || bottomTime == null) return;
 		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
-			playerTime.setText(chessGame.formatTime(chessGame.getPlayerSeconds()));
+			bottomTime.setText(chessGame.formatTime(chessGame.getPlayerSeconds()));
 		} else {
-			opponentTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
+			topTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
 		}
 	}
 }
