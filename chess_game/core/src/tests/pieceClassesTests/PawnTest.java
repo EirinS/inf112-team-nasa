@@ -170,12 +170,27 @@ public class PawnTest {
 	}
 	
 	@Test
-	public void canThreatenKing() {
+	public void pawnCanThreatenKing() {
 		IBoard newboard = new Board(8, PieceColor.WHITE);
 		Pawn p = new Pawn(PieceColor.WHITE);
 		King k = new King(PieceColor.BLACK);
 		newboard.getSquare(0, 7).putPiece(p);
 		newboard.getSquare(1, 6).putPiece(k);
 		assertTrue(p.threatensKing(p.enemyPiecesReached(0, 7, newboard, PieceColor.BLACK)));
+	}
+	
+	@Test
+	public void kingIsThreatenedByPawn() {
+		IBoard newboard = new Board(8, PieceColor.WHITE);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		King k = new King(PieceColor.BLACK);
+		newboard.getSquare(0, 7).putPiece(p);
+		newboard.getSquare(1, 6).putPiece(k);
+		boolean isLegal = false;
+		for(Move m : p.getLegalMoves(newboard.getSquare(1, 6), newboard, PieceColor.WHITE)) {
+			if (m.getTo().getX() == 0 && m.getTo().getY() == 6)
+				isLegal = true;
+		}
+		assertFalse(isLegal);	
 	}
 }
