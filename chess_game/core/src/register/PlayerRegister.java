@@ -51,7 +51,8 @@ public class PlayerRegister {
                 int wins = Integer.parseInt(line[2]);
                 int losses = Integer.parseInt(line[3]);
                 int draws = Integer.parseInt(line[4]);
-                players.add(new Player(name, rating, wins, losses, draws));
+                Player p = new Player(name, rating, wins, losses, draws);
+                players.add(p);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
