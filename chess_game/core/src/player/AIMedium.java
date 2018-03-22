@@ -3,9 +3,11 @@ package player;
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Queen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,12 +161,17 @@ public class AIMedium implements AI, Playable {
 			Board possibleBoard = new Board(currentBoard.getDimension(),playerTurn);
 			for(Square square : currentBoard.getSquares()) {
 				if (move.getFrom()==square) {
-				}else if (move.getTo()==square) {
+				}else if (move.getTo()==square) {																																								
 					String piece = move.getFrom().getPiece().toString();
 					if (piece=="R"||piece=="K"||piece=="R") {
-					IPiece copy = move.getFrom().getPiece().copy();
-					copy.pieceMoved();
-					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(copy);
+						IPiece copy;
+						if (isPromotionMove(move)) {
+							copy = new Queen(playerTurn);
+						}else  {
+							copy = move.getFrom().getPiece().copy();
+							copy.pieceMoved();
+						}
+						possibleBoard.getSquare(square.getX(), square.getY()).putPiece(copy);
 					}else {
 						possibleBoard.getSquare(square.getX(), square.getY()).putPiece(move.getMovingPiece());
 					}
@@ -255,7 +262,13 @@ public class AIMedium implements AI, Playable {
 	public int getRating() {
 		return rating;
 	}
-
+	
+	public boolean isPromotionMove(Move move) {
+		if(move.getMoveType()==MoveType.PROMOTION) {
+			return true;
+		}
+		return false;
+	}
 }
 
 
