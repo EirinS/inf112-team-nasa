@@ -20,7 +20,11 @@ import player.AI;
 import register.Player;
 import register.PlayerRegister;
 import setups.DefaultSetup;
-
+/**
+ * The ChessGame class ties together and keeps track of logic surrounding the current game of chess. 
+ * This includes an implementation of the game clock, 
+ * deciding when the game is over and updating player statistics after a game.
+ */
 public class ChessGame implements IChessGame {
 	private GameInfo gameInfo;
 	private IBoard board;
