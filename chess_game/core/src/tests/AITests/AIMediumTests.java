@@ -106,7 +106,7 @@ public class AIMediumTests {
 	public void testAIEasyVSAIMedium20Moves() {
 		DefaultSetup d = new DefaultSetup();
 		Board boardT = d.getInitialPosition(PieceColor.WHITE);
-		String msg1 = "The test ended after ";
+		String msg1 = "The test EasyvsMedium ended after ";
 		String msg2 = " moves. ";
 		String nr = "20";
 		AIMedium p1 = new AIMedium(PieceColor.WHITE);
@@ -119,6 +119,7 @@ public class AIMediumTests {
 			}else {
 				Move p1Move = p1.calculateMove(boardT);
 				boardT.move(p1Move.getFrom(), p1Move.getTo());
+				//boardT.printOutBoard();//
 			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "AIEasy has no moves (is checkmate or there is a draw)";
@@ -126,10 +127,41 @@ public class AIMediumTests {
 			}else {
 				Move p2Move = p2.calculateMove(boardT);
 				boardT.move(p2Move.getFrom(), p2Move.getTo());
+				//boardT.printOutBoard();//
 			}
 		}
 		System.out.println(msg1 + nr + msg2);
 	}
 	
+	@Test
+	public void testAIMediumVSAIMediumFullGame() {
+		DefaultSetup d = new DefaultSetup();
+		Board boardT = d.getInitialPosition(PieceColor.WHITE);
+		String msg1 = "The test MediumvsMedium ended after ";
+		String msg2 = " moves. ";
+		String nr = "50";
+		AIMedium p1 = new AIMedium(PieceColor.WHITE);
+		AIMedium p2 = new AIMedium(PieceColor.BLACK);
+		for (int i=0;i<50;i++) {
+			if (boardT.getAvailableMoves(p1.getPieceColor()).isEmpty()) {
+				nr = i+"";
+				msg2 = msg2 + "White has no moves (is checkmate or there is a draw)";
+				break;
+			}else {
+				Move p1Move = p1.calculateMove(boardT);
+				boardT.move(p1Move.getFrom(), p1Move.getTo());
+				//boardT.printOutBoard();//
+			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
+				nr = i+"";
+				msg2 = msg2 + "Black has no moves (is checkmate or there is a draw)";
+				break;
+			}else {
+				Move p2Move = p2.calculateMove(boardT);
+				boardT.move(p2Move.getFrom(), p2Move.getTo());
+				//boardT.printOutBoard();//
+			}
+		}
+		System.out.println(msg1 + nr + msg2);
+	}
 	
 }

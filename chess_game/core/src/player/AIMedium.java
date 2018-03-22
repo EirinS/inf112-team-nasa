@@ -58,7 +58,7 @@ public class AIMedium implements AI, Playable {
 	public Move calculateFutureMove(IBoard currentBoard) {//ArrayList<IBoard> logB, ArrayList<Move> logM) {
 		
 		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
-		ArrayList<Board> possibleBoards = getPossibleBoards(currentBoard,possibleMoves);
+		ArrayList<Board> possibleBoards = getPossibleBoards(currentBoard,possibleMoves, playerColor);
 		
 		int worstCase = 9999;
 		int loss = -99999;//this is only used in to evaluate moves where loss is inevitable
@@ -84,13 +84,13 @@ public class AIMedium implements AI, Playable {
 					theMoves.add(forcedDraw);
 				}
 			}else {
-				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp);
+				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp,opponentColor);
 				ArrayList<int[]> findWorst = new ArrayList<int[]>();
 				int[] worst = {worstCase,0};
 				
 				for (int j=0; j<possibleBoardsOpp.size(); j++ ) {
 					List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
-					if(possibleMovesEnd.isEmpty()) {////// TODO fix draw!
+					if(possibleMovesEnd.isEmpty()) {
 						boolean added = false;
 						ArrayList<IPiece> allPieces= possibleBoards.get(i).piecesThreatenedByOpponent(playerColor, opponentColor);
 						for (IPiece piece : allPieces) {
@@ -110,7 +110,7 @@ public class AIMedium implements AI, Playable {
 							}
 						}
 					}else {
-						ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd);//i),possibleMovesEnd);
+						ArrayList<Board> possibleBoardsEnd = getPossibleBoards(possibleBoardsOpp.get(j),possibleMovesEnd, playerColor);//i),possibleMovesEnd);
 						int[] best = getBestAIScorePlacement(possibleBoardsEnd);
 						best[1]=i;
 						findWorst.add(best);
@@ -153,10 +153,10 @@ public class AIMedium implements AI, Playable {
 		return calculateMove(board);
 	}
 	
-	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. might need to be redone
+	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. might need to be redone
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
-			Board possibleBoard = new Board(currentBoard.getDimension(),opponentColor);
+			Board possibleBoard = new Board(currentBoard.getDimension(),playerTurn);
 			for(Square square : currentBoard.getSquares()) {
 				if (move.getFrom()==square) {
 				}else if (move.getTo()==square) {

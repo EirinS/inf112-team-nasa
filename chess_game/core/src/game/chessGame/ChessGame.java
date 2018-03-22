@@ -125,7 +125,7 @@ public class ChessGame implements IChessGame {
 		
 		//this player is in checkmate, game is finished
 		if (checkmate()) {
-			finishGame(board.getTurn().getOpposite());
+			finishGame(board.getTurn());
 			return;
 		}
 		if (isTie()) {
@@ -155,14 +155,14 @@ public class ChessGame implements IChessGame {
 		Player o = gameInfo.getOpponent();
 		if (turn == null) {
 			updateRatings(p, o, 3);
-			listener.draw();
+			listener.gameOver(3);
 		} else if (turn == gameInfo.getPlayerColor()) {
 			//player, whose color is turn, lost
-			listener.loss();
+			listener.gameOver(2);
 			updateRatings(p, o, 2);
 		} else {
 			//player, whose color is turn, won
-			listener.win();
+			listener.gameOver(1);
 			updateRatings(p, o, 1);
 		}
 	}

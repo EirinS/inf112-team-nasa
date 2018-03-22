@@ -17,21 +17,12 @@ public interface ChessGameListener {
 	 * @param moves All moves that has been executed on the board.
 	 */
 	void moveOk(ArrayList<Move> moves);
-	
+
 	/**
-	 * Called when a game is a draw.
+	 * Called when the game is over.
+	 * @param winLossDraw Integer representing result of game; win = 1, loss = 2, draw = 3.
 	 */
-	void draw();
-	
-	/**
-	 * Called when player won
-	 */
-	void win();
-	
-	/**
-	 * Called when player lost
-	 */
-	void loss();
+	void gameOver(int winLossDraw);
 
 	/**
 	 * Called when the turn timer elapses.
