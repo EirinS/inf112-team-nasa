@@ -77,8 +77,8 @@ public class Pawn extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		int x = origin.getX();
 		int y = origin.getY();
-		int dy = (playerOne == WHITE && color == WHITE
-				|| playerOne == BLACK && color == BLACK) ? -1 : 1;
+		int dy = (playerOne == WHITE && color == WHITE)
+				|| (playerOne == BLACK && color == BLACK) ? -1 : 1;
 		PieceColor opponentColor = color.getOpposite();
 
 		// Check whether the vertical moves are valid

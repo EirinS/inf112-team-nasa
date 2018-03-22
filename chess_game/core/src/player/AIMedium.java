@@ -3,9 +3,11 @@ package player;
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Queen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,15 +158,20 @@ public class AIMedium implements AI, Playable {
 	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. might need to be redone
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
-			Board possibleBoard = new Board(currentBoard.getDimension(),playerTurn);
+			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne());
 			for(Square square : currentBoard.getSquares()) {
 				if (move.getFrom()==square) {
-				}else if (move.getTo()==square) {
+				}else if (move.getTo()==square) {																																								
 					String piece = move.getFrom().getPiece().toString();
 					if (piece=="R"||piece=="K"||piece=="R") {
-					IPiece copy = move.getFrom().getPiece().copy();
-					copy.pieceMoved();
-					possibleBoard.getSquare(square.getX(), square.getY()).putPiece(copy);
+						IPiece copy;
+						if (isPromotionMove(move)) {
+							copy = new Queen(playerTurn);
+						}else  {
+							copy = move.getFrom().getPiece().copy();
+							copy.pieceMoved();
+						}
+						possibleBoard.getSquare(square.getX(), square.getY()).putPiece(copy);
 					}else {
 						possibleBoard.getSquare(square.getX(), square.getY()).putPiece(move.getMovingPiece());
 					}
@@ -255,7 +262,13 @@ public class AIMedium implements AI, Playable {
 	public int getRating() {
 		return rating;
 	}
-
+	
+	public boolean isPromotionMove(Move move) {
+		if(move.getMoveType()==MoveType.PROMOTION) {
+			return true;
+		}
+		return false;
+	}
 }
 
 

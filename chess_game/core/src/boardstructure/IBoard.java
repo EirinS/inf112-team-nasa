@@ -7,7 +7,8 @@ import pieces.IPiece;
 import pieces.PieceColor;
 
 public interface IBoard {
-	
+
+
 	/**
 	 * Width of board
 	 * @return width
