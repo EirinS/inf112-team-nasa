@@ -137,13 +137,12 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return a updated list of positions where you can move.
 	 */
 	protected ArrayList<Move> removeMovesThatPutYourselfInCheck(ArrayList<Move> legalMoves, Square origin, IBoard board){
-		PieceColor opponent = getColor().getOpposite();
-	
+		PieceColor opponent = getColor().getOpposite();	
 		ArrayList<Move> okMov = new ArrayList<Move>();
 		
 		for (Move m : legalMoves) {
 			IBoard testBoard = board.copy();
-			Square to = testBoard.getSquare(m.getTo().getX(), m.getTo().getY());
+			Square to = testBoard.getSquare(m.getTo().getX(), m.getTo().getY());			
 			Square from = testBoard.getSquare(m.getFrom().getX(), m.getFrom().getY());
 			
 			if(to.isEmpty()) {
@@ -151,6 +150,15 @@ public abstract class AbstractPiece implements IPiece {
 			} else {
 				captureEnemyPieceAndMovePiece(from, to);
 			}
+			
+			/*/testing purposes
+			System.out.println("Start");
+			for(Square sq : testBoard.getSquares())
+				if(!sq.isEmpty()) {
+					System.out.println(m.getTo().getX() + " " + m.getTo().getY());
+					System.out.println(sq.getX() + " " + sq.getY() + " " + sq.getPiece());
+				}*/
+			
 			
 			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {

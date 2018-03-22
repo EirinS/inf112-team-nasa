@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.sound.midi.Synthesizer;
+
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
@@ -132,7 +134,7 @@ public class ChessGame implements IChessGame {
 		}
 
 		// Check if AI should do move
-		aiMove();
+		//aiMove();
 	}
 
 	public void aiMove() {

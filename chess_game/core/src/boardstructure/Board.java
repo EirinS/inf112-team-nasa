@@ -325,13 +325,15 @@ public class Board implements IBoard {
 
 	@Override
 	public IBoard copy() {
-		IBoard board = new Board(this.getDimension(), PieceColor.WHITE);
+		IBoard board = new Board(this.getDimension(), playerOne);
 		for(Square sq : getSquares()) {
 			int x = sq.getX(), y = sq.getY();
-			if(sq.isEmpty())
-				continue;
-			IPiece p = sq.getPiece().copy();
 			Square newSq = new Square(x,y);
+			if(sq.isEmpty()) {
+				board.addSquare(newSq);
+				continue;
+			}
+			IPiece p = sq.getPiece().copy();
 			newSq.putPiece(p);
 			board.addSquare(newSq);
 		}
