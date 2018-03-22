@@ -1,2 +1,2 @@
-Eirin 1340 1 3 4
-testSpiller 1260 4 21 4
+testSpiller 1468 0 2 0
+testSpiller2 1515 1 0 0
