@@ -171,4 +171,18 @@ public interface IBoard {
 	 * @return PieceColor color of playerOne in this game.
 	 */
 	public PieceColor getPlayerOne();
+	
+	/**
+	 * Set the turn of this board to be the
+	 * given turn.
+	 * @param turn
+	 */
+	public void setTurn(PieceColor turn);
+	
+	/**
+	 * Set the history of this board to be the given history.
+	 * @param history
+	 */
+	public void setHistory(ArrayList<Move> history);
 }
+
