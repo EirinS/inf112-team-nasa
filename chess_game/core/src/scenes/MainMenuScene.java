@@ -500,7 +500,7 @@ public class MainMenuScene extends AbstractScene {
                 }
                 scoreList.setItems(scores);
                 screenScore();
-                multiplayerListener();
+                scoreListener();
             }
         });
     }
