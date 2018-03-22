@@ -326,6 +326,8 @@ public class Board implements IBoard {
 	@Override
 	public IBoard copy() {
 		IBoard board = new Board(this.getDimension(), playerOne);
+		board.setTurn(getTurn());
+		board.setHistory(this.history);
 		for(Square sq : getSquares()) {
 			board.addSquare(sq.copy());
 		}
@@ -336,6 +338,19 @@ public class Board implements IBoard {
 	@Override
 	public PieceColor getPlayerOne() {
 		return playerOne;
+	}
+
+
+	@Override
+	public void setTurn(PieceColor turn) {
+		this.turn = turn;	
+	}
+
+
+	@Override
+	public void setHistory(ArrayList<Move> history) {
+		this.history = history;
+		
 	}
 
 }

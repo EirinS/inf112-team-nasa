@@ -10,7 +10,10 @@ import com.badlogic.gdx.*;
 import scenes.SceneEnum;
 import scenes.SceneManager;
 
-
+/**
+ * The chess class gets called from the libgdx desktop launcher and  initializes the GUI/Chessgame.
+ * It also connects to the playerfile
+ */
 public class Chess extends Game {
     private SpriteBatch batch;
     private static PlayerRegister playerRegister = new PlayerRegister("playerfile.txt");

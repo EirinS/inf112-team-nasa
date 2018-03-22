@@ -22,27 +22,45 @@ public class Move {
 		this.moveType = type;
 	}
 
+	/**
+	 * @return Square sq, the square you moved from.
+	 */
 	public Square getFrom() {
 		return from;
 	}
 
+	/**
+	 * @return Square sq, the square you're moving to.
+	 */
 	public Square getTo() {
 		return to;
 	}
 
+	/**
+	 * @return IPiece the piece that does this move.
+	 */
 	public IPiece getMovingPiece() {
 		return movingPiece;
 	}
 
+	/**
+	 * Piece captured in this move
+	 * @return IPiece captured, or null if none.
+	 */
 	public IPiece getCapturedPiece() {
 		return capturedPiece;
 	}
-	
+
+	/**
+	 * @return MoveType type, the type of this move.
+	 */
 	public MoveType getMoveType() {
 		return moveType;
 	}
 
-	//Algebraic notation toString
+	/**
+	 * Algebraic notation toString method.
+	 */
 	@Override
 	public String toString() {
 		String x = "";
