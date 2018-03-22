@@ -33,8 +33,7 @@ public class Pawn extends AbstractPiece {
 	}
 
 	//TODO en passant
-	//TODO pawn promotion
-
+	
 	/**
 	 * Gets a list of all legal moves for this pawn
 	 */
@@ -44,6 +43,64 @@ public class Pawn extends AbstractPiece {
 		Square sq = board.getSquare(x, y);
 		m.addAll(reachableSquares(sq, board, playerOne));
 		return m;
+	}
+	
+	/**
+	 * Returns the piece captured during en passant
+	 * @param dir the square the captured piece just passed through
+	 * @return the piece captured en passant
+	 */
+	private IPiece capturedEnPassant(Square dir, int dy, IBoard board) {
+		int x = dir.getX(); 
+		int y = dir.getY();
+		if (dy == -1)
+			return board.getSquare(x, y + 1).getPiece();
+		else
+			return board.getSquare(x, y - 1).getPiece();
+	}
+	
+	/**
+	 * Checks whether this pawn can capture another pawn en passant.
+	 * @param x the x coordinate of this pawn
+	 * @param y the y coordinate of this pawn
+	 * @param dy the difference in y direction between origin and destination
+	 * @param board the board this pawn is placed upon
+	 * @return whether en passant is possible now
+	 */
+	private boolean enPassantIsValid(PieceColor playerOne, int x, int y, int dy, IBoard board) {
+		//TODO 21/03 Bug: getLastMove returns null the majority of the time?
+//		Move p = board.getLastMove();
+//		System.out.println(p);
+		
+		// Get previous move
+		ArrayList<Move> moves = board.getHistory();
+		if (moves.size() == 0) return false;
+		Move previous = moves.get(moves.size() - 1);
+		
+		//TODO 22/03 Bug: Moves where pawns captures another pawn are sometimes not registered in moves?
+		
+		int toX = previous.getTo().getY();
+		int toY = previous.getTo().getY();
+		
+		// Check whether previous move was a two-step pawn move 
+		char[] move = previous.toString().toCharArray();
+		if (move[0] != 'P' || move[1] != move[3] || move.length > 5
+				|| (Math.max(move[2], move[4]) - Math.min(move[2], move[4])) != 2)
+			return false;
+			
+//		System.out.println("Player one's turn: " +(board.getTurn() == playerOne));
+//		System.out.println("y==3: "+(y == 3));
+//		System.out.println("y==4: "+(y == 4));
+//		System.out.println("toY==y: "+(toY == y));
+//		System.out.println("Diff x ==1: "+(Math.max(x, toX) - Math.min(x, toX) == 1));
+		
+		//TODO board.getTurn is always player one for some reason?
+		
+		return ((board.getTurn() == playerOne && y == 3 
+				&& toY == y && Math.max(x, toX) - Math.min(x, toX) == 1)
+				|| (board.getTurn() == playerOne.getOpposite() 
+				&& y == 4 && toY == y && Math.max(x, toX) - Math.min(x, toX) == 1));
+//		return false;
 	}
 
 	/**
@@ -104,6 +161,8 @@ public class Pawn extends AbstractPiece {
 			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
 				if (pawnPromotionIsValid(y, dy, board))
 					reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.PROMOTION));
+				else if (enPassantIsValid(playerOne, x, y, dy, board))
+					reachable.add(new Move(origin, westAhead, this, capturedEnPassant(westAhead, dy, board), MoveType.ENPASSANT));
 				reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR));
 			}
 		}
@@ -113,6 +172,8 @@ public class Pawn extends AbstractPiece {
 			if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
 				if (pawnPromotionIsValid(y, dy, board))
 					reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.PROMOTION));
+				else if (enPassantIsValid(playerOne, x, y, dy, board))
+					reachable.add(new Move(origin, eastAhead, this, capturedEnPassant(eastAhead, dy, board), MoveType.ENPASSANT));
 				reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR));
 			}
 		}
