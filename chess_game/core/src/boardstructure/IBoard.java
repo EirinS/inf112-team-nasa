@@ -81,7 +81,7 @@ public interface IBoard {
 	 * 
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return true if within board, false if not.
 	 */
 	public boolean withinBoard(int x, int y);
 	
@@ -122,7 +122,6 @@ public interface IBoard {
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
-	 * @param turn Current turn
 	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
 	public ArrayList<Move> move(Square start, Square end);
