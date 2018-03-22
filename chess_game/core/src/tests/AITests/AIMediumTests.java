@@ -59,7 +59,7 @@ public class AIMediumTests {
 	public void getPossibleBoardsTest() {
 		AIMedium ai = new AIMedium(PieceColor.WHITE);
 		List<Move> moves = board.getAvailableMoves(PieceColor.WHITE);
-		ArrayList<Board> boards = ai.getPossibleBoards(board,moves);
+		ArrayList<Board> boards = ai.getPossibleBoards(board,moves, board.getTurn());
 		org.junit.Assert.assertEquals(boards.size(),moves.size());
 		for(int i=0;i< boards.size();i++) {
 			String a = moves.get(i).getFrom().getPiece().toString();

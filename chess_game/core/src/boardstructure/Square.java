@@ -183,4 +183,16 @@ public class Square {
 	public int hashCode() {
 		return Objects.hash(x, y, piece);
 	}
+	
+	/**
+	 * Returns a copy of this board.
+	 * @return Square copy
+	 */
+	public Square copy() {
+		IPiece p = null;
+		if(!isEmpty()) {
+			p = getPiece().copy();
+		}
+		return new Square(x, y, p);
+	}
 }

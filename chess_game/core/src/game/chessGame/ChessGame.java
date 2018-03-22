@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.sound.midi.Synthesizer;
-
-import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
 import game.Chess;
-import game.GameType;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -19,8 +15,6 @@ import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
 import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
-
-import pieces.pieceClasses.Rook;
 
 import player.AI;
 import register.Player;

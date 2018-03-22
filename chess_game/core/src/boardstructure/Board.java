@@ -327,15 +327,7 @@ public class Board implements IBoard {
 	public IBoard copy() {
 		IBoard board = new Board(this.getDimension(), playerOne);
 		for(Square sq : getSquares()) {
-			int x = sq.getX(), y = sq.getY();
-			Square newSq = new Square(x,y);
-			if(sq.isEmpty()) {
-				board.addSquare(newSq);
-				continue;
-			}
-			IPiece p = sq.getPiece().copy();
-			newSq.putPiece(p);
-			board.addSquare(newSq);
+			board.addSquare(sq.copy());
 		}
 		return board;
 	}
