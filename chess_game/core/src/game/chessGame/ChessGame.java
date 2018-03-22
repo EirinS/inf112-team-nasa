@@ -129,7 +129,7 @@ public class ChessGame implements IChessGame {
 		}
 
 		// Check if AI should do move
-		//aiMove();
+		aiMove();
 	}
 
 	public void aiMove() {

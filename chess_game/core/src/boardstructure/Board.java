@@ -246,7 +246,7 @@ public class Board implements IBoard {
 		if(m.getMoveType() == MoveType.ENPASSANT) {
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
 			history.get(history.size()-1).getTo().takePiece();
-			printOutBoard();
+			//printOutBoard();
 		} else if (m.getMoveType() == MoveType.KINGSIDECASTLING) {
 			IPiece moving = m.getMovingPiece();
 			if(moving instanceof King) {
