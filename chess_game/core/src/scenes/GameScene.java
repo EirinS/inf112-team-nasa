@@ -181,6 +181,21 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	}
 
 	@Override
+	public void gameOver(int winLossDraw) {
+		switch (winLossDraw) {
+			case 1:
+				SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, true);
+				break;
+			case 2:
+				SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, false);
+				break;
+			case 3:
+				SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, null);
+				break;
+		}
+	}
+
+	@Override
 	public void turnTimerElapsed() {
 		if (topTime == null || bottomTime == null) return;
 		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
@@ -188,15 +203,5 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		} else {
 			topTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
 		}
-	}
-
-	@Override
-	public void win() {
-        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, true);
-	}
-
-	@Override
-	public void loss() {
-        SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, false);
 	}
 }

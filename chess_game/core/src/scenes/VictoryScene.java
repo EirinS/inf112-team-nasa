@@ -24,9 +24,9 @@ public class VictoryScene extends AbstractScene {
 
     private Chess game;
     private GameInfo gameInfo;
-    private boolean playerWon;
+    private Boolean playerWon;
 
-    public VictoryScene(Chess game, GameInfo gameInfo, boolean playerWon) {
+    public VictoryScene(Chess game, GameInfo gameInfo, Boolean playerWon) {
         this.game = game;
         this.gameInfo = gameInfo;
         this.playerWon = playerWon;
@@ -62,7 +62,14 @@ public class VictoryScene extends AbstractScene {
         imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
         addActor(imgBackground);
 
-        Label title = new Label(playerWon ? "Victory, " + gameInfo.getPlayer().getName() + "!" : "Defeat, " + gameInfo.getPlayer().getName() + "!", skin, "title-plain");
+        String titleStr;
+        if (playerWon == null) {
+            titleStr = "Draw, " + gameInfo.getPlayer().getName() + "!";
+        } else {
+            titleStr = playerWon ? "Victory, " + gameInfo.getPlayer().getName() + "!" : "Defeat, " + gameInfo.getPlayer().getName() + "!";
+        }
+
+        Label title = new Label(titleStr, skin, "title-plain");
         title.setFontScale(1.5f);
         title.setPosition((getWidth() - title.getWidth()) / 2, getHeight() - title.getHeight() - 100);
         addActor(title);
@@ -72,7 +79,7 @@ public class VictoryScene extends AbstractScene {
         addActor(line);
 
         Label player = new Label(playerStats(gameInfo.getPlayer()) , skin, "title-plain");
-        if (playerWon) player.setColor(Colors.turnColor);
+        if (playerWon != null && playerWon) player.setColor(Colors.turnColor);
         player.setFontScale(1.5f);
         player.setPosition(line.getX() + 25, line.getY() - player.getHeight() - 40);
         addActor(player);
@@ -85,7 +92,7 @@ public class VictoryScene extends AbstractScene {
         }
 
         Label opponent = new Label(opponentName, skin, "title-plain");
-        if (!playerWon) opponent.setColor(Colors.turnColor);
+        if (playerWon != null && !playerWon) opponent.setColor(Colors.turnColor);
         opponent.setAlignment(Align.right);
         opponent.setFontScale(1.5f);
         opponent.setPosition(line.getX() + line.getWidth() - opponent.getWidth(), line.getY() - opponent.getHeight() - 40);
