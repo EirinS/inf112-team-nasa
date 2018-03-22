@@ -7,7 +7,8 @@ import pieces.IPiece;
 import pieces.PieceColor;
 
 public interface IBoard {
-	
+
+
 	/**
 	 * Width of board
 	 * @return width
@@ -56,12 +57,6 @@ public interface IBoard {
 	public ArrayList<Square> getSquares();
 	
 	/**
-	 * Returns the board as a list.
-	 * @return ArrayList<Square> of all squares on the board.
-	 */
-	public ArrayList<Square> getBoard();
-	
-	/**
 	 * Check if a piece is inside the board, and if there is no other piece there.
 	 * @param sq, square you are checking
 	 * @return true if legal move, false else
@@ -106,18 +101,41 @@ public interface IBoard {
 	 * @param fromY From y position
 	 * @param toX To x position
 	 * @param toY To y position
-	 * @return
+	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
-	public Move move(int fromX, int fromY, int toX, int toY);
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY);
+
+	/**
+	 * Move a piece to a legal position on the board.
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param fromX From x position
+	 * @param fromY From y position
+	 * @param toX To x position
+	 * @param toY To y position
+	 * @param ignoreTurn Wether the board should ignore who's turn it is.
+	 * @return List of moves executed on the board, empty if no illegal move.
+	 */
+	public ArrayList<Move> move(int fromX, int fromY, int toX, int toY, boolean ignoreTurn);
 
 	/**
 	 * Move a piece to a legal position on the board.
 	 * Assumes the piece chosen is a piece of correct color.
 	 * @param start, the position the piece had
 	 * @param end, the position the piece goes to.
-	 * @return Move move, the move that was done.
+	 * @param turn Current turn
+	 * @return List of moves executed on the board, empty if no illegal move.
 	 */
-	public Move move(Square start, Square end);
+	public ArrayList<Move> move(Square start, Square end);
+
+	/**
+	 * Move a piece to a legal position on the board.
+	 * Assumes the piece chosen is a piece of correct color.
+	 * @param start, the position the piece had
+	 * @param end, the position the piece goes to.
+	 * @param ignoreTurn Wether the board should ignore who's turn it is.
+	 * @return List of moves executed on the board, empty if no illegal move.
+	 */
+	public ArrayList<Move> move(Square start, Square end, boolean ignoreTurn);
 	
 	/**
 	 * This method returns the algebraic notation of all moves made.
@@ -143,4 +161,15 @@ public interface IBoard {
 	 * @return available moves for the given player color
 	 */
 	public List<Move> getAvailableMoves(PieceColor playerColor);
+
+	/**
+	 * Gets the current turn.
+	 * @return Turn
+	 */
+	public PieceColor getTurn();
+	
+	/**
+	 * @return PieceColor color of playerOne in this game.
+	 */
+	public PieceColor getPlayerOne();
 }

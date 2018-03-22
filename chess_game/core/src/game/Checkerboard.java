@@ -1,7 +1,13 @@
 package game;
 
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import game.listeners.CheckerboardListener;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,7 +20,9 @@ import pieces.PieceColor;
 import styling.Colors;
 import sprites.SquareTextureLoader;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Checkerboard extends DragListener {
 
@@ -25,32 +33,28 @@ public class Checkerboard extends DragListener {
     private final int TOP_MARIGN = 24;
     private final int LEFT_MARIGN = 38;
 
-    private Chess game;
     private Stage stage;
-    private GameInfo gameInfo;
+    private HashMap<String, Texture> sprites;
+    private ArrayList<Square> initialSquares;
     private CheckerboardListener listener;
 
     private Image boardImg;
     private Image selectedPiece;
-    private Texture chessMoveTexture, selectedPieceTexture;
+    private Texture chessMoveTexture, castlingMoveTexture, selectedPieceTexture;
     private Group checkerGroup, pieceGroup, highlightGroup;
 
-    public Checkerboard(Chess game, Stage stage, GameInfo gameInfo, CheckerboardListener listener) {
-        this.game = game;
+    public Checkerboard(Stage stage, HashMap<String, Texture> sprites, ArrayList<Square> initialSquares, CheckerboardListener listener) {
         this.stage = stage;
-        this.gameInfo = gameInfo;
+        this.sprites = sprites;
+        this.initialSquares = initialSquares;
         this.listener = listener;
         addActors();
     }
 
     private void addActors() {
 
-        // Contains background, board and pieces
+        // Contains board and pieces
         checkerGroup = new Group();
-
-        Image imgBackground = new Image(new Texture("board/game_bg.png"));
-        imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
-        checkerGroup.addActor(imgBackground);
 
         boardImg = new Image(new Texture("board/checkerboard.png"));
         boardImg.setSize(512, 512);
@@ -62,6 +66,7 @@ public class Checkerboard extends DragListener {
         initPieces();
 
         chessMoveTexture = SquareTextureLoader.createSquare(SQUARE_WIDTH, SQUARE_HEIGHT, Colors.chessMoveColor);
+        castlingMoveTexture = SquareTextureLoader.createSquare(SQUARE_WIDTH, SQUARE_HEIGHT, Colors.castlingMoveColor);
         selectedPieceTexture = SquareTextureLoader.createSquare(SQUARE_WIDTH, SQUARE_HEIGHT, Colors.selectedPieceColor);
 
         selectedPiece = new Image(selectedPieceTexture);
@@ -74,26 +79,26 @@ public class Checkerboard extends DragListener {
         stage.addActor(highlightGroup);
     }
 
-    private float calcBoardX(int squareX) {
+    private float calcBoardX(float squareX) {
         return boardImg.getX() + LEFT_MARIGN + squareX * SQUARE_WIDTH;
     }
 
-    private float calcScreenX(int boardX) {
+    private float calcScreenX(float  boardX) {
         return (boardX - boardImg.getX() - LEFT_MARIGN) / SQUARE_WIDTH;
     }
 
-    private float calcBoardY(int squareY) {
+    private float calcBoardY(float  squareY) {
         return boardImg.getY() + TOP_MARIGN + (7 - squareY) * SQUARE_HEIGHT;
     }
 
-    private float calcScreenY(int boardY) {
+    private float calcScreenY(float  boardY) {
         return (((boardY - boardImg.getY() - TOP_MARIGN) / SQUARE_HEIGHT) - 7) * (-1);
     }
 
     private Vector2 calcBoardCoords(Actor actor) {
         Vector2 vector2 = actor.localToStageCoordinates(new Vector2(0,0));
-        int x = Math.round(calcScreenX((int)vector2.x));
-        int y = Math.round(calcScreenY((int)vector2.y));
+        int x = Math.round(calcScreenX(vector2.x));
+        int y = Math.round(calcScreenY(vector2.y));
         return new Vector2(x, y);
     }
 
@@ -101,13 +106,11 @@ public class Checkerboard extends DragListener {
         pieceGroup = new Group();
         pieceGroup.setZIndex(2);
 
-        System.out.println(calcScreenX((int)calcBoardX(2)));
-
-        for (Square square : gameInfo.getSquares()) {
+        for (Square square : initialSquares) {
             if (square.getPiece() == null) continue;
             String pieceColor = square.getPiece().getColor() == PieceColor.WHITE ? "w" : "b";
 
-            Texture texture = gameInfo.getSprites().get(pieceColor + square.getPiece().toString().toLowerCase());
+            Texture texture = sprites.get(pieceColor + square.getPiece().toString().toLowerCase());
             Image img = new Image(texture);
             img.setSize(54, 54);
             img.setPosition(calcBoardX(square.getX()), calcBoardY(square.getY()));
@@ -151,31 +154,51 @@ public class Checkerboard extends DragListener {
         super.dragStop(event, x, y, pointer);
     }
 
-    private void movePieceTo(Actor actor, int toX, int toY) {
-        int newX = (int)calcBoardX(toX);
-        int newY = (int)calcBoardY(toY);
-        actor.setPosition(newX, newY);
-        actor.setName(newX + "," + newY);
+    private void movePieceTo(Actor actor, int toX, int toY, MoveType moveType, PieceColor color) {
+        int boardX = (int)calcBoardX(toX);
+        int boardY = (int)calcBoardY(toY);
+        actor.setPosition(boardX, boardY);
+        actor.setName(toX + "," + toY);
+        if (moveType != null && moveType == MoveType.PROMOTION) {
+            Texture queenTexture = sprites.get((color == PieceColor.WHITE ? "w" : "b") + "q");
+            ((Image)actor).setDrawable(new SpriteDrawable(new Sprite(queenTexture)));
+        }
     }
 
     public void movePieceFailed(int fromX, int fromY) {
         Image from = pieceGroup.findActor(fromX + "," + fromY);
-        movePieceTo(from, fromX, fromY);
+        movePieceTo(from, fromX, fromY, null, null);
     }
 
-    public void movePiece(int fromX, int fromY, int toX, int toY) {
-        Image from = pieceGroup.findActor(fromX + "," + fromY);
-        Image to = pieceGroup.findActor(toX + "," + toY);
-        if (to != null) {
-            to.remove();
+    public void movePieces(ArrayList<Move> moves) {
+        for (Move m : moves) {
+            Image from = pieceGroup.findActor(m.getFrom().getX() + "," + m.getFrom().getY());
+            Image to = pieceGroup.findActor(m.getTo().getX() + "," + m.getTo().getY());
+            if (to != null) {
+                to.remove();
+            }
+            movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor());
         }
-        movePieceTo(from, toX, toY);
     }
 
     public void showMoves(ArrayList<Move> moves) {
         highlightGroup.clear();
         for (Move m : moves) {
-            Image highlight = new Image(chessMoveTexture);
+            Texture texture = chessMoveTexture;
+            switch (m.getMoveType()) {
+                case ENPASSANT:
+                case REGULAR:
+                    texture = chessMoveTexture;
+                    break;
+                case QUEENSIDECASTLING:
+                case KINGSIDECASTLING:
+                    texture = castlingMoveTexture;
+                    break;
+                case PROMOTION:
+                    texture = chessMoveTexture; // TODO: 21/03/2018 make promotion color maybe, for fun?
+                    break;
+            }
+            Image highlight = new Image(texture);
             float boardX = calcBoardX(m.getTo().getX());
             float boardY = calcBoardY(m.getTo().getY());
             highlight.setPosition(boardX, boardY);

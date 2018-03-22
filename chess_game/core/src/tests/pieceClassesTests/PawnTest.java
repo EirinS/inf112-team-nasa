@@ -2,22 +2,28 @@ package tests.pieceClassesTests;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.MoveType;
 import boardstructure.Square;
+import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.King;
 import pieces.pieceClasses.Pawn;
 
+import static pieces.PieceColor.WHITE;
+import static pieces.PieceColor.BLACK;
+
 public class PawnTest {
-	IBoard board = new Board(8, PieceColor.WHITE);
-	IPiece whitePawn = new Pawn(PieceColor.WHITE);
+	PieceColor playerOne = WHITE;
+	PieceColor playerTwo = BLACK;
+	IBoard board = new Board(8, playerOne);
+	IPiece whitePawn = new Pawn(playerOne);
 	Square sq = board.getSquare(3,6);
 	
 	@Before
@@ -26,80 +32,171 @@ public class PawnTest {
 	}
 	
 	@Test
+	public void blackPawnCanCaptureOpponentToTheEast() {
+		IPiece blackPawn = new Pawn(playerTwo);
+		Square blackSq = board.getSquare(2,5);
+		blackSq.putPiece(blackPawn);
+		if (blackPawn.getLegalMoves(blackSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(sq)))
+			return;
+		fail("Black pawn could not capture present opponent to the east");
+	}
+	
+	@Test
+	public void blackPawnCanCaptureOpponentToTheWest() {
+		IPiece blackPawn = new Pawn(BLACK);
+		Square blackSq = board.getSquare(4,5);
+		blackSq.putPiece(blackPawn);
+		if (blackPawn.getLegalMoves(blackSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(sq)))
+			return;
+		fail("Black pawn could not capture present opponent to the west");
+	}
+	
+	@Test
+	public void blackPawnOnRowOneCanFindPromotion() {
+		IBoard board = new Board(8, playerTwo);
+		Pawn p = new Pawn(playerTwo);
+		Square sq = board.getSquare(0, 1);
+		sq.putPiece(p);
+		
+		for(Move m : p.getLegalMoves(sq, board, playerTwo))
+			if (m.getMoveType() == MoveType.PROMOTION)
+				return;
+		fail("No promotion move found.");		
+	}
+	
+	@Test
+	public void whitePawnOnRowSixCanFindPromotion() {
+		IBoard board = new Board(8, playerOne);
+		Pawn p = new Pawn(playerOne);
+		Square sq = board.getSquare(0, 6);
+		sq.putPiece(p);
+		
+		for(Move m : p.getLegalMoves(sq, board, playerTwo))
+			if (m.getMoveType() == MoveType.PROMOTION)
+				return;		
+		fail("No promotion move found.");
+	}
+	
+	@Test
 	public void pawnAppearsCorrectlyOnTheBoard() {
 		assertEquals(whitePawn, sq.getPiece());
 	}
 	
 	@Test
-	public void pawnCanCaptureOpponentToTheEast() {
-		IPiece opponentPawn = new Pawn(PieceColor.BLACK);
-		Square opponentSq = board.getSquare(4,5);
-		opponentSq.putPiece(opponentPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		
-		boolean canCaptureBlack = false;
-		for (Move m : moves)
-			if (m.getTo().equals(opponentSq)) canCaptureBlack = true;
-		assertTrue(canCaptureBlack);
-	}
-	
-	@Test
-	public void pawnCanCaptureOpponentToTheWest() {
-		IPiece opponentPawn = new Pawn(PieceColor.BLACK);
-		Square opponentSq = board.getSquare(2,5);
-		opponentSq.putPiece(opponentPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		boolean canCaptureBlack = false;
-		for (Move m : moves)
-			if (m.getTo().equals(opponentSq)) canCaptureBlack = true;
-		assert(canCaptureBlack);
-	}
-	
-	@Test
 	public void pawnCannotMoveDiagonallyWithoutEnemiesPresent() {
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		for (Move m : moves)
-			if (m.getTo().getX() != sq.getX())
-				fail("Pawn should not be able to move diagonally without the presence of enemies"
-						+ "on the immidiate diagonal squares");
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getX() != sq.getX()))
+			fail("Pawn should not be able to move diagonally without the presence of enemies"
+					+ "on the immidiate diagonal squares");
 	}
 	
 	@Test
 	public void pawnCannotMoveThroughOtherPieces() {
-		IPiece otherPawn = new Pawn(PieceColor.WHITE);
+		IPiece otherPawn = new Pawn(playerOne);
 		Square otherSq = board.getSquare(3,5);
 		otherSq.putPiece(otherPawn);
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		boolean canMoveAhead = false;
-		for (Move m : moves) {
-			if (m.getTo().equals(otherSq)) canMoveAhead = true;
-		}
-		assertFalse(canMoveAhead);
-	}
-	
-	@Test
-	public void pawnCannotMoveTwoSquaresIfItHasMovedPreviously() {
-		//TODO must implement hasMoved logic properly in Pawn first
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(otherSq)))
+			fail("A pawn should not be able to move to the square ahead if"
+					+ " it is occupied by another piece of the same color");
 	}
 	
 	@Test
 	public void pawnCanOnlyMoveForwardsWhenNotCapturing() {
-		ArrayList<Move> moves = whitePawn.getLegalMoves(sq, board, PieceColor.WHITE);
-		for (Move m : moves) {
-			if (m.getTo().getX() != sq.getX())
-				fail("A pawn that does not threaten any opponent pieces should"
-						+ "either have no legal moves or only be able to move forward");
-		}
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getX() != sq.getX()))
+			fail("A pawn that does not threaten any opponents should"
+					+ " either have no legal moves or only be able to move forward");
 	}
 	
 	@Test
 	public void playerOnePawnMovesNorth() {
-		//TODO
+		IPiece playerOnePawn = new Pawn(playerOne);
+		Square playerOneSq = board.getSquare(1,5);
+		playerOneSq.putPiece(playerOnePawn);	
+		if (playerOnePawn.getLegalMoves(playerOneSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getY() >= playerOneSq.getY()))
+			fail("Pawns belonging to player one should move north");
 	}
-	
 	
 	@Test
 	public void playerTwoPawnMovesSouth() {
-		//TODO
+		IPiece playerTwoPawn = new Pawn(playerTwo);
+		Square playerTwoSq = board.getSquare(1,1);
+		playerTwoSq.putPiece(playerTwoPawn);
+		if (playerTwoPawn.getLegalMoves(playerTwoSq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().getY() <= playerTwoSq.getY()))
+			fail("Pawns belonging to player two should move south");
+	}
+	
+	@Test
+	public void whitePawnCanCaptureOpponentToTheEast() {
+		IPiece opponentPawn = new Pawn(playerTwo);
+		Square opponentSq = board.getSquare(4,5);
+		opponentSq.putPiece(opponentPawn);
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
+			return;
+		fail("White pawn could not capture present opponent to the east");
+	}
+	
+	@Test
+	public void whitePawnCanCaptureOpponentToTheWest() {
+		IPiece opponentPawn = new Pawn(playerTwo);
+		Square opponentSq = board.getSquare(2,5);
+		opponentSq.putPiece(opponentPawn);
+		if (whitePawn.getLegalMoves(sq, board, playerOne)
+				.stream().anyMatch(m -> m.getTo().equals(opponentSq)))
+			return;
+		fail("White pawn could not capture present opponent to the west");
+	}
+	
+	@Test
+	public void pawnCanThreatenKing() {
+		IBoard newboard = new Board(8, PieceColor.WHITE);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		King k = new King(PieceColor.BLACK);
+		newboard.getSquare(0, 7).putPiece(p);
+		newboard.getSquare(1, 6).putPiece(k);
+		assertTrue(p.threatensKing(p.enemyPiecesReached(0, 7, newboard, PieceColor.BLACK)));
+	}
+	
+	@Test
+	public void kingIsThreatenedByPawn() {
+		IBoard newboard = new Board(8, PieceColor.WHITE);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		King k = new King(PieceColor.BLACK);
+		//pawn in edge of board, second row from bottom, pawn moving upwards
+		newboard.getSquare(0, 6).putPiece(p);
+		//king in edge of board, third row from bottom
+		newboard.getSquare(0, 5).putPiece(k);
+		
+		//king should not be allowed to move to a diagonal square from pawn
+		boolean isLegal = false;
+		for(Move m : k.getLegalMoves(newboard.getSquare(0, 5), newboard, PieceColor.WHITE)) {
+			if (m.getTo().getX() == 1 && m.getTo().getY() == 5)
+				isLegal = true;
+		}
+		assertFalse(isLegal);	
+	}
+	
+	@Test
+	public void pawnCannotThreatenKingForward() {
+		board.getSquare(3, 5).putPiece(new King(PieceColor.BLACK));
+		assertFalse(((AbstractPiece) whitePawn).threatensKing(whitePawn.enemyPiecesReached(3, 6, board, PieceColor.BLACK)));
+	}
+	
+	@Test
+	public void pawnCanThreatenKingEast() {
+		board.getSquare(4, 5).putPiece(new King(PieceColor.BLACK));
+		assertTrue(((AbstractPiece) whitePawn).threatensKing(whitePawn.enemyPiecesReached(3, 6, board, PieceColor.BLACK)));
+	}
+	
+	@Test
+	public void pawnCanThreatenKingWest() {
+		board.getSquare(2, 5).putPiece(new King(PieceColor.BLACK));
+		assertTrue(((AbstractPiece) whitePawn).threatensKing(whitePawn.enemyPiecesReached(3, 6, board, PieceColor.BLACK)));
 	}
 }

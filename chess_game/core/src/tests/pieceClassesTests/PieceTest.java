@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import javax.sound.midi.Synthesizer;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +16,9 @@ import boardstructure.Square;
 import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
+import pieces.pieceClasses.Pawn;
 import pieces.pieceClasses.Rook;
 
 public class PieceTest {
@@ -28,10 +32,48 @@ public class PieceTest {
 		board.getSquare(x, y).putPiece(rook);
 	}
 	
+	
 	@Test
 	public void pieceCanBeTakenAndIsNotInPlayAfter() {
 		rook.takePiece();
 		assertFalse(rook.isInPlay());
+	}
+	
+	@Test
+	public void pawnCanThreatenKingOnBlackBoard() {
+		IBoard b = new Board(8, PieceColor.BLACK);
+		Square sqP = b.getSquare(1, 5); //B3
+		Square sqK = b.getSquare(2, 4); //C4
+		Pawn p = new Pawn(PieceColor.BLACK);
+		King k = new King(PieceColor.WHITE);
+		sqP.putPiece(p);
+		sqK.putPiece(k);
+		assertTrue(p.threatensKing(p.enemyPiecesReached(sqP.getX(), sqP.getY(), b, PieceColor.WHITE)));
+	}
+	
+	@Test
+	public void boardFindsKingThreats() {
+		IBoard b = new Board(8, PieceColor.BLACK);
+		Square sqP = b.getSquare(1, 5); //B3
+		Square sqK = b.getSquare(2, 4); //C4
+		Pawn p = new Pawn(PieceColor.BLACK);
+		King k = new King(PieceColor.WHITE);
+		sqP.putPiece(p);
+		sqK.putPiece(k);
+		assertTrue(p.threatensKing(b.piecesThreatenedByOpponent(PieceColor.WHITE, PieceColor.BLACK)));
+		
+	}
+	
+	@Test
+	public void test1() {
+		IBoard b = new Board(8, PieceColor.BLACK);
+		Square sqP = b.getSquare(1, 5); //B3
+		Square sqK = b.getSquare(2, 3); //C5
+		Bishop p = new Bishop(PieceColor.BLACK);
+		King k = new King(PieceColor.WHITE);
+		sqP.putPiece(p);
+		sqK.putPiece(k);
+		System.out.println(k.getLegalMoves(sqK, b, PieceColor.BLACK));
 	}
 	
 	@Test
@@ -67,7 +109,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsvertical() {
-		IBoard newBoard = new Board(5, PieceColor.WHITE);
+		IBoard newBoard = new Board(8, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);
 		
@@ -84,7 +126,7 @@ public class PieceTest {
 	
 	@Test
 	public void removesPositionsInCheckFromValidPositonsverticalDoesNotChangePosition() {
-		IBoard newBoard = new Board(5, PieceColor.WHITE);
+		IBoard newBoard = new Board(8, PieceColor.WHITE);
 		newBoard.getSquare(1, 0).putPiece(enemyRook);
 		newBoard.getSquare(2, 0).putPiece(rook);		
 		newBoard.getSquare(3, 0).putPiece(new King(PieceColor.WHITE));

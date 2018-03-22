@@ -1,49 +1,52 @@
 package scenes;
 
-import boardstructure.Board;
 import boardstructure.Move;
-import boardstructure.Square;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.*;
 
+import com.badlogic.gdx.Gdx;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import game.CheckerboardListener;
+
 import game.Chess;
+import game.WindowInformation;
+import game.chessGame.GameInfo;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import game.Checkerboard;
-import game.GameInfo;
-import pieces.PieceColor;
-import setups.DefaultSetup;
-import sprites.PieceSpriteLoader;
 
+import game.chessGame.ChessGame;
+
+import game.listeners.CheckerboardListener;
+import game.listeners.ChessGameListener;
+
+import sprites.PieceSpriteLoader;
+import styling.Colors;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GameScene extends AbstractScene implements CheckerboardListener {
+public class GameScene extends AbstractScene implements CheckerboardListener, ChessGameListener {
 
 	private Chess game;
+	private GameInfo gameInfo;
 
 	private Skin skin;
-
-	private HashMap<String, Texture> sprites;
+	private ChessGame chessGame;
 	private Checkerboard checkerboard;
-	private Board board;
-
-	// TODO: 15.03.2018 this is temp; just to have something to draw.
-	private String player1 = "triki";
-	private String player2 = "wagle";
-	private PieceColor turn;
 
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane;
+	private Label topTime, bottomTime;
 	private TextButton quitBtn, resignBtn;
 
-	public GameScene (Chess mainGame){
-		game = mainGame;
+	public GameScene (Chess game, GameInfo gameInfo){
+		this.game = game;
+		this.gameInfo = gameInfo;
 	}
 
 	private void initialize() {
@@ -52,12 +55,25 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
 		skin = new Skin (Gdx.files.internal("skin/uiskin.json"), atlas);
 
+        Image imgBackground = new Image(new Texture("board/game_bg.png"));
+        imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
+        addActor(imgBackground);
+
+		// Init ChessGame
+		chessGame = new ChessGame(gameInfo, this);
+
 		// Init sprites and checkerboard.
-		sprites = PieceSpriteLoader.loadDefaultPieces();
-		board = (new DefaultSetup()).getInitialPosition(PieceColor.WHITE);
-		turn = PieceColor.WHITE;
-		checkerboard = new Checkerboard(game, this, new GameInfo(PieceColor.WHITE, player1, player2, sprites, board.getSquares()), this); // TODO: 18/03/2018 make parameters dynamic
-	
+		HashMap<String, Texture> sprites = PieceSpriteLoader.loadDefaultPieces();
+		checkerboard = new Checkerboard(this, sprites, chessGame.getSquares(), this);
+
+		addActors();
+
+		// Perform first AI move if needed.
+		chessGame.aiMove();
+	}
+
+	private void addActors() {
+
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
@@ -76,27 +92,53 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, game);
+				chessGame.resign();
 				super.clicked(event, x, y);
 			}
 		});
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
-		
+
 		addActor(quitBtn);
 		addActor(resignBtn);
 
 		historyGroup = new VerticalGroup();
-		//historyGroup.setFillParent(true);
 		historyGroup.align(Align.top);
 		historyScrollPane = new ScrollPane(historyGroup, skin);
-		historyScrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 5);
-		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - (resignBtn.getHeight() + 30));
+		historyScrollPane.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + resignBtn.getHeight() + 125);
+		historyScrollPane.setSize(buttonsWidth, checkerboard.getSize() - resignBtn.getHeight() - 200);
 		addActor(historyScrollPane);
-		
-		Label header = new Label("History", skin,"title-plain");
-		header.setPosition(historyScrollPane.getX() + ((historyScrollPane.getWidth() - header.getWidth()) / 2), historyScrollPane.getY() + historyScrollPane.getHeight() - header.getHeight() + 25);
 
-		addActor(header);
+		String opponent = "Computer";
+		if (gameInfo.getLevel() == null) {
+			opponent = gameInfo.getOpponent().getNameRating();
+		}
+
+		Label topName = new Label(opponent, skin, "title-plain");
+		topName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + checkerboard.getSize() - topName.getHeight());
+		addActor(topName);
+
+		Label bottomName = new Label(gameInfo.getPlayer().getNameRating(), skin, "title-plain");
+		bottomName.setPosition(historyScrollPane.getX(), checkerboard.getPos() + bottomName.getHeight() + 50);
+		addActor(bottomName);
+
+		topTime = new Label(chessGame.formatTime(chessGame.getOpponentSeconds()), skin, "title-plain");
+		topTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - topTime.getWidth(), historyScrollPane.getY() + historyScrollPane.getHeight());
+		addActor(topTime);
+
+		bottomTime = new Label(chessGame.formatTime(chessGame.getPlayerSeconds()), skin, "title-plain");
+		bottomTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - bottomTime.getWidth(), historyScrollPane.getY() - bottomTime.getHeight());
+		addActor(bottomTime);
+		setNameColors();
+	}
+
+	private void setNameColors() {
+		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
+			topTime.setColor(Color.WHITE);
+			bottomTime.setColor(Colors.turnColor);
+		} else {
+			topTime.setColor(Colors.turnColor);
+			bottomTime.setColor(Color.WHITE);
+		}
 	}
 
 	private void addMoveToHistory(Move m) {
@@ -112,26 +154,54 @@ public class GameScene extends AbstractScene implements CheckerboardListener {
 
 	@Override
 	public void buildStage() {
-		if (built) return;
-		built = true;
 		initialize();
 	}
 
 	@Override
 	public void onDragPieceStarted(int x, int y) {
-		Square square = board.getSquare(x, y);
-		if (square.getPiece().getColor() != turn) return; // Ignore if we click on opponent pieces.
-		checkerboard.showMoves(square.getPiece().getLegalMoves(square, board, PieceColor.WHITE));
+		ArrayList<Move> legalMoves = chessGame.getLegalMoves(x, y);
+		if (!legalMoves.isEmpty()) checkerboard.showMoves(legalMoves);
 	}
 
 	@Override
 	public void onMoveRequested(int fromX, int fromY, int toX, int toY) {
-		Move move = board.move(fromX, fromY, toX, toY);
-		if (move == null) {
-			checkerboard.movePieceFailed(fromX, fromY);
+		chessGame.doTurn(fromX, fromY, toX, toY);
+	}
+
+	@Override
+	public void illegalMovePerformed(int originX, int originY) {
+		checkerboard.movePieceFailed(originX, originY);
+	}
+
+	@Override
+	public void moveOk(ArrayList<Move> moves) {
+		addMoveToHistory(chessGame.getLastMove());
+		setNameColors();
+		checkerboard.movePieces(moves);
+	}
+
+	@Override
+	public void gameOver(int winLossDraw) {
+		switch (winLossDraw) {
+			case 1:
+				SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, true);
+				break;
+			case 2:
+				SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, false);
+				break;
+			case 3:
+				SceneManager.getInstance().showScreen(SceneEnum.VICTORY, game, gameInfo, null);
+				break;
+		}
+	}
+
+	@Override
+	public void turnTimerElapsed() {
+		if (topTime == null || bottomTime == null) return;
+		if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
+			bottomTime.setText(chessGame.formatTime(chessGame.getPlayerSeconds()));
 		} else {
-			addMoveToHistory(board.getLastMove());
-			checkerboard.movePiece(fromX, fromY, toX, toY);
+			topTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
 		}
 	}
 }

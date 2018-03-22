@@ -200,24 +200,41 @@ public class King extends AbstractPiece {
 		}
 		return lst;		
 	}
-	
-	/** Precondition: All positions that are moved to are empty and possible to move to.
-	 * Castling is an OK move.
-	 */
-	public void moveCastling(Square origin, Square next, MoveType type, IBoard board) {
-		//moves king
+
+    /**
+     * Precondition: All positions that are moved to are empty and possible to move to.
+     * Castling is an OK move.
+     * @param origin
+     * @param next
+     * @param type
+     * @param board
+     * @return Returns rook move if everything went well, mull if error.
+     */
+	public Move moveCastling(Square origin, Square next, MoveType type, IBoard board) {
+        if (type != MoveType.QUEENSIDECASTLING && type != MoveType.KINGSIDECASTLING)
+            throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
+
+		// Moves king
 		next.putPiece(origin.movePiece());
-		if (type == MoveType.KINGSIDECASTLING) {
-			//moves rook
-			Square rooksq = board.getSquare(board.getWidth()-1, origin.getY());
-			board.getSquare(rooksq.getX()-2, rooksq.getY()).putPiece(rooksq.movePiece());
-		} else if (type == MoveType.QUEENSIDECASTLING){
-			//moves rook
-			Square rooksq = board.getSquare(0, origin.getY());
-			board.getSquare(rooksq.getX()+3, rooksq.getY()).putPiece(rooksq.movePiece());
-		} else {
-			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
-		}
+
+		// Moves rook
+        Square rookSq, destSq;
+        Move rookMove = null;
+		switch (type) {
+            case KINGSIDECASTLING:
+                rookSq = board.getSquare(board.getWidth()-1, origin.getY());
+                destSq = board.getSquare(rookSq.getX()-2, rookSq.getY());
+                rookMove = getMove(rookSq, destSq);
+                destSq.putPiece(rookSq.movePiece());
+                break;
+            case QUEENSIDECASTLING:
+                rookSq = board.getSquare(0, origin.getY());
+                destSq = board.getSquare(rookSq.getX()+3, rookSq.getY());
+                rookMove = getMove(rookSq, destSq);
+                destSq.putPiece(rookSq.movePiece());
+                break;
+        }
+        return rookMove;
 	}
 	
 	@Override

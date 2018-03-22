@@ -1,5 +1,8 @@
 package pieces;
 
+import static pieces.PieceColor.BLACK;
+import static pieces.PieceColor.WHITE;
+
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
@@ -9,6 +12,7 @@ import boardstructure.Square;
 import pieces.pieceClasses.King;
 
 public abstract class AbstractPiece implements IPiece {
+
 	/**
 	 * Is piece on the board?
 	 */
@@ -65,7 +69,7 @@ public abstract class AbstractPiece implements IPiece {
 	@Override
 	public ArrayList<Move> getLegalMoves(Square origin, IBoard board, PieceColor playerOne) {
 		ArrayList<Move> legalMoves = new ArrayList<>();
-		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, null);
+		ArrayList<Move> moves = allFreeMoves(origin.getX(), origin.getY(), board, playerOne);
 		for(int i = 0; i < moves.size(); i++) {
 			// TODO: 18/03/2018 bug here, sometimes getTo is null?
 			if (moves.get(i) == null) {
@@ -79,8 +83,6 @@ public abstract class AbstractPiece implements IPiece {
 				legalMoves.add(moves.get(i));
 			}
 		}
-		//this line is buggy as hell (:::::::::
-		// TODO: 19/03/2018 find a better solution to this method; it generates "ghost-tiles"
 		moves = removeMovesThatPutYourselfInCheck(legalMoves, origin, board);
 		return moves;
 	}
@@ -105,7 +107,7 @@ public abstract class AbstractPiece implements IPiece {
 
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
-		ArrayList<Move> check = allFreeMoves(x, y, board, null);
+		ArrayList<Move> check = allFreeMoves(x, y, board, board.getPlayerOne());
 		return enemiesReached(x, y, board, opponent, check);
 	}
 
@@ -135,15 +137,12 @@ public abstract class AbstractPiece implements IPiece {
 	 * @return a updated list of positions where you can move.
 	 */
 	protected ArrayList<Move> removeMovesThatPutYourselfInCheck(ArrayList<Move> legalMoves, Square origin, IBoard board){
-		PieceColor opponent;
-		if (getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
-		else {opponent = PieceColor.WHITE;}
-	
+		PieceColor opponent = getColor().getOpposite();	
 		ArrayList<Move> okMov = new ArrayList<Move>();
 		
 		for (Move m : legalMoves) {
 			IBoard testBoard = board.copy();
-			Square to = testBoard.getSquare(m.getTo().getX(), m.getTo().getY());
+			Square to = testBoard.getSquare(m.getTo().getX(), m.getTo().getY());			
 			Square from = testBoard.getSquare(m.getFrom().getX(), m.getFrom().getY());
 			
 			if(to.isEmpty()) {
@@ -151,6 +150,15 @@ public abstract class AbstractPiece implements IPiece {
 			} else {
 				captureEnemyPieceAndMovePiece(from, to);
 			}
+			
+			/*/testing purposes
+			System.out.println("Start");
+			for(Square sq : testBoard.getSquares())
+				if(!sq.isEmpty()) {
+					System.out.println(m.getTo().getX() + " " + m.getTo().getY());
+					System.out.println(sq.getX() + " " + sq.getY() + " " + sq.getPiece());
+				}*/
+			
 			
 			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {
@@ -167,21 +175,6 @@ public abstract class AbstractPiece implements IPiece {
 		next.takePiece();
 		movePiece(origin, next);
 		return captured;
-	}
-
-	/**
-	 * Reverts a move, and puts taken piece back in place.
-	 * Resets the inPlay field variable of the taken piece
-	 * @param origin, the position moved from
-	 * @param movedTo, the position moved to
-	 * @param taken, the piece that was captured, but is put back
-	 */
-	protected void revertMove(Square origin, Square movedTo, IPiece taken) {
-		movePiece(movedTo, origin);
-		if(taken != null) {
-			movedTo.putPiece(taken);
-			taken.putInPlay();
-		}
 	}
 
 

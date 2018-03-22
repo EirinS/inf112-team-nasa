@@ -24,6 +24,11 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void equalBoardsAreEqual() {
+		assertEquals(new Board(8, PieceColor.WHITE), new Board(8, PieceColor.WHITE));
+	}
+	
+	@Test
 	public void cantCreateIllegalBoard() {
 		boolean thrown = false;
 		try {
@@ -145,7 +150,7 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void copyBoard() {
+	public void copyBoardTestHasSameSquares() {
 		IBoard board = new Board(8, PieceColor.WHITE);
 		IPiece r = new Rook(PieceColor.WHITE);
 		board.getSquare(5, 3).putPiece(r);
@@ -154,7 +159,7 @@ public class BoardTest {
 		board.getSquare(2, 2).putPiece(board.getSquare(5, 3).movePiece());
 		boolean found = false;
 		
-		for(Square sq : copy.getBoard()) {
+		for(Square sq : copy.getSquares()) {
 			if(!sq.isEmpty()) {
 				found = true;
 				assertEquals(sq.getX(), 5);
@@ -163,6 +168,28 @@ public class BoardTest {
 			}
 		}
 		assertTrue(found);
+	}
+	
+	@Test
+	public void copyBoardTestHasSameSquaresInSamePlaces() {
+		IBoard board = new Board(8, PieceColor.WHITE);
+		IPiece r = new Rook(PieceColor.WHITE);
+		board.getSquare(5, 3).putPiece(r);
+		IBoard copy = board.copy();
+		
+		assertFalse(board.getSquare(5, 3) == copy.getSquare(5, 3));
+		
+		assertEquals(board.getSquare(5, 3).getX(), copy.getSquare(5, 3).getX());
+		assertEquals(board.getSquare(5, 3).getY(), copy.getSquare(5, 3).getY());
+		
+		Square to = copy.getSquare(board.getSquare(3, 3).getX(), board.getSquare(3, 3).getY());
+		assertEquals(to.getX(), board.getSquare(3, 3).getX());
+		assertEquals(to.getY(), board.getSquare(3, 3).getY());
+		
+		int x = board.getSquare(3, 3).getX();
+		int y = board.getSquare(3, 3).getY();
+		assertEquals(x, copy.getSquare(x, y).getX());
+		assertEquals(y, copy.getSquare(x, y).getY());
 	}
 	
 	private void setUpForMoveTest() {

@@ -1,3 +1,5 @@
-testSpiller 1500 0 0 0
-testSpiller2 1600 0 0 0
-testSpiller3 900 10 0 0
+testSpiller 1468 0 2 0
+testSpiller2 1515 1 0 0
+p1 1516 1 0 0
+p2 1484 0 1 0
+Ubrukt 1468 0 1 0

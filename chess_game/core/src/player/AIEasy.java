@@ -1,6 +1,5 @@
 package player;
 
-import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
@@ -12,13 +11,23 @@ import java.util.Random;
 /**
  * Created by jonas on 12/03/2018.
  */
-public class AIEasy implements AI,Playable {
+public class AIEasy implements AI, Playable {
 
-	PieceColor playerColor;
+	private static AIEasy instance;
+	private static int rating = 500;
+
+	private PieceColor playerColor;
 	Random rand = new Random(System.nanoTime());
 
 	public AIEasy(PieceColor playerColor){
 		this.playerColor = playerColor;
+	}
+
+	public static AIEasy getInstance(PieceColor playerColor) {
+		if (instance == null)
+			instance = new AIEasy(playerColor);
+		instance.playerColor = playerColor;
+		return instance;
 	}
 
 	@Override
@@ -30,8 +39,18 @@ public class AIEasy implements AI,Playable {
 	}
 
 	@Override
+	public PieceColor getPieceColor() {
+		return playerColor;
+	}
+
+	@Override
 	public Move makeMove(IBoard board, Square from, Square to) {
 		return calculateMove(board);
+	}
+
+	@Override
+	public int getRating() {
+		return rating;
 	}
 
 }

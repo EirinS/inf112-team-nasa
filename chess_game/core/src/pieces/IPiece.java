@@ -94,4 +94,5 @@ public interface IPiece {
 	 * @return copy this piece.
 	 */
 	public IPiece copy();
+
 }

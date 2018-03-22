@@ -160,6 +160,14 @@ public class Square {
 	public String toString() {
 		return numberToLetter(x)+flipY(y);
 	}
+	
+	/**
+	 * Checks if the color of this square is white.
+	 * @return true if white, false else
+	 */
+	public boolean squareIsWhite() {
+		return (getY() % 2) == (getX() % 2);
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -174,5 +182,17 @@ public class Square {
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y, piece);
+	}
+	
+	/**
+	 * Returns a copy of this board.
+	 * @return Square copy
+	 */
+	public Square copy() {
+		IPiece p = null;
+		if(!isEmpty()) {
+			p = getPiece().copy();
+		}
+		return new Square(x, y, p);
 	}
 }
