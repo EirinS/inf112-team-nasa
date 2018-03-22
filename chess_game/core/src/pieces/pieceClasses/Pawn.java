@@ -64,7 +64,7 @@ public class Pawn extends AbstractPiece {
 		
 		//can do en passant if a "jumping" pawn is next to you, and not of your color.
 		int toX = previous.getTo().getX();
-		if((x+1 == toX || x-1 == toX) && previous.getMoveType() == MoveType.PAWNJUMP && previous.getMovingPiece().getColor() != this.getColor()) {
+		if((x+1 == toX || x-1 == toX) && y == previous.getTo().getY() && previous.getMoveType() == MoveType.PAWNJUMP && previous.getMovingPiece().getColor() != this.getColor()) {
 			return new Move(board.getSquare(x, y), board.getSquare(toX, y + getDy(board)), this, board.getSquare(toX, previous.getTo().getY()).getPiece(), MoveType.ENPASSANT);
 		}
 		return null;		
