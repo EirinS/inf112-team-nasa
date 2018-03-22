@@ -62,9 +62,7 @@ public class Pawn extends AbstractPiece {
 	 * @param board the board this pawn is placed upon
 	 * @return whether pawn promotion should be triggered now
 	 */
-	private boolean pawnPromotionIsValid(int y, int dy, IBoard board, PieceColor playerOne) {
-		//int newY = y + dy;
-		//return (board.getTurn() == playerOne && newY == board.getHeight() - 1) || (board.getTurn() != playerOne && newY == 0);
+	private boolean pawnPromotionIsValid(int y, int dy, IBoard board) {
 		return (dy == -1 && (y + dy) == 0) || (dy == 1 && (y + dy) == (board.getHeight() - 1));
 	}
 
@@ -88,7 +86,7 @@ public class Pawn extends AbstractPiece {
 			// Check square straight ahead
 			Square oneAhead = board.getSquare(x, y + dy);
 			if (oneAhead.isEmpty())
-				if (pawnPromotionIsValid(y, dy, board, playerOne))
+				if (pawnPromotionIsValid(y, dy, board))
 					reachable.add(new Move(origin, oneAhead, this, null, MoveType.PROMOTION));
 				else
 					reachable.add(new Move(origin, oneAhead, this, null, MoveType.REGULAR));
@@ -104,7 +102,7 @@ public class Pawn extends AbstractPiece {
 		if (board.withinBoard(x - 1, y + dy)) {
 			Square westAhead = board.getSquare(x - 1, y + dy);
 			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
-				if (pawnPromotionIsValid(y, dy, board, playerOne))
+				if (pawnPromotionIsValid(y, dy, board))
 					reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.PROMOTION));
 				reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.REGULAR));
 			}
@@ -113,7 +111,7 @@ public class Pawn extends AbstractPiece {
 		if (board.withinBoard(x + 1, y + dy)) {
 			Square eastAhead = board.getSquare(x + 1, y + dy);
 			if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
-				if (pawnPromotionIsValid(y, dy, board, playerOne))
+				if (pawnPromotionIsValid(y, dy, board))
 					reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.PROMOTION));
 				reachable.add(new Move(origin, eastAhead, this, eastAhead.getPiece(), MoveType.REGULAR));
 			}
