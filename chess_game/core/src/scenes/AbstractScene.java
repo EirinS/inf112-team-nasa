@@ -5,7 +5,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+/**
+ * 
+ * An abstract class responsible for the graphical user interface. 
+ * It allows the screen classes to draw upon the same Stage and implement all the methods that a screen
+ * should implement. The Stage is responsible for drawing the graphical elements (also known as actors)
+ * to the screen. This class is currently inherited by the three classes MainMenuScene,
+ *  GameScene and VictoryScene.
+ *
+ */
 public abstract class AbstractScene extends Stage implements Screen {
 
     protected AbstractScene() {
