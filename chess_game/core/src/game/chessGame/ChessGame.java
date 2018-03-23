@@ -20,7 +20,11 @@ import player.AI;
 import register.Player;
 import register.PlayerRegister;
 import setups.DefaultSetup;
-
+/**
+ * The ChessGame class ties together and keeps track of logic surrounding the current game of chess. 
+ * This includes an implementation of the game clock, 
+ * deciding when the game is over and updating player statistics after a game.
+ */
 public class ChessGame implements IChessGame {
 	private GameInfo gameInfo;
 	private IBoard board;
@@ -98,9 +102,6 @@ public class ChessGame implements IChessGame {
 
 	@Override
 	public ArrayList<Move> getLegalMoves(int x, int y) {
-		// TODO: 21/03/2018 sometimes this bugs, not sure why. NullPointerException
-		// TODON'T: I think it's because AI looks for move, and there is none. This is when check-mate.
-		// also if you look for move. I don't really think it's a bug. It's just not done yet.
 		Square square = board.getSquare(x, y);
 		if (square.getPiece().getColor() != board.getTurn()) return new ArrayList<>();
 		return square.getPiece().getLegalMoves(square, board, gameInfo.getPlayerColor());
@@ -185,6 +186,7 @@ public class ChessGame implements IChessGame {
 				count++;
 				//found threefold-repetition
 				if (count >= 3) {
+					System.out.println("Draw by threefoldrepetition");
 					return true;
 				}
 			}
@@ -206,10 +208,10 @@ public class ChessGame implements IChessGame {
 			if(!contains(other, sq)) {
 				return false;
 			}
-		/*
-		for(Square sq : other.getBoard())
+		
+		for(Square sq : other.getSquares())
 			if(!contains(board, sq))
-				return false; */
+				return false; 
 		return true;
 	}
 
@@ -237,8 +239,10 @@ public class ChessGame implements IChessGame {
 				return false;
 			}
 			count++;
-			if (count >= 50)
+			if (count >= 50) {
+				System.out.println("Draw by 50-move-rule.");
 				return true;
+			}
 		}
 		return false;
 	}

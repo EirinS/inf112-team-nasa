@@ -20,6 +20,8 @@ import static pieces.PieceColor.BLACK;
  * @author marianne
  */
 public class Pawn extends AbstractPiece {
+	
+	private int dy;
 
 	/**
 	 * Constructs a pawn
@@ -33,8 +35,7 @@ public class Pawn extends AbstractPiece {
 	}
 
 	//TODO en passant
-	//TODO pawn promotion
-
+	
 	/**
 	 * Gets a list of all legal moves for this pawn
 	 */
@@ -46,13 +47,27 @@ public class Pawn extends AbstractPiece {
 		return m;
 	}
 
+
 	/**
-	 * Checks whether this pawn has moved yet.
-	 *
-	 * @return whether this pawn has moved
+	 * Get en passant move if possible. Get null if not possible.
+	 * @param x, current x
+	 * @param y, current y
+	 * @param board, current board
+	 * @return null if no valid passant, Move m of MoveType ENPASSANT if valid.
 	 */
-	public boolean hasMoved() {
-		return hasMoved;
+	public Move getPassantMove(int x, int y, IBoard board) {	
+		//TODO 22/03 Bug: Moves where pawns captures another pawn are sometimes not registered in moves?
+		// Get previous move
+		ArrayList<Move> moves = board.getHistory();
+		if (moves.size() == 0) return null;
+		Move previous = moves.get(moves.size() - 1);
+		
+		//can do en passant if a "jumping" pawn is next to you, and not of your color.
+		int toX = previous.getTo().getX();
+		if((x+1 == toX || x-1 == toX) && y == previous.getTo().getY() && previous.getMoveType() == MoveType.PAWNJUMP && previous.getMovingPiece().getColor() != this.getColor()) {
+			return new Move(board.getSquare(x, y), board.getSquare(toX, y + getDy(board)), this, board.getSquare(toX, previous.getTo().getY()).getPiece(), MoveType.ENPASSANT);
+		}
+		return null;		
 	}
 
 	/**
@@ -64,6 +79,16 @@ public class Pawn extends AbstractPiece {
 	 */
 	private boolean pawnPromotionIsValid(int y, int dy, IBoard board) {
 		return (dy == -1 && (y + dy) == 0) || (dy == 1 && (y + dy) == (board.getHeight() - 1));
+	}
+	
+	/**
+	 * returns the legal direction for this pawn to move in.
+	 * @param board, to find where white and black is located
+	 * @return -1 if moving down, 1 if moving up (0,0 top left corner)
+	 */
+	private int getDy(IBoard board) {
+		return (board.getPlayerOne() == WHITE && color == WHITE)
+		|| (board.getPlayerOne() == BLACK && color == BLACK) ? -1 : 1;
 	}
 
 	/**
@@ -77,8 +102,7 @@ public class Pawn extends AbstractPiece {
 		ArrayList<Move> reachable = new ArrayList<Move>();
 		int x = origin.getX();
 		int y = origin.getY();
-		int dy = (playerOne == WHITE && color == WHITE)
-				|| (playerOne == BLACK && color == BLACK) ? -1 : 1;
+		int dy = getDy(board);
 		PieceColor opponentColor = color.getOpposite();
 
 		// Check whether the vertical moves are valid
@@ -94,13 +118,15 @@ public class Pawn extends AbstractPiece {
 			if (board.withinBoard(x, y + 2 * dy)) {
 				Square twoAhead = board.getSquare(x, y + 2 * dy);
 				if (!hasMoved && oneAhead.isEmpty() && twoAhead.isEmpty())
-					reachable.add(new Move(origin, twoAhead, this, null, MoveType.REGULAR));
+					reachable.add(new Move(origin, twoAhead, this, null, MoveType.PAWNJUMP));
 			}
 		}
 
 		// Check whether diagonal moves are valid
 		if (board.withinBoard(x - 1, y + dy)) {
 			Square westAhead = board.getSquare(x - 1, y + dy);
+			if (getPassantMove(x, y, board) != null)
+				reachable.add(getPassantMove(x, y, board));
 			if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
 				if (pawnPromotionIsValid(y, dy, board))
 					reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.PROMOTION));
@@ -109,6 +135,8 @@ public class Pawn extends AbstractPiece {
 		}
 
 		if (board.withinBoard(x + 1, y + dy)) {
+			if (getPassantMove(x, y, board) != null)
+				reachable.add(getPassantMove(x, y, board));
 			Square eastAhead = board.getSquare(x + 1, y + dy);
 			if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
 				if (pawnPromotionIsValid(y, dy, board))

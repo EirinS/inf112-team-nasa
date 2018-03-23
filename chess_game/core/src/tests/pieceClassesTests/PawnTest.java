@@ -17,6 +17,9 @@ import pieces.pieceClasses.King;
 import pieces.pieceClasses.Pawn;
 
 import static pieces.PieceColor.WHITE;
+
+import java.util.ArrayList;
+
 import static pieces.PieceColor.BLACK;
 
 public class PawnTest {
@@ -29,6 +32,61 @@ public class PawnTest {
 	@Before
 	public void setUp() {
 		sq.putPiece(whitePawn);
+	}
+	
+	@Test
+	public void movingTwoSquaresIsPawnJump() {
+		IBoard b = new Board(8, PieceColor.WHITE);
+		Square from = b.getSquare(0, 6);
+		Square to = b.getSquare(0, 4);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		from.putPiece(p);
+		ArrayList<Move> moves = (p.getLegalMoves(from, b, PieceColor.WHITE));
+		for(Move m : moves)
+			if(m.getTo().getY() != 5)
+				assertEquals(MoveType.PAWNJUMP, m.getMoveType());
+	}
+	
+	@Test
+	public void enPassantIsValidForEnPassant() {
+		Board b = new Board(8, PieceColor.WHITE);
+		Square from = b.getSquare(0, 6);
+		Square to = b.getSquare(0, 4);
+		Pawn o = new Pawn(PieceColor.BLACK);
+		b.getSquare(1, 4).putPiece(o);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		from.putPiece(p);
+		b.move(from, to);
+		Move m = (o.getPassantMove(1, 4, b));
+		assertEquals(new Move(b.getSquare(1, 4), b.getSquare(0, 5), o, p, MoveType.ENPASSANT), m);
+	}
+	
+	@Test
+	public void pawnCanFindLegalEnPassantMoves() {
+		Board b = new Board(8, PieceColor.WHITE);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		Pawn o = new Pawn(PieceColor.BLACK);
+		b.getSquare(1, 4).putPiece(o);
+		Square from = b.getSquare(0, 6);
+		Square to = b.getSquare(0, 4);
+		from.putPiece(p);
+		b.move(from, to);
+		for(Move m : o.reachableSquares(board.getSquare(1, 4), b, PieceColor.WHITE))
+			if(m.getMoveType() == MoveType.ENPASSANT)
+				return;
+		fail("NUUUU");
+	}
+	
+	@Test
+	public void movingTwoSquaresIsPawnJumpWorksForMove() {
+		IBoard b = new Board(8, PieceColor.WHITE);
+		Square from = b.getSquare(0, 6);
+		Square to = b.getSquare(0, 4);
+		Pawn p = new Pawn(PieceColor.WHITE);
+		from.putPiece(p);
+		ArrayList<Move> moves = b.move(from, to);
+		for(Move mov : moves)
+			assertEquals(MoveType.PAWNJUMP, mov.getMoveType());
 	}
 	
 	@Test
@@ -69,7 +127,7 @@ public class PawnTest {
 	@Test
 	public void whitePawnOnRowSixCanFindPromotion() {
 		IBoard board = new Board(8, playerOne);
-		Pawn p = new Pawn(playerOne);
+		Pawn p = new Pawn(playerTwo);
 		Square sq = board.getSquare(0, 6);
 		sq.putPiece(p);
 		

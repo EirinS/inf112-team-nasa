@@ -177,6 +177,11 @@ public class Checkerboard extends DragListener {
             if (to != null) {
                 to.remove();
             }
+            if(m.getMoveType() == MoveType.ENPASSANT) {
+            	int x = m.getTo().getX();
+            	int y = m.getFrom().getY();
+            	pieceGroup.findActor(x + "," + y).remove();
+            }
             movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor());
         }
     }

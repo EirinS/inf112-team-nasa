@@ -244,7 +244,9 @@ public class Board implements IBoard {
 	private ArrayList<Move> doMove(Move m) {
 		ArrayList<Move> moves = new ArrayList<>();
 		if(m.getMoveType() == MoveType.ENPASSANT) {
-			//TODO:
+			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
+			history.get(history.size()-1).getTo().takePiece();
+			//printOutBoard();
 		} else if (m.getMoveType() == MoveType.KINGSIDECASTLING) {
 			IPiece moving = m.getMovingPiece();
 			if(moving instanceof King) {
@@ -268,7 +270,7 @@ public class Board implements IBoard {
 			}else {
 				m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
 			}
-			printOutBoard();
+			//printOutBoard();
 		} else if (!m.getTo().isEmpty()){ 
 			//move and capture piece
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
@@ -326,6 +328,8 @@ public class Board implements IBoard {
 	@Override
 	public IBoard copy() {
 		IBoard board = new Board(this.getDimension(), playerOne);
+		board.setTurn(getTurn());
+		board.setHistory(this.history);
 		for(Square sq : getSquares()) {
 			board.addSquare(sq.copy());
 		}
@@ -336,6 +340,19 @@ public class Board implements IBoard {
 	@Override
 	public PieceColor getPlayerOne() {
 		return playerOne;
+	}
+
+
+	@Override
+	public void setTurn(PieceColor turn) {
+		this.turn = turn;	
+	}
+
+
+	@Override
+	public void setHistory(ArrayList<Move> history) {
+		this.history = history;
+		
 	}
 
 }
