@@ -3,3 +3,4 @@ testSpiller2 1496 1 1 0
 p1 1516 1 0 0
 p2 1484 0 1 0
 Ubrukt 1468 0 1 0
+Jonas 1500 0 0 0
