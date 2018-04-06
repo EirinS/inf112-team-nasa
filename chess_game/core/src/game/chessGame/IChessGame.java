@@ -155,4 +155,9 @@ public interface IChessGame {
 	 * @return ArrayList<IBoard> boardHistory
 	 */
 	ArrayList<IBoard> getBoardHistory();
+	
+	/**
+	 * @return the current board in this chessGame
+	 */
+	IBoard getBoard();
 }

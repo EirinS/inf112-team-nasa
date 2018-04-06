@@ -416,7 +416,12 @@ public class ChessGame implements IChessGame {
 		pr.updatePlayerRating(oName, oNewRating, op_win_lose_draw);
 		
 	}
-
+	
+	@Override
+	public IBoard getBoard() {
+		return this.board;
+	}
+	
 	@Override
 	public ArrayList<Square> getSquares() {
 		return board.getSquares();

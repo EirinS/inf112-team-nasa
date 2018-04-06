@@ -23,7 +23,8 @@ import game.chessGame.ChessGame;
 
 import game.listeners.CheckerboardListener;
 import game.listeners.ChessGameListener;
-
+import player.AI;
+import player.AIMedium;
 import sprites.PieceSpriteLoader;
 import styling.Colors;
 
@@ -42,7 +43,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane;
 	private Label topTime, bottomTime;
-	private TextButton quitBtn, resignBtn;
+	private TextButton quitBtn, resignBtn, hintBtn;
 
 	public GameScene (Chess game, GameInfo gameInfo){
 		this.game = game;
@@ -73,7 +74,6 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	}
 
 	private void addActors() {
-
 		quitBtn = new TextButton("Quit", skin, "default");
 		quitBtn.setSize(quitBtn.getWidth() * 1.5f, quitBtn.getHeight());
 		quitBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos());
@@ -96,10 +96,27 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 				super.clicked(event, x, y);
 			}
 		});
+		
+		hintBtn = new TextButton("Hint", skin, "default");
+		hintBtn.setSize(hintBtn.getWidth() * 1.5f, hintBtn.getHeight());
+		hintBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30 + quitBtn.getWidth()/2, checkerboard.getPos() + 40);
+		hintBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				//TODO: replace medium with hard
+				AI ai = new AIMedium(chessGame.getBoard().getTurn());
+				checkerboard.showHint(ai.calculateMove(chessGame.getBoard()));
+				super.clicked(event, x, y);
+			}
+		});
+		
+		
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
 
 		addActor(quitBtn);
 		addActor(resignBtn);
+		addActor(hintBtn);
 
 		historyGroup = new VerticalGroup();
 		historyGroup.align(Align.top);
@@ -178,6 +195,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		addMoveToHistory(chessGame.getLastMove());
 		setNameColors();
 		checkerboard.movePieces(moves);
+		
+		//when move is done, show move for opponent to see which piece moved
+		for(Move m : moves)
+			checkerboard.showPrevMove(m);
 	}
 
 	@Override
