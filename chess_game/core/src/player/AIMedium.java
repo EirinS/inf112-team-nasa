@@ -49,7 +49,7 @@ public class AIMedium implements AI, Playable {
 		int loss = -99999;//this is only used in to evaluate moves where loss is inevitable
 		if(playerColor==PieceColor.BLACK) {bestCase=-9999; loss=99999;}
 		ArrayList<int[]> theMoves = new ArrayList<int[]>();//here all the moves and their valued score will be placed
-		int[] theMove = {-bestCase, 0};
+		int[] theMove; // if there is no checkmate or draw, this is the move that will be returned
 		
 		for (int i=0; i<possibleBoards.size(); i++) {//for every move possible to make for the original board
 			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(opponentColor);
@@ -63,7 +63,6 @@ public class AIMedium implements AI, Playable {
 			}else {
 				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp,opponentColor);
 				ArrayList<int[]> findWorst = new ArrayList<int[]>();
-				int[] worst = {bestCase,0};
 				
 				for (int j=0; j<possibleBoardsOpp.size(); j++ ) {//for every move possible after the first move
 					List<Move> possibleMovesEnd = possibleBoardsOpp.get(j).getAvailableMoves(playerColor);
@@ -86,33 +85,11 @@ public class AIMedium implements AI, Playable {
 						best[1]=i;
 						findWorst.add(best);
 					}
-				} if (playerColor==PieceColor.WHITE) {
-					for (int u=0; u<findWorst.size(); u++) {
-						if (findWorst.get(u)[0]<worst[0]) {
-							worst=findWorst.get(u);
-						}
-					}theMoves.add(worst);
-				}else {
-					for (int u=0; u<findWorst.size(); u++) {
-						if (findWorst.get(u)[0]>worst[0]) {
-							worst=findWorst.get(u);
-						}
-					}theMoves.add(worst);
-				}
+				} 
+				theMoves=findTheMoves(theMoves, findWorst, bestCase);
 			}	
-		}if (playerColor==PieceColor.WHITE) {
-			for (int i=0; i<theMoves.size();i++) {
-				if (theMoves.get(i)[0]>theMove[0]) {
-					theMove=theMoves.get(i);
-				}
-			}
-		}else {
-			for (int i=0; i<theMoves.size();i++) {
-				if (theMoves.get(i)[0]<theMove[0]) {
-					theMove=theMoves.get(i);
-				}
-			}
 		}
+		theMove = findTheMove(theMoves, bestCase);
 		return possibleMoves.get(theMove[1]);
 	}		
 	
@@ -213,7 +190,6 @@ public class AIMedium implements AI, Playable {
 					score = score + value + getPositionValue(square.getX() ,square.getY());
 				}else score = score - value - getPositionValue(square.getX() ,square.getY());
 			}
-			
 		}
 		called++;
 		return score;
@@ -237,7 +213,7 @@ public class AIMedium implements AI, Playable {
 	}
 	
 	
-	public boolean considerDraw (IBoard currentBoard) {//returns true if draw is positive for AI
+	private boolean considerDraw (IBoard currentBoard) {//returns true if draw is positive for AI
 			int score = getAIScore(currentBoard);
 			if  ((score<0&&playerColor==PieceColor.WHITE)||(score>0&&playerColor==PieceColor.BLACK)) {//if AI is under in score and can get a draw, it will do it.
 				return true;
@@ -248,7 +224,7 @@ public class AIMedium implements AI, Playable {
 	}
 
 	
-	public boolean isCheckmate (Board board, PieceColor playerInCheck) {//returns true if player is checkmate
+	private boolean isCheckmate (Board board, PieceColor playerInCheck) {//returns true if player is checkmate
 		PieceColor otherPlayer=PieceColor.BLACK;
 		if (playerInCheck==PieceColor.BLACK) {
 			otherPlayer=PieceColor.WHITE;
@@ -260,6 +236,42 @@ public class AIMedium implements AI, Playable {
 			}
 		}
 		return false;
+	}
+	
+	private ArrayList<int[]> findTheMoves (ArrayList<int[]> theMoves, ArrayList<int[]> findWorst, int bestCase) {
+		int[] worst = {bestCase,0};
+		if (playerColor==PieceColor.WHITE) {
+			for (int u=0; u<findWorst.size(); u++) {
+				if (findWorst.get(u)[0]<worst[0]) {
+					worst=findWorst.get(u);
+				}
+			}theMoves.add(worst);
+		}else {
+			for (int u=0; u<findWorst.size(); u++) {
+				if (findWorst.get(u)[0]>worst[0]) {
+					worst=findWorst.get(u);
+				}
+			}theMoves.add(worst);
+		}
+		return theMoves;
+	}
+	
+	private int[] findTheMove (ArrayList<int[]> theMoves, int bestCase) {
+		int[] theMove = {-bestCase, 0};
+		if (playerColor==PieceColor.WHITE) {
+			for (int i=0; i<theMoves.size();i++) {
+				if (theMoves.get(i)[0]>theMove[0]) {
+					theMove=theMoves.get(i);
+				}
+			}
+		}else {
+			for (int i=0; i<theMoves.size();i++) {
+				if (theMoves.get(i)[0]<theMove[0]) {
+					theMove=theMoves.get(i);
+				}
+			}
+		}
+		return theMove;
 	}
 }
 
