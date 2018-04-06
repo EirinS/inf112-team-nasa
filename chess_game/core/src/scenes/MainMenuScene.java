@@ -27,12 +27,9 @@ import pieces.PieceColor;
 import player.AILevel;
 
 /**
- * This class sets up and manages the elements in the main menu of the user interface.
- * <p>
- * REFACTORING:
- * Note to dev: Should definitely be refactored into more classes (i.e. listeners and screenToggle) at some point.
- * Will be easier to do once I know everything works.
- *
+ * 
+ * This class initialize and manipulate the graphical elements in the main menu of the user interface.
+ * 
  * @author sofia
  */
 

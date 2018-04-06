@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\title{Design Descriptions}
+\author{Team NASA}
+\date{}
+\begin{document}
+\maketitle
+
+\section {Main classes}
+Below we have a short description of all the main classes in the project, separated into subsections.
+
+\subsection {Board}
+The implementation of the chess-board. It consists of a number of squares, saved in an ArrayList, one square for each position on the board. The board keeps track of the move-history (which moves was made previously on the board), whose turn it is - color of the pieces that are moving, and which color is on the bottom of the board. 
+
+\subsection {Square}
+A square is an implementation of a chessboard-position. It contains information about where on the board it is, and whether or not it contains a piece. You can get a square from the board, using it’s position. Contains a toString() algebraic representation of the square.
+
+\subsection {Move}
+Immutable class that stores a move. Contains information about the square you’re moving from and to. Which piece you’re moving, and alternatively, a captured piece. Contains a toString() algebraic representation of the move.
+
+\subsection {ChessGame}
+The ChessGame class ties together and keeps track of logic surrounding the current game of chess. This includes an 
+implementation of the game clock, deciding when the game is over and updating player statistics after a game.
+
+\subsection {GameInfo}
+Holds information about the game; such as player info, opponent info, which game type (singleplayer/multiplayer) and which AI to use if any.
+
+\subsection {Checkerboard}
+Draws the board to the game scene and handlers user input/output.
+
+\subsection {Chess}
+The chess class gets called from the libgdx desktop launcher and initializes the GUI/Chessgame. It also connects to the playerfile
+
+\subsection {AbstractPiece}
+Abstract class that implements methods for all the common characteristics for the pieces in the game. The class is extended by all the piece classes which have their own methods for different specific rules.
+
+\subsection {AIEasy/AIMedium}
+The AIEasy and AIMedium class finds and returns suitable moves for a player. The AIEasy just return a random move, while AIMedium does some calculations and choses the best move it can find.
+
+\subsection {PlayerRegister}
+The PlayerRegister class deals with reading and writing player data to the playerfile. This includes registering players, checking if they are already registered, updating a players statistics and constructing a highscore list.
+
+\subsection {AbstractScene}
+An abstract class responsible for the graphical user interface. It allows the screen classes to draw upon the same Stage and implement all the methods that a screen should implement. The Stage is responsible for drawing the graphical elements (also known as actors) to the screen. This class is currently inherited by the three classes MainMenuScene, GameScene and VictoryScene. The class “Stage”  and the interface “Screen” are imported from the LibGDX library.
+
+\subsection {SceneManager}
+Manager for all the scenes to make navigating scenes easy.
+
+\subsection {DefaultSetup}
+Initial board setup for standard chess rules.
+
+\subsection {AllTests}
+Runs all the test for the entire project. This includes tests for board structure,pieces, both of the AIs and the menu options.
+
+\section {Interfaces}
+Below we have a short description of all the main interfaces in the project, separated into subsections.
+
+\subsection {IBoard}
+An interface implemented by Board. Many of the methods are getters for attributes such as the board's dimensions, squares and their pieces, move history and player turn. IBoard also includes the methods responsible for moving the chess pieces correctly, as well as storing the move history.
+
+\subsection {IChessGame}
+An interface implemented by ChessGame. The methods are used for setting up a game, finding out if a game is finished, calculate and update player ratings, as well as finishing a game. 
+
+\subsection {CheckerboardListener}
+Communicates between the GameScene and the checkerboard. 
+
+\subsection {ChessGameListener}
+Communicates between the GameScene and ChessGame.
+
+\subsection {IPiece}
+An interface implemented by all the piece classes (AbstractPiece, King, Queen, Bishop, Knight, Rook, and Pawn). It includes getters for the chess pieces’ attributes, such as their color and a list of their legal moves. Other methods are responsible for identifying and capturing each piece’s enemies, moving logic and putting each piece in or out of play.
+
+\subsection {AI}
+Interface used by all AI. It contains three functions, returning  the AI’s move, rating and color.
+
+\subsection {Playable}
+Interface used by all AI. It  contains one function that returns the move the AI will preform.
+
+\subsection {Setup}
+A setup for a chess-board. Used when creating a new ChessGame, to determine how the board will be set up initially.
+
+\section*{Relationships}
+The relations in the design model initially starts with the Chess class. The Chess class shows the first Screen, MainMenuScene, using the SceneManager and initialises the PlayerRegister. MainMenuScene gets input from user and shows highscores/starts game accordingly.
+
+When a game is started, SceneManager shows the GameScene given a GameInfo by the MainMenuScene. In the GameScene the ChessGame and Checkerboard gets initialized. The ChessGame creates a new Board given a Setup. The Setup creates the actual Board instance and creates all the Squares, containing x, y and chesspiece (which extend AbstractPiece). The Checkerboard gets input from user and requests move to the ChessGame class which responds using the CheckerboardListener. If the move was valid, it gets executed and the checkerboard gets updated accordingly.
+
+The AI’s also gets initialized in the ChessGame class and is used if needed.
+
+\end{document}
