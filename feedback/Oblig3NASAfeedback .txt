@@ -1,44 +1,59 @@
-Feedback INF112 spring 2018 - Oblig.3
-
-Group: Team NASA
-
-Overall feedback
-Good delivery. You seem to have updated most of your errors from last time.
-There is almost nothing negative to say about most of the deliverables except 
-for the design/class diagram and sequence diagram, this is whre you loose most of your points. 
-
-Deliverable: Chess game
-Very good, seems to be fully functional with supported AI, accounts and ranking.
-Source code and tests also seem good.
-
-Deliverable: Team plan
-Fixed and seems to be up to date with your current work.
-
-Deliverable: Project plan and process
-Not changed for this part, but seems to be up to date as well.
-
-Deliverable: Retrospective summary
-Overall good.
-
-Deliverable: License
-Good that you have included most of the different licenses used in this oblig. 
-
-Deliverable: Presentation
-Very nice slides and good presentation overall. Presentation went a little bit over the time (not much, about 1 minute).
-
-Deliverable: Sequence diagram
-Your sequence diagrams are on the right track, but they are a bit lacking
-they should be a bit more specific when it comes to classes and methods used, e.g. not just ChessGame->load menu.
-
-Deliverable: Design/class diagram
-This is not good enough, first of, you have already been told that creating the diagrams automatically with Intellij will not be
-sufficient for this course. Secondly the diagrams that were created by intellij are not what we are after. A design diagram is still
-"just" a class diagram with major classes and functionality etc., but a bit more detailed/specific about types, parameters
-and return values, relations, attributes etc. It should just be an extension of the previous class diagram (which was very good), not 
-just a big graphic of all classes with a few arrows between.
-Feel free to ask TA's if you want an example of a proper diagram.
-
-Score: 89.3 (of 100)
-Evaluation: PASS
-
-Graded by Joakim and Dan, Bergen, April 6.
+Feedback INF112 spring 2018 - Oblig.3
+
+Group: Team NASA
+
+
+
+
+Overall feedback:
+Good delivery. You seem to have updated most of your errors from last time.
+There is almost nothing negative to say about most of the deliverables except 
+for the design/class diagram and sequence diagram, this is whre you loose most of your points. 
+
+
+Deliverable: Chess game
+Very good, seems to be fully functional with supported AI, accounts and ranking.
+Source code and tests also seem good.
+
+
+Deliverable: Team plan
+Fixed and seems to be up to date with your current work.
+
+
+Deliverable: Project plan and process
+Not changed for this part, but seems to be up to date as well.
+
+
+Deliverable: Retrospective summary
+Overall good.
+
+
+Deliverable: License
+Good that you have included most of the different licenses used in this oblig. 
+
+
+Deliverable: Presentation
+Very nice slides and good presentation overall. Presentation went a little bit over the time (not much, about 1 minute).
+
+
+Deliverable: Sequence diagram
+Your sequence diagrams are on the right track, but they are a bit lacking
+they should be a bit more specific when it comes to classes and methods used, e.g. not just ChessGame->load menu.
+
+
+Deliverable: Design/class diagram
+This is not good enough, first of, you have already been told that creating the diagrams automatically with Intellij will not be
+sufficient for this course. Secondly the diagrams that were created by intellij are not what we are after. A design diagram is still
+"just" a class diagram with major classes and functionality etc., but a bit more detailed/specific about types, parameters
+and return values, relations, attributes etc. It should just be an extension of the previous class diagram (which was very good), not 
+just a big graphic of all classes with a few arrows between.
+Feel free to ask TA's if you want an example of a proper diagram.
+
+
+Score: 89.3 (of 100)
+
+Evaluation: PASS
+
+
+
+Graded by Joakim and Dan, Bergen, April 6.
