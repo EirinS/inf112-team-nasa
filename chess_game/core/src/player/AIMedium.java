@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class AIMedium implements AI, Playable {
 
-	private static AIMedium instance;
 	private static int rating = 1500;
 
 	private PieceColor playerColor;
@@ -39,12 +38,12 @@ public class AIMedium implements AI, Playable {
 		opponentColor = playerColor.getOpposite();
 	}
 
-	public static AIMedium getInstance(PieceColor playerColor) {
+	/*public static AIMedium getInstance(PieceColor playerColor) {
 		if (instance == null)
 			instance = new AIMedium(playerColor);
 		instance.playerColor = playerColor;
 		return instance;
-	}
+	}*/
 	
 	@Override
 	public Move calculateMove(IBoard currentBoard) { //the two lists will be of equal length, with the possibleMove.get(i) -> possibleBoard.get(i) 
