@@ -1,6 +1,8 @@
 package game;
 
 import boardstructure.Move;
+import sound.AudioManager;
+
 import boardstructure.MoveType;
 import boardstructure.Square;
 import com.badlogic.gdx.graphics.Color;
@@ -39,7 +41,7 @@ public class Checkerboard extends DragListener {
 	private Image boardImg;
 	private Image selectedPiece;
 	private Texture chessMoveTexture, specialMoveTexture, selectedPieceTexture, prevMoveTexture, captureTexture, hintTexture;
-	private Group checkerGroup, pieceGroup, highlightGroup, movesGroup;
+	private Group checkerGroup, pieceGroup, highlightPossibleMovesGroup, prevMovesGroup;
 
 	public Checkerboard(Stage stage, HashMap<String, Texture> sprites, ArrayList<Square> initialSquares, CheckerboardListener listener) {
 		this.stage = stage;
@@ -67,14 +69,14 @@ public class Checkerboard extends DragListener {
 		selectedPiece.setZIndex(1);
 		selectedPiece.setVisible(false);
 		stage.addActor(selectedPiece);
-
-		highlightGroup = new Group();
-		highlightGroup.setZIndex(2);
-		stage.addActor(highlightGroup);
-
-		movesGroup = new Group();
-		movesGroup.setZIndex(2);
-		stage.addActor(movesGroup);
+		
+		prevMovesGroup = new Group();
+		prevMovesGroup.setZIndex(2);
+		stage.addActor(prevMovesGroup);
+		
+		highlightPossibleMovesGroup = new Group();
+		highlightPossibleMovesGroup.setZIndex(3);
+		stage.addActor(highlightPossibleMovesGroup);
 		
 		initPieces();
 	}
@@ -125,7 +127,7 @@ public class Checkerboard extends DragListener {
 
 	private void initPieces() {
 		pieceGroup = new Group();
-		pieceGroup.setZIndex(3);
+		pieceGroup.setZIndex(5);
 
 		for (Square square : initialSquares) {
 			if (square.getPiece() == null) continue;
@@ -171,7 +173,7 @@ public class Checkerboard extends DragListener {
 		} else {
 			actor.setPosition(calcBoardX(oldX), calcBoardY(oldY));
 		}
-		highlightGroup.clear();
+		highlightPossibleMovesGroup.clear();
 
 		super.dragStop(event, x, y, pointer);
 	}
@@ -213,15 +215,15 @@ public class Checkerboard extends DragListener {
 	 * @param m, the move that was made.
 	 */
 	public void showPrevMove(Move m) {
-		movesGroup.clear();
+		prevMovesGroup.clear();
 		Image highlightFrom = new Image(prevMoveTexture);
 		Image highlightTo = new Image(prevMoveTexture);
 
 		highlightTo.setPosition(calcBoardX(m.getTo().getX()), calcBoardY(m.getTo().getY()));
-		movesGroup.addActor(highlightTo);
+		prevMovesGroup.addActor(highlightTo);
 
 		highlightFrom.setPosition(calcBoardX(m.getFrom().getX()), calcBoardY(m.getFrom().getY()));
-		movesGroup.addActor(highlightFrom);
+		prevMovesGroup.addActor(highlightFrom);
 	}
 
 	/**
@@ -229,20 +231,22 @@ public class Checkerboard extends DragListener {
 	 * @param moves, the moves you'll highlight
 	 */
 	public void showHint(Move m) {
-		highlightGroup.clear();
+		highlightPossibleMovesGroup.clear();
 		Texture texture = hintTexture;
 		
 		Image highlightTo = new Image(texture);
 		highlightTo.setPosition(calcBoardX(m.getTo().getX()), calcBoardY(m.getTo().getY()));
-		highlightGroup.addActor(highlightTo);
+		highlightPossibleMovesGroup.addActor(highlightTo);
 		
 		Image highlightFrom = new Image(texture);
 		highlightFrom.setPosition(calcBoardX(m.getFrom().getX()), calcBoardY(m.getFrom().getY()));
-		highlightGroup.addActor(highlightFrom);
+		highlightPossibleMovesGroup.addActor(highlightFrom);
+		
+		AudioManager.playHintSound();
 	}
 
 	public void showMoves(ArrayList<Move> moves) {
-		highlightGroup.clear();		
+		highlightPossibleMovesGroup.clear();		
 		Texture texture = chessMoveTexture;
 		for (Move m : moves) {
 			if(m.getCapturedPiece() != null) {
@@ -255,7 +259,7 @@ public class Checkerboard extends DragListener {
 			float boardX = calcBoardX(m.getTo().getX());
 			float boardY = calcBoardY(m.getTo().getY());
 			highlight.setPosition(boardX, boardY);
-			highlightGroup.addActor(highlight);
+			highlightPossibleMovesGroup.addActor(highlight);
 		}
 	}
 
