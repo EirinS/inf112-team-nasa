@@ -57,10 +57,14 @@ task afterEclipseImport(description: "Post processing after project generation",
 //Configuration for the :core project
 project(":core") {
     //Uses the java gradle plugin
-    apply plugin: "java"
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+    apply plugin: 'java'
 
     dependencies {
         //Defines dependencies for the :core project, in this example the gdx dependency
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        testCompile 'junit:junit:4.12'
+        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
     }
 }

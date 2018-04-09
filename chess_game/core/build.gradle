@@ -14,12 +14,16 @@ eclipse.project {
 project(":desktop") {
     //Uses the java plugin (provides compiling, execution, etc.).
     //That one is bundled with gradle, so we didn’t have to define it in the buildscript section.
-    apply plugin: "java"
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+    apply plugin: 'java'
 
     //Defines dependencies for the :desktop project
     dependencies {
         //Adds dependency on the :core project as well as the gdx lwjgl backend and native dependencies
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        testCompile 'junit:junit:4.12'
+        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
     }
 }
