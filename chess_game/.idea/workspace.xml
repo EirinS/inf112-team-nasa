@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/build.gradle" afterPath="$PROJECT_DIR$/core/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/playerfile.txt" afterPath="$PROJECT_DIR$/core/playerfile.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/build.gradle" afterPath="$PROJECT_DIR$/desktop/build.gradle" />
-    </list>
+    <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
     <ignored path="$PROJECT_DIR$/desktop/.gradle/" />
@@ -1919,12 +1914,12 @@
       <workItem from="1522493414379" duration="567000" />
       <workItem from="1522746612366" duration="28000" />
       <workItem from="1523268537552" duration="5323000" />
-      <workItem from="1523278436154" duration="531000" />
+      <workItem from="1523278436154" duration="754000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6449000" />
+    <option name="totallyTimeSpent" value="6672000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
