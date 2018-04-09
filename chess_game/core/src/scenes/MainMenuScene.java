@@ -16,8 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import db.Database;
 import game.Chess;
 
 import game.chessGame.GameInfo;
@@ -47,16 +48,20 @@ public class MainMenuScene extends AbstractScene {
     private static final int centreWidth = (WindowInformation.WIDTH / 2) - (defaultWidth / 2);
     private ArrayList<Actor> actors;
     private Image imgBackground;
-    private Label staticText, mainMenu, headerScore, error;
+    private Label staticText, mainMenu, headerScore, error, name, win, lose, draw;
     private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
             black, white, signInP2;
     private TextField username, registerUsername;
     private Button backToLogIn, backToChooseGame;
     private SelectBox<String> difficulty;
-    private List<String> scoreList;
+    private List<Actor> scoreList;
     private ScrollPane scorePane;
+    private Window window;
+    private VerticalGroup scoreGroup;
+    
     //Navigation assistance
     private boolean playerOne;
+    
 
     private GameInfo gameInfo;
 
@@ -153,12 +158,24 @@ public class MainMenuScene extends AbstractScene {
 
         //Elements in score screen
         headerScore = new Label("High scores:", skin, "title-plain");
-        scoreList = new List<String>(skin);
-        String[] temporary = new String[]{"1", "2", "3"};
-        scoreList.setItems(temporary);
-        scorePane = new ScrollPane(scoreList, skin, "default");
-        scorePane.setPosition(centreWidth / 1.5f, WindowInformation.HEIGHT / 6);
-        headerScore.setPosition(centreWidth / 1.5f + (defaultWidth / 2), WindowInformation.HEIGHT / 1.2f);
+        scoreList = new List<Actor>(skin);
+       // scorePane = new ScrollPane(scoreList, skin, "default");
+        scoreGroup = new VerticalGroup();
+        scorePane = new ScrollPane(scoreGroup, skin, "default");
+        scorePane.setPosition(defaultWidth/1.7f, WindowInformation.HEIGHT / 13);
+        headerScore.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
+        
+        name = new Label("Name", skin, "title");
+        win = new Label("Win rate", skin, "title"); 
+        lose = new Label("Loss rate", skin, "title");
+        draw = new Label("Draw rate", skin, "title");
+        window = new Window("", skin);
+        window.add(name);
+        window.add(win);
+        window.add(lose);
+        window.add(draw);
+        window.setPosition(defaultWidth/1.7f, defaultHeight*7.5f);
+        window.setMovable(false);
 
         //Elements in multiplayer
         signInP2 = new TextButton("Sign in", skin, "default");
@@ -168,7 +185,7 @@ public class MainMenuScene extends AbstractScene {
         //Multiscreen
         backToChooseGame = new Button(skin, "left");
         backToChooseGame.setPosition(centreWidth / 3.8f, WindowInformation.HEIGHT / 1.2f);
-
+        
     }
 
 
@@ -193,6 +210,7 @@ public class MainMenuScene extends AbstractScene {
         actors.add(scorePane);
         actors.add(headerScore);
         actors.add(error);
+        actors.add(window);
     }
 
     private void setUpElementSizes() {
@@ -207,7 +225,8 @@ public class MainMenuScene extends AbstractScene {
         difficulty.setSize(defaultWidth, defaultHeight / 1.5f);
         black.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
         white.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
-        scorePane.setSize(defaultWidth * 1.6f, defaultHeight * 7);
+        scorePane.setSize(defaultWidth*2.3f, defaultHeight * 7);
+        window.setSize(defaultWidth*2.3f, defaultHeight*1.8f);
     }
 
 
@@ -262,6 +281,7 @@ public class MainMenuScene extends AbstractScene {
         scorePane.setVisible(true);
         backToChooseGame.setVisible(true);
         headerScore.setVisible(true);
+        window.setVisible(true);
     }
 
     protected void screenPreferences() {
@@ -489,14 +509,15 @@ public class MainMenuScene extends AbstractScene {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
                 Chess.getPlayerRegister().loadPlayers(); // Force-reload.
+
+                scoreGroup.clearChildren();
                 ArrayList<String> highscores = Chess.getPlayerRegister().getHighscores();
 
-                String[] scores = new String[highscores.size() + 1];
-                scores[0] = "Name/Rating/W/L/D";
                 for (int i = 0; i < highscores.size(); i++) {
-                    scores[i + 1] = highscores.get(i);
+                	String current = highscores.get(i).replaceAll(" ", " / ");
+                	Label line = new Label(current, skin, "title-plain");
+                	scoreGroup.addActor(line);
                 }
-                scoreList.setItems(scores);
                 screenScore();
                 scoreListener();
             }
