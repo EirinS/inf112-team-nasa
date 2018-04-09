@@ -1,0 +1,364 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\graphicspath{{diagrams_and_illustrations/}}
+
+\begin{document}
+	\begin{LARGE}\begin{center}
+			\textbf{Product Specification\\
+				Chess Game Development\\ 
+				INF112-V18 - Team NASA}			
+		\end{center}\end{LARGE}
+	\vspace{5mm}
+	
+	\begin{center}
+		Jonas Triki (Project Manager)\\
+		Jonas Mossin Wagle (Tech Lead)\\
+		Marianne Luengo Fuglestad (QA)\\
+		Eirin Sognnes\\
+		Elise Fiskeseth\\
+		Paraneetharan Sabaratnam\\
+		Stian Fagerli\\
+		Sofia Hestenes Eika\\		
+	\end{center}
+
+\vspace{10mm}
+
+
+	\begin{flushleft}
+\textbf{Revision History}\\
+\begin{tabular}{|l|l|r|}
+	\hline
+	Date\hspace{2cm} & Description\hspace{5cm} & Revision \\
+	\hline
+	19.02.2018 & Initial version & 1.0 \\
+	\hline
+
+	\end{tabular}
+\newpage
+
+\begin{Large}\textbf{Contents}\\
+\end{Large}
+\vspace{5mm}
+\textbf{1.	Introduction}  ------------------------------------------------------------------  	 3\\
+1.1	\hspace{0.5cm}Purpose  ----------------------------------------------------------------------	 3\\
+1.2	\hspace{0.5cm}Scope  -------------------------------------------------------------------------	 3\\
+1.3	\hspace{0.5cm}Overview  ---------------------------------------------------------------------	 3\\
+\vspace{3mm}
+
+\textbf{2.	System Requirements}  -----------------------------------------------------	 3   \\
+2.1	\hspace{0.5cm}Functional Requirements  ------------------------------------------------	 3\\
+2.2	\hspace{0.5cm}Non Functional Requirements  ------------------------------------------	 5\\
+2.3	\hspace{0.5cm}User Stories  ------------------------------------------------------------------   5\\
+2.4	\hspace{0.5cm}Use case diagram  -----------------------------------------------------------	 6\\
+2.5	\hspace{0.5cm}Fully dressed use cases  ----------------------------------------------------	8\\
+\hspace{0.5cm}2.5.1	Multiplayer  ----------------------------------------------------------------	8\\
+\hspace{0.5cm}2.5.2	Single Player  --------------------------------------------------------------	9\\
+\vspace{3mm}
+
+
+\textbf{3.	Domain model}  --------------------------------------------------------------- 11\\
+3.1 \hspace{0.5cm}Class Diagram  --------------------------------------------------------------	11\\
+
+\newpage
+
+\begin{Large}\textbf{1.	Introduction}\\
+\end{Large}
+\vspace{3mm}
+\textbf{1.1	Purpose}\\
+\vspace{1mm}
+This document specifies the software requirements and relevant informations related to the chess game application developed by TeamNASA. The document is intended to be read and reviewed by TeamNASA and interested parties.\\
+\vspace{5mm}
+\textbf{1.2	Scope}\\
+\vspace{1mm}
+The objective of the project is to develop a user friendly, robust and reliable multiplayer chess application, where a user can play against a machine player or another human player. The system offers three levels of intelligence such as novice, intermediate and expert level. The users can choose their preferred level of intelligence according to their chess skill.\\
+\vspace{1mm}
+Key features of the game:
+\begin{itemize}
+	
+
+\item The system offers a user to choose either to play against another human player or a machine player.
+\item The system offers three levels of intelligence to the user in the event the user choose to play against the machine player.
+\item The system displays a 2D chessboard with visually appealing pieces and board layouts that follow standard rules of the chess game.
+\item The system enables the valid moves for each chess pieces in the chess board.
+\item The system displays necessary notifications during the chess game.   
+\item The system record the results of each game played and provides ranking of each player based on number of games each players has won.
+
+
+\end{itemize}
+
+\vspace{5mm}
+\textbf{1.3	Overview}\\
+\vspace{1mm}
+The rest of the document elaborates the system requirements for the chess game.\\
+\vspace{10mm}
+
+\begin{Large}\textbf{2.	System Requirements}\\
+\end{Large}
+\vspace{3mm}
+\textbf{2.1	Functional Requirements}\\
+\begin{itemize}
+	\item Keep track of ranking
+	\begin{itemize}
+		\item The system keeps the win and loss results records of the games played.
+		\item The system should save the result of each game to a file.
+		\item The system should load result of all games played when showing highscore.
+		\item The system offers the ranking of players according to the level of intelligence.
+		\item The system should save statistics about games lost, won (time spent).
+		\item The system should save the winner statistics to a database.
+	\end{itemize}
+	\item Rules of chess
+	\begin{itemize}
+		\item Enable the king to move exactly one square horizontally, vertically or diagonally.
+		\item Enable the rooks to move any number of vacant squares horizontally or diagonally. 
+		\item Enable the bishops to move number of vacant squares diagonally.
+		\item Enable the queen to move number of vacant squares horizontally, vertically or diagonally.
+		\item Enable the knights to move to the nearest square not on the same rank, file or diagonal. 
+		\item Enable the pawns in their start positions to move two  vacant squares straight forward.
+		\item Enable the pawns in other positions than the start position to move one square forward.
+		\item Enable the pawns to move one square diagonally if one of the opponents pieces are in the square.
+		\item Enable all players to perform castling. Castling consists of moving the king two squares towards a rook and placing the rook on the other side of the king. 
+		\item Enable all players to perform en passant.
+		\item Enable a pawn that has reached the eighth rank to promote to a queen, rook, bishop or knight. 
+	\end{itemize}
+	\item Creating an account
+	\begin{itemize}
+		\item The system provides a registration function which enables a identification of a user.
+		\item The system should uphold uniqueness of each user.
+		\item The start-rating of every newly created user should be the same for everyone 
+	\end{itemize}
+	\item Artificial intelligence
+	\begin{itemize}
+	    \item The system offers the option to choose between a human player and a machine player.
+		\item The system offers a difficulty option for the AI.
+		\item The system should correctly start a game against an AI and not another human player.
+		\item The system selects the correct difficulty of the AI
+		\item Simple AI: Moves within 1 second
+		\begin{itemize}
+			\item Find all possible moves, pick random (within one second)
+		\end{itemize}
+		\item Intermediate AI: Moves within 3 seconds
+		\begin{itemize}
+			\item Count current “points”
+			\item Make a move, see if position is better, move if is, next if not.
+		\end{itemize}
+		\item Expert AI: Moves within 3 seconds
+		% How does the expert AI work?
+	\end{itemize}
+\end{itemize}
+
+%\newpage
+
+\textbf{2.2	Non Functional Requirements}
+\begin{itemize}
+	\item Easily expandable code
+	\begin{itemize}
+		\item Avoid code duplication
+		\item Refactor code when necessary 
+		\item Descriptive documentation
+		\item Good/descriptive variable and method names.
+		\item Little to no hard coding
+	\end{itemize}
+	\item GUI
+	\begin{itemize}
+		\item Readable and comfortable text (contrast between background and text)
+		\item Neutral and good-sized font
+		\item Understandable terms (no obscure chess terms where it can be avoided)
+		\item Visible markers on pieces and of valid moves.
+		\item Good error messages when something goes wrong (i.e. illegal move)
+		\item Distinct pieces (no confusion which piece is which)
+		\item Simple menu, with good names and distinct choices (start game, view high score)
+		\item Readable high score list, top on top, bottom on bottom.
+		\item Regular chess board with regular markers for which spot on the board it belongs to.
+		\item Find licence on everything that is not made by us.
+		\item Create licence on everything we create.
+		\item A sound effect should be played when a piece is moved. Should include an option to turn the sound effect on/off.
+		\item The origin square and the destination square of the previous move should be marked with colors.
+		\begin{itemize}
+			\item En passant, castling, and capturing should be associated with unique colors.
+		\end{itemize}
+		\item Moves conducted by an AI should be accentuated with an animation in order to avoid confusing the human player.
+		\item Should be able to display hints to the human player.
+		\item Should offer the human player a way to pick what piece they want when pawn promotion happens.
+	\end{itemize}
+	\item Documentation
+	\begin{itemize}
+		\item Should give insight into why the code is written the way it is.
+		\item Should describe what each API item (class, interface, package, method, etc.) does.
+		\item Should be descriptive, but not redundant. For instance, a description of a method should give information beyond what the method name already does.
+		\item The first sentence of a doc comment should be a summary sentence. It should contain a concise but complete description of the API item.
+		\item Should be written in 3rd person. For instance, "gets the name" is preferred over "get the name".
+		\item Objects created from the current class should be referred to as “this”, not “the”.
+		\item Should include all relevant tags (@return, @param, @author, @version, etc.).
+	\end{itemize}
+\end{itemize}
+
+\vspace{5mm}
+\textbf{2.3	User Stories}\\
+	\begin{itemize}
+	
+	\item As a user I want a start menu so that I can choose to play against another human player or a machine player.
+	\item As a user I want a menu so that I can choose between at least three intelligence levels of the machine player.
+	\item As a user I want the program to have a 2D chessboard with visually appealing pieces and board layouts that follow standard rules of chess so that I can play a simulated game of chess.
+	\item As a user I want the program to keep track of the results of each game so that the user can see a ranking of human players based on how many matches they have won.
+
+	\item As a user I want the program to stop me from making illegal moves and to carry out legitimate features of standard chess rules.
+	\item As a user I want the program to contain a timer to show how long a game has lasted.
+	\item As a user I want the program to end a game of chess when a player is in checkmate.
+	\item As a user I want the program to have a menu selection where I can get an overview of the game rules.
+	\end{itemize}
+\vspace{5mm}
+
+\newpage
+
+\textbf{2.4	Use case diagrams}\\
+
+\end{flushleft}
+
+
+\begin{figure}[h]
+		\includegraphics*[scale=0.8]{User_case_diagram_1}
+	\caption{Use case diagram }
+	
+\end{figure}
+
+\begin{figure}[h]
+		\includegraphics*[scale=0.8]{User_case_diagram_2}
+	\caption{Use case diagram }
+	
+\end{figure}
+
+
+\clearpage
+\begin{flushleft}
+\vspace{5mm}	
+\textbf{2.5	Fully dressed use cases}\\
+\vspace{3mm}
+	
+\textbf{2.5.1	Use case for Multiplayer}\\
+\vspace{3mm}
+	\textbf {Use Case Name:} Multiplayer chess game\\
+	\vspace{1mm}
+	Scope: Chess Game\\
+	\vspace{1mm}
+	Primary actor: Player\\
+	\vspace{1mm}
+	\textbf{Stakeholders and interests:}\\
+	\begin{itemize}
+	
+		\item Player: Wants to play a game with an opponent. Only legal moves. Score should be saved. Time is kept track of.\\
+	
+		\item Opponent: Wants to play a game against player. Only legal moves. Score should be saved. Time is kept track of.\\
+	
+		\item High score holders: All scores are safely kept track of.
+		
+	\end{itemize}
+	
+	Precondition: Player has access to game and is identified if in high score list.\\
+	\vspace{1mm}
+	Postcondition: Player successfully played a game, score is recorded in system.\\
+	\vspace{2mm}
+	\textbf{Main Success Scenario (or Basic Flow)}\\
+	
+	\begin{enumerate}
+	
+	\item	 Player wants to play a multi player chess game
+	\item 	 Player opens the program
+	\item 	 Player gets a menu displayed
+	\item 	 Player chooses to play multi player game
+	\item 	 Screen with choosing of names and white/black for player and opponent
+	\item 	 System keeps track of time passed for Player and Opponent
+	\item 	White makes a move
+	\item	Black makes a move\\
+	(Repeats step 7 and 8, until game is done.)
+	\item 	System saves the scores of Player and Opponent
+	\item 	System displays end menu, with options of new game, ranking and end
+	
+\end{enumerate}
+	
+	\textbf{Extensions:} \\
+	
+\hspace{5mm} 6 a. Time runs out for Player/Opponent\\
+\hspace{5mm} 6 a1. The Player with time left wins. Game ends and scores are saved. Go to step 9\\
+\hspace{5mm} 7 a. Player makes illegal move\\
+\hspace{5mm} 7 a1. Program shows a message, and lets Player try again\\
+\hspace{5mm} 7 b. Player quits\\
+\hspace{5mm} 7 b1. System goes to step 9\\
+\vspace{3mm}
+
+Technology and Data Variations List:\hspace{3mm} Different computers (MAC, PC)\\
+Frequency of occurrence:\hspace{3mm} Very often\\
+Special Requirements:\hspace{3mm} Should run smoothly\\
+\vspace{10mm}
+
+\textbf{2.5.2	Use case for Single Player}\\
+\vspace{3mm}
+\textbf {Use Case Name:} Single player chess game\\
+\vspace{1mm}
+Scope: Chess Game\\
+\vspace{1mm}
+Primary actor: Player\\
+\vspace{1mm}
+\textbf{Stakeholders and interests:}\\
+
+\begin{itemize}	
+	\item Player: Wants to play a game with an opponent. Only legal moves. Score should be saved. Time is kept track of.\\	
+	\item High score holders: All scores are safely kept track of.	
+\end{itemize}
+
+	Precondition: Player has access to game and is identified if in high score list.\\
+	\vspace{1mm}
+	Postcondition: Player successfully played a game, score is recorded in system.\\
+	\vspace{2mm}
+\newpage
+	\textbf{Main Success Scenario (or Basic Flow)}\\
+
+
+
+
+\begin{enumerate}	
+\item Player wants to play a single player chess game
+\item Player opens the program
+\item Player gets a menu displayed
+\item Chooses to play a single player game
+\item Screen with choosing of name, color and level of intelligence.
+\item System keeps track of time passed for player
+\item White makes a move
+\item Black makes a move\\
+(Repeats step 7 and 8, until game is done.)
+\item System saves the score of Player to the system
+\item System displays end menu, with options of new game, ranking and end.
+\end{enumerate}
+
+\textbf{Extensions:}\\
+6 a. Time runs out for Player\\
+6 a1. Player loses game. Go to step 9\\
+7 a. Player makes illegal move\\
+7 a1. Program shows a message, and lets Player try again.\\
+7 b. Player quits\\
+7 b1. Player presses quit\\
+7 b2. System goes to step 9\\
+\vspace{3mm}
+
+Technology and Data Variations List:\hspace{3mm} Different computers (MAC, PC)\\
+Frequency of occurrence:\hspace{3mm} Very often\\
+Special Requirements:\\
+\hspace{5mm} - Three level of intelligence, novice, intermediate and expert\\
+\hspace{5mm} - Should run smoothly\\
+\vspace{10mm}
+
+\vspace{10mm}
+
+\newpage
+\begin{Large}\textbf{3.	Domain Model}\\	
+\end{Large}
+\vspace{3mm}
+\textbf{3.1	Class Diagram}
+
+\begin{figure}[h]
+	\includegraphics*[scale=0.30]{Class-diagram}
+	\caption{Class Diagram.}	
+\end{figure}
+	
+\end{flushleft}
+\end{document}
