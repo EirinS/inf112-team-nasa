@@ -3,10 +3,8 @@ package game.chessGame;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
-import pieces.IPiece;
 import pieces.PieceColor;
-import pieces.pieceClasses.Rook;
-import register.Player;
+import db.Player;
 
 import java.util.ArrayList;
 

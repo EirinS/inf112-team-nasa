@@ -1,7 +1,5 @@
 package db;
 
-import register.Player;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -140,14 +138,25 @@ public class Database implements IDatabase {
     }
 
     @Override
-    public boolean updatePlayer(String playerName, int rating, int wins, int losses, int draws) throws SQLException {
+    public boolean isPlayerRegistered(String playerName) {
+        try {
+            return getPlayer(playerName) != null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updatePlayer(String playerName, int rating, int win_lose_draw) throws SQLException {
 
         // Check if player exists.
-        if (getPlayer(playerName) == null) {
+        Player player = getPlayer(playerName);
+        if (player == null) {
             System.out.println("Player must exist before updating.");
             return false;
         }
 
-        return executeQuery(Queries.updatePlayer(playerName, rating, wins, losses, draws));
+        return executeQuery(Queries.updatePlayer(player, rating, win_lose_draw));
     }
 }

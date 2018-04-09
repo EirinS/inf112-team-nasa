@@ -1,7 +1,5 @@
 package db;
 
-import register.Player;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -31,14 +29,19 @@ public interface IDatabase {
     Player getPlayer(String playerName) throws SQLException;
 
     /**
+     * Checks if a player is registered with a given name.
+     * @param playerName Player name to lookup
+     * @return True if player is registered, false otherwhise.
+     */
+    boolean isPlayerRegistered(String playerName);
+
+    /**
      * Updates the player in the database given a playername.
      * @param playerName Player to look for
      * @param rating New rating
-     * @param wins New wins
-     * @param losses New losses
-     * @param draws New draws
+     * @param win_lose_draw 0 = win, 1 = lose, 2 = draw
      * @return True if ok, false if error during updating.
      * @throws SQLException if database error.
      */
-    boolean updatePlayer(String playerName, int rating, int wins, int losses, int draws) throws SQLException;
+    boolean updatePlayer(String playerName, int rating, int win_lose_draw) throws SQLException;
 }

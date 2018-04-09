@@ -1,13 +1,11 @@
 package db;
 
-import register.Player;
-
 class Queries {
 
     private static String tableName = "public.highscores";
 
     static String listPlayers() {
-        return "SELECT * FROM " + tableName;
+        return "SELECT * FROM " + tableName + " ORDER BY rating DESC";
     }
 
     static String registerPlayer(Player player) {
@@ -30,7 +28,10 @@ class Queries {
         );
     }
 
-    static String updatePlayer(String playerName, int rating, int wins, int losses, int draws) {
+    static String updatePlayer(Player player, int rating, int win_lose_draw) {
+        int wins = player.getWins() + (win_lose_draw == 0 ? 1 : 0);
+        int losses = player.getLosses() + (win_lose_draw == 1 ? 1 : 0);
+        int draws = player.getDraws() + (win_lose_draw == 2 ? 1 : 0);
         return String.format(
                 "UPDATE %s SET rating='%d', wins='%d', losses='%d', draws='%d' WHERE name='%s'",
                 tableName,
@@ -38,7 +39,7 @@ class Queries {
                 wins,
                 losses,
                 draws,
-                playerName
+                player.getName()
         );
     }
 }

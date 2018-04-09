@@ -3,7 +3,7 @@ package tests.Database;
 import db.Database;
 import org.junit.Before;
 import org.junit.Test;
-import register.Player;
+import db.Player;
 
 import java.sql.SQLException;
 
@@ -46,7 +46,7 @@ public class DatabaseTests {
 
         // Update test-user
         try {
-            db.updatePlayer(TEST_USER, 2000, 20, 0, 3);
+            db.updatePlayer(TEST_USER, 2000, 1);
         } catch (SQLException e) {
             e.printStackTrace();
             fail("Should not fail");

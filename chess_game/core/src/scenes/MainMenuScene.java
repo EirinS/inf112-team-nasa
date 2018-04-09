@@ -1,5 +1,6 @@
 package scenes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -27,11 +28,11 @@ import game.WindowInformation;
 
 import pieces.PieceColor;
 import player.AILevel;
+import db.Player;
 
 /**
- * 
  * This class initialize and manipulate the graphical elements in the main menu of the user interface.
- * 
+ *
  * @author sofia
  */
 
@@ -58,10 +59,10 @@ public class MainMenuScene extends AbstractScene {
     private ScrollPane scorePane;
     private Window window;
     private VerticalGroup scoreGroup;
-    
+
     //Navigation assistance
     private boolean playerOne;
-    
+
 
     private GameInfo gameInfo;
 
@@ -81,7 +82,6 @@ public class MainMenuScene extends AbstractScene {
     public void buildStage() {
         if (built) {
             screenGameMenu();
-            Chess.getPlayerRegister().loadPlayers();
             if (gameInfo != null) {
                 gameInfo.setPlayerColor(null);
                 gameInfo.setOpponent(null);
@@ -159,14 +159,14 @@ public class MainMenuScene extends AbstractScene {
         //Elements in score screen
         headerScore = new Label("High scores:", skin, "title-plain");
         scoreList = new List<Actor>(skin);
-       // scorePane = new ScrollPane(scoreList, skin, "default");
+        // scorePane = new ScrollPane(scoreList, skin, "default");
         scoreGroup = new VerticalGroup();
         scorePane = new ScrollPane(scoreGroup, skin, "default");
-        scorePane.setPosition(defaultWidth/1.7f, WindowInformation.HEIGHT / 13);
+        scorePane.setPosition(defaultWidth / 1.7f, WindowInformation.HEIGHT / 13);
         headerScore.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
-        
+
         name = new Label("Name", skin, "title");
-        win = new Label("Win rate", skin, "title"); 
+        win = new Label("Win rate", skin, "title");
         lose = new Label("Loss rate", skin, "title");
         draw = new Label("Draw rate", skin, "title");
         window = new Window("", skin);
@@ -174,7 +174,7 @@ public class MainMenuScene extends AbstractScene {
         window.add(win);
         window.add(lose);
         window.add(draw);
-        window.setPosition(defaultWidth/1.7f, defaultHeight*7.5f);
+        window.setPosition(defaultWidth / 1.7f, defaultHeight * 7.5f);
         window.setMovable(false);
 
         //Elements in multiplayer
@@ -185,7 +185,7 @@ public class MainMenuScene extends AbstractScene {
         //Multiscreen
         backToChooseGame = new Button(skin, "left");
         backToChooseGame.setPosition(centreWidth / 3.8f, WindowInformation.HEIGHT / 1.2f);
-        
+
     }
 
 
@@ -225,8 +225,8 @@ public class MainMenuScene extends AbstractScene {
         difficulty.setSize(defaultWidth, defaultHeight / 1.5f);
         black.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
         white.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
-        scorePane.setSize(defaultWidth*2.3f, defaultHeight * 7);
-        window.setSize(defaultWidth*2.3f, defaultHeight*1.8f);
+        scorePane.setSize(defaultWidth * 2.3f, defaultHeight * 7);
+        window.setSize(defaultWidth * 2.3f, defaultHeight * 1.8f);
     }
 
 
@@ -341,7 +341,6 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Chess.getPlayerRegister().loadPlayers(); // Force-reload.
                 gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
                 gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
                 gameInfo.getPlayer().loadRating();
@@ -381,40 +380,45 @@ public class MainMenuScene extends AbstractScene {
                 error.setVisible(false);
 
                 if (playerOne) {
-                    String name = username.getText().replaceAll("\\s+", "");;
-                    Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
+                    String name = username.getText().replaceAll("\\s+", "");
+                    ;
+                    Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
                     if (exists) {
-                        gameInfo = new GameInfo(Chess.getPlayerRegister().getPlayer(name));
-                        screenGameMenu();
-                        signInListener();
+                        try {
+                            gameInfo = new GameInfo(Chess.getDatabase().getPlayer(name));
+                            screenGameMenu();
+                            signInListener();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
                     } else {
                         error.setVisible(true);
                         signInListener();
-                        return;
                     }
                 } else {
-                    String name = username.getText().replaceAll("\\s+", "");;
-                    Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
-                    
-                    if(name.equals(gameInfo.getPlayer().getName())){
-                    	error.setText("Already signed in");
+                    String name = username.getText().replaceAll("\\s+", "");
+                    ;
+                    Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
+
+                    if (name.equals(gameInfo.getPlayer().getName())) {
+                        error.setText("Already signed in");
                         error.setVisible(true);
                         signInListener();
-                        return;
-                    }
-                    else if (exists) {
-                        Chess.getPlayerRegister().loadPlayers(); // Force-reload.
-                        gameInfo.setOpponent(Chess.getPlayerRegister().getPlayer(name));
-                        gameInfo.setGameType(GameType.MULTIPLAYER);
-                        gameInfo.setPlayerColor(PieceColor.WHITE);
-                        gameInfo.getPlayer().loadRating();
-                        SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
-                        signInListener();
+                    } else if (exists) {
+                        try {
+                            gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
+                            gameInfo.setGameType(GameType.MULTIPLAYER);
+                            gameInfo.setPlayerColor(PieceColor.WHITE);
+                            gameInfo.getPlayer().loadRating();
+                            SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+                            signInListener();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
                     } else {
-                    	error.setText("Alias not registered.");
+                        error.setText("Alias not registered.");
                         error.setVisible(true);
                         signInListener();
-                        return;
                     }
                 }
             }
@@ -438,26 +442,19 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                String name = registerUsername.getText().replaceAll("\\s+", "");;
-                Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
-                    
+                String name = registerUsername.getText().replaceAll("\\s+", "");
+                Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
+
                 error.setText("This alias already exists! Please choose another one.");
-                if (playerOne) {
-                    if (exists) {
-                        error.setVisible(true);
-                    } else {
-                        Chess.getPlayerRegister().registerPlayer(name);
-                        screenSignIn();
-                    }
-
+                if (exists) {
+                    error.setVisible(true);
                 } else {
-
-                    if (exists) {
-                        error.setVisible(true);
-                    } else {
-                        Chess.getPlayerRegister().registerPlayer(name);
-                        screenSignIn();
+                    try {
+                        Chess.getDatabase().registerPlayer(new Player(name));
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
                     }
+                    screenSignIn();
                 }
                 signUpListener();
             }
@@ -508,16 +505,18 @@ public class MainMenuScene extends AbstractScene {
         scores.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                Chess.getPlayerRegister().loadPlayers(); // Force-reload.
-
                 scoreGroup.clearChildren();
-                ArrayList<String> highscores = Chess.getPlayerRegister().getHighscores();
 
-                for (int i = 0; i < highscores.size(); i++) {
-                	String current = highscores.get(i).replaceAll(" ", " / ");
-                	Label line = new Label(current, skin, "title-plain");
-                	scoreGroup.addActor(line);
+                try {
+                    ArrayList<Player> players = Chess.getDatabase().listPlayers();
+                    for (Player p : players) {
+                        Label line = new Label(p.getNameRating(), skin, "title-plain");
+                        scoreGroup.addActor(line);
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
                 }
+
                 screenScore();
                 scoreListener();
             }

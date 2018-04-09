@@ -1,5 +1,6 @@
 package game.chessGame;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,8 +18,7 @@ import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
 
 import player.AI;
-import register.Player;
-import register.PlayerRegister;
+import db.Player;
 import setups.DefaultSetup;
 import sound.AudioManager;
 /**
@@ -27,6 +27,7 @@ import sound.AudioManager;
  * deciding when the game is over and updating player statistics after a game.
  */
 public class ChessGame implements IChessGame {
+
 	private GameInfo gameInfo;
 	private IBoard board;
 	private AI computerAI;
@@ -388,7 +389,11 @@ public class ChessGame implements IChessGame {
 	 */
 	private void updateSinglePlayerRating(Player p, int win_lose_draw) {
 		int newRating = calculateNewRating(p.getRating(), computerAI.getRating(), win_lose_draw);
-		Chess.getPlayerRegister().updatePlayerRating(p.getName(), newRating, win_lose_draw);
+		try {
+			Chess.getDatabase().updatePlayer(p.getName(), newRating, win_lose_draw);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -403,8 +408,6 @@ public class ChessGame implements IChessGame {
 		int pRating = p.getRating();
 		int oRating = o.getRating();
 		
-		PlayerRegister pr = Chess.getPlayerRegister();
-		
 		int op_win_lose_draw;
 		if(win_lose_draw == 1)
 			op_win_lose_draw = win_lose_draw+1;
@@ -415,10 +418,14 @@ public class ChessGame implements IChessGame {
 			
 		int pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
 		int oNewRating = calculateNewRating(oRating, pRating, op_win_lose_draw);
-		
-		pr.updatePlayerRating(pName, pNewRating, win_lose_draw);
-		pr.updatePlayerRating(oName, oNewRating, op_win_lose_draw);
-		
+
+		try {
+			Chess.getDatabase().updatePlayer(pName, pNewRating, win_lose_draw);
+			Chess.getDatabase().updatePlayer(oName, oNewRating, op_win_lose_draw);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	@Override
