@@ -1,10 +1,13 @@
 package register;
 
+import db.Database;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Scanner;
@@ -55,6 +58,14 @@ public class PlayerRegister {
                 players.add(p);
             }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // TODO: 09.04.2018 testing
+        try {
+            ArrayList<Player> players = Database.listPlayers();
+            System.out.println(players);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
