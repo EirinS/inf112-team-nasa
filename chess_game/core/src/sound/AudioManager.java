@@ -13,6 +13,7 @@ public class AudioManager
 {
 	// fetched from https://freesound.org/people/mh2o/sounds/351518/
 	static Sound moveSound = Gdx.audio.newSound(Gdx.files.internal("sound/chessMove.wav"));
+	// https://freesound.org/people/harrietniamh/sounds/415083/
 	static Sound hintSound = Gdx.audio.newSound(Gdx.files.internal("sound/hint.wav"));
 	
 	
