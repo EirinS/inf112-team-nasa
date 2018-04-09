@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/tests/Database/DatabaseTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/db/Database.java" afterPath="$PROJECT_DIR$/core/src/db/Database.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/db/Queries.java" afterPath="$PROJECT_DIR$/core/src/db/Queries.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/register/Player.java" afterPath="$PROJECT_DIR$/core/src/register/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/AllTests.java" afterPath="$PROJECT_DIR$/core/src/tests/AllTests.java" />
-    </list>
+    <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
     <ignored path="$PROJECT_DIR$/desktop/.gradle/" />
@@ -2028,7 +2021,7 @@
       <workItem from="1522493414379" duration="567000" />
       <workItem from="1522746612366" duration="28000" />
       <workItem from="1523268537552" duration="5323000" />
-      <workItem from="1523278436154" duration="4928000" />
+      <workItem from="1523278436154" duration="4992000" />
     </task>
     <servers />
   </component>
@@ -2065,7 +2058,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10846000" />
+    <option name="totallyTimeSpent" value="10910000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
