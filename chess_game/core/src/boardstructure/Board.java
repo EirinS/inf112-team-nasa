@@ -251,19 +251,26 @@ public class Board implements IBoard {
 					moves.add(rookMove);
 				}
 			}
-		//if square moving to is empty, check for passant or do regular move
+		} else if (m.getMoveType() == MoveType.PROMOTION) {
+			m.getFrom().takePiece();
+			m.getFrom().putPiece(new Queen(m.getMovingPiece().getColor()));
+			if(m.getTo().isEmpty())
+				m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
+			else 
+				m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());	
+			printOutBoard();
+			//if square moving to is empty, check for passant or do regular move
+		
 		} else if(m.getTo().isEmpty()) {
 			if (m.getMoveType() == MoveType.ENPASSANT) {
 				getSquare(m.getTo().getX(), m.getFrom().getY()).takePiece();
-			} else if (m.getMoveType() == MoveType.PROMOTION) {
-				m.getFrom().takePiece(); m.getFrom().putPiece(new Queen(m.getMovingPiece().getColor()));
 			} 
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
 			//do a capturing move
 		} else {
 			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
 		}
-		
+
 		history.add(m);
 		moves.add(m);
 		//printOutBoard();
