@@ -86,4 +86,8 @@ public class Player implements Comparable<Player> {
     public String getNameRating() {
         return name + " (" + rating + ")";
     }
+
+    public String getHighscoreRow() {
+        return String.format("%s\t\t%d\t%d\t%d", name, wins, losses, draws);
+    }
 }

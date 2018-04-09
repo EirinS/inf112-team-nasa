@@ -7,19 +7,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import game.Chess;
 
 import game.chessGame.GameInfo;
@@ -49,7 +41,11 @@ public class MainMenuScene extends AbstractScene {
     private static final int centreWidth = (WindowInformation.WIDTH / 2) - (defaultWidth / 2);
     private ArrayList<Actor> actors;
     private Image imgBackground;
-    private Label staticText, mainMenu, headerScore, error, name, win, lose, draw;
+    private Label staticText;
+    private Label mainMenu;
+    private Label headerScore;
+    private Label error;
+    private Label lose;
     private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
             black, white, signInP2;
     private TextField username, registerUsername;
@@ -165,12 +161,14 @@ public class MainMenuScene extends AbstractScene {
         scorePane.setPosition(defaultWidth / 1.7f, WindowInformation.HEIGHT / 13);
         headerScore.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
 
-        name = new Label("Name", skin, "title");
-        win = new Label("Win rate", skin, "title");
-        lose = new Label("Loss rate", skin, "title");
-        draw = new Label("Draw rate", skin, "title");
+        Label name = new Label("Name", skin, "title");
+        Label rating = new Label("Rating", skin, "title");
+        Label win = new Label("Wins", skin, "title");
+        Label lose = new Label("Losses", skin, "title");
+        Label draw = new Label("Draws", skin, "title");
         window = new Window("", skin);
         window.add(name);
+        window.add(rating);
         window.add(win);
         window.add(lose);
         window.add(draw);
@@ -509,9 +507,22 @@ public class MainMenuScene extends AbstractScene {
 
                 try {
                     ArrayList<Player> players = Chess.getDatabase().listPlayers();
-                    for (Player p : players) {
-                        Label line = new Label(p.getNameRating(), skin, "title-plain");
-                        scoreGroup.addActor(line);
+                    for (int i = 0; i < players.size(); i++) {
+                        Player p = players.get(i);
+                        Label name = new Label(p.getName(), skin, "title-plain");
+                        Label rating = new Label(String.valueOf(p.getRating()), skin, "title-plain");
+                        Label win = new Label(String.valueOf(p.getWins()), skin, "title-plain");
+                        Label lose = new Label(String.valueOf(p.getLosses()), skin, "title-plain");
+                        Label draw = new Label(String.valueOf(p.getDraws()), skin, "title-plain");
+                        HorizontalGroup group = new HorizontalGroup();
+                        group.rowAlign(Align.left);
+                        group.space(30f).left();
+                        group.addActor(name);
+                        group.addActor(rating);
+                        group.addActor(win);
+                        group.addActor(lose);
+                        group.addActor(draw);
+                        scoreGroup.addActor(group);
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
