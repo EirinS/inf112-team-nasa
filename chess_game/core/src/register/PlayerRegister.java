@@ -60,14 +60,6 @@ public class PlayerRegister {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        // TODO: 09.04.2018 testing
-        try {
-            ArrayList<Player> players = Database.listPlayers();
-            System.out.println(players);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public Player getPlayer(String playerName) {

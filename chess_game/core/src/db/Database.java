@@ -6,16 +6,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class Database {
+public class Database implements IDatabase {
 
     // Database url connection to Amazon RDS.
-    private static String username = "team_nasa";
-    private static String password = "inf112ergoy!";
-    private static String dbUrl = "jdbc:postgresql://inf112-team-nasa.cy6mirlma7zd.eu-west-2.rds.amazonaws.com:5432/players";
+    private String username = "team_nasa";
+    private String password = "inf112ergoy!";
+    private String dbUrl = "jdbc:postgresql://inf112-team-nasa.cy6mirlma7zd.eu-west-2.rds.amazonaws.com:5432/players";
 
-    private static Connection connection;
+    private Connection connection;
 
-    private static Connection connect() {
+    private Connection connect() {
         Properties props = new Properties();
         props.put("user", username);
         props.put("password", password);
@@ -31,7 +31,7 @@ public class Database {
         return conn;
     }
 
-    private static Connection getConnection() {
+    private Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) connection = connect();
             if (connection == null) {
@@ -44,7 +44,8 @@ public class Database {
         return connection;
     }
 
-    public static ArrayList<Player> listPlayers() throws SQLException {
+    @Override
+    public ArrayList<Player> listPlayers() throws SQLException {
         ArrayList<Player> players = new ArrayList<>();
         String query = Queries.ALL;
         Statement stmt = null;
@@ -69,5 +70,20 @@ public class Database {
             if (stmt != null) { stmt.close(); }
         }
         return players;
+    }
+
+    @Override
+    public boolean registerPlayer(Player player) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public Player getPlayer(String playerName) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean updatePlayer(String playerName, int rating, int wins, int losses, int draws) throws SQLException {
+        return false;
     }
 }
