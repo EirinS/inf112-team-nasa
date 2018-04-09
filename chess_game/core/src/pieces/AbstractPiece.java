@@ -1,8 +1,5 @@
 package pieces;
 
-import static pieces.PieceColor.BLACK;
-import static pieces.PieceColor.WHITE;
-
 import java.util.ArrayList;
 
 import boardstructure.IBoard;
@@ -126,7 +123,7 @@ public abstract class AbstractPiece implements IPiece {
 		}
 		return false;
 	}
-
+ 
 	/**
 	 * Checks for every position that a piece can move to, and makes sure that no 
 	 * open space will result in a position where your own king is in check.
@@ -149,16 +146,7 @@ public abstract class AbstractPiece implements IPiece {
 				movePiece(from, to);
 			} else {
 				captureEnemyPieceAndMovePiece(from, to);
-			}
-			
-			/*/testing purposes
-			System.out.println("Start");
-			for(Square sq : testBoard.getSquares())
-				if(!sq.isEmpty()) {
-					System.out.println(m.getTo().getX() + " " + m.getTo().getY());
-					System.out.println(sq.getX() + " " + sq.getY() + " " + sq.getPiece());
-				}*/
-			
+			}			
 			
 			ArrayList<IPiece> threatened = testBoard.piecesThreatenedByOpponent(getColor(), opponent);
 			if (!threatensKing(threatened)) {

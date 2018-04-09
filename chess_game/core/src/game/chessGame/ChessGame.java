@@ -20,6 +20,7 @@ import player.AI;
 import register.Player;
 import register.PlayerRegister;
 import setups.DefaultSetup;
+import sound.AudioManager;
 /**
  * The ChessGame class ties together and keeps track of logic surrounding the current game of chess. 
  * This includes an implementation of the game clock, 
@@ -43,7 +44,7 @@ public class ChessGame implements IChessGame {
 		this.listener = listener;
 		playerSeconds = 300;
 		opponentSeconds = 300;
-
+		
 		// Set first turn and board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
 
@@ -115,6 +116,9 @@ public class ChessGame implements IChessGame {
 			return;
 		}
 		listener.moveOk(moves);
+		
+		AudioManager.playMoveSound();
+		
 		turnTimer();
 		boardHistory.add(board.copy());
 		
@@ -416,7 +420,12 @@ public class ChessGame implements IChessGame {
 		pr.updatePlayerRating(oName, oNewRating, op_win_lose_draw);
 		
 	}
-
+	
+	@Override
+	public IBoard getBoard() {
+		return this.board;
+	}
+	
 	@Override
 	public ArrayList<Square> getSquares() {
 		return board.getSquares();

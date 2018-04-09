@@ -38,7 +38,6 @@ public class PawnTest {
 	public void movingTwoSquaresIsPawnJump() {
 		IBoard b = new Board(8, PieceColor.WHITE);
 		Square from = b.getSquare(0, 6);
-		Square to = b.getSquare(0, 4);
 		Pawn p = new Pawn(PieceColor.WHITE);
 		from.putPiece(p);
 		ArrayList<Move> moves = (p.getLegalMoves(from, b, PieceColor.WHITE));

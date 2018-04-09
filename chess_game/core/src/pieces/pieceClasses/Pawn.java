@@ -20,24 +20,24 @@ import static pieces.PieceColor.BLACK;
  * @author marianne
  */
 public class Pawn extends AbstractPiece {
-	
-	private int dy;
 
 	/**
 	 * Constructs a pawn
-	 *
-	 * @param color the color of the pawn
+	 * @param color the color of this pawn
 	 */
 	public Pawn(PieceColor color) {
 		this.color = color;
 		this.hasMoved = false;
 		this.inPlay = true;
 	}
-
-	//TODO en passant
 	
 	/**
 	 * Gets a list of all legal moves for this pawn
+	 * @param x the x coordinate of this pawn
+	 * @param y the y coordinate of this pawn
+	 * @param board the chess board this pawn is placed upon
+	 * @param playerOne the color of player one's pieces
+	 * @return a list of all legal moves for this piece
 	 */
 	@Override
 	protected ArrayList<Move> allFreeMoves(int x, int y, IBoard board, PieceColor playerOne) {
@@ -82,7 +82,7 @@ public class Pawn extends AbstractPiece {
 	}
 	
 	/**
-	 * returns the legal direction for this pawn to move in.
+	 * Returns the legal direction for this pawn to move in.
 	 * @param board, to find where white and black is located
 	 * @return -1 if moving down, 1 if moving up (0,0 top left corner)
 	 */
@@ -147,6 +147,15 @@ public class Pawn extends AbstractPiece {
 		return reachable;
 	}
 
+	/**
+	 * Gets a list of all enemies within reach of this pawn.
+	 * @param x the x coordinate of this pawn
+	 * @param y the y coordinate of this pawn
+	 * @param the board this pawn is set upon
+	 * @param opponent the color of this pawn's enemy pieces
+	 * @param check
+	 * @return a list of reachable enemy pieces
+	 */
 	@Override
 	protected ArrayList<IPiece> enemiesReached(int x, int y, IBoard board, PieceColor opponent, ArrayList<Move> check) {
 		ArrayList<IPiece> reach = new ArrayList<IPiece>();
@@ -168,7 +177,11 @@ public class Pawn extends AbstractPiece {
 		}
 		return reach;
 	}
-
+	
+	/**
+	 * Copies this pawn.
+	 * @return a copy of this pawn
+	 */
 	@Override
 	public IPiece copy() {
 		Pawn p = new Pawn(this.getColor());
@@ -179,6 +192,7 @@ public class Pawn extends AbstractPiece {
 
 	/**
 	 * Returns a string that represents this pawn.
+	 * @return string representation of a pawn
 	 */
 	@Override
 	public String toString() {

@@ -9,7 +9,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
-        
 
     }
 }
@@ -17,6 +16,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
+    apply plugin: 'java'
 
     version = '1.0'
     ext {
@@ -33,6 +33,11 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
     }
 }
 
