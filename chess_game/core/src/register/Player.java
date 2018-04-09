@@ -14,6 +14,10 @@ public class Player implements Comparable<Player> {
     private int losses;
     private int draws;
 
+    public Player(String name) {
+        this(name, 1500, 0, 0, 0);
+    }
+
     public Player(String name, int rating, int wins, int losses, int draws) {
         this.name = name;
         this.rating = rating;

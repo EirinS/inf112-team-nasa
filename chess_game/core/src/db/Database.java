@@ -15,6 +15,10 @@ public class Database implements IDatabase {
 
     private Connection connection;
 
+    public Database() {
+        connection = getConnection();
+    }
+
     private Connection connect() {
         Properties props = new Properties();
         props.put("user", username);
@@ -47,7 +51,7 @@ public class Database implements IDatabase {
     @Override
     public ArrayList<Player> listPlayers() throws SQLException {
         ArrayList<Player> players = new ArrayList<>();
-        String query = Queries.ALL;
+        String query = Queries.listPlayers();
         Statement stmt = null;
         try {
             Connection connection = getConnection();
@@ -67,23 +71,83 @@ public class Database implements IDatabase {
                 players.add(new Player(name, rating, wins, losses, draws));
             }
         } finally {
-            if (stmt != null) { stmt.close(); }
+            if (stmt != null) {
+                stmt.close();
+            }
         }
         return players;
     }
 
+    private boolean executeQuery(String query) throws SQLException {
+        Statement stmt = null;
+        try {
+            Connection connection = getConnection();
+            if (connection == null) {
+                System.out.println("Can not query empty connection!");
+                return false;
+            }
+
+            stmt = connection.createStatement();
+            int rowsAffected = stmt.executeUpdate(query);
+            return rowsAffected > 0;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+
     @Override
     public boolean registerPlayer(Player player) throws SQLException {
-        return false;
+
+        // Check if player already exists.
+        if (getPlayer(player.getName()) != null) {
+            System.out.println("Player already exists.");
+            return false;
+        }
+
+        return executeQuery(Queries.registerPlayer(player));
     }
 
     @Override
     public Player getPlayer(String playerName) throws SQLException {
-        return null;
+        String query = Queries.getPlayer(playerName);
+        Statement stmt = null;
+        try {
+            Connection connection = getConnection();
+            if (connection == null) {
+                System.out.println("Can not query empty connection!");
+                return null;
+            }
+
+            stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                String name = rs.getString("name");
+                int rating = rs.getInt("rating");
+                int wins = rs.getInt("wins");
+                int losses = rs.getInt("losses");
+                int draws = rs.getInt("draws");
+                return new Player(name, rating, wins, losses, draws);
+            } else {
+                return null;
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
     }
 
     @Override
     public boolean updatePlayer(String playerName, int rating, int wins, int losses, int draws) throws SQLException {
-        return false;
+
+        // Check if player exists.
+        if (getPlayer(playerName) == null) {
+            System.out.println("Player must exist before updating.");
+            return false;
+        }
+
+        return executeQuery(Queries.updatePlayer(playerName, rating, wins, losses, draws));
     }
 }
