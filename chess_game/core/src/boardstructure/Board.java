@@ -38,7 +38,7 @@ public class Board implements IBoard {
 			}
 		}
 	}
-	
+
 
 	@Override
 	public List<Move> getAvailableMoves(PieceColor playerColor) {
@@ -240,24 +240,13 @@ public class Board implements IBoard {
 	 * Finds and executes the chosen move.
 	 * @param m, the move that you'll do
 	 * @return the move done
-	 */
+	 */ 
 	private ArrayList<Move> doMove(Move m) {
 		ArrayList<Move> moves = new ArrayList<>();
-		if(m.getMoveType() == MoveType.ENPASSANT) {
-			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
-			history.get(history.size()-1).getTo().takePiece();
-			//printOutBoard();
-		} else if (m.getMoveType() == MoveType.KINGSIDECASTLING) {
-			IPiece moving = m.getMovingPiece();
-			if(moving instanceof King) {
-				Move rookMove = ((King) moving).moveCastling(m.getFrom(), m.getTo(), MoveType.KINGSIDECASTLING, this);
-				if (rookMove != null) {
-					moves.add(rookMove);
-				}
-			}
-		} else if(m.getMoveType() == MoveType.QUEENSIDECASTLING) {
+		//check for castling move
+		if(m.getMoveType() == MoveType.KINGSIDECASTLING || m.getMoveType() == MoveType.QUEENSIDECASTLING) {
 			if(m.getMovingPiece() instanceof King) {
-				Move rookMove = ((King) m.getMovingPiece()).moveCastling(m.getFrom(), m.getTo(), MoveType.QUEENSIDECASTLING, this);
+				Move rookMove = ((King) m.getMovingPiece()).moveCastling(m.getFrom(), m.getTo(), m.getMoveType(), this);
 				if (rookMove != null) {
 					moves.add(rookMove);
 				}
@@ -265,19 +254,23 @@ public class Board implements IBoard {
 		} else if (m.getMoveType() == MoveType.PROMOTION) {
 			m.getFrom().takePiece();
 			m.getFrom().putPiece(new Queen(m.getMovingPiece().getColor()));
-			if(!m.getTo().isEmpty()) {
-				m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
-			}else {
+			if(m.getTo().isEmpty())
 				m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
-			}
-			//printOutBoard();
-		} else if (!m.getTo().isEmpty()){ 
-			//move and capture piece
-			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
-		} else {
-			//regular move
+			else 
+				m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());	
+			printOutBoard();
+			//if square moving to is empty, check for passant or do regular move
+		
+		} else if(m.getTo().isEmpty()) {
+			if (m.getMoveType() == MoveType.ENPASSANT) {
+				getSquare(m.getTo().getX(), m.getFrom().getY()).takePiece();
+			} 
 			m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
+			//do a capturing move
+		} else {
+			m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
 		}
+
 		history.add(m);
 		moves.add(m);
 		//printOutBoard();
@@ -352,7 +345,7 @@ public class Board implements IBoard {
 	@Override
 	public void setHistory(ArrayList<Move> history) {
 		this.history = history;
-		
+
 	}
 
 }

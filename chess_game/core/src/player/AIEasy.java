@@ -13,7 +13,6 @@ import java.util.Random;
  */
 public class AIEasy implements AI, Playable {
 
-	private static AIEasy instance;
 	private static int rating = 500;
 
 	private PieceColor playerColor;
@@ -22,13 +21,13 @@ public class AIEasy implements AI, Playable {
 	public AIEasy(PieceColor playerColor){
 		this.playerColor = playerColor;
 	}
-
+	/*
 	public static AIEasy getInstance(PieceColor playerColor) {
 		if (instance == null)
 			instance = new AIEasy(playerColor);
 		instance.playerColor = playerColor;
 		return instance;
-	}
+	}*/
 
 	@Override
 	public Move calculateMove(IBoard currentBoard) {

@@ -7,13 +7,13 @@ public enum AILevel {
 
 		@Override
 		public AI getAI(PieceColor pieceColor) {
-			return AIEasy.getInstance(pieceColor);
+			return new AIEasy(pieceColor);
 		}
 	}, INTERMEDIATE {
 
 		@Override
 		public AI getAI(PieceColor pieceColor) {
-			return AIMedium.getInstance(pieceColor);
+			return new AIMedium(pieceColor);
 		}
 	}, HARD {
 
