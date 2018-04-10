@@ -117,12 +117,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			}
 		});
 
-		audioBtn = new TextButton("Audio", skin, "toggle");
-		audioBtn.toggle();
+		audioBtn = new TextButton("Mute", skin, "toggle");
 		audioBtn.setSize(audioBtn.getWidth() * 1.5f, audioBtn.getHeight());
 		audioBtn.setPosition(hintBtn.getX() + hintBtn.getWidth() + 5, checkerboard.getPos() + 40);
 		audioBtn.addListener(new ClickListener() {
-
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				AudioManager.toggle();
