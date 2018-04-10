@@ -30,6 +30,7 @@ import pieces.pieceClasses.Rook;
 import player.AI;
 import player.AIMedium;
 
+import sound.AudioManager;
 import sprites.PieceSpriteLoader;
 import styling.Colors;
 
@@ -48,7 +49,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane, promotionTable;
 	private Label topTime, bottomTime;
-	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn;
+	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, audioBtn;
 
 	public GameScene (Chess game, GameInfo gameInfo){
 		this.game = game;
@@ -104,7 +105,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		
 		hintBtn = new TextButton("Hint", skin, "default");
 		hintBtn.setSize(hintBtn.getWidth() * 1.5f, hintBtn.getHeight());
-		hintBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30 + quitBtn.getWidth()/2, checkerboard.getPos() + 40);
+		hintBtn.setPosition(quitBtn.getX(), checkerboard.getPos() + 40);
 		hintBtn.addListener(new ClickListener() {
 
 			@Override
@@ -115,13 +116,25 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 				super.clicked(event, x, y);
 			}
 		});
-		
-		
+
+		audioBtn = new TextButton("Audio", skin, "default");
+		audioBtn.setSize(audioBtn.getWidth() * 1.5f, audioBtn.getHeight());
+		audioBtn.setPosition(hintBtn.getX() + hintBtn.getWidth() + 5, checkerboard.getPos() + 40);
+		audioBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				AudioManager.toggle();
+				super.clicked(event, x, y);
+			}
+		});
+
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
 
 		addActor(quitBtn);
 		addActor(resignBtn);
 		addActor(hintBtn);
+		addActor(audioBtn);
 
 		historyGroup = new VerticalGroup();
 		historyGroup.align(Align.top);
