@@ -127,6 +127,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 				super.clicked(event, x, y);
 			}
 		});
+		if (!AudioManager.audioOn()) audioBtn.toggle();
 
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
 

@@ -36,4 +36,12 @@ public class AudioManager
 	public static void toggle() {
 		on = !on;
 	}
+
+	/**
+	 * Gets the state of the audio
+	 * @return audio on or off
+	 */
+	public static boolean audioOn() {
+		return on;
+	}
 }
