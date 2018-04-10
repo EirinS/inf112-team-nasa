@@ -49,7 +49,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane, promotionTable;
 	private Label topTime, bottomTime;
-	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, audioBtn;
+	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, muteBtn;
 
 	public GameScene (Chess game, GameInfo gameInfo){
 		this.game = game;
@@ -117,24 +117,24 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			}
 		});
 
-		audioBtn = new TextButton("Mute", skin, "toggle");
-		audioBtn.setSize(audioBtn.getWidth() * 1.5f, audioBtn.getHeight());
-		audioBtn.setPosition(hintBtn.getX() + hintBtn.getWidth() + 5, checkerboard.getPos() + 40);
-		audioBtn.addListener(new ClickListener() {
+		muteBtn = new TextButton("Mute", skin, "toggle");
+		muteBtn.setSize(muteBtn.getWidth() * 1.5f, muteBtn.getHeight());
+		muteBtn.setPosition(hintBtn.getX() + hintBtn.getWidth() + 5, checkerboard.getPos() + 40);
+		muteBtn.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				AudioManager.toggle();
 				super.clicked(event, x, y);
 			}
 		});
-		if (!AudioManager.audioOn()) audioBtn.toggle();
+		if (!AudioManager.audioOn()) muteBtn.toggle();
 
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
 
 		addActor(quitBtn);
 		addActor(resignBtn);
 		addActor(hintBtn);
-		addActor(audioBtn);
+		addActor(muteBtn);
 
 		historyGroup = new VerticalGroup();
 		historyGroup.align(Align.top);
