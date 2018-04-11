@@ -1,5 +1,6 @@
 package game;
 
+import boardstructure.IBoard;
 import boardstructure.Move;
 import sound.AudioManager;
 
@@ -78,7 +79,10 @@ public class Checkerboard extends DragListener {
 		highlightPossibleMovesGroup.setZIndex(3);
 		stage.addActor(highlightPossibleMovesGroup);
 		
+		pieceGroup = new Group();
+		pieceGroup.setZIndex(5);		
 		initPieces();
+		stage.addActor(pieceGroup);
 	}
 
 	/**
@@ -126,9 +130,6 @@ public class Checkerboard extends DragListener {
 	}
 
 	private void initPieces() {
-		pieceGroup = new Group();
-		pieceGroup.setZIndex(5);
-
 		for (Square square : initialSquares) {
 			if (square.getPiece() == null) continue;
 			String pieceColor = square.getPiece().getColor() == PieceColor.WHITE ? "w" : "b";
@@ -141,7 +142,14 @@ public class Checkerboard extends DragListener {
 			img.addListener(this);
 			pieceGroup.addActor(img);
 		}
-		stage.addActor(pieceGroup);
+	}
+	
+	public void setThisCheckerBoard(IBoard board) {
+		pieceGroup.clear();
+		initialSquares = board.getSquares();
+		prevMovesGroup.clear();
+		initPieces();
+		//board.printOutBoard();
 	}
 
 	@Override

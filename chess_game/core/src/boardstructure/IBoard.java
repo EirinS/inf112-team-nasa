@@ -184,5 +184,7 @@ public interface IBoard {
 	 * @param history
 	 */
 	public void setHistory(ArrayList<Move> history);
+	
+	void printOutBoard();
 }
 

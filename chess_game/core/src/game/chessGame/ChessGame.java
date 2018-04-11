@@ -47,6 +47,7 @@ public class ChessGame implements IChessGame {
 		
 		// Set first turn and board for standard chess
 		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
+		this.boardHistory.add(board.copy());
 
 		// Load AI
 		if (gameInfo.getLevel() != null) {
@@ -465,5 +466,10 @@ public class ChessGame implements IChessGame {
 	@Override
 	public ArrayList<IBoard> getBoardHistory() {
 		return boardHistory;
+	}
+	
+	@Override
+	public GameInfo getGameInfo() {
+		return this.gameInfo;
 	}
 }

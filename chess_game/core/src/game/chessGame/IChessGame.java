@@ -160,4 +160,9 @@ public interface IChessGame {
 	 * @return the current board in this chessGame
 	 */
 	IBoard getBoard();
+	
+	/**
+	 * @return the current gameInfo of this game.
+	 */
+	GameInfo getGameInfo();
 }
