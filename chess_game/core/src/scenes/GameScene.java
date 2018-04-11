@@ -13,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import game.Chess;
-import game.GameType;
 import game.WindowInformation;
 import game.chessGame.GameInfo;
+import game.chessGame.GameType;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -175,8 +175,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		setNameColors();
 		
 		
-		//only undobutten during multiplayer games. Hint button position altered if 3 or 4 buttons.
-		if(chessGame.getGameInfo().getGameType() != GameType.MULTIPLAYER) {			
+		if(chessGame.getGameInfo().isSinglePlayer()) {			
 			//TODO: Does not work. Nullpointerexception bug.
 			undoBtn = new TextButton("Undo", skin, "default");
 			undoBtn.setSize(undoBtn.getWidth() * 1.5f, undoBtn.getHeight());

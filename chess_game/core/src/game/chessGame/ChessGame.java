@@ -20,6 +20,7 @@ import pieces.pieceClasses.Pawn;
 import player.AI;
 import db.Player;
 import player.AIThreadMove;
+import setups.Chess960Setup;
 import setups.DefaultSetup;
 import sound.AudioManager;
 /**
@@ -48,7 +49,10 @@ public class ChessGame implements IChessGame {
 		opponentSeconds = 300;
 		
 		// Set first turn and board for standard chess
-		this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
+		if(gameInfo.getGameType() == GameType.REGULAR)
+			this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor());
+		else 
+			this.board = (new Chess960Setup()).getInitialPosition(gameInfo.getPlayerColor());
 		this.boardHistory.add(board.copy());
 
 		// Load AI
@@ -72,6 +76,7 @@ public class ChessGame implements IChessGame {
 						if (listener != null) listener.turnTimerElapsed();
 						if (playerSeconds == 0) {
 							finishGame(board.getTurn());
+							playerTimer.cancel();
 						}
 					}
 				},0, 1000);
@@ -92,6 +97,7 @@ public class ChessGame implements IChessGame {
 						if (listener != null) listener.turnTimerElapsed();
 						if (opponentSeconds == 0) {
 							finishGame(gameInfo.getPlayerColor().getOpposite());
+							opponentTimer.cancel();
 						}
 					}
 				},0, 1000);

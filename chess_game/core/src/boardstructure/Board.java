@@ -5,8 +5,10 @@ import java.util.List;
 
 import pieces.IPiece;
 import pieces.PieceColor;
+import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
 import pieces.pieceClasses.Queen;
+import pieces.pieceClasses.Rook;
 
 public class Board implements IBoard {
 
@@ -234,6 +236,17 @@ public class Board implements IBoard {
 		}
 		// error message to tell user move is illegal.
 		return new ArrayList<>();
+	}
+	
+	@Override
+	public ArrayList<Integer> getBishopPos(int y) {
+		ArrayList<Integer> bishop = new ArrayList<>();
+		for(int i = 0; i < getDimension(); i++) {
+			if(getSquare(i,y).getPiece() instanceof Bishop) {
+				 bishop.add(i);
+			}
+		}
+		return bishop;
 	}
 
 	/**

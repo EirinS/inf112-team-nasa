@@ -36,6 +36,13 @@ public interface IBoard {
 	public Square getKingPos(PieceColor kingColor);
 	
 	/**
+	 * Get all bishops on the axis specified. (used for chess960)
+	 * @param y
+	 * @return x position of the rook
+	 */
+	public ArrayList<Integer> getBishopPos(int y);
+	
+	/**
 	 * Get a specific square in board
 	 * @return square
 	 */

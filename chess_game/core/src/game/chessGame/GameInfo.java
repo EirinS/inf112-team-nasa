@@ -1,6 +1,5 @@
 package game.chessGame;
 
-import game.GameType;
 import pieces.PieceColor;
 import player.AILevel;
 import db.Player;
@@ -11,18 +10,20 @@ public class GameInfo {
     private Player player, opponent;
     private GameType gameType;
     private AILevel level;
+    private boolean singlePlayer;
 
     public GameInfo(Player player) {
         this.player = player;
-        gameType = GameType.SINGLEPLAYER;
+        gameType = GameType.REGULAR;
     }
 
-    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level) {
+    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level, boolean singlePlayer) {
         this.player = player;
         this.opponent = opponent;
         this.playerColor = playerColor;
         this.gameType = gameType;
         this.level = level;
+        this.singlePlayer = singlePlayer;
     }
 
     public PieceColor getPlayerColor() {
@@ -64,4 +65,13 @@ public class GameInfo {
     public void setLevel(AILevel level) {
         this.level = level;
     }
+    
+    public void setSinglePlayer(boolean singleplayer) {
+    	this.singlePlayer = singleplayer;
+    }
+    
+    public boolean isSinglePlayer() {
+    	return singlePlayer;
+    }
+
 }

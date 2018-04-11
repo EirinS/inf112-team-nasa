@@ -23,15 +23,28 @@ public class King extends AbstractPiece {
 		ArrayList<Move> moves = reachable(x,y, board.getSquare(x, y), board);
 		if(castling(board.getSquare(x, y), board) == null) {
 			return moves;
+		}else { 
+			moves.addAll(castling(board.getSquare(x, y), board));
 		}
-		moves.addAll(castling(board.getSquare(x, y), board));
 		return moves;
 	}
-	
+
 	@Override
 	public ArrayList<IPiece> enemyPiecesReached(int x, int y, IBoard board, PieceColor opponent){
 		ArrayList<Move> check = reachable(x, y, board.getSquare(x, y), board);
 		return enemiesReached(x, y, board, opponent, check);
+	}
+
+	private ArrayList<Square> rookCastlingSquares(Map<IPiece, Square> possible){
+		ArrayList<Square> rookPositions = new ArrayList<>();
+		for(Map.Entry<IPiece, Square> entry : possible.entrySet()) {
+			if (entry.getKey() instanceof Rook) {
+				if(!entry.getKey().hasMoved()) //did rook  move before?
+					rookPositions.add(entry.getValue());
+			}
+		}
+		return rookPositions;
+
 	}
 
 	/**
@@ -45,9 +58,7 @@ public class King extends AbstractPiece {
 	 */
 	public ArrayList<Move> castling(Square origin, IBoard board) {
 		ArrayList<Move> legalCastlingMoves = new ArrayList<>();
-		PieceColor opponent;
-		if(getColor() == PieceColor.WHITE) {opponent = PieceColor.BLACK;}
-		else { opponent = PieceColor.WHITE;}
+		PieceColor opponent = getColor().getOpposite();
 
 		//conditions that make castling illegal
 		if(hasMoved()) {return null;} //king moved
@@ -55,25 +66,19 @@ public class King extends AbstractPiece {
 		if(getFirstPieceHorizontal(origin, board).isEmpty()) {return null;} //no pieces near king
 
 		//castling may be possible, find rooks that can do castling
-		ArrayList<Square> rookPositions = new ArrayList<>();
-		for(Map.Entry<IPiece, Square> entry : getFirstPieceHorizontal(origin, board).entrySet()) {
-			if (entry.getKey() instanceof Rook) {
-				if(!entry.getKey().hasMoved()) //did rook  move before?
-					rookPositions.add(entry.getValue());
-			}
-		}
+		ArrayList<Square> rookPositions = rookCastlingSquares(getFirstPieceHorizontal(origin, board));
 
 		//check castling type
 		if(!rookPositions.isEmpty()) {
 			for(Square square : rookPositions) {
 				if(square.getX() > origin.getX()) {
-					//if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
-						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()+2, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
-					//}
+					if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
+						legalCastlingMoves.add(new Move(origin, board.getSquare(6, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
+					}
 				} if (square.getX() < origin.getX()) {
-					//if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
-						legalCastlingMoves.add(new Move(origin, board.getSquare(origin.getX()-2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
-				//	}
+					if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
+						legalCastlingMoves.add(new Move(origin, board.getSquare(2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
+					}
 				}
 			}
 			return legalCastlingMoves;
@@ -92,18 +97,21 @@ public class King extends AbstractPiece {
 	public boolean kingMovesThroughCheckPos(Square origin, IBoard board, boolean kingSide) {
 		ArrayList<Move> kingPassesThroughPos = new ArrayList<>();
 		if (kingSide) {
-			kingPassesThroughPos.add(new Move (origin, board.getSquare(origin.getX()+1, origin.getY()), this, null, MoveType.REGULAR));
-			kingPassesThroughPos.add(new Move (origin, board.getSquare(origin.getX()+2, origin.getY()), this, null, MoveType.REGULAR));
-			if (removeMovesThatPutYourselfInCheck(kingPassesThroughPos, origin, board).size() < 2) //size 2 if no position in check
+			for (int i = origin.getX()+1; i <= 6; i++) {
+				kingPassesThroughPos.add(new Move(origin, board.getSquare(i, origin.getY()), this, null, MoveType.REGULAR));
+			}
+			int size = kingPassesThroughPos.size();
+			if (removeMovesThatPutYourselfInCheck(kingPassesThroughPos, origin, board).size() < size)
 				return true;
 			else 
 				return false;
 		}
 		else {
-			kingPassesThroughPos.clear();
-			kingPassesThroughPos.add(new Move (origin, board.getSquare(origin.getX()-1, origin.getY()), this, null, MoveType.REGULAR));
-			kingPassesThroughPos.add(new Move (origin, board.getSquare(origin.getX()-2, origin.getY()), this, null, MoveType.REGULAR));
-			if (removeMovesThatPutYourselfInCheck(kingPassesThroughPos, origin, board).size() < 2) { //size 2 if no position in check
+			for (int i = origin.getX()-1; i >= 2; i--) {
+				kingPassesThroughPos.add(new Move(origin, board.getSquare(i, origin.getY()), this, null, MoveType.REGULAR));
+			}
+			int size = kingPassesThroughPos.size();
+			if (removeMovesThatPutYourselfInCheck(kingPassesThroughPos, origin, board).size() < size) {
 				return true;
 			}
 			else 
@@ -201,42 +209,58 @@ public class King extends AbstractPiece {
 		return lst;		
 	}
 
-    /**
-     * Precondition: All positions that are moved to are empty and possible to move to.
-     * Castling is an OK move.
-     * @param origin
-     * @param next
-     * @param type
-     * @param board
-     * @return Returns rook move if everything went well, mull if error.
-     */
+	/**
+	 * Precondition: All positions that are moved to are empty and possible to move to.
+	 * Castling is an OK move.
+	 * @param origin
+	 * @param next
+	 * @param type
+	 * @param board
+	 * @return Returns rook move if everything went well, mull if error.
+	 */
 	public Move moveCastling(Square origin, Square next, MoveType type, IBoard board) {
-        if (type != MoveType.QUEENSIDECASTLING && type != MoveType.KINGSIDECASTLING)
-            throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING");
+		ArrayList<Square> rookPos = rookCastlingSquares(getFirstPieceHorizontal(origin, board));
+		if ((type != MoveType.QUEENSIDECASTLING && type != MoveType.KINGSIDECASTLING) || rookPos.isEmpty())
+			throw new IllegalArgumentException("MoveType is wrong! Must be MoveType.KINGSIDECASTLING, or MoveType.QUEENSIDECASTLING. Or no rooks");
 
 		// Moves king
 		next.putPiece(origin.movePiece());
 
 		// Moves rook
-        Square rookSq, destSq;
-        Move rookMove = null;
+		Square rookSq = null, destSq;
+		Move rookMove = null;
 		switch (type) {
-            case KINGSIDECASTLING:
-                rookSq = board.getSquare(board.getWidth()-1, origin.getY());
-                destSq = board.getSquare(rookSq.getX()-2, rookSq.getY());
-                rookMove = getMove(rookSq, destSq);
-                destSq.putPiece(rookSq.movePiece());
-                break;
-            case QUEENSIDECASTLING:
-                rookSq = board.getSquare(0, origin.getY());
-                destSq = board.getSquare(rookSq.getX()+3, rookSq.getY());
-                rookMove = getMove(rookSq, destSq);
-                destSq.putPiece(rookSq.movePiece());
-                break;
-        }
-        return rookMove;
+		case KINGSIDECASTLING:
+			if(rookPos.size() > 1) {
+				if(rookPos.get(0).getX() < rookPos.get(1).getY())
+					rookSq = rookPos.get(1);
+				else 
+					rookPos.get(0);
+			} else {
+				rookSq = rookPos.get(0);
+			}
+			destSq = board.getSquare(5, rookSq.getY());
+			rookMove = getMove(rookSq, destSq);
+			destSq.putPiece(rookSq.movePiece());
+			break;
+		case QUEENSIDECASTLING:
+			System.out.println("here");
+			if(rookPos.size() > 1) {
+				if(rookPos.get(0).getX() > rookPos.get(1).getY())
+					rookSq = rookPos.get(1);
+				else
+					rookSq = rookPos.get(0);
+			} else {
+				rookSq = rookPos.get(0);
+			}
+			destSq = board.getSquare(3, rookSq.getY());
+			rookMove = getMove(rookSq, destSq);
+			destSq.putPiece(rookSq.movePiece());
+			break;
+		}
+		return rookMove;
 	}
-	
+
 	@Override
 	public IPiece copy() {
 		King k = new King(this.getColor());

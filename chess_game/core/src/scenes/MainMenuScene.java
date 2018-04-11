@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import game.Chess;
 
 import game.chessGame.GameInfo;
-import game.GameType;
+import game.chessGame.GameType;
 import game.WindowInformation;
 
 import pieces.PieceColor;
@@ -50,7 +50,7 @@ public class MainMenuScene extends AbstractScene {
             black, white, signInP2;
     private TextField username, registerUsername;
     private Button backToLogIn, backToChooseGame;
-    private SelectBox<String> difficulty;
+    private SelectBox<String> difficulty, gameType;
     private List<Actor> scoreList;
     private ScrollPane scorePane;
     private Window window;
@@ -141,11 +141,18 @@ public class MainMenuScene extends AbstractScene {
 
         //Elements in preferences (singleplayer)
         startSingle = new TextButton("Start game", skin, "default");
-        startSingle.setPosition(centreWidth, WindowInformation.HEIGHT / 3);
-        difficulty = new SelectBox<String>(skin, "default");
-        String[] options = {AILevel.EASY.toString(), AILevel.INTERMEDIATE.toString(), AILevel.HARD.toString()};
-        difficulty.setItems(options);
+        startSingle.setPosition(centreWidth, WindowInformation.HEIGHT / 3.5f);
+        
+        difficulty = new SelectBox<String>(skin, "default"); 
+        String[] optionsDifficulty = {AILevel.EASY.toString(), AILevel.INTERMEDIATE.toString(), AILevel.HARD.toString()};
+        difficulty.setItems(optionsDifficulty);
         difficulty.setPosition(centreWidth, WindowInformation.HEIGHT / 2);
+        
+        gameType = new SelectBox<String>(skin, "default");
+        String[] optionsGameType = {GameType.REGULAR.toString(), GameType.CHESS960.toString()};
+        gameType.setItems(optionsGameType);
+        gameType.setPosition(centreWidth, WindowInformation.HEIGHT / 2.4f);
+        
         black = new TextButton("Black", skin, "toggle");
         black.setPosition(centreWidth - (defaultWidth / 4), WindowInformation.HEIGHT / 1.6f);
         white = new TextButton("White", skin, "toggle");
@@ -203,6 +210,7 @@ public class MainMenuScene extends AbstractScene {
         actors.add(mainMenu);
         actors.add(startSingle);
         actors.add(difficulty);
+        actors.add(gameType);
         actors.add(black);
         actors.add(white);
         actors.add(scorePane);
@@ -221,6 +229,7 @@ public class MainMenuScene extends AbstractScene {
         backToLogIn.setSize(27, 27);
         backToChooseGame.setSize(27, 27);
         difficulty.setSize(defaultWidth, defaultHeight / 1.5f);
+        gameType.setSize(defaultWidth, defaultHeight/1.5f);
         black.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
         white.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
         scorePane.setSize(defaultWidth * 2.3f, defaultHeight * 7);
@@ -286,6 +295,7 @@ public class MainMenuScene extends AbstractScene {
         invisible();
         startSingle.setVisible(true);
         difficulty.setVisible(true);
+        gameType.setVisible(true);
         backToChooseGame.setVisible(true);
         black.setVisible(true);
         white.setVisible(true);
@@ -340,6 +350,7 @@ public class MainMenuScene extends AbstractScene {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
+                gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
                 gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
                 gameInfo.getPlayer().loadRating();
                 if (gameInfo.getOpponent() != null) gameInfo.getOpponent().loadRating();
@@ -405,7 +416,7 @@ public class MainMenuScene extends AbstractScene {
                     } else if (exists) {
                         try {
                             gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
-                            gameInfo.setGameType(GameType.MULTIPLAYER);
+                            gameInfo.setSinglePlayer(false);
                             gameInfo.setPlayerColor(PieceColor.WHITE);
                             gameInfo.getPlayer().loadRating();
                             SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
@@ -468,6 +479,16 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
+    
+    private void backToChooseGameListener() {
+        backToChooseGame.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent e, float x, float y, int point, int button) {
+                screenGameMenu();
+                backToChooseGameListener();
+            }
+        });
+    }
 
     private void singleplayerListener() {
         singleplayer.addListener(new ClickListener() {
@@ -475,16 +496,6 @@ public class MainMenuScene extends AbstractScene {
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
                 screenPreferences();
                 singleplayerListener();
-            }
-        });
-    }
-
-    private void backToChooseGameListener() {
-        backToChooseGame.addListener(new ClickListener() {
-            @Override
-            public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                screenGameMenu();
-                backToChooseGameListener();
             }
         });
     }
