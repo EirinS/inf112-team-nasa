@@ -353,6 +353,7 @@ public class MainMenuScene extends AbstractScene {
                 gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
                 gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
                 gameInfo.getPlayer().loadRating();
+                gameInfo.setSinglePlayer(true);
                 if (gameInfo.getOpponent() != null) gameInfo.getOpponent().loadRating();
                 SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                 startSingleListener();

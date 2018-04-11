@@ -76,7 +76,6 @@ public class ChessGame implements IChessGame {
 						if (listener != null) listener.turnTimerElapsed();
 						if (playerSeconds == 0) {
 							finishGame(board.getTurn());
-							playerTimer.cancel();
 						}
 					}
 				},0, 1000);
@@ -96,8 +95,8 @@ public class ChessGame implements IChessGame {
 						opponentSeconds -= 1;
 						if (listener != null) listener.turnTimerElapsed();
 						if (opponentSeconds == 0) {
-							finishGame(gameInfo.getPlayerColor().getOpposite());
 							opponentTimer.cancel();
+							finishGame(gameInfo.getPlayerColor().getOpposite());
 						}
 					}
 				},0, 1000);
@@ -160,7 +159,6 @@ public class ChessGame implements IChessGame {
 		//stop clock
 		if (playerTimerRunning) playerTimer.cancel();
 		if (opponentTimerRunning) opponentTimer.cancel();
-		
 		Player p = gameInfo.getPlayer();
 		Player o = gameInfo.getOpponent();
 		if (turn == null) {

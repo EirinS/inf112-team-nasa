@@ -244,7 +244,6 @@ public class King extends AbstractPiece {
 			destSq.putPiece(rookSq.movePiece());
 			break;
 		case QUEENSIDECASTLING:
-			System.out.println("here");
 			if(rookPos.size() > 1) {
 				if(rookPos.get(0).getX() > rookPos.get(1).getY())
 					rookSq = rookPos.get(1);
