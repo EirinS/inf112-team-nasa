@@ -19,7 +19,7 @@ import pieces.pieceClasses.Pawn;
 
 import player.AI;
 import db.Player;
-import player.AIThread;
+import player.AIThreadMove;
 import setups.DefaultSetup;
 import sound.AudioManager;
 /**
@@ -142,7 +142,7 @@ public class ChessGame implements IChessGame {
 		if (computerAI == null) return;
 		if (computerAI.getPieceColor() == board.getTurn()) {
 			//Move move = computerAI.calculateMove(board);
-			AIThread ai = new AIThread(computerAI, board,this);
+			AIThreadMove ai = new AIThreadMove(computerAI, board,this);
 			Thread thread = new Thread(ai);
 			thread.start();
 		}

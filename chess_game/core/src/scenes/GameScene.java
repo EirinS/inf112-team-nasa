@@ -30,6 +30,8 @@ import pieces.pieceClasses.Rook;
 import player.AI;
 import player.AIMedium;
 
+import player.AIThreadHint;
+import player.AIThreadMove;
 import sound.AudioManager;
 import sprites.PieceSpriteLoader;
 import styling.Colors;
@@ -112,7 +114,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			public void clicked(InputEvent event, float x, float y) {
 				//TODO: replace medium with hard
 				AI ai = new AIMedium(chessGame.getBoard().getTurn());
-				checkerboard.showHint(ai.calculateMove(chessGame.getBoard()));
+				AIThreadHint tAi = new AIThreadHint(chessGame.getBoard(), ai, checkerboard);
+				Thread thread = new Thread(tAi);
+				thread.start();
 				super.clicked(event, x, y);
 			}
 		});
