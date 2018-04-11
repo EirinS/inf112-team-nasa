@@ -3,7 +3,7 @@ package game.chessGame;
 import game.GameType;
 import pieces.PieceColor;
 import player.AILevel;
-import register.Player;
+import db.Player;
 
 public class GameInfo {
 

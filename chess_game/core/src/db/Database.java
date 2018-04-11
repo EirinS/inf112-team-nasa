@@ -1,21 +1,23 @@
 package db;
 
-import register.Player;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class Database {
+public class Database implements IDatabase {
 
     // Database url connection to Amazon RDS.
-    private static String username = "team_nasa";
-    private static String password = "inf112ergoy!";
-    private static String dbUrl = "jdbc:postgresql://inf112-team-nasa.cy6mirlma7zd.eu-west-2.rds.amazonaws.com:5432/players";
+    private String username = "team_nasa";
+    private String password = "inf112ergoy!";
+    private String dbUrl = "jdbc:postgresql://inf112-team-nasa.cy6mirlma7zd.eu-west-2.rds.amazonaws.com:5432/players";
 
-    private static Connection connection;
+    private Connection connection;
 
-    private static Connection connect() {
+    public Database() {
+        connection = getConnection();
+    }
+
+    private Connection connect() {
         Properties props = new Properties();
         props.put("user", username);
         props.put("password", password);
@@ -31,7 +33,7 @@ public class Database {
         return conn;
     }
 
-    private static Connection getConnection() {
+    private Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) connection = connect();
             if (connection == null) {
@@ -44,9 +46,10 @@ public class Database {
         return connection;
     }
 
-    public static ArrayList<Player> listPlayers() throws SQLException {
+    @Override
+    public ArrayList<Player> listPlayers() throws SQLException {
         ArrayList<Player> players = new ArrayList<>();
-        String query = Queries.ALL;
+        String query = Queries.listPlayers();
         Statement stmt = null;
         try {
             Connection connection = getConnection();
@@ -66,8 +69,94 @@ public class Database {
                 players.add(new Player(name, rating, wins, losses, draws));
             }
         } finally {
-            if (stmt != null) { stmt.close(); }
+            if (stmt != null) {
+                stmt.close();
+            }
         }
         return players;
+    }
+
+    private boolean executeQuery(String query) throws SQLException {
+        Statement stmt = null;
+        try {
+            Connection connection = getConnection();
+            if (connection == null) {
+                System.out.println("Can not query empty connection!");
+                return false;
+            }
+
+            stmt = connection.createStatement();
+            int rowsAffected = stmt.executeUpdate(query);
+            return rowsAffected > 0;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+
+    @Override
+    public boolean registerPlayer(Player player) throws SQLException {
+
+        // Check if player already exists.
+        if (getPlayer(player.getName()) != null) {
+            System.out.println("Player already exists.");
+            return false;
+        }
+
+        return executeQuery(Queries.registerPlayer(player));
+    }
+
+    @Override
+    public Player getPlayer(String playerName) throws SQLException {
+        String query = Queries.getPlayer(playerName);
+        Statement stmt = null;
+        try {
+            Connection connection = getConnection();
+            if (connection == null) {
+                System.out.println("Can not query empty connection!");
+                return null;
+            }
+
+            stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                String name = rs.getString("name");
+                int rating = rs.getInt("rating");
+                int wins = rs.getInt("wins");
+                int losses = rs.getInt("losses");
+                int draws = rs.getInt("draws");
+                return new Player(name, rating, wins, losses, draws);
+            } else {
+                return null;
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+
+    @Override
+    public boolean isPlayerRegistered(String playerName) {
+        try {
+            return getPlayer(playerName) != null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updatePlayer(String playerName, int rating, int win_lose_draw) throws SQLException {
+
+        // Check if player exists.
+        Player player = getPlayer(playerName);
+        if (player == null) {
+            System.out.println("Player must exist before updating.");
+            return false;
+        }
+
+        return executeQuery(Queries.updatePlayer(player, rating, win_lose_draw));
     }
 }

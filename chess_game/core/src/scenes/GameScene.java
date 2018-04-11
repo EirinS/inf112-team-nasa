@@ -32,6 +32,9 @@ import pieces.pieceClasses.Rook;
 import player.AI;
 import player.AIMedium;
 
+import player.AIThreadHint;
+import player.AIThreadMove;
+import sound.AudioManager;
 import sprites.PieceSpriteLoader;
 import styling.Colors;
 
@@ -50,8 +53,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	private VerticalGroup historyGroup;
 	private ScrollPane historyScrollPane, promotionTable;
 	private Label topTime, bottomTime;
-	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, undoBtn;
+
 	private HashMap<String, Texture> sprites;
+	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, muteBtn, undoBtn;
 
 	public GameScene (Chess game, GameInfo gameInfo){
 		this.game = game;
@@ -108,59 +112,38 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 		hintBtn = new TextButton("Hint", skin, "default");
 		hintBtn.setSize(hintBtn.getWidth() * 1.5f, hintBtn.getHeight());
+		hintBtn.setPosition(quitBtn.getX(), checkerboard.getPos() + 40);
 		hintBtn.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				//TODO: replace medium with hard
 				AI ai = new AIMedium(chessGame.getBoard().getTurn());
-				checkerboard.showHint(ai.calculateMove(chessGame.getBoard()));
+				AIThreadHint tAi = new AIThreadHint(chessGame.getBoard(), ai, checkerboard);
+				Thread thread = new Thread(tAi);
+				thread.start();
 				super.clicked(event, x, y);
 			}
 		});
-		
-		//only undobutten during multiplayer games. Hint button position altered if 3 or 4 buttons.
-		if(chessGame.getGameInfo().getGameType() == GameType.MULTIPLAYER) {
-			hintBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30 + (quitBtn.getWidth()+5)/2, checkerboard.getPos() + 40);
-		} else {
-			hintBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30, checkerboard.getPos() + 40);	
-			
-			//TODO: Does not work. Nullpointerexception bug.
-			undoBtn = new TextButton("Undo", skin, "default");
-			undoBtn.setSize(undoBtn.getWidth() * 1.5f, undoBtn.getHeight());
-			undoBtn.setPosition(checkerboard.getPos() + checkerboard.getSize() + 30 + quitBtn.getWidth() + 5, checkerboard.getPos() + 40);
-			undoBtn.addListener(new ClickListener() {
-				
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					ArrayList<IBoard> history = chessGame.getBoardHistory();
-					if (history.size() < 1) {
-						super.clicked(event, x, y);
-						//TODO: play sound here?
-						return;
-					}
-					
-					if (chessGame.getTurn() == chessGame.getGameInfo().getPlayerColor()) {
-						history.remove(history.size()-1);
-						//TODO: remove from movehistorygui historyGroup.removeActor(actor);
-					}
-					history.remove(history.size()-1);
-					
-					chessGame.setBoard(history.get(history.size()-1));
-					IBoard board = chessGame.getBoard();
-					
-					checkerboard.setThisCheckerBoard(board);
-					super.clicked(event, x, y);
-				}
-			});
-			addActor(undoBtn);
-		}
+
+		muteBtn = new TextButton("Mute", skin, "toggle");
+		muteBtn.setSize(muteBtn.getWidth() * 1.5f, muteBtn.getHeight());
+		muteBtn.setPosition(hintBtn.getX() + hintBtn.getWidth() + 5, checkerboard.getPos() + 40);
+		muteBtn.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				AudioManager.toggle();
+				super.clicked(event, x, y);
+			}
+		});
+		if (!AudioManager.audioOn()) muteBtn.toggle();
 
 		int buttonsWidth = (int)quitBtn.getWidth() + 5 + (int)resignBtn.getWidth();
 
 		addActor(quitBtn);
 		addActor(resignBtn);
 		addActor(hintBtn);
+		addActor(muteBtn);
 
 		historyGroup = new VerticalGroup();
 		historyGroup.align(Align.top);
@@ -190,6 +173,41 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		bottomTime.setPosition(historyScrollPane.getX() + historyScrollPane.getWidth() - bottomTime.getWidth(), historyScrollPane.getY() - bottomTime.getHeight());
 		addActor(bottomTime);
 		setNameColors();
+		
+		
+		//only undobutten during multiplayer games. Hint button position altered if 3 or 4 buttons.
+		if(chessGame.getGameInfo().getGameType() != GameType.MULTIPLAYER) {			
+			//TODO: Does not work. Nullpointerexception bug.
+			undoBtn = new TextButton("Undo", skin, "default");
+			undoBtn.setSize(undoBtn.getWidth() * 1.5f, undoBtn.getHeight());
+			undoBtn.setPosition(historyScrollPane.getX() + 5, historyScrollPane.getY() - bottomTime.getHeight());
+			undoBtn.addListener(new ClickListener() {
+
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					ArrayList<IBoard> history = chessGame.getBoardHistory();
+					if (history.size() <= 1) {
+						super.clicked(event, x, y);
+						//TODO: play sound here?
+						return;
+					}
+
+					if (chessGame.getTurn() == chessGame.getGameInfo().getPlayerColor()) {
+						history.remove(history.size()-1);
+						//TODO: remove from movehistory-GUI historyGroup.removeActor(actor);
+					}
+					history.remove(history.size()-1);
+
+					chessGame.setBoard(history.get(history.size()-1));
+					IBoard board = chessGame.getBoard();
+
+					checkerboard.setThisCheckerBoard(board);
+					super.clicked(event, x, y);
+				}
+			});
+
+			addActor(undoBtn);
+		}
 
 	}
 

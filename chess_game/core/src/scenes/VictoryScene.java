@@ -16,9 +16,11 @@ import game.Chess;
 import game.WindowInformation;
 import game.chessGame.GameInfo;
 
-import register.Player;
+import db.Player;
 import sprites.SquareTextureLoader;
 import styling.Colors;
+
+import java.sql.SQLException;
 
 public class VictoryScene extends AbstractScene {
 
@@ -33,11 +35,15 @@ public class VictoryScene extends AbstractScene {
     }
 
     private String ratingChange(String playerName) {
-        int diff = Chess.getPlayerRegister().getPlayer(playerName).getRating() - gameInfo.getPlayer().getRating();
-        if (diff > 0) {
-            return "(+" + diff + ")";
-        } else if (diff < 0) {
-            return "(" + diff + ")";
+        try {
+            int diff = Chess.getDatabase().getPlayer(playerName).getRating() - gameInfo.getPlayer().getRating();
+            if (diff > 0) {
+                return "(+" + diff + ")";
+            } else if (diff < 0) {
+                return "(" + diff + ")";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return "";
     }
@@ -50,7 +56,6 @@ public class VictoryScene extends AbstractScene {
 
     @Override
     public void buildStage() {
-        Chess.getPlayerRegister().loadPlayers();
 
         // Set-up stage
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));

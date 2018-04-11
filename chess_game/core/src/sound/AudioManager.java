@@ -16,17 +16,32 @@ public class AudioManager
 	// https://freesound.org/people/harrietniamh/sounds/415083/
 	static Sound hintSound = Gdx.audio.newSound(Gdx.files.internal("sound/hint.wav"));
 	
-	
+	private static boolean on = true;
 	
 	public static void playMoveSound()
 	{
-		moveSound.play();
+		if (on) moveSound.play();
 	}
 	
 	/**
 	 * Plays a sound for giving a hint.
 	 */
 	public static void playHintSound() {
-		hintSound.play();
+		if (on) hintSound.play();
+	}
+
+	/**
+	 * Toggles audio on/off.
+	 */
+	public static void toggle() {
+		on = !on;
+	}
+
+	/**
+	 * Gets the state of the audio
+	 * @return audio on or off
+	 */
+	public static boolean audioOn() {
+		return on;
 	}
 }
