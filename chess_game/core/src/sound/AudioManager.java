@@ -16,6 +16,9 @@ public class AudioManager
 	// https://freesound.org/people/harrietniamh/sounds/415083/
 	static Sound hintSound = Gdx.audio.newSound(Gdx.files.internal("sound/hint.wav"));
 	
+	//https://freesound.org/people/fins/sounds/171497/
+	static Sound noUndo = Gdx.audio.newSound(Gdx.files.internal("sound/error.wav"));
+	
 	private static boolean on = true;
 	
 	public static void playMoveSound()
@@ -28,6 +31,13 @@ public class AudioManager
 	 */
 	public static void playHintSound() {
 		if (on) hintSound.play();
+	}
+	
+	/**
+	 * Play sound for no undo possible
+	 */
+	public static void playNoUndo() {
+		if (on) noUndo.play();
 	}
 
 	/**

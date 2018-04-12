@@ -169,7 +169,10 @@ public class ChessGame implements IChessGame {
 
     @Override
     public boolean undoTurn() {
-    	if (getBoardHistory().size() <= 1) {return false;}
+    	if (getBoardHistory().size() <= 1) {
+    		AudioManager.playNoUndo();
+    		return false;
+    		}
         if (getTurn() == gameInfo.getPlayerColor()) {
         	boardHistory.remove(boardHistory.size()-1);
         }
