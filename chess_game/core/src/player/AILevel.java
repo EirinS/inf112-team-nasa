@@ -43,7 +43,7 @@ public enum AILevel {
 			case INTERMEDIATE:
 				return "Intermediate";
 			case HARD:
-				return "Hard (not implemented yet)";
+				return "Hard";
 		}
 
 		// Dette burde aldri skje, men grei å ha.

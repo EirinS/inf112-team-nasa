@@ -30,7 +30,7 @@ import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Queen;
 import pieces.pieceClasses.Rook;
 import player.AI;
-import player.AIMedium;
+import player.AIHard;
 
 import player.AIThreadHint;
 import player.AIThreadMove;
@@ -117,8 +117,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				//TODO: replace medium with hard
-				AI ai = new AIMedium(chessGame.getBoard().getTurn());
+				AI ai = new AIHard(chessGame.getBoard().getTurn());
 				AIThreadHint tAi = new AIThreadHint(chessGame.getBoard(), ai, checkerboard);
 				Thread thread = new Thread(tAi);
 				thread.start();
