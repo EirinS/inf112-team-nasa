@@ -23,8 +23,6 @@ public class AIHard implements AI, Playable {
 	private PieceColor opponentColor;
 	private int called = 0;//just for checking manually, not needed at all
 	
-	private ArrayList<int []> casesForProcessing;
-	
 	private int bestCase;
 	private int loss;
 	private IBoard currentBoard;
@@ -43,49 +41,57 @@ public class AIHard implements AI, Playable {
 	public Move calculateMove(IBoard currentBoard) { //the two lists will be of equal length, with the possibleMove.get(i) -> possibleBoard.get(i) 
 		this.currentBoard=currentBoard;
 		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
-		ArrayList<Board> possibleBoards = getPossibleBoards(currentBoard,possibleMoves, playerColor);
+		ArrayList<int[]> theMoves = findBestMovesLooking3Forward(currentBoard, playerColor);
+		
+		int[] theMove = processThreeBest(theMoves);//findTheMove(theMoves); //keepCalculating(theMoves);
+		return possibleMoves.get(theMove[1]);
+	}	
+	
+	private ArrayList<int[]> findBestMovesLooking3Forward(IBoard board, PieceColor playerTurn) {
+		List<Move> possibleMoves = board.getAvailableMoves(playerTurn);
+		ArrayList<Board> possibleBoards = getPossibleBoards(board,possibleMoves, playerTurn);
 		ArrayList<int[]> theMoves = new ArrayList<int[]>();//here all the moves and their valued score will be placed
-		int[] theMove; // if there is no checkmate or draw, this is the move that will be returned
 		
 		for (int i=0; i<possibleBoards.size(); i++) {//for every move possible to make for the original board
-			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(opponentColor);
+			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(playerTurn.getOpposite());
 			if (possibleMovesOpp.isEmpty()) {//opponent is checkmate or there is a draw
-				if (isCheckmate(possibleBoards.get(i),opponentColor)||considerDraw()) {/////////////////////////////////////////
-					return possibleMoves.get(i);
+				if (isCheckmate(possibleBoards.get(i),playerTurn.getOpposite())||considerDraw()) {/////////////////////////////////////////
+					theMoves.add(new int[] {-loss,i});
+					return theMoves;
 				}else {
 					int[] forcedDraw = {-bestCase,i};//AI is forced by the opponent to make a draw, this is just one of the valid moves for the AI (may be the best/only one) 
 					theMoves.add(forcedDraw);
 				}
 			}else {
-				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp,opponentColor);
+				ArrayList<Board> possibleBoardsOpp = getPossibleBoards(possibleBoards.get(i),possibleMovesOpp,playerTurn.getOpposite());
 				ArrayList<int[]> findWorst = new ArrayList<int[]>();
 				
 				for (int j=0; j<possibleBoardsOpp.size(); j++ ) {//for every move possible after the first move
-					findWorst=opponentChoice(possibleBoardsOpp.get(j),findWorst,i);
+					findWorst=opponentChoice(possibleBoardsOpp.get(j),findWorst,i,j);
 				}
 				theMoves=findTheMoves(theMoves, findWorst);
 			}	
 		}
-		theMove = findTheMove(theMoves);
-		return possibleMoves.get(theMove[1]);
-	}		
+		
+		return theMoves;
+	}
 	
 	@Override
 	public Move makeMove(IBoard board, Square from, Square to) {
 		return calculateMove(board);
 	}
 	
-	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
+	public ArrayList<Board> getPossibleBoards(IBoard board,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
-			possibleBoards.add(getPossibleBoard(currentBoard,move, playerTurn));
+			possibleBoards.add(getPossibleBoard(board,move, playerTurn));
 		}
 		return possibleBoards;
 	}
 	
-	public Board getPossibleBoard(IBoard currentBoard,Move move, PieceColor playerTurn){
+	public Board getPossibleBoard(IBoard board,Move move, PieceColor playerTurn){
 		Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne());
-		for(Square square : currentBoard.getSquares()) {
+		for(Square square : board.getSquares()) {
 			if (move.getFrom()==square) {
 			}else if (move.getTo()==square) {																																								
 				String piece = move.getFrom().getPiece().toString();
@@ -254,49 +260,62 @@ public class AIHard implements AI, Playable {
 		return theMove;
 	}
 	
-	private int[] keepClalculating (ArrayList<int[]> theMoves) {
-		Move move = null;
-		int[] value = null;
-		for (int[] a : theMoves) {
-			if (a[0]==-loss) {
-				return a;
-			}else if (a[0]==bestCase){
-				value = a;
+	private int[] processThreeBest(ArrayList<int[]> theMoves) {
+		
+		int[] nr1 = null;
+		int[] nr2 = null;
+		int[] nr3 = null;
+		
+		if (playerColor == PieceColor.WHITE) {
+			for (int[] a : theMoves) {
+				if (nr1==null) {nr1 = a;}else if(nr1[0]<a[0]){nr3 = nr2;nr2 = nr1;nr1 = a;
+				}else if (nr2==null) {nr2 = a;}else if(nr2[0]<a[0]) {nr3 = nr2;nr2 = a;
+				}else if (nr3==null||nr3[0]<a[0]) {nr3 = a;}	
+			}
+		}else {
+			for (int[] a : theMoves) {
+				if (nr1==null) {nr1 = a;}else if(nr1[0]>a[0]){nr3 = nr2;nr2 = nr1;nr1 = a;
+				}else if (nr2==null) {nr2 = a;}else if(nr2[0]>a[0]) {nr3 = nr2;nr2 = a;
+				}else if (nr3==null||nr3[0]>a[0]) {nr3 = a;}	
 			}
 		}
-		if (value==null) {
-			for (int[] a : theMoves) {
-				move = currentBoard.getAvailableMoves(playerColor).get(a[1]);
-				Board board=getPossibleBoard(currentBoard,move, playerColor);
-				move = currentBoard.getAvailableMoves(opponentColor).get(a[2]);
-				board=getPossibleBoard(board,move, opponentColor);
-				List<Move> possibleMovesOpp = board.getAvailableMoves(opponentColor);
-				
-				
-				if (possibleMovesOpp.isEmpty()) {//opponent is checkmate or there is a draw
-					if (isCheckmate(board,opponentColor)||considerDraw()) {/////////////////////////////////////////
-						return a;
-					}else {
-						a[0] = -bestCase;
-						//int[] forcedDraw = {-bestCase,i};//AI is forced by the opponent to make a draw, this is just one of the valid moves for the AI (may be the best/only one) 
-						//theMoves.add(forcedDraw);
-					}
-				}else {
-					ArrayList<Board> possibleBoardsOpp = getPossibleBoards(board,possibleMovesOpp,opponentColor);
-					ArrayList<int[]> findWorst = new ArrayList<int[]>();
-					
-					for (int j=0; j<possibleBoardsOpp.size(); j++ ) {//for every move possible after the first move
-						findWorst=opponentChoice(possibleBoardsOpp.get(j),findWorst,a[1]);
-					}
-					theMoves=findTheMoves(theMoves, findWorst);
+	
+		if (nr1[0]==-loss||nr1[0]==bestCase) {
+				return nr1;
+		}
+			
+		ArrayList <int[]> threeBestMoves = new ArrayList <int[]>();
+		if (nr1.length==4) {
+			threeBestMoves.add(nr1);
+			if (nr2!=null) {
+				threeBestMoves.add(nr2);
+				if (nr3!=null) {
+					threeBestMoves.add(nr3);
 				}
-				
 			}
-		}else return value;
-		return null;
+		}else {
+			return nr1;
+		}
+		
+		for (int i = 0; i<threeBestMoves.size();i++) {
+			int [] a = threeBestMoves.get(i);
+			Move move = currentBoard.getAvailableMoves(playerColor).get(a[1]);
+			Board board=getPossibleBoard(currentBoard,move, playerColor);
+			move = board.getAvailableMoves(opponentColor).get(a[2]);
+			board=getPossibleBoard(board,move, opponentColor);
+			move = board.getAvailableMoves(playerColor).get(a[3]);
+			board=getPossibleBoard(board,move, playerColor);
+			int[] newShit = findTheMove(findBestMovesLooking3Forward(board,opponentColor));/// need better name, and other stuff
+			newShit[1] = threeBestMoves.get(i)[1];
+			threeBestMoves.set(i, newShit);
+
+		}
+		return findTheMove(threeBestMoves);
 	}
 	
-	private ArrayList<int[]> opponentChoice (Board board, ArrayList<int[]> findWorst, int i) {//takes away all but one move for each board in possibleBoardsOpp(the one move with best score for the opponent remains)
+	
+	
+	private ArrayList<int[]> opponentChoice (Board board, ArrayList<int[]> findWorst, int i, int j) {//takes away all but one move for each board in possibleBoardsOpp(the one move with best score for the opponent remains)
 		List<Move> possibleMovesEnd = board.getAvailableMoves(playerColor);
 		if(possibleMovesEnd.isEmpty()) {//AI is checkmate or there is a draw
 			if (isCheckmate(board,playerColor)) {
@@ -312,10 +331,9 @@ public class AIHard implements AI, Playable {
 				}
 			}
 		}else {
-			ArrayList<Board> possibleBoardsEnd = getPossibleBoards(board,possibleMovesEnd, playerColor);
+			ArrayList<Board> possibleBoardsEnd = getPossibleBoards(board, possibleMovesEnd, playerColor);
 			int[] temp = getBestAIScorePlacement(possibleBoardsEnd);
-			int[] best = {temp[0],i,temp[1]};
-			best[1]=i;
+			int[] best = {temp[0],i,j,temp[1]};
 			
 			findWorst.add(best);
 		}
@@ -323,3 +341,78 @@ public class AIHard implements AI, Playable {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	private int[] keepCalculating (ArrayList<int[]> theMoves) {
+		Move move = null;
+		//ArrayList<int[]> theNewMoves=new ArrayList<int[]>();
+		int[] value = null;
+		for (int[] a : theMoves) {
+			if (a[0]==-loss) {
+				return a;
+			}else if (a[0]==bestCase){
+				value = a;
+			}
+		}
+		if (value==null) {
+			for (int i=0;i<theMoves.size() ; i++) {
+				int[] a = theMoves.get(i);
+				if (a.length==4) {
+					move = currentBoard.getAvailableMoves(playerColor).get(a[1]);
+					Board board=getPossibleBoard(currentBoard,move, playerColor);
+					move = board.getAvailableMoves(opponentColor).get(a[2]);
+					board=getPossibleBoard(board,move, opponentColor);
+					//List<Move> bb = board.getAvailableMoves(playerColor);
+					//try {
+					move = board.getAvailableMoves(playerColor).get(a[3]);
+					board=getPossibleBoard(board,move, playerColor);
+					//}catch (IndexOutOfBoundsException e) {
+					    //System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+					//}
+					//bb=null;
+					//board.printOutBoard();
+					List<Move> possibleMovesOpp = board.getAvailableMoves(opponentColor);
+					
+					if (possibleMovesOpp.isEmpty()) {//opponent is checkmate or there is a draw
+						if (isCheckmate(board,opponentColor)||considerDraw()) {/////////////////////////////////////////
+							return a;
+						}else {
+							a[0] = -bestCase;
+							theMoves.set(i, a);
+							//int[] forcedDraw = {-bestCase,i};//AI is forced by the opponent to make a draw, this is just one of the valid moves for the AI (may be the best/only one) 
+							//theMoves.add(forcedDraw);
+						}
+					}else {
+						ArrayList<Board> possibleBoardsOpp = getPossibleBoards(board,possibleMovesOpp,opponentColor);
+						ArrayList<int[]> findWorst = new ArrayList<int[]>();
+						
+						for (int j=0; j<possibleBoardsOpp.size(); j++ ) {//for every move possible after the first move
+							findWorst=opponentChoice(possibleBoardsOpp.get(j),findWorst,a[1],j);
+						}
+						theMoves.set(i, findTheMove(findWorst));
+						//theMoves=findTheMoves(theMoves, findWorst);
+					}
+				}else {
+					///////if move is end of game ???
+				}
+			}
+		}else return value;
+		return findTheMove(theMoves);
+	}*/
