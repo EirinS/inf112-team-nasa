@@ -75,8 +75,6 @@ public class Board implements IBoard {
 
 	@Override
 	public Square getSquare(int x, int y) {
-
-		// TODO: 18/03/2018 Bishop/Knight/etc... bug here
 		if (!withinBoard(x,y)) {
 			throw new IllegalArgumentException("Cannot look for squares outside the board: (" + x + ", " + y + ")");
 		}
@@ -335,9 +333,14 @@ public class Board implements IBoard {
 	public IBoard copy() {
 		IBoard board = new Board(this.getDimension(), playerOne);
 		board.setTurn(getTurn());
-		board.setHistory(this.history);
+		ArrayList<Move> history = new ArrayList<>();
+		for (Move m : this.history) {
+			history.add(m.copy());
+		}
+		board.setHistory(history);
 		for(Square sq : getSquares()) {
-			board.addSquare(sq.copy());
+			if (sq.isEmpty()) continue;
+			board.getSquare(sq.getX(), sq.getY()).putPiece(sq.getPiece().copy());
 		}
 		return board;
 	}

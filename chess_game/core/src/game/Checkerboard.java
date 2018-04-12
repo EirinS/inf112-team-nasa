@@ -157,6 +157,7 @@ public class Checkerboard extends DragListener {
 		Actor actor = event.getTarget();
 		Vector2 v = calcBoardCoords(actor);
 		actor.setName((int)v.x + "," + (int)v.y);
+		System.out.println("" + (int)v.x + ", " +  (int)v.y);
 		listener.onDragPieceStarted((int)v.x, (int)v.y);
 		super.dragStart(event, x, y, pointer);
 	}

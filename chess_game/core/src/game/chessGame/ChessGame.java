@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import boardstructure.Board;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
@@ -163,11 +164,11 @@ public class ChessGame implements IChessGame {
     }
 
     @Override
-    public void undoTurn() {
+    public boolean undoTurn() {
         if (boardHistory.size() <= 1) {
 
             //TODO: play sound here?
-            return;
+            return false;
         }
 
         if (getTurn() == gameInfo.getPlayerColor()) {
@@ -175,7 +176,9 @@ public class ChessGame implements IChessGame {
             //TODO: remove from movehistory-GUI historyGroup.removeActor(actor);
         }
         boardHistory.remove(boardHistory.size() - 1);
-        setBoard(boardHistory.get(boardHistory.size() - 1));
+        IBoard board = boardHistory.get(boardHistory.size() - 1);
+        setBoard(board);
+        return true;
     }
 
     public void aiMove() {
