@@ -35,6 +35,11 @@ public interface IChessGame {
 	 * @param toY
 	 */
 	void doTurn(int fromX, int fromY, int toX, int toY);
+
+	/**
+	 * Undos the last turn made.
+	 */
+	void undoTurn();
 	
 	/**
 	 * Finishes a game, and performs the 

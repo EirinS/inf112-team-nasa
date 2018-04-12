@@ -149,7 +149,7 @@ public class Checkerboard extends DragListener {
 		initialSquares = board.getSquares();
 		prevMovesGroup.clear();
 		initPieces();
-		//board.printOutBoard();
+		board.printOutBoard();
 	}
 
 	@Override

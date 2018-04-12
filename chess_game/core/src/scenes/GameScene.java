@@ -184,23 +184,8 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					ArrayList<IBoard> history = chessGame.getBoardHistory();
-					if (history.size() <= 1) {
-						super.clicked(event, x, y);
-						//TODO: play sound here?
-						return;
-					}
-
-					if (chessGame.getTurn() == chessGame.getGameInfo().getPlayerColor()) {
-						history.remove(history.size()-1);
-						//TODO: remove from movehistory-GUI historyGroup.removeActor(actor);
-					}
-					history.remove(history.size()-1);
-
-					chessGame.setBoard(history.get(history.size()-1));
-					IBoard board = chessGame.getBoard();
-
-					checkerboard.setThisCheckerBoard(board);
+					chessGame.undoTurn();
+					checkerboard.setThisCheckerBoard(chessGame.getBoard());
 					super.clicked(event, x, y);
 				}
 			});
