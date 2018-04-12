@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.Square;
+import com.badlogic.gdx.Gdx;
 import game.Chess;
 import game.listeners.ChessGameListener;
 import pieces.IPiece;
@@ -75,13 +76,29 @@ public class ChessGame implements IChessGame {
 						playerSeconds -= 1;
 						if (listener != null) listener.turnTimerElapsed();
 						if (playerSeconds == 0) {
-							finishGame(board.getTurn());
+							Gdx.app.postRunnable(
+									new Runnable() {
+										@Override
+										public void run() {
+											finishGame(board.getTurn());
+										}
+									}
+							);
 						}
 					}
 				},0, 1000);
 				playerTimerRunning = true;
 			}
 			if (opponentTimerRunning) {
+				Gdx.app.postRunnable(
+						new Runnable() {
+							@Override
+							public void run() {
+								opponentTimer.cancel();
+								opponentTimerRunning = false;
+							}
+						}
+				);
 				opponentTimer.cancel();
 				opponentTimerRunning = false;
 			}
