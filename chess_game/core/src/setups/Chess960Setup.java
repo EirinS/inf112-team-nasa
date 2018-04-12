@@ -109,8 +109,7 @@ public class Chess960Setup implements Setup {
 
 			}
 		}
-		//board = makeBishopDifferentColoredSquares(board);
-
+		board = makeBishopDifferentColoredSquares(board);
 		return board;
 	}
 	
@@ -123,12 +122,16 @@ public class Chess960Setup implements Setup {
 				swap1 = board.getSquare(x-1, 0).takePiece();
 				swap2 = board.getSquare(x-1, 7).takePiece();
 				board.getSquare(x-1, 7).putPiece(board.getSquare(x, 7).takePiece());
+				board.getSquare(x, 7).putPiece(swap2);
 				board.getSquare(x-1, 0).putPiece(board.getSquare(x, 0).takePiece());
+				board.getSquare(x, 0).putPiece(swap1);
 			} else {
 				swap1 = board.getSquare(x+1, 0).takePiece();
 				swap2 = board.getSquare(x+1, 7).takePiece();
 				board.getSquare(x+1, 7).putPiece(board.getSquare(x, 7).takePiece());
+				board.getSquare(x, 7).putPiece(swap2);
 				board.getSquare(x+1, 0).putPiece(board.getSquare(x, 0).takePiece());
+				board.getSquare(x, 0).putPiece(swap1);
 			}
 		}
 		return board;

@@ -25,12 +25,12 @@ public class AIThreadMove implements Runnable {
 	 */
 	@Override
 	public synchronized void run() {
+		Move move = ai.calculateMove(board);
 
 		Gdx.app.postRunnable(
 				new Runnable() {
 					@Override
 					public void run() {
-						Move move = ai.calculateMove(board);
 						chessGame.doTurn(move.getFrom().getX(), move.getFrom().getY(), move.getTo().getX(), move.getTo().getY());
 					}
 				}

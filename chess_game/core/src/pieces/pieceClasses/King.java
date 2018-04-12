@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import boardstructure.IBoard;
 import boardstructure.Move;
 import boardstructure.MoveType;
@@ -73,11 +75,14 @@ public class King extends AbstractPiece {
 			for(Square square : rookPositions) {
 				if(square.getX() > origin.getX()) {
 					if (!kingMovesThroughCheckPos(origin, board, true)){ //king never in check
-						legalCastlingMoves.add(new Move(origin, board.getSquare(6, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
+						if(hasEmptyRoadToCastling(origin, square, board, MoveType.KINGSIDECASTLING))
+							legalCastlingMoves.add(new Move(origin, board.getSquare(6, origin.getY()), this, null, MoveType.KINGSIDECASTLING));
+
 					}
 				} if (square.getX() < origin.getX()) {
 					if (!kingMovesThroughCheckPos(origin, board, false)){ //king never in check
-						legalCastlingMoves.add(new Move(origin, board.getSquare(2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
+						if(hasEmptyRoadToCastling(origin, square, board, MoveType.QUEENSIDECASTLING))
+							legalCastlingMoves.add(new Move(origin, board.getSquare(2, origin.getY()), this, null, MoveType.QUEENSIDECASTLING));
 					}
 				}
 			}
@@ -85,6 +90,27 @@ public class King extends AbstractPiece {
 		}
 		//if castling not possible
 		return null;
+	}
+
+	private boolean hasEmptyRoadToCastling(Square origin, Square rookSq, IBoard board, MoveType castlingSide) {
+		int y = origin.getY();
+		if(MoveType.KINGSIDECASTLING == castlingSide) {
+			for(int x = origin.getX()+1; x <= 6; x++) {
+				if(!board.getSquare(x, y).isEmpty())
+					if (rookSq.getX() != x)
+						return false;
+
+
+			}
+		}else {
+			for(int x = origin.getX()-1; x >= 2; x--) {
+				if(!board.getSquare(x, y).isEmpty())
+					if(rookSq.getX() != x)
+						return false;
+			}
+		}
+		return true;
+
 	}
 
 	/**
