@@ -333,11 +333,13 @@ public class Board implements IBoard {
 	public IBoard copy() {
 		IBoard board = new Board(this.getDimension(), playerOne);
 		board.setTurn(getTurn());
+		
 		ArrayList<Move> history = new ArrayList<>();
 		for (Move m : this.history) {
 			history.add(m.copy());
 		}
 		board.setHistory(history);
+		
 		for(Square sq : getSquares()) {
 			if (sq.isEmpty()) continue;
 			board.getSquare(sq.getX(), sq.getY()).putPiece(sq.getPiece().copy());

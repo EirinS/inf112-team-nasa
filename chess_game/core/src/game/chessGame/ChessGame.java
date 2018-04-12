@@ -36,6 +36,8 @@ public class ChessGame implements IChessGame {
     private GameInfo gameInfo;
     private IBoard board;
     private AI computerAI;
+    
+    private int test = 0;
 
     private ChessGameListener listener;
 
@@ -148,6 +150,7 @@ public class ChessGame implements IChessGame {
 
         turnTimer();
         boardHistory.add(board.copy());
+        
 
         //this player is in checkmate, game is finished
         if (checkmate()) {
@@ -161,22 +164,17 @@ public class ChessGame implements IChessGame {
 
         // Check if AI should do move
         aiMove();
+         
     }
 
     @Override
     public boolean undoTurn() {
-        if (boardHistory.size() <= 1) {
-
-            //TODO: play sound here?
-            return false;
-        }
-
+    	if (getBoardHistory().size() <= 1) {return false;}
         if (getTurn() == gameInfo.getPlayerColor()) {
-            boardHistory.remove(boardHistory.size() - 1);
-            //TODO: remove from movehistory-GUI historyGroup.removeActor(actor);
+        	boardHistory.remove(boardHistory.size()-1);
         }
-        boardHistory.remove(boardHistory.size() - 1);
-        IBoard board = boardHistory.get(boardHistory.size() - 1);
+        boardHistory.remove(boardHistory.size()-1);
+        IBoard board = boardHistory.get(boardHistory.size()-1).copy();
         setBoard(board);
         return true;
     }
@@ -227,7 +225,7 @@ public class ChessGame implements IChessGame {
         }
 
         //current board;
-        IBoard current = boardHistory.get(boardHistory.size() - 1);
+        IBoard current = board;
         int count = 1;
         //assumes all boards exists and have same size
         for (int i = boardHistory.size() - 3; i >= 0; i -= 2) {

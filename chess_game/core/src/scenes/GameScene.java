@@ -175,7 +175,6 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 
         if (chessGame.getGameInfo().isSinglePlayer()) {
-            //TODO: Does not work. Nullpointerexception bug.
             undoBtn = new TextButton("Undo", skin, "default");
             undoBtn.setSize(undoBtn.getWidth() * 1.5f, undoBtn.getHeight());
             undoBtn.setPosition(historyScrollPane.getX() + 5, historyScrollPane.getY() - bottomTime.getHeight());
