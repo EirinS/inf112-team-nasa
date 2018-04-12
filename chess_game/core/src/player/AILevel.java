@@ -19,7 +19,7 @@ public enum AILevel {
 
 		@Override
 		public AI getAI(PieceColor pieceColor) {
-			return null; // TODO: 20.03.2018 implement this when Hard is complete.
+			return new AIHard(pieceColor); 
 		}
 	};
 
