@@ -75,14 +75,14 @@ public class Checkerboard extends DragListener {
 		prevMovesGroup.setZIndex(2);
 		stage.addActor(prevMovesGroup);
 		
-		highlightPossibleMovesGroup = new Group();
-		highlightPossibleMovesGroup.setZIndex(3);
-		stage.addActor(highlightPossibleMovesGroup);
-		
 		pieceGroup = new Group();
 		pieceGroup.setZIndex(5);		
 		initPieces();
 		stage.addActor(pieceGroup);
+		
+		highlightPossibleMovesGroup = new Group();
+		highlightPossibleMovesGroup.setZIndex(3);
+		stage.addActor(highlightPossibleMovesGroup);
 	}
 
 	/**
