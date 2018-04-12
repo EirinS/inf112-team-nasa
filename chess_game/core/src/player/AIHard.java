@@ -225,14 +225,16 @@ public class AIHard implements AI, Playable {
 	}
 	
 	private ArrayList<int[]> findTheMoves (ArrayList<int[]> theMoves, ArrayList<int[]> findWorst,PieceColor playerTurn) {//find all the best moves after opponent choice
-		int[] worst = {bestCase,0,0};
+		int[] worst;// = {bestCase,0,0};////////////this is bug, hello bug
 		if (playerTurn==PieceColor.WHITE) {
+			worst = new int[]{bestCase,0,0};
 			for (int u=0; u<findWorst.size(); u++) {
 				if (findWorst.get(u)[0]<worst[0]) {
 					worst=findWorst.get(u);
 				}
 			}theMoves.add(worst);
 		}else {
+			worst = new int[]{-bestCase,0,0};
 			for (int u=0; u<findWorst.size(); u++) {
 				if (findWorst.get(u)[0]>worst[0]) {
 					worst=findWorst.get(u);
@@ -243,14 +245,16 @@ public class AIHard implements AI, Playable {
 	}
 	
 	private int[] findTheMove (ArrayList<int[]> theMoves,PieceColor playerTurn) {// find the best move, after all is said and done and we have a list rating all the different moves
-		int[] theMove = {-bestCase, 0};
+		int[] theMove;//= {-bestCase, 0};
 		if (playerTurn==PieceColor.WHITE) {
+			theMove= new int[] {-9999, 0};
 			for (int i=0; i<theMoves.size();i++) {
 				if (theMoves.get(i)[0]>theMove[0]) {
 					theMove=theMoves.get(i);
 				}
 			}
 		}else {
+			theMove= new int[] {9999, 0};
 			for (int i=0; i<theMoves.size();i++) {
 				if (theMoves.get(i)[0]<theMove[0]) {
 					theMove=theMoves.get(i);
@@ -310,7 +314,7 @@ public class AIHard implements AI, Playable {
 			threeBestMoves.set(i, newShit);
 
 		}
-		return findTheMove(threeBestMoves,playerTurn);
+		return findTheMove(threeBestMoves,playerColor);
 	}
 	
 	
