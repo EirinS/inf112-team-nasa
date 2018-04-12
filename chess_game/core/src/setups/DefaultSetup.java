@@ -1,7 +1,6 @@
 package setups;
 
 import boardstructure.Board;
-import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.*;
@@ -54,10 +53,12 @@ public class DefaultSetup implements Setup {
                             piece = new Bishop(color);
                             break;
                         case 3:
-                            piece = new Queen(color);
+                            if (playerWhite) piece = new Queen(color);
+                            else piece = new King(color);
                             break;
                         case 4:
-                            piece = new King(color);
+                            if (playerWhite) piece = new King(color);
+                            else piece = new Queen(color);
                             break;
                     }
                     board.getSquare(x, y).putPiece(piece);
