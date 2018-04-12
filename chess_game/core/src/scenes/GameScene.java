@@ -355,10 +355,11 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
     @Override
     public void turnTimerElapsed() {
         if (topTime == null || bottomTime == null) return;
-        if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
+        //no reason to not update both?? 
+     //   if (chessGame.getTurn() == gameInfo.getPlayerColor()) {
             bottomTime.setText(chessGame.formatTime(chessGame.getPlayerSeconds()));
-        } else {
+     //   } else {
             topTime.setText(chessGame.formatTime(chessGame.getOpponentSeconds()));
-        }
+    //    }
     }
 }

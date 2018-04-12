@@ -149,7 +149,7 @@ public class MainMenuScene extends AbstractScene {
         difficulty.setPosition(centreWidth, WindowInformation.HEIGHT / 2);
         
         gameType = new SelectBox<String>(skin, "default");
-        String[] optionsGameType = {GameType.REGULAR.toString(), GameType.CHESS960.toString()};
+        String[] optionsGameType = {GameType.REGULAR.toString(), GameType.CHESS960.toString(), GameType.BULLET.toString(), GameType.BLITZ.toString(), GameType.RAPID.toString()};
         gameType.setItems(optionsGameType);
         gameType.setPosition(centreWidth, WindowInformation.HEIGHT / 2.4f);
         
