@@ -14,7 +14,7 @@ import setups.DefaultSetup;
 
 public class AIHardTest {
 
-/*
+	
 	@Test
 	public void testAIHardVSAIMediumFullGame() {
 		DefaultSetup d = new DefaultSetup();
@@ -45,7 +45,7 @@ public class AIHardTest {
 		}
 		System.out.println(msg1 + nr + msg2);
 	}
-	
+	/*
 	@Test
 	public void testAIMadiumVSAIHardFullGame() {
 		DefaultSetup d = new DefaultSetup();
@@ -75,14 +75,14 @@ public class AIHardTest {
 			}
 		}
 		System.out.println(msg1 + nr + msg2);
-	}*/
-	
-	
+	}
+	*/
+	/*
 	@Test
 	public void testAIHardVSAIEasyFullGame() {
 		DefaultSetup d = new DefaultSetup();
 		Board boardT = d.getInitialPosition(PieceColor.WHITE);
-		String msg1 = "The test HardVSMedium ended after ";
+		String msg1 = "The test HardVSEasy ended after ";
 		String msg2 = " moves. ";
 		String nr = "50";
 		AIHard p1 = new AIHard(PieceColor.WHITE);
@@ -108,5 +108,5 @@ public class AIHardTest {
 		}
 		System.out.println(msg1 + nr + msg2);
 	}
-
+*/
 }
