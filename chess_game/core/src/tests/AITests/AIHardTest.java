@@ -21,10 +21,10 @@ public class AIHardTest {
 		Board boardT = d.getInitialPosition(PieceColor.WHITE);
 		String msg1 = "The test HardVSMedium ended after ";
 		String msg2 = " moves. ";
-		String nr = "50";
+		String nr = "100";
 		AIHard p1 = new AIHard(PieceColor.WHITE);
 		AIMedium p2 = new AIMedium(PieceColor.BLACK);
-		for (int i=0;i<50;i++) {
+		for (int i=0;i<100;i++) {
 			if (boardT.getAvailableMoves(p1.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "White has no moves (is checkmate or there is a draw)";
@@ -45,17 +45,17 @@ public class AIHardTest {
 		}
 		System.out.println(msg1 + nr + msg2);
 	}
-	/*
+	
 	@Test
 	public void testAIMadiumVSAIHardFullGame() {
 		DefaultSetup d = new DefaultSetup();
 		Board boardT = d.getInitialPosition(PieceColor.WHITE);
-		String msg1 = "The test HardVSMedium ended after ";
+		String msg1 = "The test MediumVSHard ended after ";
 		String msg2 = " moves. ";
-		String nr = "50";
+		String nr = "100";
 		AIMedium p1 = new AIMedium(PieceColor.WHITE);
 		AIHard p2 = new AIHard(PieceColor.BLACK);
-		for (int i=0;i<50;i++) {
+		for (int i=0;i<100;i++) {
 			if (boardT.getAvailableMoves(p1.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "White has no moves (is checkmate or there is a draw)";
@@ -76,7 +76,7 @@ public class AIHardTest {
 		}
 		System.out.println(msg1 + nr + msg2);
 	}
-	*/
+	
 	/*
 	@Test
 	public void testAIHardVSAIEasyFullGame() {

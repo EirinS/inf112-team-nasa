@@ -43,7 +43,7 @@ public class AIHard implements AI, Playable {
 		List<Move> possibleMoves = currentBoard.getAvailableMoves(playerColor);
 		ArrayList<int[]> theMoves = findBestMovesLooking3Forward(currentBoard, playerColor);
 		
-		int[] theMove = processThreeBest(theMoves,playerColor);//findTheMove(theMoves); //keepCalculating(theMoves);
+		int[] theMove = processThreeBest(theMoves,playerColor);// findTheMove(theMoves, playerColor);//keepCalculating(theMoves);
 		return possibleMoves.get(theMove[1]);
 	}	
 	
@@ -55,7 +55,7 @@ public class AIHard implements AI, Playable {
 		for (int i=0; i<possibleBoards.size(); i++) {//for every move possible to make for the original board
 			List<Move> possibleMovesOpp = possibleBoards.get(i).getAvailableMoves(playerTurn.getOpposite());
 			if (possibleMovesOpp.isEmpty()) {//opponent is checkmate or there is a draw
-				if (isCheckmate(possibleBoards.get(i),playerTurn.getOpposite())||considerDraw()) {/////////////////////////////////////////
+				if (isCheckmate(possibleBoards.get(i),playerTurn.getOpposite())||considerDraw(board)) {/////////////////////////////////////////
 					theMoves.add(new int[] {-loss,i});
 					return theMoves;
 				}else {
@@ -200,8 +200,8 @@ public class AIHard implements AI, Playable {
 	}
 	
 	
-	private boolean considerDraw () {//returns true if draw is positive for AI
-			int score = getAIScore(currentBoard);
+	private boolean considerDraw (IBoard board) {//returns true if draw is positive for AI
+			int score = getAIScore(board);
 			if  ((score<0&&playerColor==PieceColor.WHITE)||(score>0&&playerColor==PieceColor.BLACK)) {//if AI is under in score and can get a draw, it will do it.
 				return true;
 			}else {//if it is ahead in score, draw is bad
@@ -211,11 +211,7 @@ public class AIHard implements AI, Playable {
 
 	
 	private boolean isCheckmate (Board board, PieceColor playerInCheck) {//returns true if player is checkmate
-		PieceColor otherPlayer=PieceColor.BLACK;
-		if (playerInCheck==PieceColor.BLACK) {
-			otherPlayer=PieceColor.WHITE;
-		}
-		ArrayList<IPiece> allPieces = board.piecesThreatenedByOpponent(playerInCheck, otherPlayer);
+		ArrayList<IPiece> allPieces = board.piecesThreatenedByOpponent(playerInCheck, playerInCheck.getOpposite());
 		for (IPiece piece : allPieces) {
 			if (piece.toString()=="K") {
 				return true;
@@ -227,14 +223,14 @@ public class AIHard implements AI, Playable {
 	private ArrayList<int[]> findTheMoves (ArrayList<int[]> theMoves, ArrayList<int[]> findWorst,PieceColor playerTurn) {//find all the best moves after opponent choice
 		int[] worst;// = {bestCase,0,0};////////////this is bug, hello bug
 		if (playerTurn==PieceColor.WHITE) {
-			worst = new int[]{bestCase,0,0};
+			worst = new int[]{9999,0,0};
 			for (int u=0; u<findWorst.size(); u++) {
 				if (findWorst.get(u)[0]<worst[0]) {
 					worst=findWorst.get(u);
 				}
 			}theMoves.add(worst);
 		}else {
-			worst = new int[]{-bestCase,0,0};
+			worst = new int[]{-9999,0,0};
 			for (int u=0; u<findWorst.size(); u++) {
 				if (findWorst.get(u)[0]>worst[0]) {
 					worst=findWorst.get(u);
@@ -291,9 +287,9 @@ public class AIHard implements AI, Playable {
 		ArrayList <int[]> threeBestMoves = new ArrayList <int[]>();
 		if (nr1.length==4) {
 			threeBestMoves.add(nr1);
-			if (nr2!=null) {
+			if (nr2!=null&&nr2[0]!=loss&&nr2[0]!=-bestCase) {
 				threeBestMoves.add(nr2);
-				if (nr3!=null) {
+				if (nr3!=null&&nr3[0]!=loss&&nr3[0]!=-bestCase) {
 					threeBestMoves.add(nr3);
 				}
 			}
@@ -305,16 +301,23 @@ public class AIHard implements AI, Playable {
 			int [] a = threeBestMoves.get(i);
 			Move move = currentBoard.getAvailableMoves(playerColor).get(a[1]);
 			Board board=getPossibleBoard(currentBoard,move, playerColor);
-			move = board.getAvailableMoves(opponentColor).get(a[2]);
-			board=getPossibleBoard(board,move, opponentColor);
+			/*List<Move> bb = board.getAvailableMoves(opponentColor);
+			try {
+				move = board.getAvailableMoves(opponentColor).get(a[2]);
+				board=getPossibleBoard(board,move, opponentColor);
+			}catch (IndexOutOfBoundsException e) {
+			    System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+			}
+			
 			move = board.getAvailableMoves(playerColor).get(a[3]);
-			board=getPossibleBoard(board,move, playerColor);
-			int[] newShit = findTheMove(findBestMovesLooking3Forward(board,opponentColor),playerTurn);/// need better name, and other stuff
+			board=getPossibleBoard(board,move, playerColor);*/
+			//board.printOutBoard();
+			int[] newShit = findTheMove(findBestMovesLooking3Forward(board,opponentColor),playerTurn.getOpposite());/// need better name, and other stuff
 			newShit[1] = threeBestMoves.get(i)[1];
 			threeBestMoves.set(i, newShit);
 
 		}
-		return findTheMove(threeBestMoves,playerColor);
+		return findTheMove(threeBestMoves,playerTurn);
 	}
 	
 	
@@ -326,7 +329,7 @@ public class AIHard implements AI, Playable {
 				int[] lostCase = {loss, i};
 				findWorst.add(lostCase);
 			}else {
-				if (considerDraw ()) {
+				if (considerDraw (board)) {
 					int[] idealDraw = {bestCase,i};
 					findWorst.add(idealDraw);
 				}else {//if it is ahead in score, draw is bad
