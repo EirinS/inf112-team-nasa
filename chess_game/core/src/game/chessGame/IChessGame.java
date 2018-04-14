@@ -1,14 +1,19 @@
 package game.chessGame;
 
-import boardstructure.IBoard;
-import boardstructure.Move;
-import boardstructure.Square;
+import boardstructure.*;
 import pieces.PieceColor;
 import db.Player;
 
 import java.util.ArrayList;
 
 public interface IChessGame {
+
+	/**
+	 * Perform promotion on the board given a move and a piece to promote to.
+	 * @param move Promotion move
+	 * @param piece Promotion piece
+	 */
+	void performPromotion(Move move, PromotionPiece piece);
 
 	/**
 	 * Gets all the legal moves from a given x and y.
@@ -33,6 +38,7 @@ public interface IChessGame {
 	 * @param fromY
 	 * @param toX
 	 * @param toY
+	 * @param boardListener Board listener for promotion.
 	 */
 	void doTurn(int fromX, int fromY, int toX, int toY);
 

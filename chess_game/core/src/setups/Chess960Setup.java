@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import boardstructure.Board;
-import boardstructure.IBoard;
-import boardstructure.Square;
+import boardstructure.BoardListener;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Bishop;
@@ -24,34 +23,17 @@ import pieces.pieceClasses.Rook;
  * @author Eirin
  *
  */
-public class Chess960Setup implements Setup {
+public class Chess960Setup extends AbstractSetup {
 
 	private Random r = new Random();
 	//one set of pieces
 	private int queen = 1, king = 1, rook = 2, bishop = 2, knight = 2;
 	boolean hasPlacedFirstRook, hasPlacedKing;
 
-	private PieceColor getPieceColor(int y, boolean playerWhite) {
-		boolean isBottom = y == 6 || y == 7;
-		if (isBottom) {
-			if (playerWhite) {
-				return PieceColor.WHITE;
-			} else {
-				return PieceColor.BLACK;
-			}
-		} else {
-			if (playerWhite) {
-				return PieceColor.BLACK;
-			} else {
-				return PieceColor.WHITE;
-			}
-		}
-	}
-
 	@Override
-	public Board getInitialPosition(PieceColor playerColor) {
+	public Board getInitialPosition(PieceColor playerColor, BoardListener listener) {
 		boolean playerWhite = playerColor == PieceColor.WHITE;
-		Board board = new Board(8, playerColor);
+		Board board = new Board(8, playerColor, listener);
 		PieceColor color1 = getPieceColor(1, playerWhite);
 		PieceColor color2 = getPieceColor(6, playerWhite);
 		for(int x = 0; x < 8; x++) {

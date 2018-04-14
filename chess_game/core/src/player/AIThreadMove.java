@@ -1,9 +1,10 @@
 package player;
 
-import boardstructure.IBoard;
-import boardstructure.Move;
+import boardstructure.*;
 import com.badlogic.gdx.Gdx;
 import game.chessGame.ChessGame;
+
+import java.util.ArrayList;
 
 /**
  * Created by jonas on 11/04/2018.
@@ -36,5 +37,4 @@ public class AIThreadMove implements Runnable {
 				}
 		);
 	}
-
 }

@@ -1,10 +1,6 @@
 package player;
 
-import boardstructure.Board;
-import boardstructure.IBoard;
-import boardstructure.Move;
-import boardstructure.MoveType;
-import boardstructure.Square;
+import boardstructure.*;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Queen;
@@ -191,7 +187,14 @@ public class AIHard implements AI, Playable {
 	public int getRating() {
 		return rating;
 	}
-	
+
+	@Override
+	public PromotionPiece calculatePromotionPiece(IBoard currentBoard, Move promotionMove) {
+
+		// TODO: Implement logic here.
+		return PromotionPiece.QUEEN;
+	}
+
 	private boolean isPromotionMove(Move move) {
 		if(move.getMoveType()==MoveType.PROMOTION) {
 			return true;

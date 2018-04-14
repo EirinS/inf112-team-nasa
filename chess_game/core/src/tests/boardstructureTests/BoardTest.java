@@ -4,12 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import boardstructure.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import boardstructure.Board;
-import boardstructure.IBoard;
-import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.King;
@@ -192,23 +190,48 @@ public class BoardTest {
 		assertEquals(y, copy.getSquare(x, y).getY());
 	}
 	
-	private void setUpForMoveTest() {
+	private void setUpForMoveTest(BoardListener listener) {
 		IPiece rook = new Rook(PieceColor.WHITE);
+		board.setListener(listener);
 		board.getSquare(5, 5).putPiece(rook);
 		board.move(board.getSquare(5, 5), board.getSquare(7, 5));
 	}
 	
 	@Test
 	public void moveMovesPiece() {
-		setUpForMoveTest();
-		assertFalse(board.getSquare(7, 5).isEmpty());
-		assertTrue(board.getSquare(5, 5).isEmpty());
+		setUpForMoveTest(new BoardListener() {
+
+			@Override
+			public void promotionRequested(Move move) {}
+
+			@Override
+			public void movePerformed(Board board, ArrayList<Move> moves) {
+				assertFalse(board.getSquare(7, 5).isEmpty());
+				assertTrue(board.getSquare(5, 5).isEmpty());
+			}
+
+			@Override
+			public void illegalMovePerformed(int fromX, int fromY) { }
+		});
 	}
 	
 	@Test
 	public void moveSavesMoveInHistory() {
-		setUpForMoveTest();
-		assertEquals(1, board.getHistory().size());
+		setUpForMoveTest(new BoardListener() {
+
+			@Override
+			public void promotionRequested(Move move) {}
+
+			@Override
+			public void movePerformed(Board board, ArrayList<Move> moves) {
+				assertEquals(1, board.getHistory().size());
+			}
+
+			@Override
+			public void illegalMovePerformed(int fromX, int fromY) {
+
+			}
+		});
 	}
 	
 

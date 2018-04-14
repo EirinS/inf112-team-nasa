@@ -2,6 +2,7 @@ package player;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.PromotionPiece;
 import pieces.PieceColor;
 
 /**
@@ -26,4 +27,12 @@ public interface AI {
 	 * @return int rating of this AI
 	 */
 	int getRating();
+
+	/**
+	 * Calculates what promotion piece to use.
+	 * @param currentBoard Current board
+	 * @param promotionMove Move to execute
+	 * @return Promotion piece to use.
+	 */
+	PromotionPiece calculatePromotionPiece(IBoard currentBoard, Move promotionMove);
 }

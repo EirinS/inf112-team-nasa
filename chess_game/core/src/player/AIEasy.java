@@ -2,6 +2,7 @@ package player;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import boardstructure.PromotionPiece;
 import boardstructure.Square;
 import pieces.PieceColor;
 
@@ -52,4 +53,23 @@ public class AIEasy implements AI, Playable {
 		return rating;
 	}
 
+	@Override
+	public PromotionPiece calculatePromotionPiece(IBoard currentBoard, Move promotionMove) {
+
+		// TODO: 14/04/2018 Randomized aswell, keep it or stick to queen? :-)
+		int i = rand.nextInt(4);
+		switch (i) {
+			case 0:
+				return PromotionPiece.QUEEN;
+			case 1:
+				return PromotionPiece.KNIGHT;
+			case 2:
+				return PromotionPiece.ROOK;
+			case 3:
+				return PromotionPiece.BISHOP;
+		}
+
+		// Should never happen
+		return null;
+	}
 }

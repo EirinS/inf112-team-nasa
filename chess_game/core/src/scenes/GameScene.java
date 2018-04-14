@@ -1,8 +1,10 @@
 package scenes;
 
-import boardstructure.IBoard;
+import boardstructure.Board;
+import boardstructure.BoardListener;
 import boardstructure.Move;
 
+import boardstructure.PromotionPiece;
 import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.graphics.Color;
@@ -15,7 +17,6 @@ import com.badlogic.gdx.utils.Align;
 import game.Chess;
 import game.WindowInformation;
 import game.chessGame.GameInfo;
-import game.chessGame.GameType;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -33,7 +34,6 @@ import player.AI;
 import player.AIHard;
 
 import player.AIThreadHint;
-import player.AIThreadMove;
 import sound.AudioManager;
 import sprites.PieceSpriteLoader;
 import styling.Colors;
@@ -41,7 +41,7 @@ import styling.Colors;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GameScene extends AbstractScene implements CheckerboardListener, ChessGameListener {
+public class GameScene extends AbstractScene implements CheckerboardListener, ChessGameListener, BoardListener {
 
     private Chess game;
     private GameInfo gameInfo;
@@ -336,6 +336,15 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
         for (Move m : moves)
             checkerboard.showPrevMove(m);
     }
+    @Override
+    public void promotionRequested(Move move) {
+
+        // TODO: 14/04/2018 @Elise, make dialog here and chose what promotion piece you want :-)
+        chessGame.performPromotion(move, PromotionPiece.QUEEN);
+    }
+
+    @Override
+    public void movePerformed(Board board, ArrayList<Move> moves) { }
 
     @Override
     public void gameOver(int winLossDraw) {

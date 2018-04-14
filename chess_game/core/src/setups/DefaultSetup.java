@@ -1,33 +1,17 @@
 package setups;
 
 import boardstructure.Board;
+import boardstructure.BoardListener;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.*;
 
-public class DefaultSetup implements Setup {
-
-    private PieceColor getPieceColor(int y, boolean playerWhite) {
-        boolean isBottom = y == 6 || y == 7;
-        if (isBottom) {
-            if (playerWhite) {
-                return PieceColor.WHITE;
-            } else {
-                return PieceColor.BLACK;
-            }
-        } else {
-            if (playerWhite) {
-                return PieceColor.BLACK;
-            } else {
-                return PieceColor.WHITE;
-            }
-        }
-    }
+public class DefaultSetup extends AbstractSetup {
 
     @Override
-    public Board getInitialPosition(PieceColor playerColor) {
+    public Board getInitialPosition(PieceColor playerColor, BoardListener listener) {
         boolean playerWhite = playerColor == PieceColor.WHITE;
-        Board board = new Board(8, playerColor);
+        Board board = new Board(8, playerColor, listener);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 PieceColor color = getPieceColor(y, playerWhite);
