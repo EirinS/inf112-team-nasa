@@ -11,6 +11,7 @@ public class GameInfo {
     private GameType gameType;
     private AILevel level;
     private boolean singlePlayer;
+    private String gameOverString;
 
     public GameInfo(Player player) {
         this.player = player;
@@ -72,6 +73,16 @@ public class GameInfo {
     
     public boolean isSinglePlayer() {
     	return singlePlayer;
+    }
+    
+    public String getGameOverString()
+    {
+    	return gameOverString;
+    }
+    
+    public void setGameOverString(String gameOverString)
+    {
+    	this.gameOverString = gameOverString;
     }
 
 }

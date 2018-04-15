@@ -69,9 +69,9 @@ public class VictoryScene extends AbstractScene {
 
         String titleStr;
         if (playerWon == null) {
-            titleStr = "Draw, " + gameInfo.getPlayer().getName() + "!";
+            titleStr = "Draw, " + gameInfo.getGameOverString() + ", " + gameInfo.getPlayer().getName() + "!";
         } else {
-            titleStr = playerWon ? "Victory, " + gameInfo.getPlayer().getName() + "!" : "Defeat, " + gameInfo.getPlayer().getName() + "!";
+            titleStr = playerWon ? "Victory, " + gameInfo.getGameOverString() + ", " + gameInfo.getPlayer().getName() + "!" : "Defeat, " + gameInfo.getGameOverString() + ", " + gameInfo.getPlayer().getName() + "!";
         }
 
         Label title = new Label(titleStr, skin, "title-plain");

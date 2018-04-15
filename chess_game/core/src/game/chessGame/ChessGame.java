@@ -33,6 +33,8 @@ public class ChessGame implements IChessGame, BoardListener {
     private GameInfo gameInfo;
     private IBoard board;
     private AI computerAI;
+    
+    private String gameOverString;
 
     private ChessGameListener listener;
 
@@ -47,6 +49,7 @@ public class ChessGame implements IChessGame, BoardListener {
     public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
         this.gameInfo = gameInfo;
         this.listener = listener;
+        this.gameOverString = "";
 
         if (gameInfo.getGameType() == GameType.BULLET) {
             playerSeconds = 60;
@@ -250,6 +253,7 @@ public class ChessGame implements IChessGame, BoardListener {
                 //found threefold-repetition
                 if (count >= 3) {
                     System.out.println("Draw by threefoldrepetition");
+                    gameInfo.setGameOverString("Draw by threefoldrepetition");
                     return true;
                 }
             }
@@ -305,6 +309,7 @@ public class ChessGame implements IChessGame, BoardListener {
             count++;
             if (count >= 50) {
                 System.out.println("Draw by 50-move-rule.");
+                gameInfo.setGameOverString("Draw by 50-move-rule.");
                 return true;
             }
         }
@@ -318,6 +323,7 @@ public class ChessGame implements IChessGame, BoardListener {
             ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(board.getTurn(), board.getTurn().getOpposite());
             for (IPiece p : threat) {
                 if (p instanceof King) {
+                	gameInfo.setGameOverString("Checkmate.");
                     return true;
                 }
             }
@@ -341,8 +347,10 @@ public class ChessGame implements IChessGame, BoardListener {
         } else if (pieceSqs.size() == 3) {
             for (Square p : pieceSqs)
                 //if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
-                if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight)
-                    return true;
+                if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight) {
+                	gameInfo.setGameOverString("Draw: impossible checkmate.");
+                	 return true;
+                }
         } else if (pieceSqs.size() == 4) {
             return fourPiecesCausesAutomaticDraw(pieceSqs);
         }
@@ -375,6 +383,9 @@ public class ChessGame implements IChessGame, BoardListener {
         if (bishops.get(0).squareIsWhite() != bishops.get(1).squareIsWhite()) {
             return false;
         }
+
+        gameInfo.setGameOverString("Four piece automatic draw.");
+        
         return true;
     }
 
@@ -389,6 +400,7 @@ public class ChessGame implements IChessGame, BoardListener {
 					return false;
 				}
 			} */
+        	gameInfo.setGameOverString("Stalemate.");
             return true;
         }
         return false;
@@ -396,6 +408,7 @@ public class ChessGame implements IChessGame, BoardListener {
 
     @Override
     public void resign() {
+    	gameInfo.setGameOverString("Game resigned.");
         finishGame(board.getTurn());
     }
 
@@ -570,5 +583,10 @@ public class ChessGame implements IChessGame, BoardListener {
     @Override
     public void illegalMovePerformed(int fromX, int fromY) {
         listener.illegalMovePerformed(fromX, fromY);
+    }
+    
+    public String getGameOverString()
+    {
+    	return gameOverString;
     }
 }
