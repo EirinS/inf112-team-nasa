@@ -348,9 +348,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void promotionRequested(Move m) {
-
-		// TODO: 14/04/2018 @Elise, make dialog here and chose what promotion piece you
-		// want :-)
+		
 		showPromotionOptions(m);
 		
 		if (m.getMovingPiece() instanceof Queen) {
