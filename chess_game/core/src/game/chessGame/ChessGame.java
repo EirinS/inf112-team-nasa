@@ -309,7 +309,7 @@ public class ChessGame implements IChessGame, BoardListener {
             count++;
             if (count >= 50) {
                 System.out.println("Draw by 50-move-rule.");
-                gameInfo.setGameOverString("Draw by 50-move-rule.");
+                gameInfo.setGameOverString("Draw by 50-move-rule");
                 return true;
             }
         }
@@ -323,7 +323,7 @@ public class ChessGame implements IChessGame, BoardListener {
             ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(board.getTurn(), board.getTurn().getOpposite());
             for (IPiece p : threat) {
                 if (p instanceof King) {
-                	gameInfo.setGameOverString("Checkmate.");
+                	gameInfo.setGameOverString("Checkmate");
                     return true;
                 }
             }
@@ -348,7 +348,7 @@ public class ChessGame implements IChessGame, BoardListener {
             for (Square p : pieceSqs)
                 //if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
                 if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight) {
-                	gameInfo.setGameOverString("Draw: impossible checkmate.");
+                	gameInfo.setGameOverString("Draw: impossible checkmate");
                 	 return true;
                 }
         } else if (pieceSqs.size() == 4) {
@@ -384,7 +384,7 @@ public class ChessGame implements IChessGame, BoardListener {
             return false;
         }
 
-        gameInfo.setGameOverString("Four piece automatic draw.");
+        gameInfo.setGameOverString("Four piece automatic draw");
         
         return true;
     }
@@ -400,7 +400,7 @@ public class ChessGame implements IChessGame, BoardListener {
 					return false;
 				}
 			} */
-        	gameInfo.setGameOverString("Stalemate.");
+        	gameInfo.setGameOverString("Stalemate");
             return true;
         }
         return false;
@@ -408,7 +408,7 @@ public class ChessGame implements IChessGame, BoardListener {
 
     @Override
     public void resign() {
-    	gameInfo.setGameOverString("Game resigned.");
+    	gameInfo.setGameOverString("Game resigned");
         finishGame(board.getTurn());
     }
 
