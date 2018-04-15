@@ -119,9 +119,9 @@ public class Pawn extends AbstractPiece {
             if (oneAhead.isEmpty())
                 if (pawnPromotionIsValid(y, dy, board)) {
                     reachable.add(new Move(origin, oneAhead, this, null, MoveType.PROMOTION));
-                    return reachable;
-                } else
+                } else {
                     reachable.add(new Move(origin, oneAhead, this, null, MoveType.REGULAR));
+                }
             // Check whether this pawn can move two squares ahead
             if (board.withinBoard(x, y + 2 * dy)) {
                 Square twoAhead = board.getSquare(x, y + 2 * dy);

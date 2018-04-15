@@ -281,6 +281,8 @@ public class Board implements IBoard {
                 piece = new Bishop(color);
                 break;
         }
+
+        // TODO: 15/04/2018 wieeerd bug here. first promotion works, then the next screws up the pieces????
         m.getFrom().takePiece();
         m.getFrom().putPiece(piece);
         if (m.getTo().isEmpty()) {

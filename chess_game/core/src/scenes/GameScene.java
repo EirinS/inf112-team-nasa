@@ -94,9 +94,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		quitBtn.addListener(new ClickListener() {
 
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, game);
-				super.clicked(event, x, y);
+				super.touchUp(event, x, y, pointer, button);
 			}
 		});
 
@@ -106,9 +106,9 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		resignBtn.addListener(new ClickListener() {
 
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				chessGame.resign();
-				super.clicked(event, x, y);
+				super.touchUp(event, x, y, pointer, button);
 			}
 		});
 
@@ -255,37 +255,33 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		queenBtn.addListener(new ClickListener() {
 
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				promotionDialog.setVisible(false);
 				chessGame.performPromotion(m, PromotionPiece.QUEEN);
-				super.clicked(event, x, y);
 			}
 		});
 		bishopBtn.addListener(new ClickListener() {
 
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				promotionDialog.setVisible(false);
 				chessGame.performPromotion(m, PromotionPiece.BISHOP);
-				super.clicked(event, x, y);
 			}
 		});
 		rookBtn.addListener(new ClickListener() {
 
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				promotionDialog.setVisible(false);
 				chessGame.performPromotion(m, PromotionPiece.ROOK);
-				super.clicked(event, x, y);
 			}
 		});
 		knightBtn.addListener(new ClickListener() {
 
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				promotionDialog.setVisible(false);
 				chessGame.performPromotion(m, PromotionPiece.KNIGHT);
-				super.clicked(event, x, y);
 			}
 		});
 		promotionDialog.setVisible(true);
