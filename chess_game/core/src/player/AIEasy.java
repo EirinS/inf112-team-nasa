@@ -56,7 +56,7 @@ public class AIEasy implements AI, Playable {
 	@Override
 	public PromotionPiece calculatePromotionPiece(IBoard currentBoard, Move promotionMove) {
 
-		// TODO: 14/04/2018 Randomized aswell, keep it or stick to queen? :-)
+		// TODO: 14/04/2018 Randomized as well, keep it or stick to queen? :-)
 		int i = rand.nextInt(4);
 		switch (i) {
 			case 0:

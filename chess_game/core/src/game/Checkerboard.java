@@ -191,7 +191,7 @@ public class Checkerboard extends DragListener {
 		actor.setPosition(boardX, boardY);
 		actor.setName(toX + "," + toY);
 		if (moveType != null && moveType == MoveType.PROMOTION) {
-			Texture queenTexture = sprites.get((color == PieceColor.WHITE ? "w" : "b") + "q");
+			Texture queenTexture = sprites.get((color == PieceColor.WHITE ? "w" : "b") + moveType.getMetadata());
 			((Image)actor).setDrawable(new SpriteDrawable(new Sprite(queenTexture)));
 		}
 	}
@@ -235,7 +235,7 @@ public class Checkerboard extends DragListener {
 
 	/**
 	 * Shows a move-hint for user on the board.
-	 * @param moves, the moves you'll highlight
+	 * @param m, the move you'll highlight
 	 */
 	public void showHint(Move m) {
 		highlightPossibleMovesGroup.clear();
@@ -254,7 +254,7 @@ public class Checkerboard extends DragListener {
 
 	public void showMoves(ArrayList<Move> moves) {
 		highlightPossibleMovesGroup.clear();		
-		Texture texture = chessMoveTexture;
+		Texture texture;
 		for (Move m : moves) {
 			if(m.getCapturedPiece() != null) {
 				texture = captureTexture;

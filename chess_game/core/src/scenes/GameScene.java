@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -56,6 +57,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	private HashMap<String, Texture> sprites;
 	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, muteBtn, undoBtn;
+	private Group promotionDialog;
 
 	public GameScene(Chess game, GameInfo gameInfo) {
 		this.game = game;
@@ -196,70 +198,32 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 			addActor(undoBtn);
 		}
-
+		addPromotionActors();
 	}
 
-	public void showPromotionOptions(Move m) {
+	private void addPromotionActors() {
+		promotionDialog = new Group();
+		promotionDialog.setVisible(false);
+
 		queenBtn = new TextButton("Queen", skin, "default");
 		queenBtn.setSize(queenBtn.getWidth() * 1.5f, queenBtn.getHeight());
 		queenBtn.setPosition(checkerboard.getPos(), checkerboard.getPos() + checkerboard.getSize() / 2);
-		queenBtn.addListener(new ClickListener() {
-
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				m.getFrom().takePiece();
-				m.getFrom().putPiece(new Queen(m.getMovingPiece().getColor()));
-				super.clicked(event, x, y);
-			}
-		});
 
 		bishopBtn = new TextButton("Bishop", skin, "default");
 		bishopBtn.setSize(bishopBtn.getWidth() * 1.5f, bishopBtn.getHeight());
 		bishopBtn.setPosition(checkerboard.getPos() + queenBtn.getWidth() + 5,
 				checkerboard.getPos() + checkerboard.getSize() / 2);
-		bishopBtn.addListener(new ClickListener() {
-
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				m.getFrom().takePiece();
-				m.getFrom().putPiece(new Bishop(m.getMovingPiece().getColor()));
-				super.clicked(event, x, y);
-			}
-		});
 
 		rookBtn = new TextButton("Rook", skin, "default");
 		rookBtn.setSize(rookBtn.getWidth() * 1.5f, rookBtn.getHeight());
 		rookBtn.setPosition(checkerboard.getPos() + queenBtn.getWidth() + bishopBtn.getWidth() + 10,
 				checkerboard.getPos() + checkerboard.getSize() / 2);
-		rookBtn.addListener(new ClickListener() {
-
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				m.getFrom().takePiece();
-				m.getFrom().putPiece(new Rook(m.getMovingPiece().getColor()));
-				super.clicked(event, x, y);
-			}
-		});
 
 		knightBtn = new TextButton("Knight", skin, "default");
 		knightBtn.setSize(knightBtn.getWidth() * 1.5f, knightBtn.getHeight());
 		knightBtn.setPosition(
 				checkerboard.getPos() + queenBtn.getWidth() + bishopBtn.getWidth() + rookBtn.getWidth() + 15,
 				checkerboard.getPos() + checkerboard.getSize() / 2);
-		knightBtn.addListener(new ClickListener() {
-
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				m.getFrom().takePiece();
-				m.getFrom().putPiece(new Knight(m.getMovingPiece().getColor()));
-				super.clicked(event, x, y);
-			}
-		});
-
-		addActor(queenBtn);
-		addActor(bishopBtn);
-		addActor(rookBtn);
-		addActor(knightBtn);
 
 		VerticalGroup buttons = new VerticalGroup();
 		buttons.addActor(queenBtn);
@@ -276,13 +240,55 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		promotionTable.setPosition(checkerboard.getPos() + checkerboard.getSize() / 2 - promotionTable.getWidth() / 2,
 				checkerboard.getPos() + checkerboard.getSize() / 2 - promotionTable.getWidth() / 2);
 		promotionTable.setSize(headline.getWidth() + 50, 4 * queenBtn.getHeight() + headline.getHeight() + 50);
-		addActor(promotionTable);
+		promotionDialog.addActor(promotionTable);
 
 		headline.setPosition(checkerboard.getPos() + 30,
 				checkerboard.getPos() + checkerboard.getSize() / 2 + promotionTable.getHeight());
 		headline.setSize(headline.getWidth(), headline.getHeight());
-		addActor(headline);
+		promotionDialog.addActor(headline);
 		buttons.addActorAt(0, headline);
+
+		addActor(promotionDialog);
+	}
+
+	private void showPromotionOptions(Move m) {
+		queenBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(m, PromotionPiece.QUEEN);
+				super.clicked(event, x, y);
+			}
+		});
+		bishopBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(m, PromotionPiece.BISHOP);
+				super.clicked(event, x, y);
+			}
+		});
+		rookBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(m, PromotionPiece.ROOK);
+				super.clicked(event, x, y);
+			}
+		});
+		knightBtn.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(m, PromotionPiece.KNIGHT);
+				super.clicked(event, x, y);
+			}
+		});
+		promotionDialog.setVisible(true);
 	}
 
 	private void setNameColors() {
@@ -321,8 +327,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 	@Override
 	public void onDragPieceStarted(int x, int y) {
 		ArrayList<Move> legalMoves = chessGame.getLegalMoves(x, y);
-		if (!legalMoves.isEmpty())
-			checkerboard.showMoves(legalMoves);
+		checkerboard.showMoves(legalMoves);
 	}
 
 	@Override
@@ -348,19 +353,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void promotionRequested(Move m) {
-		
 		showPromotionOptions(m);
-		
-		if (m.getMovingPiece() instanceof Queen) {
-			chessGame.performPromotion(m, PromotionPiece.QUEEN);
-		} else if (m.getMovingPiece() instanceof Bishop) {
-			chessGame.performPromotion(m, PromotionPiece.BISHOP);
-		} else if (m.getMovingPiece() instanceof Rook) {
-			chessGame.performPromotion(m, PromotionPiece.ROOK);
-		} else if (m.getMovingPiece() instanceof Knight) {
-			chessGame.performPromotion(m, PromotionPiece.KNIGHT);
-		}
-
 	}
 
 	@Override

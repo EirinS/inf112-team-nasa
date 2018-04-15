@@ -292,6 +292,7 @@ public class Board implements IBoard {
 
         turn = turn.getOpposite();
         if (listener != null) {
+            m.getMoveType().setMetadata(promotionPiece.toString());
             listener.movePerformed(this, new ArrayList<>(Collections.singleton(m)));
         }
     }
