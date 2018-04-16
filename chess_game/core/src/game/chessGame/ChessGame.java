@@ -94,6 +94,7 @@ public class ChessGame implements IChessGame, BoardListener {
                                     new Runnable() {
                                         @Override
                                         public void run() {
+                                        	gameInfo.setGameOverString("Time's up");
                                             finishGame(board.getTurn());
                                         }
                                     }
@@ -140,6 +141,7 @@ public class ChessGame implements IChessGame, BoardListener {
                         if (listener != null) listener.turnTimerElapsed();
                         if (opponentSeconds == 0) {
                             opponentTimer.cancel();
+                            gameInfo.setGameOverString("Time's up");
                             finishGame(gameInfo.getPlayerColor().getOpposite());
                         }
                     }
@@ -348,7 +350,7 @@ public class ChessGame implements IChessGame, BoardListener {
             for (Square p : pieceSqs)
                 //if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
                 if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight) {
-                	gameInfo.setGameOverString("Draw: impossible checkmate");
+                	gameInfo.setGameOverString("Impossible checkmate");
                 	 return true;
                 }
         } else if (pieceSqs.size() == 4) {
