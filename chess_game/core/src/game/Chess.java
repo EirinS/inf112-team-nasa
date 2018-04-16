@@ -1,7 +1,8 @@
 package game;
 
-import register.PlayerRegister;
 import com.badlogic.gdx.*;
+import db.Database;
+import db.IDatabase;
 import scenes.SceneEnum;
 import scenes.SceneManager;
 
@@ -10,10 +11,12 @@ import scenes.SceneManager;
  * It also connects to the playerfile
  */
 public class Chess extends Game {
-    private static PlayerRegister playerRegister = new PlayerRegister("playerfile.txt");
+
+    private static IDatabase database;
 
     @Override
     public void create() {
+        database = new Database();
         SceneManager.getInstance().initialize(this);
         SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, this);
     }
@@ -27,7 +30,7 @@ public class Chess extends Game {
     public void dispose() {
     }
 
-    public static PlayerRegister getPlayerRegister() {
-        return playerRegister;
+    public static IDatabase getDatabase() {
+        return database;
     }
 }

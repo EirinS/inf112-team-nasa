@@ -25,5 +25,8 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         testCompile 'junit:junit:4.12'
         compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
+
+        // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-library
+        testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
     }
 }

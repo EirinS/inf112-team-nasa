@@ -1,6 +1,8 @@
-package register;
+package db;
 
 import game.Chess;
+
+import java.sql.SQLException;
 
 /**
  * Simple helper-class for the getHighscores method, which allows the priority queue to be used.
@@ -13,6 +15,10 @@ public class Player implements Comparable<Player> {
     private int wins;
     private int losses;
     private int draws;
+
+    public Player(String name) {
+        this(name, 1500, 0, 0, 0);
+    }
 
     public Player(String name, int rating, int wins, int losses, int draws) {
         this.name = name;
@@ -35,7 +41,11 @@ public class Player implements Comparable<Player> {
     }
 
     public void loadRating() {
-        rating = Chess.getPlayerRegister().getPlayer(name).getRating();
+        try {
+            rating = Chess.getDatabase().getPlayer(name).getRating();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getWins() {
@@ -75,5 +85,9 @@ public class Player implements Comparable<Player> {
 
     public String getNameRating() {
         return name + " (" + rating + ")";
+    }
+
+    public String getHighscoreRow() {
+        return String.format("%s\t\t%d\t%d\t%d", name, wins, losses, draws);
     }
 }

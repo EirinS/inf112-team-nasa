@@ -1,34 +1,17 @@
 package setups;
 
 import boardstructure.Board;
-import boardstructure.Square;
+import boardstructure.BoardListener;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.*;
 
-public class DefaultSetup implements Setup {
-
-    private PieceColor getPieceColor(int y, boolean playerWhite) {
-        boolean isBottom = y == 6 || y == 7;
-        if (isBottom) {
-            if (playerWhite) {
-                return PieceColor.WHITE;
-            } else {
-                return PieceColor.BLACK;
-            }
-        } else {
-            if (playerWhite) {
-                return PieceColor.BLACK;
-            } else {
-                return PieceColor.WHITE;
-            }
-        }
-    }
+public class DefaultSetup extends AbstractSetup {
 
     @Override
-    public Board getInitialPosition(PieceColor playerColor) {
+    public Board getInitialPosition(PieceColor playerColor, BoardListener listener) {
         boolean playerWhite = playerColor == PieceColor.WHITE;
-        Board board = new Board(8, playerColor);
+        Board board = new Board(8, playerColor, listener);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 PieceColor color = getPieceColor(y, playerWhite);
@@ -54,10 +37,12 @@ public class DefaultSetup implements Setup {
                             piece = new Bishop(color);
                             break;
                         case 3:
-                            piece = new Queen(color);
+                            if (playerWhite) piece = new Queen(color);
+                            else piece = new King(color);
                             break;
                         case 4:
-                            piece = new King(color);
+                            if (playerWhite) piece = new King(color);
+                            else piece = new Queen(color);
                             break;
                     }
                     board.getSquare(x, y).putPiece(piece);

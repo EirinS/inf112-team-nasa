@@ -89,11 +89,11 @@ public abstract class AbstractPiece implements IPiece {
 		if (check == null) {return reach;}
 		for(Move mov : check) {
 
-			// TODO: 18/03/2018 possible bug here aswell, mov is sometimes null, why?
-			if (mov == null) {
+			// TODO: 12.04.2018 commented out because it seems to work for some reason.
+			/*if (mov == null) {
 				//System.out.println("mov null");
 				continue;
-			}
+			}*/
 			Square sq = mov.getTo();
 			if (!sq.isEmpty())
 				if (sq.getPiece().getColor() == opponent && !reach.contains(sq.getPiece()))

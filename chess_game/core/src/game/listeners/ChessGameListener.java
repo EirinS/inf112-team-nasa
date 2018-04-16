@@ -19,6 +19,12 @@ public interface ChessGameListener {
 	void moveOk(ArrayList<Move> moves);
 
 	/**
+	 * Promotion requested from the board.
+	 * @param move Promotion move to perform.
+	 */
+	void promotionRequested(Move move);
+
+	/**
 	 * Called when the game is over.
 	 * @param winLossDraw Integer representing result of game; win = 1, loss = 2, draw = 3.
 	 */

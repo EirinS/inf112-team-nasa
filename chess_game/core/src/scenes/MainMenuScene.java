@@ -1,36 +1,30 @@
 package scenes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import db.Database;
+import com.badlogic.gdx.utils.Align;
 import game.Chess;
 
 import game.chessGame.GameInfo;
-import game.GameType;
+import game.chessGame.GameType;
 import game.WindowInformation;
 
 import pieces.PieceColor;
 import player.AILevel;
+import db.Player;
 
 /**
- * 
  * This class initialize and manipulate the graphical elements in the main menu of the user interface.
- * 
+ *
  * @author sofia
  */
 
@@ -47,16 +41,24 @@ public class MainMenuScene extends AbstractScene {
     private static final int centreWidth = (WindowInformation.WIDTH / 2) - (defaultWidth / 2);
     private ArrayList<Actor> actors;
     private Image imgBackground;
-    private Label staticText, mainMenu, headerScore, error;
+    private Label staticText;
+    private Label mainMenu;
+    private Label headerScore;
+    private Label error;
+    private Label lose;
     private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
-            black, white, signInP2;
+            black, white, signInP2, multiOpponent;
     private TextField username, registerUsername;
     private Button backToLogIn, backToChooseGame;
-    private SelectBox<String> difficulty;
-    private List<String> scoreList;
+    private SelectBox<String> difficulty, gameType, multiplayerOption;
+    private List<Actor> scoreList;
     private ScrollPane scorePane;
+    private Window window;
+    private VerticalGroup scoreGroup;
+
     //Navigation assistance
     private boolean playerOne;
+
 
     private GameInfo gameInfo;
 
@@ -76,7 +78,6 @@ public class MainMenuScene extends AbstractScene {
     public void buildStage() {
         if (built) {
             screenGameMenu();
-            Chess.getPlayerRegister().loadPlayers();
             if (gameInfo != null) {
                 gameInfo.setPlayerColor(null);
                 gameInfo.setOpponent(null);
@@ -140,11 +141,18 @@ public class MainMenuScene extends AbstractScene {
 
         //Elements in preferences (singleplayer)
         startSingle = new TextButton("Start game", skin, "default");
-        startSingle.setPosition(centreWidth, WindowInformation.HEIGHT / 3);
-        difficulty = new SelectBox<String>(skin, "default");
-        String[] options = {AILevel.EASY.toString(), AILevel.INTERMEDIATE.toString(), AILevel.HARD.toString()};
-        difficulty.setItems(options);
+        startSingle.setPosition(centreWidth, WindowInformation.HEIGHT / 3.5f);
+        
+        difficulty = new SelectBox<String>(skin, "default"); 
+        String[] optionsDifficulty = {AILevel.EASY.toString(), AILevel.INTERMEDIATE.toString(), AILevel.HARD.toString()};
+        difficulty.setItems(optionsDifficulty);
         difficulty.setPosition(centreWidth, WindowInformation.HEIGHT / 2);
+        
+        gameType = new SelectBox<String>(skin, "default");
+        String[] optionsGameType = {GameType.REGULAR.toString(), GameType.CHESS960.toString(), GameType.BULLET.toString(), GameType.BLITZ.toString(), GameType.RAPID.toString()};
+        gameType.setItems(optionsGameType);
+        gameType.setPosition(centreWidth, WindowInformation.HEIGHT / 2.4f);
+        
         black = new TextButton("Black", skin, "toggle");
         black.setPosition(centreWidth - (defaultWidth / 4), WindowInformation.HEIGHT / 1.6f);
         white = new TextButton("White", skin, "toggle");
@@ -153,14 +161,36 @@ public class MainMenuScene extends AbstractScene {
 
         //Elements in score screen
         headerScore = new Label("High scores:", skin, "title-plain");
-        scoreList = new List<String>(skin);
-        String[] temporary = new String[]{"1", "2", "3"};
-        scoreList.setItems(temporary);
-        scorePane = new ScrollPane(scoreList, skin, "default");
-        scorePane.setPosition(centreWidth / 1.5f, WindowInformation.HEIGHT / 6);
-        headerScore.setPosition(centreWidth / 1.5f + (defaultWidth / 2), WindowInformation.HEIGHT / 1.2f);
+        scoreList = new List<Actor>(skin);
+        // scorePane = new ScrollPane(scoreList, skin, "default");
+        scoreGroup = new VerticalGroup();
+        scorePane = new ScrollPane(scoreGroup, skin, "default");
+        scorePane.setPosition(defaultWidth / 1.7f, WindowInformation.HEIGHT / 13);
+        headerScore.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
+
+        Label name = new Label("Name", skin, "title");
+        Label rating = new Label("Rating", skin, "title");
+        Label win = new Label("Wins", skin, "title");
+        Label lose = new Label("Losses", skin, "title");
+        Label draw = new Label("Draws", skin, "title");
+        window = new Window("", skin);
+        window.add(name);
+        window.add(rating);
+        window.add(win);
+        window.add(lose);
+        window.add(draw);
+        window.setPosition(defaultWidth / 1.7f, defaultHeight * 7.5f);
+        window.setMovable(false);
 
         //Elements in multiplayer
+        //Screen one
+        multiplayerOption = new SelectBox <String>(skin);
+        multiplayerOption.setItems(optionsGameType);
+        multiplayerOption.setPosition(centreWidth, WindowInformation.HEIGHT / 1.9f);
+        multiOpponent = new TextButton("Next", skin, "default");
+        multiOpponent.setPosition(centreWidth, WindowInformation.HEIGHT / 2.5f);
+        
+        //Screen two
         signInP2 = new TextButton("Sign in", skin, "default");
         signInP2.setPosition(centreWidth, WindowInformation.HEIGHT / 2.5f);
 
@@ -188,11 +218,15 @@ public class MainMenuScene extends AbstractScene {
         actors.add(mainMenu);
         actors.add(startSingle);
         actors.add(difficulty);
+        actors.add(gameType);
         actors.add(black);
         actors.add(white);
         actors.add(scorePane);
         actors.add(headerScore);
         actors.add(error);
+        actors.add(window);
+        actors.add(multiplayerOption);
+        actors.add(multiOpponent);
     }
 
     private void setUpElementSizes() {
@@ -205,9 +239,12 @@ public class MainMenuScene extends AbstractScene {
         backToLogIn.setSize(27, 27);
         backToChooseGame.setSize(27, 27);
         difficulty.setSize(defaultWidth, defaultHeight / 1.5f);
+        multiplayerOption.setSize(defaultWidth, defaultHeight / 1.5f);
+        gameType.setSize(defaultWidth, defaultHeight/1.5f);
         black.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
         white.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
-        scorePane.setSize(defaultWidth * 1.6f, defaultHeight * 7);
+        scorePane.setSize(defaultWidth * 2.3f, defaultHeight * 7);
+        window.setSize(defaultWidth * 2.3f, defaultHeight * 1.8f);
     }
 
 
@@ -262,12 +299,14 @@ public class MainMenuScene extends AbstractScene {
         scorePane.setVisible(true);
         backToChooseGame.setVisible(true);
         headerScore.setVisible(true);
+        window.setVisible(true);
     }
 
     protected void screenPreferences() {
         invisible();
         startSingle.setVisible(true);
         difficulty.setVisible(true);
+        gameType.setVisible(true);
         backToChooseGame.setVisible(true);
         black.setVisible(true);
         white.setVisible(true);
@@ -285,6 +324,15 @@ public class MainMenuScene extends AbstractScene {
         register.setVisible(true);
         backToChooseGame.setVisible(true);
         playerOne = false;
+    }
+    
+    private void screenMultiplayerOption(){
+    	invisible();
+    	mainMenu.setText("Game type");
+        mainMenu.setVisible(true);
+    	multiplayerOption.setVisible(true);
+    	backToChooseGame.setVisible(true);
+    	multiOpponent.setVisible(true);
     }
 
     //Section 3: Buttonlisteners
@@ -309,11 +357,13 @@ public class MainMenuScene extends AbstractScene {
         returnSignInListener();
         singleplayerListener();
         backToChooseGameListener();
-        multiplayerListener();
+        multiplayerOpponentListener();
+        multiplayerOptionListener();
         scoreListener();
         startSingleListener();
         blackListener();
         whiteListener();
+        multiplayerOpponentListener();
     }
 
     private void startSingleListener() {
@@ -321,10 +371,11 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Chess.getPlayerRegister().loadPlayers(); // Force-reload.
                 gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
+                gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
                 gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
                 gameInfo.getPlayer().loadRating();
+                gameInfo.setSinglePlayer(true);
                 if (gameInfo.getOpponent() != null) gameInfo.getOpponent().loadRating();
                 SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                 startSingleListener();
@@ -361,40 +412,44 @@ public class MainMenuScene extends AbstractScene {
                 error.setVisible(false);
 
                 if (playerOne) {
-                    String name = username.getText().replaceAll("\\s+", "");;
-                    Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
+                    String name = username.getText().replaceAll("\\s+", "");
+                    Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
                     if (exists) {
-                        gameInfo = new GameInfo(Chess.getPlayerRegister().getPlayer(name));
-                        screenGameMenu();
-                        signInListener();
+                        try {
+                            gameInfo = new GameInfo(Chess.getDatabase().getPlayer(name));
+                            screenGameMenu();
+                            signInListener();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
                     } else {
                         error.setVisible(true);
                         signInListener();
-                        return;
                     }
                 } else {
-                    String name = username.getText().replaceAll("\\s+", "");;
-                    Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
-                    
-                    if(name.equals(gameInfo.getPlayer().getName())){
-                    	error.setText("Already signed in");
+                    String name = username.getText().replaceAll("\\s+", "");
+                    Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
+
+                    if (name.equals(gameInfo.getPlayer().getName())) {
+                        error.setText("Already signed in");
                         error.setVisible(true);
                         signInListener();
-                        return;
-                    }
-                    else if (exists) {
-                        Chess.getPlayerRegister().loadPlayers(); // Force-reload.
-                        gameInfo.setOpponent(Chess.getPlayerRegister().getPlayer(name));
-                        gameInfo.setGameType(GameType.MULTIPLAYER);
-                        gameInfo.setPlayerColor(PieceColor.WHITE);
-                        gameInfo.getPlayer().loadRating();
-                        SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
-                        signInListener();
+                    } else if (exists) {
+                        try {
+                            gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
+                            gameInfo.setSinglePlayer(false);
+                            gameInfo.setPlayerColor(PieceColor.WHITE);
+                            gameInfo.getPlayer().loadRating();
+                            gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
+                            SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+                            signInListener();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
                     } else {
-                    	error.setText("Alias not registered.");
+                        error.setText("Alias not registered.");
                         error.setVisible(true);
                         signInListener();
-                        return;
                     }
                 }
             }
@@ -418,26 +473,19 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                String name = registerUsername.getText().replaceAll("\\s+", "");;
-                Boolean exists = Chess.getPlayerRegister().playerIsRegistered(name);
-                    
+                String name = registerUsername.getText().replaceAll("\\s+", "");
+                Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
+
                 error.setText("This alias already exists! Please choose another one.");
-                if (playerOne) {
-                    if (exists) {
-                        error.setVisible(true);
-                    } else {
-                        Chess.getPlayerRegister().registerPlayer(name);
-                        screenSignIn();
-                    }
-
+                if (exists) {
+                    error.setVisible(true);
                 } else {
-
-                    if (exists) {
-                        error.setVisible(true);
-                    } else {
-                        Chess.getPlayerRegister().registerPlayer(name);
-                        screenSignIn();
+                    try {
+                        Chess.getDatabase().registerPlayer(new Player(name));
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
                     }
+                    screenSignIn();
                 }
                 signUpListener();
             }
@@ -453,6 +501,16 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
+    
+    private void backToChooseGameListener() {
+        backToChooseGame.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent e, float x, float y, int point, int button) {
+                screenGameMenu();
+                backToChooseGameListener();
+            }
+        });
+    }
 
     private void singleplayerListener() {
         singleplayer.addListener(new ClickListener() {
@@ -464,39 +522,56 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
-    private void backToChooseGameListener() {
-        backToChooseGame.addListener(new ClickListener() {
-            @Override
-            public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                screenGameMenu();
-                backToChooseGameListener();
-            }
-        });
-    }
-
-    private void multiplayerListener() {
+    private void multiplayerOptionListener() {
         multiplayer.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                screenMultiplayer();
-                multiplayerListener();
+            	screenMultiplayerOption();
+                multiplayerOptionListener();
             }
         });
     }
+    private void multiplayerOpponentListener() {
+        multiOpponent.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent e, float x, float y, int point, int button) {
+                screenMultiplayer();
+                multiplayerOpponentListener();
+            }
+        });
+    }
+    
+    
 
     private void scoreListener() {
         scores.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                Chess.getPlayerRegister().loadPlayers(); // Force-reload.
-                ArrayList<String> highscores = Chess.getPlayerRegister().getHighscores();
+                scoreGroup.clearChildren();
 
-                String[] scores = new String[highscores.size() + 1];
-                scores[0] = "Name/Rating/W/L/D";
-                for (int i = 0; i < highscores.size(); i++) {
-                    scores[i + 1] = highscores.get(i);
+                try {
+                    ArrayList<Player> players = Chess.getDatabase().listPlayers();
+                    for (int i = 0; i < players.size(); i++) {
+                        Player p = players.get(i);
+                        Label name = new Label(p.getName(), skin, "title-plain");
+                        Label rating = new Label(String.valueOf(p.getRating()), skin, "title-plain");
+                        Label win = new Label(String.valueOf(p.getWins()), skin, "title-plain");
+                        Label lose = new Label(String.valueOf(p.getLosses()), skin, "title-plain");
+                        Label draw = new Label(String.valueOf(p.getDraws()), skin, "title-plain");
+                        HorizontalGroup group = new HorizontalGroup();
+                        group.rowAlign(Align.left);
+                        group.space(30f).left();
+                        group.addActor(name);
+                        group.addActor(rating);
+                        group.addActor(win);
+                        group.addActor(lose);
+                        group.addActor(draw);
+                        scoreGroup.addActor(group);
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
                 }
-                scoreList.setItems(scores);
+
                 screenScore();
                 scoreListener();
             }

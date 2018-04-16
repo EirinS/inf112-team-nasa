@@ -1,16 +1,19 @@
 package game.chessGame;
 
-import boardstructure.IBoard;
-import boardstructure.Move;
-import boardstructure.Square;
-import pieces.IPiece;
+import boardstructure.*;
 import pieces.PieceColor;
-import pieces.pieceClasses.Rook;
-import register.Player;
+import db.Player;
 
 import java.util.ArrayList;
 
 public interface IChessGame {
+
+	/**
+	 * Perform promotion on the board given a move and a piece to promote to.
+	 * @param move Promotion move
+	 * @param piece Promotion piece
+	 */
+	void performPromotion(Move move, PromotionPiece piece);
 
 	/**
 	 * Gets all the legal moves from a given x and y.
@@ -35,8 +38,15 @@ public interface IChessGame {
 	 * @param fromY
 	 * @param toX
 	 * @param toY
+	 * @param boardListener Board listener for promotion.
 	 */
 	void doTurn(int fromX, int fromY, int toX, int toY);
+
+	/**
+	 * Performs undo and returns true if successful.
+	 * @return True if successful, false otherwhise.
+	 */
+	boolean undoTurn();
 	
 	/**
 	 * Finishes a game, and performs the 
@@ -160,4 +170,9 @@ public interface IChessGame {
 	 * @return the current board in this chessGame
 	 */
 	IBoard getBoard();
+	
+	/**
+	 * @return the current gameInfo of this game.
+	 */
+	GameInfo getGameInfo();
 }

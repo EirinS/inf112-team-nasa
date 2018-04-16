@@ -1,19 +1,25 @@
 package player;
 
-import boardstructure.*;
+import boardstructure.Board;
+import boardstructure.IBoard;
+import boardstructure.Move;
+import boardstructure.MoveType;
+import boardstructure.PromotionPiece;
+import boardstructure.Square;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Queen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Trædal on 18/03/2018.
  */
-public class AIMedium implements AI, Playable {
+public class AIHard implements AI, Playable {
 
-	private static int rating = 1500;
+	private static int rating = 2000;
 
 	private PieceColor playerColor;
 	private PieceColor opponentColor;
@@ -28,7 +34,7 @@ public class AIMedium implements AI, Playable {
 	 * 
 	 * @param playerColor color of AI
 	 */
-	public AIMedium(PieceColor playerColor){
+	public AIHard(PieceColor playerColor){
 		this.playerColor = playerColor;
 		if(playerColor==PieceColor.BLACK) {this.bestCase=-9999; this.loss=99999;}else {this.bestCase=9999; this.loss=-99999;}
 		opponentColor = playerColor.getOpposite();
@@ -77,6 +83,7 @@ public class AIMedium implements AI, Playable {
 		return calculateMove(board);
 	}
 	
+	
 	/**
 	 * 
 	 * @param currentBoard board that we have
@@ -84,7 +91,7 @@ public class AIMedium implements AI, Playable {
 	 * @param playerTurn who would be making these moves
 	 * @return ArrayList<Board> all possible Boards after all possible Moves are made.
 	 */
-	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
+	private ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
 			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne());
@@ -113,31 +120,181 @@ public class AIMedium implements AI, Playable {
 		return possibleBoards;
 	}
 	
+	
 	/**
 	 * 
-	 * @param row x position of evaluation
-	 * @param column y position of evaluation
+	 * @param row x axis of a piece
+	 * @param column y axis of a piece
+	 * @param piece piece whose position is to be valued
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValue(int row, int column) {
+	private int getPositionValue(int row, int column, IPiece piece, PieceColor boardColor, PieceColor playerColor) {
+		
+		if (boardColor==PieceColor.WHITE) {
+			if (playerColor==PieceColor.WHITE) {
+				row=7-row;
+				column=7-column;
+			}
+		}else {
+			if (playerColor==PieceColor.BLACK) {
+				row=7-row;
+				column=7-column;
+			}
+		}
+		switch (piece.toString()) {
+		case "B": return getPositionValueBishop(row, column,boardColor, playerColor);
+		case "K": return getPositionValueKing(row, column,boardColor, playerColor);
+		case "N": return getPositionValueKnight(row, column,boardColor, playerColor);
+		case "P": return getPositionValuePawn(row, column,boardColor, playerColor);
+		case "Q": return getPositionValueQueen(row, column,boardColor, playerColor);
+		case "R": return getPositionValueRook(row, column,boardColor, playerColor);
+		default: throw new IllegalArgumentException("Unknown piece type " + piece.toString());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValuePawn(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight =
 				{
-						 {1,1,1,1,1,1,1,1}
-						,{2,2,2,2,2,2,2,2}
+						 {0,0,0,0,0,0,0,0}
+						,{5,5,5,5,5,5,5,5}
+						,{1,1,2,3,3,2,1,1}
+						,{1,1,1,3,3,1,1,1}
 						,{2,2,3,3,3,3,2,2}
-						,{2,2,3,4,4,3,2,2}
-						,{2,2,3,4,4,3,2,2}
-						,{2,2,3,3,3,3,2,2}
-						,{2,2,2,2,2,2,2,2}
-						,{1,1,1,1,1,1,1,1}
+						,{0,-1,-1,0,0,-1,-1,0}
+						,{0,1,1,-2,-2,1,1,0}
+						,{0,0,0,0,0,0,0,0}
 				};
 		return positionWeight[row][column];
 	}
 	
 	/**
 	 * 
-	 * @param piece you want the value of
-	 * @return int value of piece
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValueRook(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+		int[][] positionWeight =
+			{
+					 {0,0,0,0,0,0,0,0}
+					,{1,2,2,2,2,2,2,1}
+					,{-1,0,0,0,0,0,0,-1}
+					,{-1,0,0,0,0,0,0,-1}
+					,{-1,0,0,0,0,0,0,-1}
+					,{-1,0,0,0,0,0,0,-1}
+					,{-1,0,0,0,0,0,0,-1}
+					,{0,0,0,1,1,0,0,0}
+			};
+		return positionWeight[row][column];
+	}
+	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValueKing(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+		int[][] positionWeight =
+			{
+					 {-3,-4,-4,-5,-5,-4,-4,-3}
+					,{-3,-4,-4,-5,-5,-4,-4,-3}
+					,{-3,-4,-4,-5,-5,-4,-4,-3}
+					,{-3,-4,-4,-5,-5,-4,-4,-3}
+					,{-2,-3,-3,-4,-4,-3,-3,-2}
+					,{-1,-2,-2,-2,-2,-2,-2,-1}
+					,{2,2,0,0,0,0,2,2}
+					,{2,3,1,0,0,1,3,2}
+			};
+		return positionWeight[row][column];
+	}
+	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValueQueen(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+		int[][] positionWeight = {
+				 {-2,-1,-1,-1,-1,-1,-1,-2}
+				,{-1,0,0,0,0,0,0,-1}
+				,{-1,0,1,1,1,1,0,-1}
+				,{-1,0,1,1,1,1,0,-1}
+				,{-0,0,1,1,1,1,0,-1}
+				,{-1,1,1,1,1,1,0,-1}
+				,{-1,0,1,0,0,0,0,-1}
+				,{-2,-1,-1,-1,-1,-1,-1,-2}
+		};
+	return positionWeight[row][column];
+}
+	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValueKnight(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+		int[][] positionWeight =
+			{
+					 {-5,-4,-3,-3,-3,-3,-4,-5}
+					,{-4,-2,0,0,0,0,-2,-4}
+					,{-3,0,1,2,2,1,0,-3}
+					,{-3,1,2,2,2,2,1,-3}
+					,{-3,0,2,2,2,2,0,-3}
+					,{-3,1,1,2,2,1,1,-3}
+					,{-4,-2,0,1,1,0,-2,-4}
+					,{-5,-4,-3,-3,-3,-3,-4,-5}
+			};
+		return positionWeight[row][column];
+	}
+	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValueBishop(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+		int[][] positionWeight =
+			{
+					 {-2,-1,-1,-1,-1,-1,-1,-2}
+					,{-1,0,0,0,0,0,0,-1}
+					,{-1,0,1,1,1,1,0,-1}
+					,{-1,1,1,1,1,1,1,-1}
+					,{-1,0,1,1,1,1,0,-1}
+					,{-1,1,1,1,1,1,1,-1}
+					,{-1,1,0,0,0,0,1,-1}
+					,{-2,-1,-1,-1,-1,-1,-1,-2}
+			};
+		return positionWeight[row][column];
+	}
+
+	/**
+	 * 
+	 * @param piece whose value u want
+	 * @return int a value of piece
 	 */
 	private int getScoreForPieceType(IPiece piece){
 		switch (piece.toString()) {
@@ -156,7 +313,7 @@ public class AIMedium implements AI, Playable {
 	 * @param possibleBoards boards to be evaluated to find the best one
 	 * @return int[] {score, place} the score of the best board, and its place in possibleBoards 
 	 */
-	public int[] getBestAIScorePlacement(ArrayList<Board> possibleBoards) {//returns the best score and its placement in passed ArrayList
+	private int[] getBestAIScorePlacement(ArrayList<Board> possibleBoards) {//returns the best score and its placement in passed ArrayList
 		int[] scoreAndPlace = {0,0};
 		int i=0;
 		if (playerColor==PieceColor.WHITE) {
@@ -188,14 +345,49 @@ public class AIMedium implements AI, Playable {
 	 */
 	public int getAIScore(IBoard possibleBoard) { // for now negative score is black leading, positive is white leading.
 		int score = 0;
+		//List <IPiece> dangeredWhite = possibleBoard.piecesThreatenedByOpponent(PieceColor.WHITE, PieceColor.BLACK);
+		//List <IPiece> dangeredBlack = possibleBoard.piecesThreatenedByOpponent(PieceColor.BLACK, PieceColor.WHITE);
+	
 		ArrayList<Square> squares = possibleBoard.getSquares();
 		for (Square square : squares) {
+			int x = square.getX();
+			int y = square.getY();
 			if(!square.isEmpty()) {
 				IPiece piece = square.getPiece();
-				int value = getScoreForPieceType(piece);
+				int value1 = getScoreForPieceType(piece);
 				if (piece.getColor()==PieceColor.WHITE) {
-					score = score + value + getPositionValue(square.getX() ,square.getY());
-				}else score = score - value - getPositionValue(square.getX() ,square.getY());
+					if (playerColor==PieceColor.BLACK) {
+						List<IPiece> reachedBy = piece.enemyPiecesReached(x , y, possibleBoard, PieceColor.WHITE);
+						if(!reachedBy.isEmpty()) {
+							int value2=0;
+							for (IPiece p : reachedBy) {
+								if (value2<getScoreForPieceType(p)) {
+									value2=getScoreForPieceType(p);
+								}
+							}
+							if (value1<value2) {
+								value1=value1+(value2-value1);
+							}
+						}
+					}
+					score = score + value1 + getPositionValue(x ,y,piece,currentBoard.getPlayerOne(),playerColor);
+				}else {
+					if (playerColor==PieceColor.WHITE) {
+						List<IPiece> reachedBy = piece.enemyPiecesReached(x , y, possibleBoard, PieceColor.WHITE);
+						if(!reachedBy.isEmpty()) {
+							int value2=0;
+							for (IPiece p : reachedBy) {
+								if (value2<getScoreForPieceType(p)) {
+									value2=getScoreForPieceType(p);
+								}
+							}
+							if (value1<value2) {
+								value1=value1+(value2-value1);
+							}
+						}
+					}
+										score = score - value1 - getPositionValue(x ,y,piece,currentBoard.getPlayerOne(),playerColor);
+				}
 			}
 		}
 		called++;
@@ -210,21 +402,6 @@ public class AIMedium implements AI, Playable {
 	@Override
 	public int getRating() {
 		return rating;
-	}
-
-	@Override
-	public PromotionPiece calculatePromotionPiece(IBoard currentBoard, Move promotionMove) {
-
-		// TODO: Implement logic here.
-		return PromotionPiece.QUEEN;
-	}
-
-
-	private boolean isPromotionMove(Move move) {
-		if(move.getMoveType()==MoveType.PROMOTION) {
-			return true;
-		}
-		return false;
 	}
 	
 	/**
@@ -284,27 +461,45 @@ public class AIMedium implements AI, Playable {
 		return theMoves;
 	}
 	
+	
 	/**
 	 * 
 	 * @param theMoves list of all moves and the AI predictions of their score
 	 * @return int[] {score, place} the placement if the move with the best score
 	 */
 	private int[] findTheMove (ArrayList<int[]> theMoves) {// find the best move, after all is said and done and we have a list rating all the different moves
-		int[] theMove = {-bestCase, 0};
+		
+		int[] theMove;
+		int[] theSndMove;
+		
+		
 		if (playerColor==PieceColor.WHITE) {
+			theMove = new int[] {-9999, 0};
+			theSndMove = new int[] {-9999, 0};
 			for (int i=0; i<theMoves.size();i++) {
 				if (theMoves.get(i)[0]>theMove[0]) {
 					theMove=theMoves.get(i);
+				}else if (theMoves.get(i)[0]==theMove[0]) {
+					theSndMove = theMoves.get(i);
 				}
 			}
 		}else {
+			theMove= new int[] {9999, 0};
+			theSndMove = new int[] {-9999, 0};
 			for (int i=0; i<theMoves.size();i++) {
 				if (theMoves.get(i)[0]<theMove[0]) {
 					theMove=theMoves.get(i);
+				}else if (theMoves.get(i)[0]==theMove[0]) {
+					theSndMove = theMoves.get(i);
 				}
 			}
 		}
-		return theMove;
+		if (theMove[0]==theSndMove[0]) {
+			Random random = new Random();
+			if(random.nextBoolean()) {
+				return theMove;
+			}else return theSndMove;
+		}else return theMove;
 	}
 	
 	/**
@@ -337,219 +532,20 @@ public class AIMedium implements AI, Playable {
 		}
 		return findWorst;
 	}
+
+	@Override
+	public PromotionPiece calculatePromotionPiece(IBoard currentBoard, Move promotionMove) {
+
+		// TODO: Implement logic here.
+		return PromotionPiece.QUEEN;
+	}
+
+	private boolean isPromotionMove(Move move) {
+		if(move.getMoveType()==MoveType.PROMOTION) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-/**
- * Created by jonas on 16/03/2018.
- *//*
-public class AIMedium implements AI,Playable {
-
-	static final int AI_MOVE_DEPTH = 2;
-
-	PieceColor playerColor;
-
-	public AIMedium(PieceColor playerColor){
-		this.playerColor = playerColor;
-	}
-
-	private int getBoardState(IBoard currentBoard){
-		int score = 0;
-		for(Square s : currentBoard.getSquares()) {
-			IPiece p = s.getPiece();
-
-			if (p != null) {
-				if(p.getColor() == playerColor) {
-					score += getScoreForPieceType(p);
-				}else{
-					score -= getScoreForPieceType(p);
-				}
-			}
-		}
-
-		return score;
-	}
-
-	private int getPositionValue(int row, int column) {
-		int[][] positionWeight =
-				{
-						 {1,1,1,1,1,1,1,1}
-						,{2,2,2,2,2,2,2,2}
-						,{2,2,3,3,3,3,2,2}
-						,{2,2,3,4,4,3,2,2}
-						,{2,2,3,4,4,3,2,2}
-						,{2,2,3,3,3,3,2,2}
-						,{2,2,2,2,2,2,2,2}
-						,{1,1,1,1,1,1,1,1}
-				};
-		return positionWeight[row][column];
-	}
-
-	private int getScoreForPieceType(IPiece piece){
-		switch (piece.toString()) {
-			case "B": return 30;
-			case "K": return 99999;
-			case "N": return 30;
-			case "P": return 10;
-			case "Q": return 90;
-			case "R": return 50;
-			default: throw new IllegalArgumentException("Unknown piece type " + piece.toString());
-		}
-	}
-
-	@Override
-	public Move calculateMove(IBoard board) {
-		if(playerColor == PieceColor.BLACK) {
-			return calculate(3, getBoardState(board), board, PieceColor.WHITE);
-		}else{
-			return calculate(3, getBoardState(board), board, PieceColor.BLACK);
-		}
-	}
-
-	private int calcFromColor(int depth, int score, IBoard board, PieceColor color) {
-
-		if(depth == 0) return score;
-
-		List<Move> moves = board.getAvailableMoves(color);
-		int state = score;
-
-		for(Move currentMove : moves){
-
-			int sum = 0;
-			int getPosSumBefore = getPositionValue(currentMove.getFrom().getX(), currentMove.getFrom().getY());
-			int getPosSumAfter = getPositionValue(currentMove.getTo().getX(), currentMove.getTo().getY());
-			int posChange = getPosSumAfter - getPosSumBefore;
-			sum -= posChange;
-
-			IPiece captured = currentMove.getCapturedPiece();
-			if(captured != null) {
-				sum -= getScoreForPieceType(captured);
-				currentMove.getTo().takePiece();
-			}
-			int possibleState = score;
-			if(color == playerColor) {
-				sum = sum * -1;
-				int possibleState2 = sum+score;
-				if(possibleState2 > state) possibleState = possibleState2;
-			}else{
-				sum = sum + state;
-				if(sum < state) {
-					state = sum;
-				}
-			}
-
-			int deeper = possibleState;
-
-			if(color == playerColor) {
-				PieceColor colorDeeper;
-				if(playerColor == PieceColor.BLACK) {
-					colorDeeper = PieceColor.WHITE;
-				}else {
-					colorDeeper = PieceColor.BLACK;
-				}
-				deeper = calcFromColor(depth - 1, possibleState, board, colorDeeper);
-			}else {
-				deeper = calcFromColor(depth - 1, possibleState, board, playerColor);
-			}
-
-			if(color == playerColor) {
-				if(deeper > state) state = deeper;
-			}else {
-				if(deeper < state) state = deeper;
-			}
-
-			if(captured != null) {
-				currentMove.getTo().putPiece(captured);
-			}
-		}
-
-		return state;
-	}
-
-	private Move calculate(int depth, int score, IBoard board, PieceColor color) {
-
-		List<Move> moves = board.getAvailableMoves(playerColor);
-		Move bestMove = null;
-
-		int state = -99999;
-
-		for(Move currentMove : moves){
-
-			int sum = score;
-			int getPosSumBefore = getPositionValue(currentMove.getFrom().getX(), currentMove.getFrom().getY());
-			int getPosSumAfter = getPositionValue(currentMove.getTo().getX(), currentMove.getTo().getY());
-			int posChange = getPosSumAfter - getPosSumBefore;
-			sum += posChange;
-
-			IPiece captured = currentMove.getCapturedPiece();
-			if(captured != null) {
-				sum += getScoreForPieceType(captured);
-			}
-
-			//Take piece out from board so opponent cant use it in board state calculation
-			if(captured != null) {
-				currentMove.getTo().takePiece();
-			}
-			int sumForOpponent = calcFromColor(0, sum, board, color);
-
-			int newSum = sumForOpponent;
-
-			if(depth - 1 > 0) {
-				newSum = calcFromColor(depth - 1, sumForOpponent, board, playerColor);
-			}
-			//Undo the move
-			if(captured != null) {
-				currentMove.getTo().putPiece(captured);
-			}
-
-			if(newSum > state) {
-				System.out.println("Updated state");
-				state = newSum;
-				bestMove = currentMove;
-			}
-		}
-		//System.out.println(indent+&quot;max: &quot;+currentMax);
-		System.out.println("Best move   : " + bestMove);
-		System.out.println("Current sum : " + state);
-		return bestMove;
-	}
-
-
-	@Override
-	public Move makeMove(IBoard board, Square from, Square to) {
-		return null;
-	}
-
-}
-*/
