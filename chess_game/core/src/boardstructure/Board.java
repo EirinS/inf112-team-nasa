@@ -416,7 +416,7 @@ public class Board implements IBoard {
 
     @Override
     public IBoard copy() {
-        IBoard board = new Board(this.getDimension(), playerOne);
+        IBoard board = new Board(this.getDimension(), playerOne, listener);
         board.setTurn(getTurn());
 
         ArrayList<Move> history = new ArrayList<>();
