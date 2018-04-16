@@ -47,10 +47,10 @@ public class MainMenuScene extends AbstractScene {
     private Label error;
     private Label lose;
     private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
-            black, white, signInP2;
+            black, white, signInP2, multiOpponent;
     private TextField username, registerUsername;
     private Button backToLogIn, backToChooseGame;
-    private SelectBox<String> difficulty, gameType;
+    private SelectBox<String> difficulty, gameType, multiplayerOption;
     private List<Actor> scoreList;
     private ScrollPane scorePane;
     private Window window;
@@ -183,6 +183,14 @@ public class MainMenuScene extends AbstractScene {
         window.setMovable(false);
 
         //Elements in multiplayer
+        //Screen one
+        multiplayerOption = new SelectBox <String>(skin);
+        multiplayerOption.setItems(optionsGameType);
+        multiplayerOption.setPosition(centreWidth, WindowInformation.HEIGHT / 1.9f);
+        multiOpponent = new TextButton("Next", skin, "default");
+        multiOpponent.setPosition(centreWidth, WindowInformation.HEIGHT / 2.5f);
+        
+        //Screen two
         signInP2 = new TextButton("Sign in", skin, "default");
         signInP2.setPosition(centreWidth, WindowInformation.HEIGHT / 2.5f);
 
@@ -217,6 +225,8 @@ public class MainMenuScene extends AbstractScene {
         actors.add(headerScore);
         actors.add(error);
         actors.add(window);
+        actors.add(multiplayerOption);
+        actors.add(multiOpponent);
     }
 
     private void setUpElementSizes() {
@@ -229,6 +239,7 @@ public class MainMenuScene extends AbstractScene {
         backToLogIn.setSize(27, 27);
         backToChooseGame.setSize(27, 27);
         difficulty.setSize(defaultWidth, defaultHeight / 1.5f);
+        multiplayerOption.setSize(defaultWidth, defaultHeight / 1.5f);
         gameType.setSize(defaultWidth, defaultHeight/1.5f);
         black.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
         white.setSize(defaultWidth / 1.5f, defaultHeight / 1.5f);
@@ -314,6 +325,15 @@ public class MainMenuScene extends AbstractScene {
         backToChooseGame.setVisible(true);
         playerOne = false;
     }
+    
+    private void screenMultiplayerOption(){
+    	invisible();
+    	mainMenu.setText("Game type");
+        mainMenu.setVisible(true);
+    	multiplayerOption.setVisible(true);
+    	backToChooseGame.setVisible(true);
+    	multiOpponent.setVisible(true);
+    }
 
     //Section 3: Buttonlisteners
 
@@ -337,11 +357,13 @@ public class MainMenuScene extends AbstractScene {
         returnSignInListener();
         singleplayerListener();
         backToChooseGameListener();
-        multiplayerListener();
+        multiplayerOpponentListener();
+        multiplayerOptionListener();
         scoreListener();
         startSingleListener();
         blackListener();
         whiteListener();
+        multiplayerOpponentListener();
     }
 
     private void startSingleListener() {
@@ -420,6 +442,7 @@ public class MainMenuScene extends AbstractScene {
                             gameInfo.setSinglePlayer(false);
                             gameInfo.setPlayerColor(PieceColor.WHITE);
                             gameInfo.getPlayer().loadRating();
+                            gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
                             SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                             signInListener();
                         } catch (SQLException e1) {
@@ -501,15 +524,26 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
-    private void multiplayerListener() {
+    private void multiplayerOptionListener() {
         multiplayer.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-                screenMultiplayer();
-                multiplayerListener();
+            	screenMultiplayerOption();
+                multiplayerOptionListener();
             }
         });
     }
+    private void multiplayerOpponentListener() {
+        multiOpponent.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent e, float x, float y, int point, int button) {
+                screenMultiplayer();
+                multiplayerOpponentListener();
+            }
+        });
+    }
+    
+    
 
     private void scoreListener() {
         scores.addListener(new ClickListener() {
