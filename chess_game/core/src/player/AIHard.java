@@ -133,12 +133,12 @@ public class AIHard implements AI, Playable {
 	private int getPositionValue(int row, int column, IPiece piece, PieceColor boardColor, PieceColor playerColor) {
 		
 		if (boardColor==PieceColor.WHITE) {
-			if (playerColor==PieceColor.BLACK) {
+			if (playerColor==PieceColor.WHITE) {
 				row=7-row;
 				column=7-column;
 			}
 		}else {
-			if (playerColor==PieceColor.WHITE) {
+			if (playerColor==PieceColor.BLACK) {
 				row=7-row;
 				column=7-column;
 			}
@@ -195,7 +195,7 @@ public class AIHard implements AI, Playable {
 					,{-1,0,0,0,0,0,0,-1}
 					,{-1,0,0,0,0,0,0,-1}
 					,{-1,0,0,0,0,0,0,-1}
-					,{-2,0,0,1,1,0,0,-2}
+					,{0,0,0,1,1,0,0,0}
 			};
 		return positionWeight[row][column];
 	}
