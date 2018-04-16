@@ -83,7 +83,15 @@ public class AIHard implements AI, Playable {
 		return calculateMove(board);
 	}
 	
-	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
+	
+	/**
+	 * 
+	 * @param currentBoard board that we have
+	 * @param possibleMoves all moves possible form currentBoard
+	 * @param playerTurn who would be making these moves
+	 * @return ArrayList<Board> all possible Boards after all possible Moves are made.
+	 */
+	private ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
 			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne());
@@ -112,7 +120,17 @@ public class AIHard implements AI, Playable {
 		return possibleBoards;
 	}
 	
-private int getPositionValue(int row, int column, IPiece piece, PieceColor boardColor, PieceColor playerColor) {
+	
+	/**
+	 * 
+	 * @param row x axis of a piece
+	 * @param column y axis of a piece
+	 * @param piece piece whose position is to be valued
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
+	private int getPositionValue(int row, int column, IPiece piece, PieceColor boardColor, PieceColor playerColor) {
 		
 		if (boardColor==PieceColor.WHITE) {
 			if (playerColor==PieceColor.BLACK) {
@@ -136,6 +154,14 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		}
 	}
 	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValuePawn(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight =
 				{
@@ -151,6 +177,14 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return positionWeight[row][column];
 	}
 	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValueRook(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight =
 			{
@@ -166,6 +200,14 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return positionWeight[row][column];
 	}
 	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValueKing(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight =
 			{
@@ -181,6 +223,14 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return positionWeight[row][column];
 	}
 	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValueQueen(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight = {
 				 {-2,-1,-1,-1,-1,-1,-1,-2}
@@ -195,6 +245,14 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 	return positionWeight[row][column];
 }
 	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValueKnight(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight =
 			{
@@ -210,6 +268,14 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return positionWeight[row][column];
 	}
 	
+	/**
+	 * 
+	 * @param row x axis of piece form a white board perspective
+	 * @param column y axis of piece form a white board perspective
+	 * @param boardColor color of game board
+	 * @param playerColor color of player
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValueBishop(int row, int column, PieceColor boardColor, PieceColor playerColor) {
 		int[][] positionWeight =
 			{
@@ -225,6 +291,11 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return positionWeight[row][column];
 	}
 
+	/**
+	 * 
+	 * @param piece whose value u want
+	 * @return int a value of piece
+	 */
 	private int getScoreForPieceType(IPiece piece){
 		switch (piece.toString()) {
 			case "B": return 30;
@@ -237,7 +308,12 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		}
 	}
 	
-	public int[] getBestAIScorePlacement(ArrayList<Board> possibleBoards) {//returns the best score and its placement in passed ArrayList
+	/**
+	 * 
+	 * @param possibleBoards boards to be evaluated to find the best one
+	 * @return int[] {score, place} the score of the best board, and its place in possibleBoards 
+	 */
+	private int[] getBestAIScorePlacement(ArrayList<Board> possibleBoards) {//returns the best score and its placement in passed ArrayList
 		int[] scoreAndPlace = {0,0};
 		int i=0;
 		if (playerColor==PieceColor.WHITE) {
@@ -262,13 +338,16 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return scoreAndPlace;
 	}
 	
+	/**
+	 * 
+	 * @param possibleBoard board you want evaluated for score
+	 * @return the score of the board
+	 */
 	public int getAIScore(IBoard possibleBoard) { // for now negative score is black leading, positive is white leading.
 		int score = 0;
 		//List <IPiece> dangeredWhite = possibleBoard.piecesThreatenedByOpponent(PieceColor.WHITE, PieceColor.BLACK);
 		//List <IPiece> dangeredBlack = possibleBoard.piecesThreatenedByOpponent(PieceColor.BLACK, PieceColor.WHITE);
-		
-		
-		
+	
 		ArrayList<Square> squares = possibleBoard.getSquares();
 		for (Square square : squares) {
 			int x = square.getX();
@@ -325,6 +404,10 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return rating;
 	}
 	
+	/**
+	 * 
+	 * @return true if AI should try to achieve draw
+	 */
 	private boolean considerDraw () {//returns true if draw is positive for AI
 			int score = getAIScore(currentBoard);
 			if  ((score<0&&playerColor==PieceColor.WHITE)||(score>0&&playerColor==PieceColor.BLACK)) {//if AI is under in score and can get a draw, it will do it.
@@ -334,7 +417,12 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 			}
 	}
 
-	
+	/**
+	 * 
+	 * @param board to check
+	 * @param playerInCheck player you want to check
+	 * @return true if player is checkmate, false otherwise
+	 */
 	private boolean isCheckmate (Board board, PieceColor playerInCheck) {//returns true if player is checkmate
 		PieceColor otherPlayer=PieceColor.BLACK;
 		if (playerInCheck==PieceColor.BLACK) {
@@ -349,6 +437,12 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param theMoves the moves you have so far that is to be considered
+	 * @param findWorst the moves that have been filtered for enemy counterplay
+	 * @return ArrayList<int[]> theMoves one score per move, this is the score the AI predicts it has after 3 moves if it does this move.
+	 */
 	private ArrayList<int[]> findTheMoves (ArrayList<int[]> theMoves, ArrayList<int[]> findWorst) {//find all the best moves after opponent choice
 		int[] worst = {bestCase,0};
 		if (playerColor==PieceColor.WHITE) {
@@ -367,9 +461,15 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 		return theMoves;
 	}
 	
+	
+	/**
+	 * 
+	 * @param theMoves list of all moves and the AI predictions of their score
+	 * @return int[] {score, place} the placement if the move with the best score
+	 */
 	private int[] findTheMove (ArrayList<int[]> theMoves) {// find the best move, after all is said and done and we have a list rating all the different moves
 		
-		int[] theMove;//= {-bestCase, 0};
+		int[] theMove;
 		int[] theSndMove;
 		
 		
@@ -400,24 +500,15 @@ private int getPositionValue(int row, int column, IPiece piece, PieceColor board
 				return theMove;
 			}else return theSndMove;
 		}else return theMove;
-		
-		/*int[] theMove = {-bestCase, 0};
-		if (playerColor==PieceColor.WHITE) {
-			for (int i=0; i<theMoves.size();i++) {
-				if (theMoves.get(i)[0]>theMove[0]) {
-					theMove=theMoves.get(i);
-				}
-			}
-		}else {
-			for (int i=0; i<theMoves.size();i++) {
-				if (theMoves.get(i)[0]<theMove[0]) {
-					theMove=theMoves.get(i);
-				}
-			}
-		}
-		return theMove;*/
 	}
 	
+	/**
+	 * 
+	 * @param board the board to be considered
+	 * @param findWorst the moves that have been filtered for enemy counterplay
+	 * @param i placement of the first move in the first List<Move> 
+	 * @return ArrayList<int[]> findWorst, list of the score and placement after enemy counterplay
+	 */
 	private ArrayList<int[]> opponentChoice (Board board, ArrayList<int[]> findWorst, int i) {//takes away all but one move for each board in possibleBoardsOpp(the one move with best score for the opponent remains)
 		List<Move> possibleMovesEnd = board.getAvailableMoves(playerColor);
 		if(possibleMovesEnd.isEmpty()) {//AI is checkmate or there is a draw

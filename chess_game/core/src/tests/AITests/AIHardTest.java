@@ -32,7 +32,7 @@ public class AIHardTest {
 			}else {
 				Move p1Move = p1.calculateMove(boardT);
 				boardT.move(p1Move.getFrom(), p1Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "Black has no moves (is checkmate or there is a draw)";
@@ -40,7 +40,7 @@ public class AIHardTest {
 			}else {
 				Move p2Move = p2.calculateMove(boardT);
 				boardT.move(p2Move.getFrom(), p2Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}
 		}
 		System.out.println(msg1 + nr + msg2);
@@ -64,7 +64,7 @@ public class AIHardTest {
 			}else {
 				Move p1Move = p1.calculateMove(boardT);
 				boardT.move(p1Move.getFrom(), p1Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "Black has no moves (is checkmate or there is a draw)";
@@ -72,10 +72,11 @@ public class AIHardTest {
 			}else {
 				Move p2Move = p2.calculateMove(boardT);
 				boardT.move(p2Move.getFrom(), p2Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}
 		}
 		System.out.println(msg1 + nr + msg2);
+		System.out.println(p1.getAIScore(boardT));
 	}
 	
 	@Test
@@ -95,7 +96,7 @@ public class AIHardTest {
 			}else {
 				Move p1Move = p1.calculateMove(boardT);
 				boardT.move(p1Move.getFrom(), p1Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "Black has no moves (is checkmate or there is a draw)";
@@ -103,10 +104,11 @@ public class AIHardTest {
 			}else {
 				Move p2Move = p2.calculateMove(boardT);
 				boardT.move(p2Move.getFrom(), p2Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}
 		}
 		System.out.println(msg1 + nr + msg2);
+		System.out.println(p1.getAIScore(boardT));
 	}
 	
 	@Test
@@ -127,7 +129,7 @@ public class AIHardTest {
 			}else {
 				Move p1Move = p1.calculateMove(boardT);
 				boardT.move(p1Move.getFrom(), p1Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}if (boardT.getAvailableMoves(p2.getPieceColor()).isEmpty()) {
 				nr = i+"";
 				msg2 = msg2 + "Black has no moves (is checkmate or there is a draw)";
@@ -135,7 +137,7 @@ public class AIHardTest {
 			}else {
 				Move p2Move = p2.calculateMove(boardT);
 				boardT.move(p2Move.getFrom(), p2Move.getTo());
-				boardT.printOutBoard();//
+				//boardT.printOutBoard();//
 			}
 		}
 		System.out.println(msg1 + nr + msg2);

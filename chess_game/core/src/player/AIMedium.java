@@ -77,6 +77,13 @@ public class AIMedium implements AI, Playable {
 		return calculateMove(board);
 	}
 	
+	/**
+	 * 
+	 * @param currentBoard board that we have
+	 * @param possibleMoves all moves possible form currentBoard
+	 * @param playerTurn who would be making these moves
+	 * @return ArrayList<Board> all possible Boards after all possible Moves are made.
+	 */
 	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
@@ -106,6 +113,12 @@ public class AIMedium implements AI, Playable {
 		return possibleBoards;
 	}
 	
+	/**
+	 * 
+	 * @param row x position of evaluation
+	 * @param column y position of evaluation
+	 * @return int a evaluation of piece position
+	 */
 	private int getPositionValue(int row, int column) {
 		int[][] positionWeight =
 				{
@@ -120,7 +133,12 @@ public class AIMedium implements AI, Playable {
 				};
 		return positionWeight[row][column];
 	}
-
+	
+	/**
+	 * 
+	 * @param piece you want the value of
+	 * @return int value of piece
+	 */
 	private int getScoreForPieceType(IPiece piece){
 		switch (piece.toString()) {
 			case "B": return 30;
@@ -133,6 +151,11 @@ public class AIMedium implements AI, Playable {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param possibleBoards boards to be evaluated to find the best one
+	 * @return int[] {score, place} the score of the best board, and its place in possibleBoards 
+	 */
 	public int[] getBestAIScorePlacement(ArrayList<Board> possibleBoards) {//returns the best score and its placement in passed ArrayList
 		int[] scoreAndPlace = {0,0};
 		int i=0;
@@ -158,6 +181,11 @@ public class AIMedium implements AI, Playable {
 		return scoreAndPlace;
 	}
 	
+	/**
+	 * 
+	 * @param possibleBoard board you want evaluated for score
+	 * @return the score of the board
+	 */
 	public int getAIScore(IBoard possibleBoard) { // for now negative score is black leading, positive is white leading.
 		int score = 0;
 		ArrayList<Square> squares = possibleBoard.getSquares();
@@ -199,7 +227,10 @@ public class AIMedium implements AI, Playable {
 		return false;
 	}
 	
-	
+	/**
+	 * 
+	 * @return true if AI should try to achieve draw
+	 */
 	private boolean considerDraw () {//returns true if draw is positive for AI
 			int score = getAIScore(currentBoard);
 			if  ((score<0&&playerColor==PieceColor.WHITE)||(score>0&&playerColor==PieceColor.BLACK)) {//if AI is under in score and can get a draw, it will do it.
@@ -209,7 +240,12 @@ public class AIMedium implements AI, Playable {
 			}
 	}
 
-	
+	/**
+	 * 
+	 * @param board to check
+	 * @param playerInCheck player you want to check
+	 * @return true if player is checkmate, false otherwise
+	 */
 	private boolean isCheckmate (Board board, PieceColor playerInCheck) {//returns true if player is checkmate
 		PieceColor otherPlayer=PieceColor.BLACK;
 		if (playerInCheck==PieceColor.BLACK) {
@@ -224,6 +260,12 @@ public class AIMedium implements AI, Playable {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param theMoves the moves you have so far that is to be considered
+	 * @param findWorst the moves that have been filtered for enemy counterplay
+	 * @return ArrayList<int[]> theMoves one score per move, this is the score the AI predicts it has after 3 moves if it does this move.
+	 */
 	private ArrayList<int[]> findTheMoves (ArrayList<int[]> theMoves, ArrayList<int[]> findWorst) {//find all the best moves after opponent choice
 		int[] worst = {bestCase,0};
 		if (playerColor==PieceColor.WHITE) {
@@ -242,6 +284,11 @@ public class AIMedium implements AI, Playable {
 		return theMoves;
 	}
 	
+	/**
+	 * 
+	 * @param theMoves list of all moves and the AI predictions of their score
+	 * @return int[] {score, place} the placement if the move with the best score
+	 */
 	private int[] findTheMove (ArrayList<int[]> theMoves) {// find the best move, after all is said and done and we have a list rating all the different moves
 		int[] theMove = {-bestCase, 0};
 		if (playerColor==PieceColor.WHITE) {
@@ -260,6 +307,13 @@ public class AIMedium implements AI, Playable {
 		return theMove;
 	}
 	
+	/**
+	 * 
+	 * @param board the board to be considered
+	 * @param findWorst the moves that have been filtered for enemy counterplay
+	 * @param i placement of the first move in the first List<Move> 
+	 * @return ArrayList<int[]> findWorst, list of the score and placement after enemy counterplay
+	 */
 	private ArrayList<int[]> opponentChoice (Board board, ArrayList<int[]> findWorst, int i) {//takes away all but one move for each board in possibleBoardsOpp(the one move with best score for the opponent remains)
 		List<Move> possibleMovesEnd = board.getAvailableMoves(playerColor);
 		if(possibleMovesEnd.isEmpty()) {//AI is checkmate or there is a draw
