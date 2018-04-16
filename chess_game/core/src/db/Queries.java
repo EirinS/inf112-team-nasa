@@ -29,9 +29,9 @@ class Queries {
     }
 
     static String updatePlayer(Player player, int rating, int win_lose_draw) {
-        int wins = player.getWins() + (win_lose_draw == 0 ? 1 : 0);
-        int losses = player.getLosses() + (win_lose_draw == 1 ? 1 : 0);
-        int draws = player.getDraws() + (win_lose_draw == 2 ? 1 : 0);
+        int wins = player.getWins() + (win_lose_draw == 1 ? 1 : 0);
+        int losses = player.getLosses() + (win_lose_draw == 2 ? 1 : 0);
+        int draws = player.getDraws() + (win_lose_draw == 3 ? 1 : 0);
         return String.format(
                 "UPDATE %s SET rating='%d', wins='%d', losses='%d', draws='%d' WHERE name='%s'",
                 tableName,
