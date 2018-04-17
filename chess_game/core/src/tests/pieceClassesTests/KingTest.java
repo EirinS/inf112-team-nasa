@@ -32,6 +32,7 @@ public class KingTest {
 	public void threeLegalMovesInCornerWithoutCastling() {
 		IBoard b = new Board(8, PieceColor.WHITE);
 		Square sq = b.getSquare(0, 0);
+		king.pieceMoved();
 		sq.putPiece(king);
 		assertEquals(3, king.getLegalMoves(sq, b, PieceColor.WHITE).size());
 	}
@@ -81,23 +82,14 @@ public class KingTest {
 		board.getSquare(4, 7).putPiece(king);
 	}
 	
-	@Test
-	public void canFindFirstPiecesInHorizontalDirection() {
-		setUpCastlingTest();
-		Square sq = board.getSquare(4, 7);
-		board.getSquare(7, 7).putPiece(sndRook);
-		
-		assertEquals(2, king.getFirstPieceHorizontal(sq, board).size());
-		assertEquals(king.getFirstPieceHorizontal(sq, board).get(rook), board.getSquare(0, 7));
-	}
-	
+
 	@Test
 	public void cantMoveThroughPositionsInCheck() {
 		setUpCastlingTest();
 		IPiece enemyRook = new Rook(PieceColor.BLACK);
 		//position king must move through for castling
 		board.getSquare(3, 0).putPiece(enemyRook);
-		assertTrue(king.kingMovesThroughCheckPos(board.getSquare(4, 7), board, false));
+		assertEquals(0, king.castling(board.getSquare(4, 7), board).size());
 		
 	}
 	
@@ -105,7 +97,7 @@ public class KingTest {
 	public void noCastlingIfKingMoved() {
 		setUpCastlingTest();
 		king.pieceMoved();
-		assertEquals(null, king.castling(board.getSquare(4, 7), board));
+		assertEquals(0, king.castling(board.getSquare(4, 7), board).size());
 	}
 	
 	@Test
@@ -113,14 +105,14 @@ public class KingTest {
 		setUpCastlingTest();
 		IPiece enemyRook = new Rook(PieceColor.BLACK);
 		board.getSquare(4, 0).putPiece(enemyRook);
-		assertEquals(null, king.castling(board.getSquare(4, 7), board));
+		assertEquals(0, king.castling(board.getSquare(4, 7), board).size());
 	}
 	
 	@Test
 	public void noCastlingIfRookMoved() {
 		setUpCastlingTest();
 		rook.pieceMoved();
-		assertEquals(null, king.castling(board.getSquare(4, 7), board));
+		assertEquals(0, king.castling(board.getSquare(4, 7), board).size());
 	}
 	
 	@Test

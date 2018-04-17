@@ -3,9 +3,8 @@ package boardstructure;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
-import com.sun.istack.internal.Nullable;
+import game.chessGame.GameType;
 import pieces.AbstractPiece;
 import pieces.IPiece;
 import pieces.PieceColor;
@@ -20,21 +19,28 @@ public class Board implements IBoard {
     private ArrayList<Square> board;
     private PieceColor playerOne;
     private PieceColor turn;
-
+    private GameType gameType;
+    
     private BoardListener listener;
     private AI ai;
 
     public Board(int dim, PieceColor playerOne) {
-        this(dim, playerOne, null);
+        this(dim, playerOne, null, GameType.REGULAR);
     }
+    
+    public Board(int dim, PieceColor playerOne, GameType type) {
+        this(dim, playerOne, null, type);
+    }
+
 
     /**
      * Create new board.
      *
      * @param dim       Board is always square. Dim is the height and width of board.
      * @param playerOne pieceColor of player one (player in lower side of board)
+     * @param gameType gameType
      */
-    public Board(int dim, PieceColor playerOne, BoardListener playerListener) {
+    public Board(int dim, PieceColor playerOne, BoardListener playerListener, GameType gameType) {
         if (dim < 0)
             throw new IllegalArgumentException("Board must be larger than 0 in heigth and width");
         this.playerOne = playerOne;
@@ -42,6 +48,7 @@ public class Board implements IBoard {
         turn = PieceColor.WHITE;
         height = dim;
         width = dim;
+        this.gameType = gameType;
         board = new ArrayList<Square>();
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
@@ -309,6 +316,17 @@ public class Board implements IBoard {
         }
         return bishop;
     }
+    
+    @Override
+    public ArrayList<Square> getRookPos(PieceColor rookColor){
+    	ArrayList<Square> squares = new ArrayList<>();
+    	for(Square sq : getSquares()) {
+    		if(!sq.isEmpty())
+    			if(sq.getPiece().getColor() == rookColor && sq.getPiece() instanceof Rook)
+    				squares.add(sq);
+    	}
+    	return squares;
+    }
 
     /**
      * Executes the chosen moves.
@@ -412,11 +430,16 @@ public class Board implements IBoard {
             }
         return null;
     }
+    
+    @Override
+    public GameType getGameType() {
+    	return this.gameType;
+    }
 
 
     @Override
     public IBoard copy() {
-        IBoard board = new Board(this.getDimension(), playerOne);
+        IBoard board = new Board(this.getDimension(), playerOne, this.getGameType());
         board.setTurn(getTurn());
 
         ArrayList<Move> history = new ArrayList<>();
