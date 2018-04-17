@@ -57,6 +57,8 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	private HashMap<String, Texture> sprites;
 	private TextButton quitBtn, resignBtn, queenBtn, bishopBtn, knightBtn, rookBtn, hintBtn, muteBtn, undoBtn;
+
+	private Move promotionMove;
 	private Group promotionDialog;
 
 	public GameScene(Chess game, GameInfo gameInfo) {
@@ -208,22 +210,62 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		queenBtn = new TextButton("Queen", skin, "default");
 		queenBtn.setSize(queenBtn.getWidth() * 1.5f, queenBtn.getHeight());
 		queenBtn.setPosition(checkerboard.getPos(), checkerboard.getPos() + checkerboard.getSize() / 2);
+		queenBtn.addListener(new ClickListener() {
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(promotionMove, PromotionPiece.QUEEN);
+				promotionMove = null;
+				super.touchUp(event, x, y, pointer, button);
+			}
+		});
 
 		bishopBtn = new TextButton("Bishop", skin, "default");
 		bishopBtn.setSize(bishopBtn.getWidth() * 1.5f, bishopBtn.getHeight());
 		bishopBtn.setPosition(checkerboard.getPos() + queenBtn.getWidth() + 5,
 				checkerboard.getPos() + checkerboard.getSize() / 2);
+		bishopBtn.addListener(new ClickListener() {
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(promotionMove, PromotionPiece.BISHOP);
+				promotionMove = null;
+				super.touchUp(event, x, y, pointer, button);
+			}
+		});
 
 		rookBtn = new TextButton("Rook", skin, "default");
 		rookBtn.setSize(rookBtn.getWidth() * 1.5f, rookBtn.getHeight());
 		rookBtn.setPosition(checkerboard.getPos() + queenBtn.getWidth() + bishopBtn.getWidth() + 10,
 				checkerboard.getPos() + checkerboard.getSize() / 2);
+		rookBtn.addListener(new ClickListener() {
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(promotionMove, PromotionPiece.ROOK);
+				promotionMove = null;
+				super.touchUp(event, x, y, pointer, button);
+			}
+		});
 
 		knightBtn = new TextButton("Knight", skin, "default");
 		knightBtn.setSize(knightBtn.getWidth() * 1.5f, knightBtn.getHeight());
 		knightBtn.setPosition(
 				checkerboard.getPos() + queenBtn.getWidth() + bishopBtn.getWidth() + rookBtn.getWidth() + 15,
 				checkerboard.getPos() + checkerboard.getSize() / 2);
+		knightBtn.addListener(new ClickListener() {
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				promotionDialog.setVisible(false);
+				chessGame.performPromotion(promotionMove, PromotionPiece.KNIGHT);
+				promotionMove = null;
+				super.touchUp(event, x, y, pointer, button);
+			}
+		});
 
 		VerticalGroup buttons = new VerticalGroup();
 		buttons.addActor(queenBtn);
@@ -251,39 +293,11 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		addActor(promotionDialog);
 	}
 
-	private void showPromotionOptions(Move m) {
-		queenBtn.addListener(new ClickListener() {
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				promotionDialog.setVisible(false);
-				chessGame.performPromotion(m, PromotionPiece.QUEEN);
-			}
-		});
-		bishopBtn.addListener(new ClickListener() {
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				promotionDialog.setVisible(false);
-				chessGame.performPromotion(m, PromotionPiece.BISHOP);
-			}
-		});
-		rookBtn.addListener(new ClickListener() {
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				promotionDialog.setVisible(false);
-				chessGame.performPromotion(m, PromotionPiece.ROOK);
-			}
-		});
-		knightBtn.addListener(new ClickListener() {
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				promotionDialog.setVisible(false);
-				chessGame.performPromotion(m, PromotionPiece.KNIGHT);
-			}
-		});
+	private void showPromotionOptions() {
+		if (promotionMove == null) {
+			System.out.println("Promotion move empty... check code.");
+			return;
+		}
 		promotionDialog.setVisible(true);
 	}
 
@@ -315,6 +329,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		historyGroup.removeActor(historyGroup.getChildren().get(historyGroup.getChildren().size - 1));
 	}
 
+	private boolean shouldAnimateMove() {
+		return chessGame.getTurn() == chessGame.getGameInfo().getPlayerColor();
+	}
+
 	@Override
 	public void buildStage() {
 		initialize();
@@ -333,14 +351,14 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void illegalMovePerformed(int originX, int originY) {
-		checkerboard.movePieceFailed(originX, originY);
+		checkerboard.movePieceFailed(originX, originY, shouldAnimateMove());
 	}
 
 	@Override
 	public void moveOk(ArrayList<Move> moves) {
 		addMoveToHistory(chessGame.getLastMove());
 		setNameColors();
-		checkerboard.movePieces(moves);
+		checkerboard.movePieces(moves, shouldAnimateMove());
 
 		// when move is done, show move for opponent to see which piece moved
 		for (Move m : moves)
@@ -349,7 +367,8 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 	@Override
 	public void promotionRequested(Move m) {
-		showPromotionOptions(m);
+		promotionMove = m;
+		showPromotionOptions();
 	}
 
 	@Override

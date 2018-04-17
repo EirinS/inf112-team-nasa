@@ -439,7 +439,7 @@ public class Board implements IBoard {
 
     @Override
     public IBoard copy() {
-        IBoard board = new Board(this.getDimension(), playerOne, this.getGameType());
+        IBoard board = new Board(this.getDimension(), playerOne, listener, this.getGameType());
         board.setTurn(getTurn());
 
         ArrayList<Move> history = new ArrayList<>();

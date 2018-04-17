@@ -413,7 +413,6 @@ public class MainMenuScene extends AbstractScene {
 
                 if (playerOne) {
                     String name = username.getText().replaceAll("\\s+", "");
-                    ;
                     Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
                     if (exists) {
                         try {
@@ -429,7 +428,6 @@ public class MainMenuScene extends AbstractScene {
                     }
                 } else {
                     String name = username.getText().replaceAll("\\s+", "");
-                    ;
                     Boolean exists = Chess.getDatabase().isPlayerRegistered(name);
 
                     if (name.equals(gameInfo.getPlayer().getName())) {

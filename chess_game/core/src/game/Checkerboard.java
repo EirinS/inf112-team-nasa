@@ -2,6 +2,7 @@ package game;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import sound.AudioManager;
 
 import boardstructure.MoveType;
@@ -185,10 +186,14 @@ public class Checkerboard extends DragListener {
 		super.dragStop(event, x, y, pointer);
 	}
 
-	private void movePieceTo(Actor actor, int toX, int toY, MoveType moveType, PieceColor color) {
+	private void movePieceTo(Actor actor, int toX, int toY, MoveType moveType, PieceColor color, boolean animate) {
 		int boardX = (int)calcBoardX(toX);
 		int boardY = (int)calcBoardY(toY);
-		actor.setPosition(boardX, boardY);
+		if (animate) {
+			actor.addAction(Actions.moveTo(boardX, boardY ,.25f));
+		} else {
+			actor.setPosition(boardX, boardY);
+		}
 		actor.setName(toX + "," + toY);
 		if (moveType != null && moveType == MoveType.PROMOTION) {
 			Texture queenTexture = sprites.get((color == PieceColor.WHITE ? "w" : "b") + moveType.getMetadata());
@@ -196,12 +201,12 @@ public class Checkerboard extends DragListener {
 		}
 	}
 
-	public void movePieceFailed(int fromX, int fromY) {
+	public void movePieceFailed(int fromX, int fromY, boolean animate) {
 		Image from = pieceGroup.findActor(fromX + "," + fromY);
-		movePieceTo(from, fromX, fromY, null, null);
+		movePieceTo(from, fromX, fromY, null, null, animate);
 	}
 
-	public void movePieces(ArrayList<Move> moves) {
+	public void movePieces(ArrayList<Move> moves, boolean animate) {
 		for (Move m : moves) {
 			Image from = pieceGroup.findActor(m.getFrom().getX() + "," + m.getFrom().getY());
 			Image to = pieceGroup.findActor(m.getTo().getX() + "," + m.getTo().getY());
@@ -213,7 +218,7 @@ public class Checkerboard extends DragListener {
 				int y = m.getFrom().getY();
 				pieceGroup.findActor(x + "," + y).remove();
 			}
-			movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor());
+			movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor(), animate);
 		}
 	}
 
