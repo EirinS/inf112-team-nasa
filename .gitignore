@@ -4,7 +4,8 @@ chess_game.iml
 .idea
 workspace.xml
 /.gradle/
-.aux
-.log
-.out
-.synctex.gz
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
