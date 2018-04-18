@@ -373,9 +373,7 @@ public class Board implements IBoard {
                         getSquare(m.getTo().getX(), m.getFrom().getY()).takePiece();
                     }
                     m.getFrom().getPiece().movePiece(m.getFrom(), m.getTo());
-
                 } else {
-
                     // Capturing move
                     m.getFrom().getPiece().captureEnemyPieceAndMovePiece(m.getFrom(), m.getTo());
                 }
