@@ -15,8 +15,8 @@
 	\begin{center}
 		Jonas Triki (Project Manager)\\
 		Jonas Trædal\\	
-		Jonas Mossin Wagle (Tech Lead)\\
-		Marianne Luengo Fuglestad (QA)\\
+		Jonas Mossin Wagle \\
+		Marianne Luengo Fuglestad \\
 		Eirin Sognnes\\
 		Elise Fiskeseth\\
 		Paraneetharan Sabaratnam\\
@@ -36,6 +36,8 @@
 	19.02.2018 & Initial version & 1.0 \\
 	\hline
 	09.04.2018 & First update & 2.0 \\
+	\hline
+	18.04.2018 & Second update & 2.1 \\
 
 	\end{tabular}
 \newpage
@@ -96,6 +98,8 @@ Key features of the game:
 The rest of the document elaborates the system requirements for the chess game.\\
 \vspace{10mm}
 
+\newpage
+
 \begin{Large}\textbf{2.	System Requirements}\\
 \end{Large}
 \vspace{3mm}
@@ -124,6 +128,7 @@ The rest of the document elaborates the system requirements for the chess game.\
 		\item Enable all players to perform en passant.
 		\item Enable a pawn that has reached the eighth rank to promote to a queen, rook, bishop or knight. 
 	\end{itemize}
+	\newpage
 	\item Creating an account
 	\begin{itemize}
 		\item The system provides a registration function which enables a identification of a user.
@@ -146,11 +151,21 @@ The rest of the document elaborates the system requirements for the chess game.\
 			\item Make a move, see if position is better, move if is, next if not.
 		\end{itemize}
 		\item Expert AI: Moves within 3 seconds
-		% How does the expert AI work?
+	\end{itemize}
+	\item Game modes
+	\begin{itemize}
+		\item Should give the player an option to choose between various game modes:
+		\begin{itemize}
+			\item Regular chess: Standard setup and rules, with 60 minutes available for each player.
+			\item Rapid chess: Standard setup and rules, with 15 minutes available for each player.
+			\item Blitz chess: Standard setup and rules, with 3 minutes available for each player.
+			\item Bullet chess: Standard setup and rules, with 1 minute available for each player.
+			\item Chess960: Default rules and a different setup; the non-pawn pieces are placed on the same rank as before, but their positions on that rank are randomized. 60 minutes for each player.
+		\end{itemize}
 	\end{itemize}
 \end{itemize}
 
-%\newpage
+\newpage
 
 \textbf{2.2	Non Functional Requirements}
 \begin{itemize}
@@ -161,6 +176,7 @@ The rest of the document elaborates the system requirements for the chess game.\
 		\item Descriptive documentation
 		\item Good/descriptive variable and method names.
 		\item Little to no hard coding
+		\item Solid testing
 	\end{itemize}
 	\item GUI
 	\begin{itemize}
@@ -168,14 +184,19 @@ The rest of the document elaborates the system requirements for the chess game.\
 		\item Neutral and good-sized font
 		\item Understandable terms (no obscure chess terms where it can be avoided)
 		\item Visible markers on pieces and of valid moves.
-		\item Good error messages when something goes wrong (i.e. illegal move)
 		\item Distinct pieces (no confusion which piece is which)
 		\item Simple menu, with good names and distinct choices (start game, view high score)
 		\item Readable high score list, top on top, bottom on bottom.
 		\item Regular chess board with regular markers for which spot on the board it belongs to.
 		\item Find licence on everything that is not made by us.
 		\item Create licence on everything we create.
-		\item A sound effect should be played when a piece is moved. Should include an option to turn the sound effect on/off.
+		\item Includes relevant sound effects.
+		\begin{itemize}
+			\item Should include an option to turn the sound effect on/off.
+			\item  A sound effect should be played when a piece is moved. 
+			\item A sound effect should be played when the player requests a hint.
+			\item A sound effect should be played when the player requests an undo where none is available.
+		\end{itemize}
 		\item The origin square and the destination square of the previous move should be marked with colors.
 		\begin{itemize}
 			\item En passant, castling, and capturing should be associated with unique colors.
@@ -183,6 +204,8 @@ The rest of the document elaborates the system requirements for the chess game.\
 		\item Moves conducted by an AI should be accentuated with an animation in order to avoid confusing the human player.
 		\item Should be able to display hints to the human player.
 		\item Should offer the human player a way to pick what piece they want when pawn promotion happens.
+		\item Should give the human player an option to undo the previous move.
+		\item Should give the player(s) an explanation of how a finished game ended.
 	\end{itemize}
 	\item Documentation
 	\begin{itemize}
@@ -212,7 +235,7 @@ The rest of the document elaborates the system requirements for the chess game.\
 	\end{itemize}
 \vspace{5mm}
 
-\newpage
+%\newpage
 
 \textbf{2.4	Use case diagrams}\\
 
@@ -359,7 +382,7 @@ Special Requirements:\\
 \textbf{3.1	Class Diagram}
 
 \begin{figure}[h]
-	\includegraphics*[scale=0.30]{Class-diagram}
+	\includegraphics*[scale=0.6]{Class-diagram}
 	\caption{Class Diagram.}	
 \end{figure}
 	
