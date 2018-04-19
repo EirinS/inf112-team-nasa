@@ -131,10 +131,11 @@ public class Pawn extends AbstractPiece {
         }
 
         // Check whether diagonal moves are valid
+        if (getPassantMove(x, y, board) != null)
+            reachable.add(getPassantMove(x, y, board));
+        
         if (board.withinBoard(x - 1, y + dy)) {
             Square westAhead = board.getSquare(x - 1, y + dy);
-            if (getPassantMove(x, y, board) != null)
-                reachable.add(getPassantMove(x, y, board));
             if (westAhead.getPiece() != null && westAhead.getPiece().getColor() == opponentColor) {
                 if (pawnPromotionIsValid(y, dy, board)) {
                     reachable.add(new Move(origin, westAhead, this, westAhead.getPiece(), MoveType.PROMOTION));
@@ -144,9 +145,7 @@ public class Pawn extends AbstractPiece {
             }
         }
 
-        if (board.withinBoard(x + 1, y + dy)) {
-            if (getPassantMove(x, y, board) != null)
-                reachable.add(getPassantMove(x, y, board));
+        if (board.withinBoard(x + 1, y + dy)) {;
             Square eastAhead = board.getSquare(x + 1, y + dy);
             if (eastAhead.getPiece() != null && eastAhead.getPiece().getColor() == opponentColor) {
                 if (pawnPromotionIsValid(y, dy, board)) {

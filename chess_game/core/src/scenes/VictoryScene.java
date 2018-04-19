@@ -34,24 +34,18 @@ public class VictoryScene extends AbstractScene {
         this.playerWon = playerWon;
     }
 
-    private String ratingChange(String playerName) {
-        try {
-            int diff = Chess.getDatabase().getPlayer(playerName).getRating() - gameInfo.getPlayer().getRating();
-            if (diff > 0) {
-                return "(+" + diff + ")";
-            } else if (diff < 0) {
-                return "(" + diff + ")";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 
     private String playerStats(Player player) {
-        return player.getName()+ "\n" +
-                player.getWins() + "W/" + player.getDraws() + "D/" + player.getLosses() + "L" + "\n\n" +
-                "Rating: " + player.getRating() + ratingChange(player.getName());
+        if(player == gameInfo.getPlayer())
+        	{
+        	 return player.getName()+ "\n" + player.getWins() + "W/" + player.getDraws() + "D/" + player.getLosses() + "L" + "\n\n" +
+                    "Rating: " + player.getRating() + gameInfo.getPlayerRatingChange();
+        	}
+        else
+        {
+        	return player.getName()+ "\n" + player.getWins() + "W/" + player.getDraws() + "D/" + player.getLosses() + "L" + "\n\n" +
+                    "Rating: " + player.getRating() + gameInfo.getOpponentRatingChange();
+        }          
     }
 
     @Override

@@ -30,7 +30,7 @@ public interface IChessGame {
 	 * @param o opponent
 	 * @param win_lose_draw 1 if player wins, 2 if player loses, 3 if it is a draw
 	 */
-	public void updateRatings(Player p, Player o, int win_lose_draw);
+	boolean updateRatings(Player p, Player o, int win_lose_draw);
 
 	/**
 	 * Do one turn

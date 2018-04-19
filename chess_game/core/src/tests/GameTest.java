@@ -263,22 +263,21 @@ public class GameTest {
     }
 
     @Test
-    public void threeFoldRepetitionAllDifferentButEqualBoards() {
-        IBoard board = new Board(8, PieceColor.WHITE);
+    public void threeFoldRepetitionAllDifferentButEqualBoards() {        
         IBoard other = new Board(8, PieceColor.WHITE);
-
-        other.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
+        other.setTurn(PieceColor.WHITE);
         IBoard other1 = new Board(8, PieceColor.WHITE);
-        other1.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
+        other1.setTurn(PieceColor.WHITE);
         IBoard other2 = new Board(8, PieceColor.WHITE);
-        other2.getSquare(0, 0).putPiece(new King(PieceColor.BLACK));
+        other2.setTurn(PieceColor.WHITE);
+        
         ArrayList<IBoard> bh = new ArrayList<>();
-        bh.add(board);
+        bh.add(new Board(8, PieceColor.WHITE));
         bh.add(other1);
+        bh.add(new Board(8, PieceColor.WHITE));
         bh.add(other);
+        bh.add(new Board(8, PieceColor.WHITE));
         bh.add(other2);
-        bh.add(board);
-        bh.add(other);
         game.setBoardHistory(bh);
         assertTrue(game.threefoldRepetition());
     }

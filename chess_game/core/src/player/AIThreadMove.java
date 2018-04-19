@@ -11,30 +11,26 @@ import java.util.ArrayList;
  */
 public class AIThreadMove implements Runnable {
 
-	private AI ai;
-	private IBoard board;
-	private ChessGame chessGame;
+    private AI ai;
+    private IBoard board;
+    private ChessGame chessGame;
 
-	public AIThreadMove(AI ai, IBoard board, ChessGame chessGame) {
-		this.ai = ai;
-		this.board = board;
-		this.chessGame = chessGame;
-	}
+    public AIThreadMove(AI ai, IBoard board, ChessGame chessGame) {
+        this.ai = ai;
+        this.board = board;
+        this.chessGame = chessGame;
+    }
 
-	/**
-	 * Calculates move with a given AI asynchronous
-	 */
-	@Override
-	public synchronized void run() {
-		Move move = ai.calculateMove(board);
-
-		Gdx.app.postRunnable(
-				new Runnable() {
-					@Override
-					public void run() {
-						chessGame.doTurn(move.getFrom().getX(), move.getFrom().getY(), move.getTo().getX(), move.getTo().getY());
-					}
-				}
-		);
-	}
+    /**
+     * Calculates move with a given AI asynchronous
+     */
+    @Override
+    public synchronized void run() {
+        Gdx.app.postRunnable(
+                () -> {
+                    Move move = ai.calculateMove(board);
+                    chessGame.doTurn(move.getFrom().getX(), move.getFrom().getY(), move.getTo().getX(), move.getTo().getY());
+                }
+        );
+    }
 }

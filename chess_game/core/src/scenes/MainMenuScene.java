@@ -45,35 +45,48 @@ public class MainMenuScene extends AbstractScene {
     private Label mainMenu;
     private Label headerScore;
     private Label error;
-    private Label lose;
     private TextButton signIn, register, signUp, singleplayer, multiplayer, scores, startSingle,
             black, white, signInP2, multiOpponent;
     private TextField username, registerUsername;
     private Button backToLogIn, backToChooseGame;
     private SelectBox<String> difficulty, gameType, multiplayerOption;
-    private List<Actor> scoreList;
     private ScrollPane scorePane;
     private Window window;
     private VerticalGroup scoreGroup;
-
+    private List<Actor> scoreList;
+    
     //Navigation assistance
     private boolean playerOne;
 
-
     private GameInfo gameInfo;
 
+    /**
+     * The constructor of the main menu scene.
+     * 
+     * @param mainGame		The chess game application instance
+     */
     public MainMenuScene(Chess mainGame) {
         game = mainGame;
         playerOne = true;
         initialize();
     }
-
+    
+    /**
+     *A get method for the chess game. Creates an instance if one does not already exist.
+     * @param game	The chess game application.
+     * @return		This instance of the main menu scene.
+     */
     public static MainMenuScene getInstance(Chess game) {
         if (instance == null)
             instance = new MainMenuScene(game);
         return instance;
     }
 
+    /**
+     * Builds the stage upon where the graphical elements are drawn. Sets up the elements.
+     * If it already exists (e.g. if a player
+     * wants to play another game or resigns) the options of the menu are reset.
+     */
     @Override
     public void buildStage() {
         if (built) {
@@ -93,18 +106,28 @@ public class MainMenuScene extends AbstractScene {
             screenSignIn();
         }
     }
-
+    
+    /**
+     * Continuously updates the graphical user interface.
+     */
     @Override
     public void render(float delta) {
         super.render(delta);
     }
 
     //Section 1: Set up
+    
+    /**
+     * Initializes the graphical style texture from the assets folder. 
+     */
     private void initialize() {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
     }
 
+    /**
+     * Sets the backround and initialized and sets up the elements and their positions.
+     */
     private void setUpElements() {
         imgBackground = new Image(new Texture("pictures/menu.jpg"));
         imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
@@ -161,7 +184,7 @@ public class MainMenuScene extends AbstractScene {
 
         //Elements in score screen
         headerScore = new Label("High scores:", skin, "title-plain");
-        scoreList = new List<Actor>(skin);
+        //scoreList = new List<Actor>(skin);
         // scorePane = new ScrollPane(scoreList, skin, "default");
         scoreGroup = new VerticalGroup();
         scorePane = new ScrollPane(scoreGroup, skin, "default");
@@ -201,7 +224,10 @@ public class MainMenuScene extends AbstractScene {
 
     }
 
-
+    /**
+     * A private helping method. Puts all the actors of the stage in an array so that some aspects of
+     * setting them up can be automated.
+     */
     private void setUpArrayList() {
         actors = new ArrayList<Actor>();
         actors.add(signIn);
@@ -229,6 +255,9 @@ public class MainMenuScene extends AbstractScene {
         actors.add(multiOpponent);
     }
 
+    /**
+     * Private helping method. Uses the array to set up sizes of the elements. Some are set up manually.
+     */
     private void setUpElementSizes() {
         for (Actor element : actors) {
             if (element instanceof TextButton || element instanceof TextField || element instanceof Label) {
@@ -247,7 +276,9 @@ public class MainMenuScene extends AbstractScene {
         window.setSize(defaultWidth * 2.3f, defaultHeight * 1.8f);
     }
 
-
+    /**
+     * Private helping method. Uses the array to add all the actors to the stage.
+     */
     private void addActorsToStage() {
         addActor(imgBackground);
         for (Actor element : actors) {
@@ -267,7 +298,10 @@ public class MainMenuScene extends AbstractScene {
             element.setVisible(false);
         }
     }
-
+    
+    /**
+     * Displays the screen where one signs in. 
+     */
     protected void screenSignIn() {
         invisible();
         signIn.setVisible(true);
@@ -276,6 +310,9 @@ public class MainMenuScene extends AbstractScene {
         username.setVisible(true);
     }
 
+    /**
+     * Displays the screen where one registers as a new player. 
+     */
     protected void screenRegister() {
         invisible();
         signUp.setVisible(true);
@@ -283,7 +320,9 @@ public class MainMenuScene extends AbstractScene {
         registerUsername.setVisible(true);
 
     }
-
+    /**
+     * Displays the screen of the main menu. 
+     */
     protected void screenGameMenu() {
         invisible();
         playerOne = false;
@@ -294,6 +333,9 @@ public class MainMenuScene extends AbstractScene {
         scores.setVisible(true);
     }
 
+    /**
+     * Displays the screen of the score system.
+     */
     protected void screenScore() {
         invisible();
         scorePane.setVisible(true);
@@ -302,6 +344,9 @@ public class MainMenuScene extends AbstractScene {
         window.setVisible(true);
     }
 
+    /**
+     * Displays the screen of the singleplayer where one can choose one's preferences. 
+     */
     protected void screenPreferences() {
         invisible();
         startSingle.setVisible(true);
@@ -312,6 +357,9 @@ public class MainMenuScene extends AbstractScene {
         white.setVisible(true);
     }
 
+    /**
+     * Displays the screen of the opponent multiplayer. 
+     */
     private void screenMultiplayer() {
         invisible();
         signIn.setVisible(true);
@@ -326,6 +374,9 @@ public class MainMenuScene extends AbstractScene {
         playerOne = false;
     }
     
+    /**
+     * Displays the screen where the first player in a multiplayer game chooses what game type to play. 
+     */
     private void screenMultiplayerOption(){
     	invisible();
     	mainMenu.setText("Game type");
@@ -338,17 +389,9 @@ public class MainMenuScene extends AbstractScene {
     //Section 3: Buttonlisteners
 
     /**
+     * Initializes the buttons.
      * Will only be called upon initialization. Calling the button itself in each eventhandler
      * will reset the functionality of the button.
-     * <p>
-     * Remaining buttons:
-     * <p>
-     * multiplayer: goes to multiplayerScreen screen (= signIn + "Log in or register as player 2")
-     * <p>
-     * <p>
-     * sign up button: If first player: True, if second -> false
-     * <p>
-     * textfield -> inputlistener
      */
     private void addListeners() {
         signInListener();
@@ -365,7 +408,10 @@ public class MainMenuScene extends AbstractScene {
         whiteListener();
         multiplayerOpponentListener();
     }
-
+    
+    /**
+     * Adds an action event to the start singleplayer game button.
+     */
     private void startSingleListener() {
         startSingle.addListener(new ClickListener() {
 
@@ -383,6 +429,9 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
+    /**
+     * Makes the white toggle button unchecked if the black color is pushed. 
+     */
     private void blackListener() {
         black.addListener(new ClickListener() {
             @Override
@@ -393,6 +442,9 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
+    /**
+     * Makes the black toggle button unchecked if the black color is pushed. 
+     */
     private void whiteListener() {
         white.addListener(new ClickListener() {
             @Override
@@ -403,6 +455,9 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
+    /**
+     * Adds an action event to the sign in game button.
+     */
     private void signInListener() {
         signIn.addListener(new ClickListener() {
 
@@ -455,7 +510,10 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
-
+    
+    /**
+     * Adds an action event to the register button.
+     */
     private void registerListener() {
         register.addListener(new ClickListener() {
             @Override
@@ -467,7 +525,9 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
-
+    /**
+     * Adds an action event to the sign up button.
+     */
     private void signUpListener() {
         signUp.addListener(new ClickListener() {
 
@@ -491,7 +551,9 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
-
+    /**
+     * Adds an action event to button that leads back to the sign in screen from the register screen. 
+     */
     private void returnSignInListener() {
         backToLogIn.addListener(new ClickListener() {
             @Override
@@ -502,6 +564,9 @@ public class MainMenuScene extends AbstractScene {
         });
     }
     
+    /**
+     * Adds an action event to the button that leads back to the game menu screen.
+     */
     private void backToChooseGameListener() {
         backToChooseGame.addListener(new ClickListener() {
             @Override
@@ -511,7 +576,9 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
-
+    /**
+     * Adds an action event to the button that leads to the preferences (singleplayer) screen. 
+     */
     private void singleplayerListener() {
         singleplayer.addListener(new ClickListener() {
             @Override
@@ -522,6 +589,9 @@ public class MainMenuScene extends AbstractScene {
         });
     }
 
+    /**
+     * Adds an action event to the button that leads to the multiplayer options screen from the game menu.
+     */
     private void multiplayerOptionListener() {
         multiplayer.addListener(new ClickListener() {
             @Override
@@ -531,6 +601,10 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
+    
+    /**
+     * Adds an action event to the button that leads to the multiplayer opponent sign in button. 
+     */
     private void multiplayerOpponentListener() {
         multiOpponent.addListener(new ClickListener() {
             @Override
@@ -542,7 +616,9 @@ public class MainMenuScene extends AbstractScene {
     }
     
     
-
+    /**
+     * Adds an action event to the button that leads to the score screen from the main game menu screen.
+     */
     private void scoreListener() {
         scores.addListener(new ClickListener() {
             @Override
@@ -560,7 +636,7 @@ public class MainMenuScene extends AbstractScene {
                         Label draw = new Label(String.valueOf(p.getDraws()), skin, "title-plain");
                         HorizontalGroup group = new HorizontalGroup();
                         group.rowAlign(Align.left);
-                        group.space(30f).left();
+                        group.space(50f).left();
                         group.addActor(name);
                         group.addActor(rating);
                         group.addActor(win);

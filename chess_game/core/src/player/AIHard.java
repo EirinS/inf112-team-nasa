@@ -94,7 +94,7 @@ public class AIHard implements AI, Playable {
 	private ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
-			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne());
+			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne(), currentBoard.getGameType());
 			for(Square square : currentBoard.getSquares()) {
 				if (move.getFrom()==square) {
 				}else if (move.getTo()==square) {																																								
@@ -134,6 +134,7 @@ public class AIHard implements AI, Playable {
 		
 		if (boardColor==PieceColor.WHITE) {
 			if (playerColor==PieceColor.WHITE) {
+			//if (piece.getColor()==PieceColor.WHITE) {
 				row=7-row;
 				column=7-column;
 			}
@@ -144,12 +145,12 @@ public class AIHard implements AI, Playable {
 			}
 		}
 		switch (piece.toString()) {
-		case "B": return getPositionValueBishop(row, column,boardColor, playerColor);
-		case "K": return getPositionValueKing(row, column,boardColor, playerColor);
-		case "N": return getPositionValueKnight(row, column,boardColor, playerColor);
-		case "P": return getPositionValuePawn(row, column,boardColor, playerColor);
-		case "Q": return getPositionValueQueen(row, column,boardColor, playerColor);
-		case "R": return getPositionValueRook(row, column,boardColor, playerColor);
+		case "B": return getPositionValueBishop(row, column);
+		case "K": return getPositionValueKing(row, column);
+		case "N": return getPositionValueKnight(row, column);
+		case "P": return getPositionValuePawn(row, column);
+		case "Q": return getPositionValueQueen(row, column);
+		case "R": return getPositionValueRook(row, column);
 		default: throw new IllegalArgumentException("Unknown piece type " + piece.toString());
 		}
 	}
@@ -162,7 +163,7 @@ public class AIHard implements AI, Playable {
 	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValuePawn(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+	private int getPositionValuePawn(int row, int column) {
 		int[][] positionWeight =
 				{
 						 {0,0,0,0,0,0,0,0}
@@ -185,7 +186,7 @@ public class AIHard implements AI, Playable {
 	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValueRook(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+	private int getPositionValueRook(int row, int column) {
 		int[][] positionWeight =
 			{
 					 {0,0,0,0,0,0,0,0}
@@ -208,7 +209,7 @@ public class AIHard implements AI, Playable {
 	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValueKing(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+	private int getPositionValueKing(int row, int column) {
 		int[][] positionWeight =
 			{
 					 {-3,-4,-4,-5,-5,-4,-4,-3}
@@ -231,7 +232,7 @@ public class AIHard implements AI, Playable {
 	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValueQueen(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+	private int getPositionValueQueen(int row, int column) {
 		int[][] positionWeight = {
 				 {-2,-1,-1,-1,-1,-1,-1,-2}
 				,{-1,0,0,0,0,0,0,-1}
@@ -253,7 +254,7 @@ public class AIHard implements AI, Playable {
 	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValueKnight(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+	private int getPositionValueKnight(int row, int column) {
 		int[][] positionWeight =
 			{
 					 {-5,-4,-3,-3,-3,-3,-4,-5}
@@ -276,7 +277,7 @@ public class AIHard implements AI, Playable {
 	 * @param playerColor color of player
 	 * @return int a evaluation of piece position
 	 */
-	private int getPositionValueBishop(int row, int column, PieceColor boardColor, PieceColor playerColor) {
+	private int getPositionValueBishop(int row, int column) {
 		int[][] positionWeight =
 			{
 					 {-2,-1,-1,-1,-1,-1,-1,-2}
@@ -373,7 +374,7 @@ public class AIHard implements AI, Playable {
 					score = score + value1 + getPositionValue(x ,y,piece,currentBoard.getPlayerOne(),playerColor);
 				}else {
 					if (playerColor==PieceColor.WHITE) {
-						List<IPiece> reachedBy = piece.enemyPiecesReached(x , y, possibleBoard, PieceColor.WHITE);
+						List<IPiece> reachedBy = piece.enemyPiecesReached(x , y, possibleBoard, PieceColor.BLACK);
 						if(!reachedBy.isEmpty()) {
 							int value2=0;
 							for (IPiece p : reachedBy) {

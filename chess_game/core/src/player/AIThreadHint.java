@@ -2,6 +2,7 @@ package player;
 
 import boardstructure.IBoard;
 import boardstructure.Move;
+import com.badlogic.gdx.Gdx;
 import game.Checkerboard;
 import scenes.GameScene;
 
@@ -10,19 +11,21 @@ import scenes.GameScene;
  */
 public class AIThreadHint implements Runnable {
 
-	IBoard board;
-	AI ai;
-	Checkerboard gs;
+    IBoard board;
+    AI ai;
+    Checkerboard gs;
 
-	public AIThreadHint(IBoard board, AI ai, Checkerboard gs){
-		this.board = board;
-		this.ai = ai;
-		this.gs = gs;
-	}
+    public AIThreadHint(IBoard board, AI ai, Checkerboard gs) {
+        this.board = board;
+        this.ai = ai;
+        this.gs = gs;
+    }
 
-	@Override
-	public void run() {
-		Move move = ai.calculateMove(board);
-		gs.showHint(move);
-	}
+    @Override
+    public void run() {
+        Gdx.app.postRunnable(() -> {
+            Move move = ai.calculateMove(board);
+            gs.showHint(move);
+        });
+    }
 }

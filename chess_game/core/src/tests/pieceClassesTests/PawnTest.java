@@ -3,6 +3,8 @@ package tests.pieceClassesTests;
 import static org.junit.Assert.*;
 
 import boardstructure.*;
+import game.chessGame.GameType;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,7 +78,7 @@ public class PawnTest {
             public void illegalMovePerformed(int fromX, int fromY) {
                 fail("NUUUU");
             }
-        });
+        }, GameType.REGULAR);
         Pawn p = new Pawn(PieceColor.WHITE);
         Pawn o = new Pawn(PieceColor.BLACK);
         b.getSquare(1, 4).putPiece(o);
@@ -103,7 +105,7 @@ public class PawnTest {
             public void illegalMovePerformed(int fromX, int fromY) {
 
             }
-        });
+        }, GameType.REGULAR);
         Square from = b.getSquare(0, 6);
         Square to = b.getSquare(0, 4);
         Pawn p = new Pawn(PieceColor.WHITE);
