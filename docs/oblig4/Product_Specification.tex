@@ -105,7 +105,7 @@ The rest of the document elaborates the system requirements for the chess game.
 	\begin{itemize}
 	    \item The system offers the option to choose between a human player and a machine player.
 		\item The system offers a difficulty option for the AI.
-		\item The system should correctly start a game against an AI and not another human player.
+		\item If singleplayer is chosen, the system should correctly start a game against an AI and not another human player.
 		\item The system selects the correct difficulty of the AI
 		\item Simple AI: Moves within 1 second
 		\begin{itemize}
@@ -120,18 +120,18 @@ The rest of the document elaborates the system requirements for the chess game.
 	\end{itemize}
 	\item Game modes
 	\begin{itemize}
-		\item Should give the player an option to choose between various game modes:
+		\item The system should give the player an option to choose between various game modes:
 		\begin{itemize}
 			\item Regular chess: Standard setup and rules, with 60 minutes available for each player.
 			\item Rapid chess: Standard setup and rules, with 15 minutes available for each player.
 			\item Blitz chess: Standard setup and rules, with 3 minutes available for each player.
 			\item Bullet chess: Standard setup and rules, with 1 minute available for each player.
-			\item Chess960: Default rules and a different setup; the non-pawn pieces are placed on the same rank as before, but their positions on that rank are randomized. 60 minutes for each player.
+			\item Chess960: Default rules and a non-standard setup. The non-pawn pieces are placed on the same rank as before, but their positions on that rank are randomized. 60 minutes for each player.
 		\end{itemize}
 	\end{itemize}
 \end{itemize}
 
-\subsection{Nonfunctional Requirements}
+\subsection{Non-functional Requirements}
 \begin{itemize}
 	\item Easily expandable code
 	\begin{itemize}
@@ -145,7 +145,7 @@ The rest of the document elaborates the system requirements for the chess game.
 	\item GUI
 	\begin{itemize}
 		\item Readable and comfortable text (contrast between background and text)
-		\item Neutral and good-sized font
+		\item Neutral and appropriately sized font
 		\item Understandable terms (no obscure chess terms where it can be avoided)
 		\item Visible markers on pieces and of valid moves.
 		\item Distinct pieces (no confusion which piece is which)
@@ -154,9 +154,9 @@ The rest of the document elaborates the system requirements for the chess game.
 		\item Regular chess board with regular markers for which spot on the board it belongs to.
 		\item Find licence on everything that is not made by us.
 		\item Create licence on everything we create.
-		\item Includes relevant sound effects.
+		\item The system includes relevant sound effects.
 		\begin{itemize}
-			\item Should include an option to turn the sound effect on/off.
+			\item Should include an option to toggle the sound effects on/off.
 			\item  A sound effect should be played when a piece is moved. 
 			\item A sound effect should be played when the player requests a hint.
 			\item A sound effect should be played when the player requests an undo where none is available.
@@ -167,7 +167,7 @@ The rest of the document elaborates the system requirements for the chess game.
 		\end{itemize}
 		\item Moves conducted by an AI should be accentuated with an animation in order to avoid confusing the human player.
 		\item Should be able to display hints to the human player.
-		\item Should offer the human player a way to pick what piece they want when pawn promotion happens.
+		\item Should offer the human player a way to pick what piece they want when pawn promotion occurs.
 		\item Should give the human player an option to undo the previous move.
 		\item Should give the player(s) an explanation of how a finished game ended.
 	\end{itemize}
@@ -326,11 +326,8 @@ Special Requirements:\\
 \newpage
 \section{Domain Model}
 \subsection{Class Diagram}
+As the full version of the class diagram is rather large, it is difficult to display it in this document without significant information loss. Instead, the full version can be found in our repository, specifically at team-nasa/docs/oblig4/diagrams\_and\_illustrations/CLASS\_DIAGRAM\_UML\_OBLIG4\_correct.png.
 
-\begin{figure}[h]
-	\includegraphics*[scale=0.7]{Class-diagram}
-	\caption{Class Diagram.}	
-\end{figure}
 	
 \end{flushleft}
 \end{document}
