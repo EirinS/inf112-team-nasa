@@ -45,6 +45,7 @@ public class AIHardTest {
 		}
 		System.out.println(msg1 + nr + msg2);
 		System.out.println(p1.getAIScore(boardT));
+		System.out.println(p2.getAIScore(boardT));
 	}
 	
 	@Test
