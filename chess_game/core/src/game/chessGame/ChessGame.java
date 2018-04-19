@@ -464,6 +464,7 @@ public class ChessGame implements IChessGame, BoardListener {
      */
     private void updateSinglePlayerRating(Player p, int win_lose_draw) {
         int newRating = calculateNewRating(p.getRating(), computerAI.getRating(), win_lose_draw);
+        gameInfo.setPlayerRatingChange(newRating - p.getRating());
         try {
             Chess.getDatabase().updatePlayer(p.getName(), newRating, win_lose_draw);
         } catch (SQLException e) {
