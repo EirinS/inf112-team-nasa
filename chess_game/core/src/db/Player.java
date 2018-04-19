@@ -15,6 +15,7 @@ public class Player implements Comparable<Player> {
     private int wins;
     private int losses;
     private int draws;
+    private String ratingChange;
 
     public Player(String name) {
         this(name, 1500, 0, 0, 0);
@@ -26,6 +27,7 @@ public class Player implements Comparable<Player> {
         this.wins = wins;
         this.losses = losses;
         this.draws = draws;
+        this.ratingChange = "default";
     }
 
     public String getName() {
@@ -90,4 +92,24 @@ public class Player implements Comparable<Player> {
     public String getHighscoreRow() {
         return String.format("%s\t\t%d\t%d\t%d", name, wins, losses, draws);
     }
+    
+    
+    /*
+    public void setRatingChange(int change)
+    {
+    	 if (change > 0) {
+    		 ratingChange = "(+" + change + ")";
+         } else if (change < 0) {
+        	 ratingChange = "(" + change + ")";
+         } else
+         {
+        	 ratingChange = "(+0)";
+         }
+    }
+    
+    public String getRatingChange()
+    {
+    	return ratingChange;
+    }
+    */
 }

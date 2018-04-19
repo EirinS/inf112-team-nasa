@@ -6,6 +6,7 @@ import java.util.Random;
 
 import boardstructure.Board;
 import boardstructure.BoardListener;
+import game.chessGame.GameType;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Bishop;
@@ -33,7 +34,7 @@ public class Chess960Setup extends AbstractSetup {
 	@Override
 	public Board getInitialPosition(PieceColor playerColor, BoardListener listener) {
 		boolean playerWhite = playerColor == PieceColor.WHITE;
-		Board board = new Board(8, playerColor, listener);
+		Board board = new Board(8, playerColor, listener, GameType.CHESS960);
 		PieceColor color1 = getPieceColor(1, playerWhite);
 		PieceColor color2 = getPieceColor(6, playerWhite);
 		for(int x = 0; x < 8; x++) {

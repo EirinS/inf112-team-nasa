@@ -87,7 +87,7 @@ public class AIMedium implements AI, Playable {
 	public ArrayList<Board> getPossibleBoards(IBoard currentBoard,List<Move> possibleMoves, PieceColor playerTurn){// this is really messy, new possible boards are created based on all possible outcomes(moves), i did not find a good way to do this, i make a copy shallow copy of unaltered squares and a create new squares where there is changes. i think this will work. the pieces are also only shallow copies. 
 		ArrayList<Board> possibleBoards = new ArrayList<Board>();
  		for(Move move : possibleMoves) {
-			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne());
+			Board possibleBoard = new Board(currentBoard.getDimension(),currentBoard.getPlayerOne(), currentBoard.getGameType());
 			for(Square square : currentBoard.getSquares()) {
 				if (move.getFrom()==square) {
 				}else if (move.getTo()==square) {																																								

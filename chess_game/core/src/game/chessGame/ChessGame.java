@@ -90,9 +90,15 @@ public class ChessGame implements IChessGame, BoardListener {
                         playerSeconds -= 1;
                         if (listener != null) listener.turnTimerElapsed();
                         if (playerSeconds == 0) {
-                            new Thread(() -> Gdx.app.postRunnable(
-                                    () -> finishGame(board.getTurn()))
-                            ).start();
+                            Gdx.app.postRunnable(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                        	gameInfo.setGameOverString("Time's up");
+                                            finishGame(board.getTurn());
+                                        }
+                                    }
+                            );
                         }
                     }
                 }, 0, 1000);
@@ -132,6 +138,7 @@ public class ChessGame implements IChessGame, BoardListener {
                         if (listener != null) listener.turnTimerElapsed();
                         if (opponentSeconds == 0) {
                             opponentTimer.cancel();
+                            gameInfo.setGameOverString("Time's up");
                             finishGame(gameInfo.getPlayerColor().getOpposite());
                         }
                     }
@@ -341,8 +348,8 @@ public class ChessGame implements IChessGame, BoardListener {
             for (Square p : pieceSqs)
                 //if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
                 if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight) {
-                    gameInfo.setGameOverString("Draw: impossible checkmate");
-                    return true;
+                	gameInfo.setGameOverString("Impossible checkmate");
+                	 return true;
                 }
         } else if (pieceSqs.size() == 4) {
             return fourPiecesCausesAutomaticDraw(pieceSqs);
@@ -455,6 +462,7 @@ public class ChessGame implements IChessGame, BoardListener {
      */
     private void updateSinglePlayerRating(Player p, int win_lose_draw) {
         int newRating = calculateNewRating(p.getRating(), computerAI.getRating(), win_lose_draw);
+        gameInfo.setPlayerRatingChange(newRating - p.getRating());
         try {
             Chess.getDatabase().updatePlayer(p.getName(), newRating, win_lose_draw);
         } catch (SQLException e) {
@@ -483,7 +491,11 @@ public class ChessGame implements IChessGame, BoardListener {
             op_win_lose_draw = win_lose_draw;
 
         int pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
+        gameInfo.setPlayerRatingChange(pNewRating - pRating);
+
+        
         int oNewRating = calculateNewRating(oRating, pRating, op_win_lose_draw);
+        gameInfo.setOpponentRatingChange(oNewRating - oRating);
 
         try {
             Chess.getDatabase().updatePlayer(pName, pNewRating, win_lose_draw);

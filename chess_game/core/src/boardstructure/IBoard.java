@@ -3,6 +3,7 @@ package boardstructure;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.chessGame.GameType;
 import pieces.IPiece;
 import pieces.PieceColor;
 import player.AI;
@@ -55,6 +56,14 @@ public interface IBoard {
 	ArrayList<Integer> getBishopPos(int y);
 	
 	/**
+	 * Find the rooks on the board.
+	 * @param rookColor, color of king you want to find.
+	 * @return ArrayList<Square> the squares the rooks you want to find is in,
+	 * null if no king was found.
+	 */
+	ArrayList<Square> getRookPos(PieceColor rookColor);
+	
+	/**
 	 * Get a specific square in board
 	 * @return square
 	 */
@@ -104,6 +113,10 @@ public interface IBoard {
 	 */
 	boolean withinBoard(int x, int y);
 	
+	/**
+	 * @return the GameType of this game
+	 */
+	GameType getGameType();
 	
 	/**
 	 * Returns all the pieces than can be captured by white.

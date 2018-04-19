@@ -2,14 +2,48 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/CLASS_DIAGRAM_UML_OBLIG4_correct.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/Graphics_board.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/Graphics_direct_interaction.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/Graphics_written_move.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/SequenceDiagram-Multiplayer-V2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/SequenceDiagram-Singleplayer-V2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/SequenceDiagramWinnerStatistics-V2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/User_case_diagram_1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/User_case_diagram_1.pdf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/User_case_diagram_2.pdf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/User_case_diagram_2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/todos/TODO_1604.pdf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../summaries/20180416_Summary.pdf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/SequenceDiagram-Multiplayer-V2.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/SequenceDiagram-Singleplayer-V2.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/oblig4/diagrams_and_illustrations/SequenceDiagramWinnerStatistics-V2.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/oblig4/todos/9_4.pdf" afterPath="$PROJECT_DIR$/../docs/oblig4/todos/TODO_0904.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../docs/oblig4/Product_Specification.pdf" afterPath="$PROJECT_DIR$/../docs/oblig4/Product_Specification.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/Board.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" afterPath="$PROJECT_DIR$/core/src/boardstructure/IBoard.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/db/Player.java" afterPath="$PROJECT_DIR$/core/src/db/Player.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/Checkerboard.java" afterPath="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" afterPath="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/player/AIThreadHint.java" afterPath="$PROJECT_DIR$/core/src/player/AIThreadHint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/player/AIThreadMove.java" afterPath="$PROJECT_DIR$/core/src/player/AIThreadMove.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/build.gradle" afterPath="$PROJECT_DIR$/desktop/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradlew" afterPath="$PROJECT_DIR$/gradlew" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/game/chessGame/GameInfo.java" afterPath="$PROJECT_DIR$/core/src/game/chessGame/GameInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/King.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" afterPath="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/player/AIHard.java" afterPath="$PROJECT_DIR$/core/src/player/AIHard.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/player/AIMedium.java" afterPath="$PROJECT_DIR$/core/src/player/AIMedium.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/GameScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/scenes/VictoryScene.java" afterPath="$PROJECT_DIR$/core/src/scenes/VictoryScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/setups/Chess960Setup.java" afterPath="$PROJECT_DIR$/core/src/setups/Chess960Setup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/setups/DefaultSetup.java" afterPath="$PROJECT_DIR$/core/src/setups/DefaultSetup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/AITests/AIHardTest.java" afterPath="$PROJECT_DIR$/core/src/tests/AITests/AIHardTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/GameTest.java" afterPath="$PROJECT_DIR$/core/src/tests/GameTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/KingTest.java" afterPath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/KingTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PawnTest.java" afterPath="$PROJECT_DIR$/core/src/tests/pieceClassesTests/PawnTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../docs/oblig4/Product_Specification.tex" afterPath="$PROJECT_DIR$/../docs/oblig4/Product_Specification.tex" />
     </list>
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
@@ -50,12 +84,47 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ChessGame.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ChessGame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="111" column="21" lean-forward="false" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
-              <folding />
+            <state relative-caret-position="-173">
+              <caret line="354" column="59" lean-forward="true" selection-start-line="354" selection-start-column="59" selection-end-line="354" selection-end-column="59" />
+              <folding>
+                <element signature="e#2765#3567#0" expanded="true" />
+                <element signature="e#3566#3567#0" expanded="true" />
+                <element signature="e#4670#5199#0" expanded="true" />
+                <element signature="e#5198#5199#0" expanded="true" />
+                <element signature="e#5939#5940#0" expanded="true" />
+                <element signature="e#5990#5991#0" expanded="true" />
+                <element signature="e#6372#6373#0" expanded="true" />
+                <element signature="e#6422#6423#0" expanded="true" />
+                <element signature="e#8068#8069#0" expanded="true" />
+                <element signature="e#8168#8169#0" expanded="true" />
+                <marker date="1524143228845" expanded="false" signature="16893:16904" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="16922:16928" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="16985:16996" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17022:17028" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17075:17086" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17109:17115" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17169:17180" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17199:17205" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17236:17247" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17274:17280" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17359:17370" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17403:17409" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17444:17455" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17476:17482" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17519:17530" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17553:17559" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17602:17613" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17675:17681" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17743:17754" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17774:17780" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17829:17840" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17861:17867" ph=" }" />
+                <marker date="1524143228845" expanded="false" signature="17928:17939" ph=" { " />
+                <marker date="1524143228845" expanded="false" signature="17973:17979" ph=" }" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -65,7 +134,12 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
               <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
-              <folding />
+              <folding>
+                <marker date="1524143148199" expanded="true" signature="1632:1638" ph="{...}" />
+                <marker date="1524143148199" expanded="true" signature="1683:4842" ph="{...}" />
+                <marker date="1524143148199" expanded="false" signature="4405:4519" ph="clicked(event, x, y) → {" />
+                <marker date="1524143148199" expanded="false" signature="4610:4625" ph="}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,12 +154,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameScene.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameScene.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="357" column="0" lean-forward="true" selection-start-line="357" selection-start-column="0" selection-end-line="357" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="754">
+              <caret line="376" column="0" lean-forward="false" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+              <folding>
+                <element signature="e#11457#11458#0" expanded="true" />
+                <element signature="e#11534#11535#0" expanded="true" />
+                <element signature="e#11574#11575#0" expanded="true" />
+                <element signature="e#11593#11594#0" expanded="true" />
+                <element signature="e#11839#11840#0" expanded="true" />
+                <element signature="e#11886#11887#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1477,15 +1558,15 @@
         <option value="$PROJECT_DIR$/core/src/boardstructure/PromotionPiece.java" />
         <option value="$PROJECT_DIR$/core/src/game/Checkerboard.java" />
         <option value="$PROJECT_DIR$/core/src/player/AIEasy.java" />
-        <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
         <option value="$PROJECT_DIR$/core/src/pieces/pieceClasses/Pawn.java" />
         <option value="$PROJECT_DIR$/core/src/boardstructure/Board.java" />
-        <option value="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
         <option value="$PROJECT_DIR$/core/src/player/AIThreadMove.java" />
         <option value="$PROJECT_DIR$/core/src/player/AIThreadHint.java" />
         <option value="$PROJECT_DIR$/core/build.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/desktop/build.gradle" />
+        <option value="$PROJECT_DIR$/core/src/scenes/GameScene.java" />
+        <option value="$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java" />
       </list>
     </option>
   </component>
@@ -1648,6 +1729,21 @@
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="db" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chess_game" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="chessGame" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="chess_game" type="b2602c69:ProjectViewProjectNode" />
@@ -2246,7 +2342,7 @@
       <workItem from="1523822544719" duration="2031000" />
       <workItem from="1523882141064" duration="4018000" />
       <workItem from="1524124522421" duration="74000" />
-      <workItem from="1524143088700" duration="31000" />
+      <workItem from="1524143088700" duration="138000" />
     </task>
     <servers />
   </component>
@@ -2283,7 +2379,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54535000" />
+    <option name="totallyTimeSpent" value="54642000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="0" />
@@ -2336,25 +2432,25 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/src/boardstructure/Board.java</url>
-          <line>229</line>
+          <line>236</line>
           <properties />
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/src/tests/GameTest.java</url>
-          <line>281</line>
+          <line>280</line>
           <properties />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/src/tests/GameTest.java</url>
-          <line>282</line>
+          <line>281</line>
           <properties />
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/src/boardstructure/Board.java</url>
-          <line>235</line>
+          <line>242</line>
           <properties />
           <option name="timeStamp" value="93" />
         </line-breakpoint>
@@ -2408,6 +2504,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="17" column="7" lean-forward="false" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2445,6 +2542,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="20" column="16" lean-forward="false" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2463,6 +2561,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="14" column="15" lean-forward="false" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2512,6 +2611,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="108" column="19" lean-forward="false" selection-start-line="108" selection-start-column="19" selection-end-line="108" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2569,6 +2669,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="142">
           <caret line="187" column="27" lean-forward="true" selection-start-line="187" selection-start-column="27" selection-end-line="187" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2678,19 +2779,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="111" column="21" lean-forward="false" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/VictoryScene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
-          <folding />
+          <folding>
+            <marker date="1524143148199" expanded="true" signature="1632:1638" ph="{...}" />
+            <marker date="1524143148199" expanded="true" signature="1683:4842" ph="{...}" />
+            <marker date="1524143148199" expanded="false" signature="4405:4519" ph="clicked(event, x, y) → {" />
+            <marker date="1524143148199" expanded="false" signature="4610:4625" ph="}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2704,9 +2802,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/scenes/GameScene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="357" column="0" lean-forward="true" selection-start-line="357" selection-start-column="0" selection-end-line="357" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="754">
+          <caret line="376" column="0" lean-forward="false" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+          <folding>
+            <element signature="e#11457#11458#0" expanded="true" />
+            <element signature="e#11534#11535#0" expanded="true" />
+            <element signature="e#11574#11575#0" expanded="true" />
+            <element signature="e#11593#11594#0" expanded="true" />
+            <element signature="e#11839#11840#0" expanded="true" />
+            <element signature="e#11886#11887#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/game/chessGame/ChessGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-173">
+          <caret line="354" column="59" lean-forward="true" selection-start-line="354" selection-start-column="59" selection-end-line="354" selection-end-column="59" />
+          <folding>
+            <element signature="e#2765#3567#0" expanded="true" />
+            <element signature="e#3566#3567#0" expanded="true" />
+            <element signature="e#4670#5199#0" expanded="true" />
+            <element signature="e#5198#5199#0" expanded="true" />
+            <element signature="e#5939#5940#0" expanded="true" />
+            <element signature="e#5990#5991#0" expanded="true" />
+            <element signature="e#6372#6373#0" expanded="true" />
+            <element signature="e#6422#6423#0" expanded="true" />
+            <element signature="e#8068#8069#0" expanded="true" />
+            <element signature="e#8168#8169#0" expanded="true" />
+            <marker date="1524143228845" expanded="false" signature="16893:16904" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="16922:16928" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="16985:16996" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17022:17028" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17075:17086" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17109:17115" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17169:17180" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17199:17205" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17236:17247" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17274:17280" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17359:17370" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17403:17409" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17444:17455" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17476:17482" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17519:17530" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17553:17559" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17602:17613" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17675:17681" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17743:17754" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17774:17780" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17829:17840" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17861:17867" ph=" }" />
+            <marker date="1524143228845" expanded="false" signature="17928:17939" ph=" { " />
+            <marker date="1524143228845" expanded="false" signature="17973:17979" ph=" }" />
+          </folding>
         </state>
       </provider>
     </entry>
