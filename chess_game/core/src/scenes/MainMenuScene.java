@@ -53,7 +53,8 @@ public class MainMenuScene extends AbstractScene {
     private ScrollPane scorePane;
     private Window window;
     private VerticalGroup scoreGroup;
-
+    private List<Actor> scoreList;
+    
     //Navigation assistance
     private boolean playerOne;
 
