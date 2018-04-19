@@ -34,14 +34,6 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
-
-    dependencies {
-        testCompile 'junit:junit:4.12'
-        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
-
-        // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-library
-        testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
-    }
 }
 
 project(":desktop") {
