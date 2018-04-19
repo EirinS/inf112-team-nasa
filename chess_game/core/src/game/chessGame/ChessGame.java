@@ -94,7 +94,7 @@ public class ChessGame implements IChessGame, BoardListener {
                                     new Runnable() {
                                         @Override
                                         public void run() {
-                                        	gameInfo.setGameOverString("Time's up");
+                                            gameInfo.setGameOverString("Time's up");
                                             finishGame(board.getTurn());
                                         }
                                     }
@@ -215,16 +215,21 @@ public class ChessGame implements IChessGame, BoardListener {
         Player p = gameInfo.getPlayer();
         Player o = gameInfo.getOpponent();
         if (turn == null) {
-            updateRatings(p, o, 3);
-            listener.gameOver(3);
+            if (updateRatings(p, o, 3)) {
+                listener.gameOver(3);
+            }
         } else if (turn == gameInfo.getPlayerColor()) {
+
             //player, whose color is turn, lost
-            listener.gameOver(2);
-            updateRatings(p, o, 2);
+            if (updateRatings(p, o, 2)) {
+                listener.gameOver(2);
+            }
         } else {
+
             //player, whose color is turn, won
-            listener.gameOver(1);
-            updateRatings(p, o, 1);
+            if (updateRatings(p, o, 1)) {
+                listener.gameOver(1);
+            }
         }
     }
 
@@ -348,8 +353,8 @@ public class ChessGame implements IChessGame, BoardListener {
             for (Square p : pieceSqs)
                 //if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
                 if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight) {
-                	gameInfo.setGameOverString("Impossible checkmate");
-                	 return true;
+                    gameInfo.setGameOverString("Impossible checkmate");
+                    return true;
                 }
         } else if (pieceSqs.size() == 4) {
             return fourPiecesCausesAutomaticDraw(pieceSqs);
@@ -394,7 +399,7 @@ public class ChessGame implements IChessGame, BoardListener {
         if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
             //put in if you need check for stale-mate (king not in check)
             /*
-			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
+            ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
 			for(IPiece p : threat) {
 				if (p instanceof King) {
 					return false;
@@ -460,21 +465,21 @@ public class ChessGame implements IChessGame, BoardListener {
      * @param p
      * @param win_lose_draw
      */
-    private void updateSinglePlayerRating(Player p, int win_lose_draw) {
+    private boolean updateSinglePlayerRating(Player p, int win_lose_draw) {
         int newRating = calculateNewRating(p.getRating(), computerAI.getRating(), win_lose_draw);
         gameInfo.setPlayerRatingChange(newRating - p.getRating());
         try {
-            Chess.getDatabase().updatePlayer(p.getName(), newRating, win_lose_draw);
+            return Chess.getDatabase().updatePlayer(p.getName(), newRating, win_lose_draw);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public void updateRatings(Player p, Player o, int win_lose_draw) {
+    public boolean updateRatings(Player p, Player o, int win_lose_draw) {
         if (o == null) {
-            updateSinglePlayerRating(p, win_lose_draw);
-            return;
+            return updateSinglePlayerRating(p, win_lose_draw);
         }
 
         String pName = p.getName();
@@ -493,17 +498,17 @@ public class ChessGame implements IChessGame, BoardListener {
         int pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
         gameInfo.setPlayerRatingChange(pNewRating - pRating);
 
-        
+
         int oNewRating = calculateNewRating(oRating, pRating, op_win_lose_draw);
         gameInfo.setOpponentRatingChange(oNewRating - oRating);
 
         try {
-            Chess.getDatabase().updatePlayer(pName, pNewRating, win_lose_draw);
-            Chess.getDatabase().updatePlayer(oName, oNewRating, op_win_lose_draw);
+            return Chess.getDatabase().updatePlayer(pName, pNewRating, win_lose_draw)
+                    && Chess.getDatabase().updatePlayer(oName, oNewRating, op_win_lose_draw);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
 
     @Override

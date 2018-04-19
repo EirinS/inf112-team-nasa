@@ -183,7 +183,7 @@ public class MainMenuScene extends AbstractScene {
 
         //Elements in score screen
         headerScore = new Label("High scores:", skin, "title-plain");
-        scoreList = new List<Actor>(skin);
+        //scoreList = new List<Actor>(skin);
         // scorePane = new ScrollPane(scoreList, skin, "default");
         scoreGroup = new VerticalGroup();
         scorePane = new ScrollPane(scoreGroup, skin, "default");
