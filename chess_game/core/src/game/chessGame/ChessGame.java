@@ -33,7 +33,7 @@ public class ChessGame implements IChessGame, BoardListener {
     private GameInfo gameInfo;
     private IBoard board;
     private AI computerAI;
-    
+
     private String gameOverString;
 
     private ChessGameListener listener;
@@ -65,7 +65,7 @@ public class ChessGame implements IChessGame, BoardListener {
         if (gameInfo.getGameType() != GameType.CHESS960)
             this.board = (new DefaultSetup()).getInitialPosition(gameInfo.getPlayerColor(), this);
         else
-            this.board = (new Chess960Setup()).getInitialPosition(gameInfo.getPlayerColor(),this);
+            this.board = (new Chess960Setup()).getInitialPosition(gameInfo.getPlayerColor(), this);
 
         this.boardHistory.add(board.copy());
 
@@ -90,29 +90,21 @@ public class ChessGame implements IChessGame, BoardListener {
                         playerSeconds -= 1;
                         if (listener != null) listener.turnTimerElapsed();
                         if (playerSeconds == 0) {
-                            Gdx.app.postRunnable(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            finishGame(board.getTurn());
-                                        }
-                                    }
-                            );
+                            new Thread(() -> Gdx.app.postRunnable(
+                                    () -> finishGame(board.getTurn()))
+                            ).start();
                         }
                     }
                 }, 0, 1000);
                 playerTimerRunning = true;
             }
             if (opponentTimerRunning) {
-                Gdx.app.postRunnable(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                opponentTimer.cancel();
-                                opponentTimerRunning = false;
-                            }
+                new Thread(() -> Gdx.app.postRunnable(
+                        () -> {
+                            opponentTimer.cancel();
+                            opponentTimerRunning = false;
                         }
-                );
+                )).start();
                 opponentTimer.cancel();
                 opponentTimerRunning = false;
                 //time in time-sensitive games.
@@ -201,6 +193,7 @@ public class ChessGame implements IChessGame, BoardListener {
         if (computerAI == null) return;
         if (computerAI.getPieceColor() == board.getTurn()) {
             //Move move = computerAI.calculateMove(board);
+
             AIThreadMove ai = new AIThreadMove(computerAI, board, this);
             Thread thread = new Thread(ai);
             thread.start();
@@ -323,7 +316,7 @@ public class ChessGame implements IChessGame, BoardListener {
             ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(board.getTurn(), board.getTurn().getOpposite());
             for (IPiece p : threat) {
                 if (p instanceof King) {
-                	gameInfo.setGameOverString("Checkmate");
+                    gameInfo.setGameOverString("Checkmate");
                     return true;
                 }
             }
@@ -348,8 +341,8 @@ public class ChessGame implements IChessGame, BoardListener {
             for (Square p : pieceSqs)
                 //if last piece is bishop or knight, no check-mate can be reached. Automatic draw.
                 if (p.getPiece() instanceof Bishop || p.getPiece() instanceof Knight) {
-                	gameInfo.setGameOverString("Draw: impossible checkmate");
-                	 return true;
+                    gameInfo.setGameOverString("Draw: impossible checkmate");
+                    return true;
                 }
         } else if (pieceSqs.size() == 4) {
             return fourPiecesCausesAutomaticDraw(pieceSqs);
@@ -385,7 +378,7 @@ public class ChessGame implements IChessGame, BoardListener {
         }
 
         gameInfo.setGameOverString("Four piece automatic draw");
-        
+
         return true;
     }
 
@@ -393,14 +386,14 @@ public class ChessGame implements IChessGame, BoardListener {
     public boolean stalemate() {
         if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
             //put in if you need check for stale-mate (king not in check)
-			/*
+            /*
 			ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
 			for(IPiece p : threat) {
 				if (p instanceof King) {
 					return false;
 				}
 			} */
-        	gameInfo.setGameOverString("Stalemate");
+            gameInfo.setGameOverString("Stalemate");
             return true;
         }
         return false;
@@ -408,7 +401,7 @@ public class ChessGame implements IChessGame, BoardListener {
 
     @Override
     public void resign() {
-    	gameInfo.setGameOverString("Game resigned");
+        gameInfo.setGameOverString("Game resigned");
         finishGame(board.getTurn());
     }
 
@@ -584,9 +577,8 @@ public class ChessGame implements IChessGame, BoardListener {
     public void illegalMovePerformed(int fromX, int fromY) {
         listener.illegalMovePerformed(fromX, fromY);
     }
-    
-    public String getGameOverString()
-    {
-    	return gameOverString;
+
+    public String getGameOverString() {
+        return gameOverString;
     }
 }
