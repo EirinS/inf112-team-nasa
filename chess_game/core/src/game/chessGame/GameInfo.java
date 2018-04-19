@@ -12,6 +12,7 @@ public class GameInfo {
     private AILevel level;
     private boolean singlePlayer;
     private String gameOverString;
+    private String playerRatingChange, opponentRatingChange;
 
     public GameInfo(Player player) {
         this.player = player;
@@ -84,5 +85,34 @@ public class GameInfo {
     {
     	this.gameOverString = gameOverString;
     }
+    
+    public void setOpponentRatingChange(int change) {
+   	 if (change > 0) {
+		 opponentRatingChange = "(+" + change + ")";
+     } else if (change < 0) {
+    	 opponentRatingChange = "(" + change + ")";
+     } else{
+    	 opponentRatingChange = "(+0)";
+     }
+    }
+    
+    public void setPlayerRatingChange(int change) {
+      	 if (change > 0) {
+      		playerRatingChange = "(+" + change + ")";
+        } else if (change < 0) {
+        	playerRatingChange = "(" + change + ")";
+        } else{
+        	playerRatingChange = "(+0)";
+        }
+       }
+    
+    public String getPlayerRatingChange()
+    {
+    	return playerRatingChange;
+    }
 
+    public String getOpponentRatingChange()
+    {
+    	return opponentRatingChange;
+    }
 }
