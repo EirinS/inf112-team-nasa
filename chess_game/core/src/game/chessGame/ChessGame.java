@@ -493,11 +493,11 @@ public class ChessGame implements IChessGame, BoardListener {
 
         int pNewRating = calculateNewRating(pRating, oRating, win_lose_draw);
         gameInfo.setPlayerRatingChange(pNewRating - pRating);
-        System.out.println("satt");
+
         
         int oNewRating = calculateNewRating(oRating, pRating, op_win_lose_draw);
         gameInfo.setOpponentRatingChange(oNewRating - oRating);
-        System.out.println("satt2");
+
         try {
             Chess.getDatabase().updatePlayer(pName, pNewRating, win_lose_draw);
             Chess.getDatabase().updatePlayer(oName, oNewRating, op_win_lose_draw);
