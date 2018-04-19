@@ -636,7 +636,7 @@ public class MainMenuScene extends AbstractScene {
                         Label draw = new Label(String.valueOf(p.getDraws()), skin, "title-plain");
                         HorizontalGroup group = new HorizontalGroup();
                         group.rowAlign(Align.left);
-                        group.space(30f).left();
+                        group.space(50f).left();
                         group.addActor(name);
                         group.addActor(rating);
                         group.addActor(win);

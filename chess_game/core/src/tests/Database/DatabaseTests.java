@@ -11,7 +11,7 @@ import static org.junit.Assert.fail;
 
 public class DatabaseTests {
 
-    private static final String TEST_USER = "test_user_1337";
+    private static final String TEST_USER = "testuser";
     private Database db;
 
     @Before

@@ -34,11 +34,15 @@ The chess class gets called from the libgdx desktop launcher and initializes the
 \subsection {AbstractPiece}
 Abstract class that implements methods for all the common characteristics for the pieces in the game. The class is extended by all the piece classes which have their own methods for different specific rules.
 
-\subsection {AIEasy/AIMedium}
+\subsection {AIEasy/AIMedium/AIHard}
 The AIEasy and AIMedium class finds and returns suitable moves for a player. The AIEasy just return a random move, while AIMedium does some calculations and choses the best move it can find.
+AIHard performs some harder calculations than AIMedium and does outperform it in every case.
 
-\subsection {PlayerRegister}
-The PlayerRegister class deals with reading and writing player data to the playerfile. This includes registering players, checking if they are already registered, updating a players statistics and constructing a highscore list.
+\subsection {Database}
+The Database class deals with reading and writing to the external database we have hosted at AWS. The class implements IDatabase methods, such as listPlayers, registerPlayer, getPlayer, isPlayerRegistered and updatePlayer.
+
+\subsection {Queries}
+Small helper class for Database with all the SQL queries.
 
 \subsection {AbstractScene}
 An abstract class responsible for the graphical user interface. It allows the screen classes to draw upon the same Stage and implement all the methods that a screen should implement. The Stage is responsible for drawing the graphical elements (also known as actors) to the screen. This class is currently inherited by the three classes MainMenuScene, GameScene and VictoryScene. The class “Stage”  and the interface “Screen” are imported from the LibGDX library.
@@ -46,11 +50,20 @@ An abstract class responsible for the graphical user interface. It allows the sc
 \subsection {SceneManager}
 Manager for all the scenes to make navigating scenes easy.
 
+\subsection {AbstractSetup}
+A setup for a chess-board. Used when creating a new ChessGame, to determine how the board will be set up initially. Contains some helper-methods shared across all the initial board setups.
+
 \subsection {DefaultSetup}
 Initial board setup for standard chess rules.
 
+\subsection {Chess960Setup}
+Initial board setup for Fischer Random Chess rules.
+
 \subsection {AllTests}
 Runs all the test for the entire project. This includes tests for board structure,pieces, both of the AIs and the menu options.
+
+\subsection {AudioManager}
+Small utility class allowing the user to listen for sound-effect, such as move, hint and undo-sound.
 
 \section {Interfaces}
 Below we have a short description of all the main interfaces in the project, separated into subsections.
@@ -76,8 +89,8 @@ Interface used by all AI. It contains three functions, returning  the AI’s mov
 \subsection {Playable}
 Interface used by all AI. It  contains one function that returns the move the AI will preform.
 
-\subsection {Setup}
-A setup for a chess-board. Used when creating a new ChessGame, to determine how the board will be set up initially.
+\subsection {IDatabase}
+Interface used by the Database class. Specifices all the methods needed for highscore listing, etc.
 
 \section*{Relationships}
 The relations in the design model initially starts with the Chess class. The Chess class shows the first Screen, MainMenuScene, using the SceneManager and initialises the PlayerRegister. MainMenuScene gets input from user and shows highscores/starts game accordingly.
