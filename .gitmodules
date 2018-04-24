@@ -1,0 +1,3 @@
+[submodule "chess_api"]
+	path = chess_api
+	url = https://git.heroku.com/team-nasa.git
