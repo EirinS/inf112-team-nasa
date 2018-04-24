@@ -18,6 +18,10 @@ import game.chessGame.GameInfo;
 import game.chessGame.GameType;
 import game.WindowInformation;
 
+import models.MultiplayerGame;
+import multiplayer.IMultiplayer;
+import multiplayer.Multiplayer;
+import multiplayer.MultiplayerListener;
 import pieces.PieceColor;
 import player.AILevel;
 import db.Player;

@@ -49,6 +49,14 @@ project(":desktop") {
 
         // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-library
         testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
+
+        compile 'com.google.code.gson:gson:2.8.2'
+        compile 'com.squareup.retrofit2:retrofit:2.4.0'
+        compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+        compile ('io.socket:socket.io-client:1.0.0') {
+            // excluding org.json which is provided by Android
+            exclude group: 'org.json', module: 'json'
+        }
     }
 }
 
@@ -80,6 +88,14 @@ project(":core") {
 
         // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-library
         testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
+
+        compile 'com.google.code.gson:gson:2.8.2'
+        compile 'com.squareup.retrofit2:retrofit:2.4.0'
+        compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+        compile ('io.socket:socket.io-client:1.0.0') {
+            // excluding org.json which is provided by Android
+            exclude group: 'org.json', module: 'json'
+        }
     }
 }
 
