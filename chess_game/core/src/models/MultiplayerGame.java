@@ -30,6 +30,15 @@ public class MultiplayerGame {
     @SerializedName("opponentRating")
     Integer opponentRating;
 
+    public MultiplayerGame(String name, String type, String opponentUid, String opponentName, String opponentColor, Integer opponentRating) {
+        this.name = name;
+        this.type = type;
+        this.opponentUid = opponentUid;
+        this.opponentName = opponentName;
+        this.opponentColor = opponentColor;
+        this.opponentRating = opponentRating;
+    }
+
     public String getName() {
         return name;
     }
