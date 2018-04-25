@@ -239,14 +239,21 @@ public class MainMenuScene extends AbstractScene {
         window.setMovable(false);
 
         //Elements in multiplayer
-        //Screen one
+
+        // Screen one
+
+        // TODO: 25.04.2018 add option to select online/offline
+        // Online => new online screen with all games
+        // Offline => screen two.
+
+        //Screen two
         multiplayerOption = new SelectBox <String>(skin);
         multiplayerOption.setItems(optionsGameType);
         multiplayerOption.setPosition(centreWidth, WindowInformation.HEIGHT / 1.9f);
         multiOpponent = new TextButton("Next", skin, "default");
         multiOpponent.setPosition(centreWidth, WindowInformation.HEIGHT / 2.5f);
         
-        //Screen two
+        //Screen threww
         signInP2 = new TextButton("Sign in", skin, "default");
         signInP2.setPosition(centreWidth, WindowInformation.HEIGHT / 2.5f);
 

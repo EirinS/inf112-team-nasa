@@ -23,11 +23,11 @@ project(":desktop") {
         //Adds dependency on the :core project as well as the gdx lwjgl backend and native dependencies
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        testCompile 'junit:junit:4.12'
+        compile 'junit:junit:4.12'
         compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
 
         // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-library
-        testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
+        compile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
 
         compile 'com.google.code.gson:gson:2.8.2'
         compile 'com.squareup.retrofit2:retrofit:2.4.0'
