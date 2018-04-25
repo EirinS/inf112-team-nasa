@@ -1,6 +1,8 @@
 package multiplayer;
 
+import game.chessGame.GameType;
 import models.MultiplayerGame;
+import pieces.PieceColor;
 
 public interface IMultiplayer {
 
@@ -11,9 +13,15 @@ public interface IMultiplayer {
 
     /**
      * Sends a request to create a game
-     * @param game Game to create
+     * @param name Game lobby name
+     * @param gameType Game type
+     * @param opponentUid Player uid
+     * @param opponentName Player name
+     * @param opponentColor Player piece color
+     * @param opponentRating Player rating
      */
-    void createGame(MultiplayerGame game);
+    void createGame(String name, GameType gameType,
+                    String opponentUid, String opponentName, PieceColor opponentColor, int opponentRating);
 
     /**
      * Sends a request to join a specific game (by gameId)

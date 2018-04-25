@@ -1,10 +1,12 @@
 package multiplayer;
 
 import api.HerokuService;
+import game.chessGame.GameType;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import models.ApiResponse;
 import models.MultiplayerGame;
+import pieces.PieceColor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,18 +18,16 @@ import socket.SocketHandlerListener;
 import java.net.URISyntaxException;
 import java.util.List;
 
-public class Multiplayer implements IMultiplayer, SocketHandlerListener {
+public class Multiplayer implements IMultiplayer {
 
     private final String API_URL = "https://team-nasa.herokuapp.com";
     private MultiplayerListener listener;
 
     private HerokuService service;
-    private SocketHandler socketHandler;
 
     public Multiplayer(MultiplayerListener listener) {
         this.listener = listener;
         initService();
-        initSocketHandler();
     }
 
     private void initService() {
@@ -36,11 +36,6 @@ public class Multiplayer implements IMultiplayer, SocketHandlerListener {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(HerokuService.class);
-    }
-
-    private void initSocketHandler() {
-        socketHandler = new SocketHandler(this);
-        socketHandler.connect(); // TODO: 25.04.2018 connect here?
     }
 
     @Override
@@ -65,8 +60,8 @@ public class Multiplayer implements IMultiplayer, SocketHandlerListener {
     }
 
     @Override
-    public void createGame(MultiplayerGame game) {
-        service.createGame(game).enqueue(new Callback<ApiResponse>() {
+    public void createGame(String name, GameType gameType, String opponentUid, String opponentName, PieceColor opponentColor, int opponentRating) {
+        service.createGame(name, gameType.toString(), opponentUid, opponentName, opponentColor.toString(), opponentRating).enqueue(new Callback<ApiResponse>() {
 
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -112,30 +107,5 @@ public class Multiplayer implements IMultiplayer, SocketHandlerListener {
                 listener.error(t);
             }
         });
-    }
-
-    @Override
-    public void onConnected() {
-
-    }
-
-    @Override
-    public void onJoined() {
-
-    }
-
-    @Override
-    public void onData() {
-
-    }
-
-    @Override
-    public void onState() {
-
-    }
-
-    @Override
-    public void onDisconnected() {
-
     }
 }

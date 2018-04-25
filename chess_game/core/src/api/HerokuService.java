@@ -32,25 +32,16 @@ public interface HerokuService {
      * @param opponentRating Player rating
      * @return Response from server, check ApiResponse class for docs.
      */
-    /*
     @FormUrlEncoded
     @POST("/create")
     Call<ApiResponse> createGame(
             @Field("name") String name,
-            @Field("type") GameType type,
+            @Field("type") String type,
             @Field("opponentUid") String opponentUid,
             @Field("opponentName") String opponentName,
-            @Field("opponentColor") PieceColor opponentColor,
+            @Field("opponentColor") String opponentColor,
             @Field("opponentRating") int opponentRating
-    );*/
-
-    /**
-     * Requests creation of new multiplayer game given MultiplayerGame.
-     * @param game MultiplayerGame to create
-     * @return Response from server, check ApiResponse class for docs.
-     */
-    @POST("/create")
-    Call<ApiResponse> createGame(@Body MultiplayerGame game);
+    );
 
     /**
      * Requests joining a game.
