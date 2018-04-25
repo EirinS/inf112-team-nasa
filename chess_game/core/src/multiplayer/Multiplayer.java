@@ -1,6 +1,9 @@
 package multiplayer;
 
 import api.HerokuService;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import models.ApiResponse;
 import models.MultiplayerGame;
 import retrofit2.Call;
@@ -10,24 +13,46 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class Multiplayer implements IMultiplayer {
 
+    private final String API_URL = "https://team-nasa.herokuapp.com";
     private MultiplayerListener listener;
+
     private HerokuService service;
+    private Socket socket;
 
     public Multiplayer(MultiplayerListener listener) {
         this.listener = listener;
         initService();
+        initSocket();
+
     }
 
     private void initService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://team-nasa.herokuapp.com")
+                .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(HerokuService.class);
+    }
+
+    private void initSocket() {
+        try {
+            socket = IO.socket(API_URL);
+            socket.on(Socket.EVENT_CONNECT, args -> {
+                System.out.println("Socket connected.");
+            }).on(Socket.EVENT_DISCONNECT, args -> {
+                System.out.println("Socket disconnected.");
+            });
+
+            // TODO: 25/04/2018 figure out where to connect socket 
+            //socket.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

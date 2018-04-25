@@ -127,6 +127,35 @@ public class MainMenuScene extends AbstractScene {
     private void initialize() {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
+
+        // TODO: Temp
+        IMultiplayer multiplayer = new Multiplayer(new MultiplayerListener() {
+
+            @Override
+            public void gamesListed(java.util.List<MultiplayerGame> games) {
+
+            }
+
+            @Override
+            public void gameCreated() {
+
+            }
+
+            @Override
+            public void gameJoined() {
+
+            }
+
+            @Override
+            public void error(Throwable t) {
+
+            }
+
+            @Override
+            public void unexpectedError() {
+
+            }
+        });
     }
 
     /**

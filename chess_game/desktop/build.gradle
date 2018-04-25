@@ -76,6 +76,9 @@ project(":core") {
         compile 'com.google.code.gson:gson:2.8.2'
         compile 'com.squareup.retrofit2:retrofit:2.4.0'
         compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+        // https://mvnrepository.com/artifact/org.json/json
+        compile group: 'org.json', name: 'json', version: '20180130'
         compile ('io.socket:socket.io-client:1.0.0') {
             // excluding org.json which is provided by Android
             exclude group: 'org.json', module: 'json'
