@@ -6,6 +6,35 @@ import com.google.gson.annotations.SerializedName;
 
 public class MultiplayerGame {
 
+    class Opponent {
+
+        @Expose
+        @SerializedName("uid")
+        String uid;
+
+        @Expose
+        @SerializedName("name")
+        String name;
+
+        @Expose
+        @SerializedName("color")
+        String color;
+
+        @Expose
+        @SerializedName("rating")
+        Integer rating;
+
+        @Override
+        public String toString() {
+            return "Opponent{" +
+                    "uid='" + uid + '\'' +
+                    ", name='" + name + '\'' +
+                    ", color='" + color + '\'' +
+                    ", rating=" + rating +
+                    '}';
+        }
+    }
+
     @Expose
     @SerializedName("name")
     String name;
@@ -15,29 +44,8 @@ public class MultiplayerGame {
     String type;
 
     @Expose
-    @SerializedName("opponentUid")
-    String opponentUid;
-
-    @Expose
-    @SerializedName("opponentName")
-    String opponentName;
-
-    @Expose
-    @SerializedName("opponentColor")
-    String opponentColor;
-
-    @Expose
-    @SerializedName("opponentRating")
-    Integer opponentRating;
-
-    public MultiplayerGame(String name, String type, String opponentUid, String opponentName, String opponentColor, Integer opponentRating) {
-        this.name = name;
-        this.type = type;
-        this.opponentUid = opponentUid;
-        this.opponentName = opponentName;
-        this.opponentColor = opponentColor;
-        this.opponentRating = opponentRating;
-    }
+    @SerializedName("opponent")
+    Opponent opponent;
 
     public String getName() {
         return name;
@@ -47,19 +55,16 @@ public class MultiplayerGame {
         return type;
     }
 
-    public String getOpponentUid() {
-        return opponentUid;
+    public Opponent getOpponent() {
+        return opponent;
     }
 
-    public String getOpponentName() {
-        return opponentName;
-    }
-
-    public String getOpponentColor() {
-        return opponentColor;
-    }
-
-    public Integer getOpponentRating() {
-        return opponentRating;
+    @Override
+    public String toString() {
+        return "MultiplayerGame{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", opponent=" + opponent +
+                '}';
     }
 }
