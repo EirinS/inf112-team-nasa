@@ -48,7 +48,7 @@ public class Multiplayer implements IMultiplayer {
                 System.out.println("Socket disconnected.");
             });
 
-            // TODO: 25/04/2018 figure out where to connect socket 
+            // TODO: 25/04/2018 figure out where to connect socket
             //socket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
