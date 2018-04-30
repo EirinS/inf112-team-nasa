@@ -564,7 +564,8 @@ public class MainMenuScene extends AbstractScene {
                         error.setText("Already signed in");
                         error.setVisible(true);
                         signInListener();
-                    } else if (exists) {
+                    } 
+                    else if (exists) {
                         try {
                             gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
                             gameInfo.setSinglePlayer(false);
@@ -614,7 +615,13 @@ public class MainMenuScene extends AbstractScene {
                 error.setText("This alias already exists! Please choose another one.");
                 if (exists) {
                     error.setVisible(true);
-                } else {
+                } 
+                else if (name.length() > 20){
+                	error.setText("Name must be less than 20 characters");
+                    error.setVisible(true);
+                    signUpListener();
+                }
+                else {
                     try {
                         Chess.getDatabase().registerPlayer(new Player(name));
                     } catch (SQLException e1) {
