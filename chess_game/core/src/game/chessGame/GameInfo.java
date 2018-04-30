@@ -13,19 +13,21 @@ public class GameInfo {
     private boolean singlePlayer;
     private String gameOverString;
     private String playerRatingChange, opponentRatingChange;
+    private boolean online;
 
     public GameInfo(Player player) {
         this.player = player;
         gameType = GameType.REGULAR;
     }
 
-    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level, boolean singlePlayer) {
+    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level, boolean singlePlayer, boolean online) {
         this.player = player;
         this.opponent = opponent;
         this.playerColor = playerColor;
         this.gameType = gameType;
         this.level = level;
         this.singlePlayer = singlePlayer;
+        this.online = online;
     }
 
     public PieceColor getPlayerColor() {
@@ -114,5 +116,13 @@ public class GameInfo {
     public String getOpponentRatingChange()
     {
     	return opponentRatingChange;
+    }
+
+    public void setIsOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
     }
 }
