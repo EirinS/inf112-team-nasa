@@ -1,6 +1,5 @@
 package socket;
 
-import com.sun.istack.internal.Nullable;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
@@ -13,7 +12,6 @@ public class SocketHandler implements ISocketHandler {
 
     private SocketHandlerListener listener;
 
-    @Nullable
     private Socket socket;
 
     public SocketHandler(SocketHandlerListener listener) {

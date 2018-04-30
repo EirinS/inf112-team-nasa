@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import game.Chess;
 import game.WindowInformation;
 import game.chessGame.GameInfo;
-
+import sound.AudioManager;
 import db.Player;
 import sprites.SquareTextureLoader;
 import styling.Colors;
@@ -50,7 +50,6 @@ public class VictoryScene extends AbstractScene {
 
     @Override
     public void buildStage() {
-
         // Set-up stage
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/uiskin.txt"));
         Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
@@ -64,8 +63,12 @@ public class VictoryScene extends AbstractScene {
         String titleStr;
         if (playerWon == null) {
             titleStr = "Draw, " + gameInfo.getPlayer().getName() + "!";
-        } else {
-            titleStr = playerWon ? "Victory, " + gameInfo.getPlayer().getName() + "!" : "Defeat, " + gameInfo.getPlayer().getName() + "!";
+        } else if (playerWon) {
+            titleStr = "Victory, " + gameInfo.getPlayer().getName() + "!";
+            AudioManager.playApplause();
+        }  else {
+        	titleStr = "Defeat, " + gameInfo.getPlayer().getName() + "!";
+        	AudioManager.playLoseSound();
         }
 
         Label gameOverText = new Label(gameInfo.getGameOverString(), skin, "title-plain");
@@ -112,6 +115,7 @@ public class VictoryScene extends AbstractScene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, game);
+                AudioManager.stop();
             }
         });
         backBtn.setSize(backBtn.getWidth() * 2, backBtn.getHeight() * 2);
