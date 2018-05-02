@@ -48,15 +48,16 @@ public class MainMenuScene extends AbstractScene {
     private Label mainMenu;
     private Label headerScore;
     private Label error;
+    private Label headerMulti;
     private TextButton signIn, register, signUp, singleplayerBtn, multiplayerBtn, scores, startSingle,
-            black, white, signInP2, multiOpponent, chooseOnline, chooseOffline;
+            black, white, signInP2, multiOpponent, chooseOnline, chooseOffline, createGame, joinGame;
     private TextField username, registerUsername;
     private Button backToLogIn, backToChooseGame;
     private SelectBox<String> difficulty, gameType, multiplayerOption;
-    private ScrollPane scorePane;
-    private Window window;
-    private VerticalGroup scoreGroup;
-    private List<Actor> scoreList;
+    private ScrollPane scorePane, onlinePane;
+    private Window window, onlineWindow;
+    private VerticalGroup scoreGroup, onlineGroup;
+   
     
     //Navigation assistance
     private boolean playerOne;
@@ -268,7 +269,34 @@ public class MainMenuScene extends AbstractScene {
         //Multiscreen
         backToChooseGame = new Button(skin, "left");
         backToChooseGame.setPosition(centreWidth / 3.8f, WindowInformation.HEIGHT / 1.2f);
-
+        
+        headerMulti = new Label("Online" , skin, "title-plain");
+        headerMulti.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
+        
+        createGame = new TextButton("Create", skin, "default");
+        createGame.setPosition(centreWidth - createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+        
+        joinGame = new TextButton("Join", skin, "default");
+        joinGame.setPosition(centreWidth + createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+        
+        onlineGroup = new VerticalGroup();
+        onlinePane = new ScrollPane(onlineGroup, skin, "default");
+        onlinePane.setPosition(defaultWidth / 1.7f, WindowInformation.HEIGHT / 13);
+        
+        Label onlineName = new Label("Name", skin, "title-plain");
+        Label type = new Label("Game type", skin, "title-plain");
+        Label opponent = new Label("Opponent name", skin, "title-plain");
+        Label ranking = new Label("Ranking", skin, "title-plain");
+        
+        onlineWindow = new Window("", skin);
+        onlineWindow.add(onlineName);
+        onlineWindow.add(type);
+        onlineWindow.add(opponent);
+        onlineWindow.add(ranking);
+        onlineWindow.setPosition(defaultWidth / 1.7f, defaultHeight * 7.5f);
+        onlineWindow.setMovable(false);
+        onlineWindow.setSize(defaultWidth * 2.3f, defaultHeight * 1.8f);
+                                                                                                  
     }
 
     /**
@@ -284,6 +312,10 @@ public class MainMenuScene extends AbstractScene {
         actors.add(registerUsername);
         actors.add(backToLogIn);
         actors.add(backToChooseGame);
+        actors.add(headerMulti);
+        actors.add(createGame);
+        actors.add(joinGame);
+        actors.add(onlineWindow);
         actors.add(signUp);
         actors.add(singleplayerBtn);
         actors.add(multiplayerBtn);
@@ -442,6 +474,10 @@ public class MainMenuScene extends AbstractScene {
     private void screenMultiplayerOnlineOption() {
         invisible();
         backToChooseGame.setVisible(true);
+        headerMulti.setVisible(true);
+        createGame.setVisible(true);
+        joinGame.setVisible(true);
+        onlineWindow.setVisible(true);
 
         // TODO: 25.04.2018 setVisible for online stuff here
         multiplayer.listGames();
