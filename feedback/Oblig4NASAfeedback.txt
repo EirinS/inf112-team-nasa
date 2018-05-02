@@ -1,0 +1,53 @@
+Feedback INF112 spring 2018 - Oblig.3
+
+Group: Team NASA
+
+
+
+
+Overall feedback:
+Very good delivery. Most of the previous errors have been fixed, and both the game and
+the documentation is on mostly point.
+
+
+Deliverable: Minutes/ meeting reports
+Seems that you cover the things you should, good.
+
+
+Deliverable: Chess game + code quality
+Very good, seems to be fully functional with all desired features and so on.
+
+
+Deliverable: Retrospective summary
+Overall good, no comments for this.
+
+
+Deliverable: License + trello/issue tracker/backlog
+Still relevant and up to date. 
+
+
+Deliverable: Presentation
+Nice slides and good presentation overall.
+
+
+Deliverable: Sequence diagram
+This is a lot better than last time, at least for the multiplayer/singleplayer functinality. 
+The one where you store the leaderboard is also good, but i'm lacking some kind of "actor/player" 
+that is interacting with the leaderboard (e.g. when an "actor" ends a game, or wants to open
+the leaderboard, then the things described in your sequence diagram will happen). 
+
+
+Deliverable: Design/class diagram
+This is also much better this time, most of the diagram is correct. Only comment to be made is
+that the class diagram should only describe the logic of the game, not the
+user interface. You might want to drop the "pure libgdx"/GUI classes, because these aren't 
+necessary in a class diagram. 
+
+
+Score: 97.8 (of 100)
+
+Evaluation: PASS
+
+
+
+Graded by Joakim and Dan, Bergen, April 29.
