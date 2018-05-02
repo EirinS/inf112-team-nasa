@@ -50,10 +50,10 @@ public class MainMenuScene extends AbstractScene {
 	private Label headerScore;
 	private Label error;
 	private Label headerMulti;
-	private Label name, type;
+	private Label onlineName;
 	private TextButton signIn, register, signUp, singleplayerBtn, multiplayerBtn, scores, startSingle, black, white,
-			signInP2, multiOpponent, chooseOnline, chooseOffline, createGame, joinGame;
-	private TextField username, registerUsername, onlineName;
+			signInP2, multiOpponent, chooseOnline, chooseOffline, createGame, joinGame, createGameBtn;
+	private TextField username, registerUsername, enterOnlineName;
 	private Button backToLogIn, backToChooseGame;
 	private SelectBox<String> difficulty, gameType, multiplayerOption;
 	private ScrollPane scorePane, onlinePane;
@@ -290,7 +290,6 @@ public class MainMenuScene extends AbstractScene {
 		onlinePane = new ScrollPane(onlineGroup, skin, "default");
 		onlinePane.setPosition(defaultWidth / 1.7f, WindowInformation.HEIGHT / 13);
 
-		Label onlineName = new Label("Name", skin, "title");
 		Label type = new Label("Game type", skin, "title");
 		Label opponent = new Label("Opponent name", skin, "title");
 		Label ranking = new Label("Ranking", skin, "title");
@@ -304,9 +303,16 @@ public class MainMenuScene extends AbstractScene {
 		onlineWindow.setMovable(false);
 		onlineWindow.setSize(defaultWidth * 2.3f + 40, defaultHeight * 1.8f);
 		
+		//create online game screen
 		
+		enterOnlineName = new TextField("testSpiller", skin, "default");
+		enterOnlineName.setPosition(centreWidth, WindowInformation.HEIGHT / 2);
 		
-
+		onlineName = new Label("Enter name: ", skin, "title-plain");
+		onlineName.setPosition(centreWidth, WindowInformation.HEIGHT / 2 + enterOnlineName.getHeight() + 20);
+		
+		createGameBtn = new TextButton("Create", skin, "default");
+		createGameBtn.setPosition(centreWidth, WindowInformation.HEIGHT / 4);
 	}
 
 	/**
@@ -344,6 +350,10 @@ public class MainMenuScene extends AbstractScene {
 		actors.add(chooseOffline);
 		actors.add(multiplayerOption);
 		actors.add(multiOpponent);
+		actors.add(onlineName);
+		actors.add(enterOnlineName);
+		actors.add(createGameBtn);
+		
 	}
 
 	/**
@@ -418,6 +428,9 @@ public class MainMenuScene extends AbstractScene {
 	protected void screenCreateGame() {
 		invisible();
 		gameType.setVisible(true);
+		onlineName.setVisible(true);
+		createGameBtn.setVisible(true);
+		enterOnlineName.setVisible(true);
 	}
 
 	/**
@@ -786,6 +799,7 @@ public class MainMenuScene extends AbstractScene {
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button) {
 				screenCreateGame();
+				createGameListener();
 			}
 
 		});
