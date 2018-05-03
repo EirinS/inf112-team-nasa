@@ -7,7 +7,7 @@ import pieces.PieceColor;
 
 public class MultiplayerGame {
 
-    public class Opponent {
+    public class Player {
 
         @Expose
         @SerializedName("name")
@@ -35,7 +35,7 @@ public class MultiplayerGame {
 
         @Override
         public String toString() {
-            return "Opponent{" +
+            return "Player{" +
                     "name='" + name + '\'' +
                     ", color='" + color + '\'' +
                     ", rating=" + rating +
@@ -56,8 +56,8 @@ public class MultiplayerGame {
     String type;
 
     @Expose
-    @SerializedName("opponent")
-    Opponent opponent;
+    @SerializedName("player")
+    Player player;
 
     public String getId() {
         return id;
@@ -71,12 +71,12 @@ public class MultiplayerGame {
         return type;
     }
 
-    public Opponent getOpponent() {
-        return opponent;
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
     public String toString() {
-        return name + " - " + type + " - " + opponent.name + " - " + opponent.rating;
+        return name + " - " + type + " - " + player.name + " - " + player.rating;
     }
 }

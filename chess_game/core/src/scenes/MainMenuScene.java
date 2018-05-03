@@ -155,20 +155,28 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void gameCreated(MultiplayerGame multiplayerGame) {
-
-                // We have created a game, start GameScene
                 System.out.println("Game created!");
+
+                // We have created a game, start GameScene!
                 gameInfo.setIsOnline(true);
                 gameInfo.setMultiplayerGame(multiplayerGame);
-                gameInfo.setPlayerColor(multiplayerGame.getOpponent().getColor());
+                gameInfo.setPlayerColor(multiplayerGame.getPlayer().getColor());
                 gameInfo.getPlayer().loadRating();
                 gameInfo.setGameType(GameType.getGameType(multiplayerGame.getType()));
                 Gdx.app.postRunnable(() -> SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo));
             }
 
             @Override
-            public void gameJoined() {
+            public void gameJoined(MultiplayerGame multiplayerGame) {
                 System.out.println("Game joined!");
+
+                // We have successfully joined a game, start GameScene!
+                gameInfo.setIsOnline(true);
+                gameInfo.setMultiplayerGame(multiplayerGame);
+                gameInfo.setPlayerColor(multiplayerGame.getPlayer().getColor().getOpposite());
+                gameInfo.getPlayer().loadRating();
+                gameInfo.setGameType(GameType.getGameType(multiplayerGame.getType()));
+                Gdx.app.postRunnable(() -> SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo));
             }
 
             @Override
@@ -854,34 +862,10 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                SocketHandler handler = new SocketHandler(new SocketHandlerListener() {
-
-                    @Override
-                    public void onConnected() {
-                        System.out.println("onConnected");
-                    }
-
-                    @Override
-                    public void onJoined() {
-                        System.out.println("onJoined");
-                    }
-
-                    @Override
-                    public void onData() {
-                        System.out.println("onData");
-                    }
-
-                    @Override
-                    public void onState() {
-                        System.out.println("onState");
-                    }
-
-                    @Override
-                    public void onDisconnected() {
-                        System.out.println("onDisconnected");
-                    }
-                });
-                handler.connect();
+                if (onlineList.getSelectedIndex() > -1) {
+                    MultiplayerGame game = multiplayerGames.get(onlineList.getSelectedIndex());
+                    multiplayer.joinGame(game.getId());
+                }
                 joinGameListener();
             }
         });

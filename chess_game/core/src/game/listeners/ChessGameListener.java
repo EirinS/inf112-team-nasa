@@ -1,6 +1,7 @@
 package game.listeners;
 
 import boardstructure.Move;
+import org.json.JSONArray;
 import pieces.PieceColor;
 
 import java.util.ArrayList;
@@ -34,4 +35,9 @@ public interface ChessGameListener {
 	 * Called when the turn timer elapses.
 	 */
 	void turnTimerElapsed();
+
+	/**
+	 * Called when the multiplayer game is ready (both clients joined game)
+	 */
+	void multiplayerGameReady(String opponentName);
 }

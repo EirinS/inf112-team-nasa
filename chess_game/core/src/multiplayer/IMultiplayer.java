@@ -25,8 +25,6 @@ public interface IMultiplayer {
     /**
      * Sends a request to join a specific game (by gameId)
      * @param gameId Game id to join
-     * @param playerUid Player unique id
-     * @param playerName Player name
      */
-    void joinGame(String gameId, String playerUid, String playerName);
+    void joinGame(String gameId);
 }

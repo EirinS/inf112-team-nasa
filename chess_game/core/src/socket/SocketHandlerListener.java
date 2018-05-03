@@ -1,5 +1,8 @@
 package socket;
 
+import models.GameState;
+import org.json.JSONObject;
+
 public interface SocketHandlerListener {
 
     /**
@@ -8,19 +11,14 @@ public interface SocketHandlerListener {
     void onConnected();
 
     /**
-     * Gets called when the socket has joined a game lobby.
-     */
-    void onJoined();
-
-    /**
      * Gets called when the socket has received data from the server.
      */
-    void onData();
+    void onData(JSONObject data);
 
     /**
      * Gets called when the socket has received a new state from the server.
      */
-    void onState();
+    void onState(GameState state);
 
     /**
      * Gets called when the socket is disconnected from the server.

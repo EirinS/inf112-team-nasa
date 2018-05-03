@@ -26,9 +26,9 @@ public interface HerokuService {
      * Requests creation of new multiplayer game given parameters.
      * @param name Game name
      * @param type Game type
-     * @param opponentName Player name
-     * @param opponentColor Player starting color
-     * @param opponentRating Player rating
+     * @param playerName Player name
+     * @param playerColor Player starting color
+     * @param playerRating Player rating
      * @return Response from server, check ApiResponse class for docs.
      */
     @FormUrlEncoded
@@ -36,23 +36,19 @@ public interface HerokuService {
     Call<ApiResponse> createGame(
             @Field("name") String name,
             @Field("type") String type,
-            @Field("opponentName") String opponentName,
-            @Field("opponentColor") String opponentColor,
-            @Field("opponentRating") int opponentRating
+            @Field("playerName") String playerName,
+            @Field("playerColor") String playerColor,
+            @Field("playerRating") int playerRating
     );
 
     /**
      * Requests joining a game.
      * @param id Game ID
-     * @param uid Player unique id
-     * @param name Player name
      * @return Response from server, check ApiResponse class for docs.
      */
     @FormUrlEncoded
     @POST("/join")
     Call<ApiResponse> joinGame(
-            @Field("id") String id,
-            @Field("uid") String uid,
-            @Field("name") String name
+            @Field("id") String id
     );
 }

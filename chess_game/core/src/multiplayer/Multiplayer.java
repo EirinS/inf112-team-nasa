@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Multiplayer implements IMultiplayer {
 
-    private final String API_URL = "https://team-nasa.herokuapp.com";
+    private final String API_URL = "https://team-nasa.herokuapp.com"; // "http://localhost:8080";
     private MultiplayerListener listener;
 
     private HerokuService service;
@@ -86,14 +86,14 @@ public class Multiplayer implements IMultiplayer {
     }
 
     @Override
-    public void joinGame(String gameId, String playerUid, String playerName) {
-        service.joinGame(gameId, playerUid, playerName).enqueue(new Callback<ApiResponse>() {
+    public void joinGame(String gameId) {
+        service.joinGame(gameId).enqueue(new Callback<ApiResponse>() {
 
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().isSuccessful() && response.body().getStatus().equals("ok")) {
-                        listener.gameJoined();
+                        listener.gameJoined(response.body().getData());
                     } else {
                         listener.error(new Throwable(response.body().getError()));
                     }

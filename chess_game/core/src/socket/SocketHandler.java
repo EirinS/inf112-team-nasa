@@ -1,14 +1,18 @@
 package socket;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import models.GameState;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
 public class SocketHandler implements ISocketHandler {
 
-    private final String API_URL = "http://localhost:8080"; // https://team-nasa.herokuapp.com";
+    private final String API_URL = "https://team-nasa.herokuapp.com"; // "http://localhost:8080";
 
     private SocketHandlerListener listener;
 
@@ -32,16 +36,12 @@ public class SocketHandler implements ISocketHandler {
             listener.onConnected();
 
         }).on(SocketEvent.DATA, args -> {
-            System.out.println("Data received: " + Arrays.toString(args));
 
-            // TODO: 25.04.2018 do something with data
-            listener.onData();
+            listener.onData((JSONObject) args[0]);
 
         }).on(SocketEvent.STATE, args -> {
-            System.out.println("State received: " + Arrays.toString(args));
-
-            // TODO: 25.04.2018 do something with state
-            listener.onState();
+            GameState state = (new Gson()).fromJson(args[0].toString(), GameState.class);
+            listener.onState(state);
 
         }).on(Socket.EVENT_DISCONNECT, args -> {
             System.out.println("Socket disconnected.");
@@ -65,15 +65,14 @@ public class SocketHandler implements ISocketHandler {
     }
 
     @Override
-    public void joinGame(String gameId) {
+    public void joinGame(String gameId, String playerName) {
         if (socket == null || !socket.connected()) return;
-        socket.emit(SocketEvent.JOIN, gameId);
+        socket.emit(SocketEvent.JOIN, gameId, playerName);
     }
 
     @Override
-    public void emitData() {
+    public void emitData(JSONObject data) {
         if (socket == null || !socket.connected()) return;
-        // TODO: 25.04.2018 emit data here
-        // socket.emit(SocketEvent.DATA, data);
+        socket.emit(SocketEvent.DATA, data);
     }
 }

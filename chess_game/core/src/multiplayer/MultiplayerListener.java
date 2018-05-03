@@ -20,7 +20,7 @@ public interface MultiplayerListener {
     /**
      * Gets called when a game has been joined.
      */
-    void gameJoined();
+    void gameJoined(MultiplayerGame game);
 
     /**
      * Gets called when there is an error from API.
