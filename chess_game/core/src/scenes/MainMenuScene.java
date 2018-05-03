@@ -2,6 +2,7 @@ package scenes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+
+import animation.CustomAnimation;
 import game.Chess;
 
 import game.chessGame.GameInfo;
@@ -409,6 +412,10 @@ public class MainMenuScene extends AbstractScene {
     }
 
     // Section 2: ToggleRightScreens
+
+    private void playLoadingAnimation(){
+        //CustomAnimation animation = new CustomAnimation(game, gameInfo, "pictures/loading.png", 3, 474, 717, 5, 8, 10);
+    }
 
     /**
      * Help method. Sets all elements on screen to invisible. Will be used by screen

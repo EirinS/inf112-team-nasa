@@ -1,5 +1,6 @@
 package scenes;
 
+import animation.CustomAnimation;
 import game.Chess;
 import game.chessGame.GameInfo;
 
