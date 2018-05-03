@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class SocketHandler implements ISocketHandler {
 
-    private final String API_URL = "https://team-nasa.herokuapp.com";
+    private final String API_URL = "http://localhost:8080"; // https://team-nasa.herokuapp.com";
 
     private SocketHandlerListener listener;
 
@@ -54,6 +54,13 @@ public class SocketHandler implements ISocketHandler {
     public void connect() {
         if (socket != null && !socket.connected()) {
             socket.connect();
+        }
+    }
+
+    @Override
+    public void disconnect() {
+        if (socket != null && socket.connected()) {
+            socket.disconnect();
         }
     }
 

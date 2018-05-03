@@ -29,7 +29,7 @@ import pieces.pieceClasses.Rook;
 import player.AILevel;
 
 public class GameTest {
-    IChessGame game = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, AILevel.EASY, true, false), null);
+    IChessGame game = new ChessGame(new GameInfo(null, null, PieceColor.BLACK, null, AILevel.EASY, true, false, null), null);
     IBoard board = new Board(8, PieceColor.WHITE);
     IBoard other = new Board(8, PieceColor.WHITE);
 

@@ -21,6 +21,8 @@ import db.Player;
 import player.AIThreadMove;
 import setups.Chess960Setup;
 import setups.DefaultSetup;
+import socket.SocketHandler;
+import socket.SocketHandlerListener;
 import sound.AudioManager;
 
 /**
@@ -28,7 +30,7 @@ import sound.AudioManager;
  * This includes an implementation of the game clock,
  * deciding when the game is over and updating player statistics after a game.
  */
-public class ChessGame implements IChessGame, BoardListener {
+public class ChessGame implements IChessGame, BoardListener, SocketHandlerListener {
 
 	private GameInfo gameInfo;
 	private IBoard board;
@@ -45,6 +47,8 @@ public class ChessGame implements IChessGame, BoardListener {
 
 	private Timer playerTimer, opponentTimer;
 	private boolean playerTimerRunning, opponentTimerRunning;
+
+	private SocketHandler socketHandler;
 
 	public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
 		this.gameInfo = gameInfo;
@@ -68,14 +72,21 @@ public class ChessGame implements IChessGame, BoardListener {
 
 		this.boardHistory.add(board.copy());
 
-		// Load AI
-		if (gameInfo.getLevel() != null) {
-			computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
-			board.setAI(computerAI);
-		}
+		// Check if we are creating/joining a multiplayer game
+		if (gameInfo.isOnline()) {
+			socketHandler = new SocketHandler(this);
+			socketHandler.connect();
+		} else {
 
-		// Start timer!
-		turnTimer();
+			// Load AI
+			if (gameInfo.getLevel() != null) {
+				computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
+				board.setAI(computerAI);
+			}
+
+			// Start timer!
+			turnTimer();
+		}
 	}
 
 	private void turnTimer() {
@@ -561,6 +572,13 @@ public class ChessGame implements IChessGame, BoardListener {
 	}
 
 	@Override
+	public void disconnectSocket() {
+		if (socketHandler != null) {
+			socketHandler.disconnect();
+		}
+	}
+
+	@Override
 	public void promotionRequested(Move move) {
 		listener.promotionRequested(move);
 	}
@@ -603,5 +621,30 @@ public class ChessGame implements IChessGame, BoardListener {
 
 	public String getGameOverString() {
 		return gameOverString;
+	}
+
+	@Override
+	public void onConnected() {
+
+	}
+
+	@Override
+	public void onJoined() {
+
+	}
+
+	@Override
+	public void onData() {
+
+	}
+
+	@Override
+	public void onState() {
+
+	}
+
+	@Override
+	public void onDisconnected() {
+
 	}
 }

@@ -175,4 +175,9 @@ public interface IChessGame {
 	 * @return the current gameInfo of this game.
 	 */
 	GameInfo getGameInfo();
+
+	/**
+	 * Disonnects the socket from the server if online is enabled.
+	 */
+	void disconnectSocket();
 }

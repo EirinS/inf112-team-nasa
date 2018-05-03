@@ -10,11 +10,19 @@ public class ApiResponse {
     String status;
 
     @Expose
+    @SerializedName("data")
+    MultiplayerGame data;
+
+    @Expose
     @SerializedName("error")
     String error;
 
     public String getStatus() {
         return status;
+    }
+
+    public MultiplayerGame getData() {
+        return data;
     }
 
     public String getError() {

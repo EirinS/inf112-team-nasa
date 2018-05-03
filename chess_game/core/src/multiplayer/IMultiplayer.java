@@ -15,13 +15,12 @@ public interface IMultiplayer {
      * Sends a request to create a game
      * @param name Game lobby name
      * @param gameType Game type
-     * @param opponentUid Player uid
      * @param opponentName Player name
      * @param opponentColor Player piece color
      * @param opponentRating Player rating
      */
     void createGame(String name, GameType gameType,
-                    String opponentUid, String opponentName, PieceColor opponentColor, int opponentRating);
+                    String opponentName, PieceColor opponentColor, int opponentRating);
 
     /**
      * Sends a request to join a specific game (by gameId)

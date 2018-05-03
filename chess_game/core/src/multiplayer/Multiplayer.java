@@ -60,18 +60,19 @@ public class Multiplayer implements IMultiplayer {
     }
 
     @Override
-    public void createGame(String name, GameType gameType, String opponentUid, String opponentName, PieceColor opponentColor, int opponentRating) {
-        service.createGame(name, gameType.toString(), opponentUid, opponentName, opponentColor.toString(), opponentRating).enqueue(new Callback<ApiResponse>() {
+    public void createGame(String name, GameType gameType, String opponentName, PieceColor opponentColor, int opponentRating) {
+        service.createGame(name, gameType.toString(), opponentName, opponentColor.toString(), opponentRating).enqueue(new Callback<ApiResponse>() {
 
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().isSuccessful() && response.body().getStatus().equals("ok")) {
-                        listener.gameCreated();
+                        listener.gameCreated(response.body().getData());
                     } else {
                         listener.error(new Throwable(response.body().getError()));
                     }
                 } else {
+                    System.out.println(response.errorBody());
                     listener.unexpectedError();
                 }
             }

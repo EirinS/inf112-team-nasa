@@ -45,12 +45,15 @@ public class Checkerboard extends DragListener {
 	private Texture chessMoveTexture, specialMoveTexture, selectedPieceTexture, prevMoveTexture, captureTexture, hintTexture;
 	private Group checkerGroup, pieceGroup, highlightPossibleMovesGroup, prevMovesGroup;
 
+	private boolean enabled;
+
 	public Checkerboard(Stage stage, HashMap<String, Texture> sprites, ArrayList<Square> initialSquares, CheckerboardListener listener) {
 		this.stage = stage;
 		this.sprites = sprites;
 		this.initialSquares = initialSquares;
 		this.listener = listener;
 		addActors();
+		enabled = true;
 	}
 
 	private void addActors() {
@@ -154,6 +157,11 @@ public class Checkerboard extends DragListener {
 
 	@Override
 	public void dragStart(InputEvent event, float x, float y, int pointer) {
+
+		// If checkerboard is not enabled, deny move.
+		if (!enabled) {
+			return;
+		}
 		Actor actor = event.getTarget();
 		Vector2 v = calcBoardCoords(actor);
 		actor.setName((int)v.x + "," + (int)v.y);
@@ -163,13 +171,16 @@ public class Checkerboard extends DragListener {
 
 	@Override
 	public void drag(InputEvent event, float x, float y, int pointer) {
+		if (!enabled) {
+			return;
+		}
 		Actor actor = event.getTarget();
 		actor.moveBy(x - actor.getWidth() / 2, y - actor.getHeight() / 2);
 		super.drag(event, x, y, pointer);
 	}
 
 	@Override
-	public void dragStop(InputEvent event, float x, float y, int pointer) {
+	public void dragStop(InputEvent event, float x, float y, int pointer) {// If checkerboard is not enabled, deny move.
 		Actor actor = event.getTarget();
 		String[] posSplit = actor.getName().split(",");
 		int oldX = Integer.parseInt(posSplit[0]);
@@ -227,6 +238,8 @@ public class Checkerboard extends DragListener {
 	 * @param m, the move that was made.
 	 */
 	public void showPrevMove(Move m) {
+		if (!enabled) return;
+
 		prevMovesGroup.clear();
 		Image highlightFrom = new Image(prevMoveTexture);
 		Image highlightTo = new Image(prevMoveTexture);
@@ -243,6 +256,8 @@ public class Checkerboard extends DragListener {
 	 * @param m, the move you'll highlight
 	 */
 	public void showHint(Move m) {
+		if (!enabled) return;
+
 		highlightPossibleMovesGroup.clear();
 		Texture texture = hintTexture;
 		
@@ -258,6 +273,8 @@ public class Checkerboard extends DragListener {
 	}
 
 	public void showMoves(ArrayList<Move> moves) {
+		if (!enabled) return;
+
 		highlightPossibleMovesGroup.clear();		
 		Texture texture;
 		for (Move m : moves) {
@@ -281,5 +298,13 @@ public class Checkerboard extends DragListener {
 
 	public int getSize() {
 		return (int)boardImg.getWidth();
+	}
+
+	public boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

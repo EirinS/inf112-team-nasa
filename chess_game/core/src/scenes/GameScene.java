@@ -66,6 +66,8 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		this.gameInfo = gameInfo;
 	}
 
+
+
 	private void initialize() {
 
 		// Set-up stage
@@ -85,8 +87,15 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 
 		addActors();
 
-		// Perform first AI move if needed.
-		chessGame.aiMove();
+		if (gameInfo.isOnline()) {
+
+			// TODO: 03.05.2018 only set enabled false when creating game (?)
+			checkerboard.setEnabled(false);
+		} else {
+
+			// Perform first AI move if needed.
+			chessGame.aiMove();
+		}
 	}
 
 	private void addActors() {
@@ -98,6 +107,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, game);
+				chessGame.disconnectSocket();
 				super.touchUp(event, x, y, pointer, button);
 			}
 		});
@@ -110,6 +120,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				chessGame.resign();
+				chessGame.disconnectSocket();
 				super.touchUp(event, x, y, pointer, button);
 			}
 		});
@@ -158,8 +169,10 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
 		addActor(historyScrollPane);
 
 		String opponent = "Computer";
-		if (gameInfo.getLevel() == null) {
+		if (gameInfo.getLevel() == null && !gameInfo.isOnline()) {
 			opponent = gameInfo.getOpponent().getNameRating();
+		} else if (gameInfo.isOnline()) {
+			opponent = "Waiting...";
 		}
 
 		Label topName = new Label(opponent, skin, "title-plain");

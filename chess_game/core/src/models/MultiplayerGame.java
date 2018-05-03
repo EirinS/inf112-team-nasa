@@ -3,14 +3,11 @@ package models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import pieces.PieceColor;
 
 public class MultiplayerGame {
 
-    class Opponent {
-
-        @Expose
-        @SerializedName("uid")
-        String uid;
+    public class Opponent {
 
         @Expose
         @SerializedName("name")
@@ -24,16 +21,31 @@ public class MultiplayerGame {
         @SerializedName("rating")
         Integer rating;
 
+        public String getName() {
+            return name;
+        }
+
+        public PieceColor getColor() {
+            return color.equals("w") ? PieceColor.WHITE : PieceColor.BLACK;
+        }
+
+        public Integer getRating() {
+            return rating;
+        }
+
         @Override
         public String toString() {
             return "Opponent{" +
-                    "uid='" + uid + '\'' +
-                    ", name='" + name + '\'' +
+                    "name='" + name + '\'' +
                     ", color='" + color + '\'' +
                     ", rating=" + rating +
                     '}';
         }
     }
+
+    @Expose
+    @SerializedName("_id")
+    String id;
 
     @Expose
     @SerializedName("name")
@@ -46,6 +58,10 @@ public class MultiplayerGame {
     @Expose
     @SerializedName("opponent")
     Opponent opponent;
+
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -61,10 +77,6 @@ public class MultiplayerGame {
 
     @Override
     public String toString() {
-        return "MultiplayerGame{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", opponent=" + opponent +
-                '}';
+        return name + " - " + type + " - " + opponent.name + " - " + opponent.rating;
     }
 }

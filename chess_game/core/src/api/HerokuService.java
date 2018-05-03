@@ -26,7 +26,6 @@ public interface HerokuService {
      * Requests creation of new multiplayer game given parameters.
      * @param name Game name
      * @param type Game type
-     * @param opponentUid Player unique ID
      * @param opponentName Player name
      * @param opponentColor Player starting color
      * @param opponentRating Player rating
@@ -37,7 +36,6 @@ public interface HerokuService {
     Call<ApiResponse> createGame(
             @Field("name") String name,
             @Field("type") String type,
-            @Field("opponentUid") String opponentUid,
             @Field("opponentName") String opponentName,
             @Field("opponentColor") String opponentColor,
             @Field("opponentRating") int opponentRating

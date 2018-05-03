@@ -15,10 +15,10 @@ public interface MultiplayerListener {
     /**
      * Gets called when a game has been created.
      */
-    void gameCreated();
+    void gameCreated(MultiplayerGame game);
 
     /**
-     * Gets calledn when a game has been joined.
+     * Gets called when a game has been joined.
      */
     void gameJoined();
 
