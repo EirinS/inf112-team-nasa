@@ -388,7 +388,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
     public void moveOk(ArrayList<Move> moves) {
         addMoveToHistory(chessGame.getLastMove());
         setNameColors();
-        checkerboard.movePieces(moves, shouldAnimateMove());
+        checkerboard.movePieces(moves, shouldAnimateMove(), gameInfo.getPlayerColor());
 
         // when move is done, show move for opponent to see which piece moved
         for (Move m : moves)

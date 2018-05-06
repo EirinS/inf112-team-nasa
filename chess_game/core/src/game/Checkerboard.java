@@ -202,14 +202,23 @@ public class Checkerboard extends DragListener {
         super.dragStop(event, x, y, pointer);
     }
 
-    private void movePieceTo(Actor actor, int toX, int toY, MoveType moveType, PieceColor color, boolean animate) {
+    private void movePieceTo(Actor actor, int toX, int toY, MoveType moveType, PieceColor color, boolean animate, boolean takenPiece) {
         int boardX = (int) calcBoardX(toX);
         int boardY = (int) calcBoardY(toY);
+        
+         
         if (animate) {
             actor.addAction(Actions.moveTo(boardX, boardY, .25f));
-        } else {
+        } else if (takenPiece) {
+			actor.addAction(Actions.sequence(
+				      Actions.moveTo(boardX, boardY ,.5f),
+				      Actions.removeActor()
+					));
+		}else {
             actor.setPosition(boardX, boardY);
         }
+      
+        
         actor.setName(toX + "," + toY);
         if (moveType != null && moveType == MoveType.PROMOTION) {
             Texture queenTexture = sprites.get((color == PieceColor.WHITE ? "w" : "b") + moveType.getMetadata());
@@ -219,22 +228,27 @@ public class Checkerboard extends DragListener {
 
     public void movePieceFailed(int fromX, int fromY, boolean animate) {
         Image from = pieceGroup.findActor(fromX + "," + fromY);
-        movePieceTo(from, fromX, fromY, null, null, animate);
+        movePieceTo(from, fromX, fromY, null, null, animate, false);
     }
 
-    public void movePieces(ArrayList<Move> moves, boolean animate) {
+    public void movePieces(ArrayList<Move> moves, boolean animate,PieceColor boardColor) {
         for (Move m : moves) {
             Image from = pieceGroup.findActor(m.getFrom().getX() + "," + m.getFrom().getY());
             Image to = pieceGroup.findActor(m.getTo().getX() + "," + m.getTo().getY());
             if (to != null) {
-                to.remove();
+            	if (m.getTo().getPiece().getColor()==boardColor) {
+					movePieceTo(to, 9, 9, null, m.getMovingPiece().getColor(), false, true);////
+				} else {
+					movePieceTo(to, -2, -2, null, m.getMovingPiece().getColor(),false, true);////
+				}
+				//to.remove();
             }
             if (m.getMoveType() == MoveType.ENPASSANT) {
                 int x = m.getTo().getX();
                 int y = m.getFrom().getY();
                 pieceGroup.findActor(x + "," + y).remove();
             }
-            movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor(), animate);
+            movePieceTo(from, m.getTo().getX(), m.getTo().getY(), m.getMoveType(), m.getMovingPiece().getColor(), animate, false);
         }
     }
 
