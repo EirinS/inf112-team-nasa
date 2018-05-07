@@ -2,6 +2,8 @@ package scenes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
@@ -164,12 +166,28 @@ public class MainMenuScene extends AbstractScene {
                 System.out.println("Game created!");
 
                 // We have created a game, start GameScene!
-                gameInfo.setIsOnline(true);
-                gameInfo.setMultiplayerGame(multiplayerGame);
-                gameInfo.setPlayerColor(multiplayerGame.getPlayer().getColor());
-                gameInfo.getPlayer().loadRating();
-                gameInfo.setGameType(GameType.getGameType(multiplayerGame.getType()));
-                Gdx.app.postRunnable(() -> SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo));
+                screenAnimation();
+            	Timer timer = new Timer();
+            	timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                            Gdx.app.postRunnable(
+                            		new Runnable() {
+                                        @Override
+                                        public void run() {   
+                                        		gameInfo.setIsOnline(true);
+                                                gameInfo.setMultiplayerGame(multiplayerGame);
+                                                gameInfo.setPlayerColor(multiplayerGame.getPlayer().getColor());
+                                                gameInfo.getPlayer().loadRating();
+                                                gameInfo.setGameType(GameType.getGameType(multiplayerGame.getType()));
+                                                Gdx.app.postRunnable(() -> SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo));
+                                                timer.cancel();
+                                        }
+                                    }
+                            );
+                        };
+                   }
+               , (4000));
             }
 
             @Override
@@ -498,6 +516,7 @@ public class MainMenuScene extends AbstractScene {
      */
     protected void screenGameMenu() {
         invisible();
+        imgBackground.setVisible(true);
         playerOne = false;
         singleplayerBtn.setVisible(true);
         mainMenu.setText("Main Menu");
@@ -624,15 +643,31 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
-                gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
-                gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
-                gameInfo.getPlayer().loadRating();
-                gameInfo.setSinglePlayer(true);
-                gameInfo.setIsOnline(false);
-                if (gameInfo.getOpponent() != null)
-                    gameInfo.getOpponent().loadRating();
-                SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+            	screenAnimation();
+            	Timer timer = new Timer();
+            	timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                            Gdx.app.postRunnable(
+                            		new Runnable() {
+                                        @Override
+                                        public void run() {
+                                        		gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
+                                                gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
+                                                gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
+                                                gameInfo.getPlayer().loadRating();
+                                                gameInfo.setIsOnline(false);
+                                                gameInfo.setSinglePlayer(true);
+                                                if (gameInfo.getOpponent() != null)
+                                                    gameInfo.getOpponent().loadRating();
+                                                SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+                                           timer.cancel();
+                                        }
+                                    }
+                            );
+                        };
+                   }
+               , (4000));
                 startSingleListener();
             }
         });
@@ -699,18 +734,34 @@ public class MainMenuScene extends AbstractScene {
                         error.setVisible(true);
                         signInListener();
                     } else if (exists) {
-                        try {
-                            gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
-                            gameInfo.setSinglePlayer(false);
-                            gameInfo.setPlayerColor(PieceColor.WHITE);
-                            gameInfo.getPlayer().loadRating();
-                            gameInfo.setIsOnline(false);
-                            gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
-                            SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
-                            signInListener();
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
-                        }
+                    	 screenAnimation();
+                     	Timer timer = new Timer();
+                     	timer.schedule(new TimerTask() {
+                             @Override
+                             public void run() {
+                                     Gdx.app.postRunnable(
+                                     		new Runnable() {
+                                                 @Override
+                                                 public void run() {   
+                                                	  try {
+                                                          gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
+                                                          gameInfo.setSinglePlayer(false);
+                                                          gameInfo.setPlayerColor(PieceColor.WHITE);
+                                                          gameInfo.getPlayer().loadRating();
+                                                          gameInfo.setIsOnline(false);
+                                                          gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
+                                                          SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+                                                          signInListener();
+                                                      } catch (SQLException e1) {
+                                                          e1.printStackTrace();
+                                                      }
+                                                         timer.cancel();
+                                                 }
+                                             }
+                                     );
+                                 };
+                            }
+                        , (4000));
                     } else {
                         error.setText("Alias not registered.");
                         error.setVisible(true);
@@ -774,13 +825,12 @@ public class MainMenuScene extends AbstractScene {
         backToLogIn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
-            	//screenAnimation();
                 screenSignIn();
                 returnSignInListener();
             }
         });
     }
-
+    
     /**
      * Adds an action event to the button that leads back to the game menu screen.
      */
