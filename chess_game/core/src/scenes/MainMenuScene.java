@@ -603,6 +603,7 @@ public class MainMenuScene extends AbstractScene {
                 gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
                 gameInfo.getPlayer().loadRating();
                 gameInfo.setSinglePlayer(true);
+                gameInfo.setIsOnline(false);
                 if (gameInfo.getOpponent() != null)
                     gameInfo.getOpponent().loadRating();
                 SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
@@ -677,6 +678,7 @@ public class MainMenuScene extends AbstractScene {
                             gameInfo.setSinglePlayer(false);
                             gameInfo.setPlayerColor(PieceColor.WHITE);
                             gameInfo.getPlayer().loadRating();
+                            gameInfo.setIsOnline(false);
                             gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
                             SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
                             signInListener();
