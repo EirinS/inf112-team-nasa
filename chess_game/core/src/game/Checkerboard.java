@@ -239,9 +239,9 @@ public class Checkerboard extends DragListener {
             Image to = pieceGroup.findActor(m.getTo().getX() + "," + m.getTo().getY());
             if (to != null) {
                 if (m.getTo().getPiece().getColor() == boardColor) {
-                    movePieceTo(to, 9, 9, null, m.getMovingPiece().getColor(), false, true);
-                } else {
                     movePieceTo(to, -2, -2, null, m.getMovingPiece().getColor(), false, true);
+                } else {
+                    movePieceTo(to, 9, 9, null, m.getMovingPiece().getColor(), false, true);
                 }
             }
             if (m.getMoveType() == MoveType.ENPASSANT) {

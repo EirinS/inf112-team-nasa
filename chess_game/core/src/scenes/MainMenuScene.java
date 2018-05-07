@@ -6,14 +6,17 @@ import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-import animation.CustomAnimation;
+import animation.AnimatedImage;
+import animation.CreateAnimation;
 import game.Chess;
 
 import game.chessGame.GameInfo;
@@ -74,6 +77,9 @@ public class MainMenuScene extends AbstractScene {
     // Online multiplayer stuff
     private IMultiplayer multiplayer;
     private ArrayList<MultiplayerGame> multiplayerGames;
+    
+    // Animation
+	private AnimatedImage animation;
 
     /**
      * The constructor of the main menu scene.
@@ -206,6 +212,8 @@ public class MainMenuScene extends AbstractScene {
     private void setUpElements() {
         imgBackground = new Image(new Texture("pictures/menu.jpg"));
         imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
+        
+        createAnimation();
 
         // Elements in log in
         signIn = new TextButton("Sign in", skin, "default");
@@ -382,7 +390,19 @@ public class MainMenuScene extends AbstractScene {
         actors.add(onlineName);
         actors.add(enterOnlineName);
         actors.add(createGameBtn);
+        actors.add(animation);
     }
+    
+    private void createAnimation(){
+		//animation = new AnimationActor("pictures/loading.png", 3, 474, 717, 5, 8, 10);
+		//animation.setSize(500, 200);
+		CreateAnimation object = new CreateAnimation("pictures/loading.png", 3, 474, 717, 5, 8, 10);
+		Animation<TextureRegion> a = object.getAnimation();
+		animation = new AnimatedImage(a);
+		animation.setSize(animation.getWidth()/1.1f, animation.getHeight()/1.1f);
+		animation.setPosition(WindowInformation.WIDTH/2 - (animation.getWidth()/2), 0);
+		animation.setVisible(false);
+	}
 
     /**
      * Private helping method. Uses the array to set up sizes of the elements. Some
@@ -446,6 +466,12 @@ public class MainMenuScene extends AbstractScene {
         register.setVisible(true);
         username.setVisible(true);
     }
+    
+    protected void screenAnimation(){
+		invisible();
+		imgBackground.setVisible(false);
+		animation.setVisible(true);
+	}
 
     /**
      * Displays the screen where one registers as a new player.
@@ -746,6 +772,7 @@ public class MainMenuScene extends AbstractScene {
         backToLogIn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
+            	//screenAnimation();
                 screenSignIn();
                 returnSignInListener();
             }
