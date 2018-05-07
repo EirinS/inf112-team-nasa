@@ -417,8 +417,8 @@ public class MainMenuScene extends AbstractScene {
 		CreateAnimation object = new CreateAnimation("pictures/loading.png", 3, 474, 717, 5, 8, 10);
 		Animation<TextureRegion> a = object.getAnimation();
 		animation = new AnimatedImage(a);
-		animation.setSize(animation.getWidth()/1.1f, animation.getHeight()/1.1f);
-		animation.setPosition(WindowInformation.WIDTH/2 - (animation.getWidth()/2), 0);
+		animation.setSize(animation.getWidth(), animation.getHeight());
+		animation.setPosition(WindowInformation.WIDTH/2 - (animation.getWidth()/2), -50);
 		animation.setVisible(false);
 	}
 
