@@ -4,11 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/core/src/scenes/MainMenuScene.java" line="180" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/game/Checkerboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/game/Checkerboard.java" afterDir="false" />
-    </list>
+    <list default="true" id="aab79798-c49a-4971-82d1-ded93fa3a89a" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/core/.gradle/" />
     <ignored path="$PROJECT_DIR$/core/build/" />
     <ignored path="$PROJECT_DIR$/desktop/.gradle/" />
@@ -2235,7 +2231,7 @@
       <workItem from="1525363855730" duration="11888000" />
       <workItem from="1525377821848" duration="5795000" />
       <workItem from="1525422050107" duration="427000" />
-      <workItem from="1525696152232" duration="293000" />
+      <workItem from="1525696152232" duration="535000" />
     </task>
     <servers />
   </component>
@@ -2272,7 +2268,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86200000" />
+    <option name="totallyTimeSpent" value="86442000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="878" extended-state="0" />
