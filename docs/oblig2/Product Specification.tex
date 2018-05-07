@@ -75,11 +75,9 @@ The rest of the document elaborates the system requirements for the chess game.
 	\item Keep track of ranking
 	\begin{itemize}
 		\item The system keeps the win and loss results records of the games played.
-		\item The system should save the result of each game to a file.
+		\item The system should save the result of each game, as well as the winner statistics to a database.
 		\item The system should load result of all games played when showing highscore.
 		\item The system offers the ranking of players according to the level of intelligence.
-		\item The system should save statistics about games lost, won (time spent).
-		\item The system should save the winner statistics to a database.
 	\end{itemize}
 	\item Rules of chess
 	\begin{itemize}
@@ -129,6 +127,10 @@ The rest of the document elaborates the system requirements for the chess game.
 			\item Chess960: Default rules and a non-standard setup. The non-pawn pieces are placed on the same rank as before, but their positions on that rank are randomized. 60 minutes for each player.
 		\end{itemize}
 	\end{itemize}
+	\item Multiplayer over network
+	\begin{itemize}
+		\item The system should give the player an option to play multiplayer online. 
+	\end{itemize} 
 \end{itemize}
 
 \subsection{Non-functional Requirements}
