@@ -6,7 +6,7 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import animation.CustomAnimation;
+//import animation.CustomAnimation;
 import game.Chess;
 
 public class DesktopLauncher {
