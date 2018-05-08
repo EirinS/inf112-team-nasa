@@ -42,6 +42,8 @@
 		\hline
 		18.04.2018 & Second update & 2.1 \\
 		\hline
+		07.05.2018 & Third update & 3.0 \\		
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -64,6 +66,8 @@
 		\item The system enables the valid moves for each chess pieces in the chess board.
 		\item The system displays necessary notifications during the chess game.   
 		\item The system record the results of each game played and provides ranking of each player based on number of games each players has won.
+		\item The system offers sound effects and animations to enhance the user experience.
+		\item The supports multiplayer over network, human vs human and human vs AI.
 	\end{itemize}
 
 \subsection{Overview}
@@ -185,15 +189,20 @@ The rest of the document elaborates the system requirements for the chess game.
 
 \subsection{User Stories}
 	\begin{itemize}
+	\item As a user I want the program to have a sign in screen to identify each player.
+	\item As a user I want the program to have a 2D chessboard with visually appealing pieces and board layouts that follow standard rules of chess so that I can play a simulated game of chess.
 	\item As a user I want a start menu so that I can choose to play against another human player or a machine player.
 	\item As a user I want a menu so that I can choose between at least three intelligence levels of the machine player.
-	\item As a user I want the program to have a 2D chessboard with visually appealing pieces and board layouts that follow standard rules of chess so that I can play a simulated game of chess.
-	\item As a user I want the program to keep track of the results of each game so that the user can see a ranking of human players based on how many matches they have won.
-
-	\item As a user I want the program to stop me from making illegal moves and to carry out legitimate features of standard chess rules.
-	\item As a user I want the program to contain a timer to show how long a game has lasted.
-	\item As a user I want the program to end a game of chess when a player is in checkmate.
 	\item As a user I want the program to have a menu selection where I can get an overview of the game rules.
+	\item As a user I want the program to stop me from making illegal moves and to carry out legitimate features of standard chess rules.
+	\item As a user I want the program to offer help such as best move for novice level player.
+	\item As a user I want the program to contain a timer to show how long a game has lasted.
+	\item As a user I want the program to have sound effects and animation to enhance the user experience.
+	\item As a user I want the program to end a game of chess when a player is in checkmate.
+	\item As a user I want the program to keep track of the results of each game so that the user can see a ranking of human players based on how many matches they have won.
+	\item As a user I want the program to support multiplayer over network, human vs human and human vs AI.   
+	
+	
 	\end{itemize}
 
 \newpage
@@ -243,27 +252,39 @@ The rest of the document elaborates the system requirements for the chess game.
 	\begin{enumerate}
 	
 	\item	 Player wants to play a multi player chess game
-	\item 	 Player opens the program
-	\item 	 Player gets a menu displayed
-	\item 	 Player chooses to play multi player game
-	\item 	 Screen with choosing of names and white/black for player and opponent
-	\item 	 System keeps track of time passed for Player and Opponent
-	\item 	White makes a move
-	\item	Black makes a move\\
-	(Repeats step 7 and 8, until game is done.)
-	\item 	System saves the scores of Player and Opponent
-	\item 	System displays end menu, with options of new game, ranking and end
-	
+	\item 	 Player starts the program
+	\item 	 System displays the sign in menu.
+	\item 	 Player sign in.
+	\item    System displays main menu.
+	\item    Player choose to play multi player game
+	\item    System display option for online and offline game.
+	\item    Player selects online Gametype.
+	\item    Player selects offline Gametype.
+	\item    System displays the chessboard and start the clock. 
+	\item 	 White makes a move
+	\item	 Black makes a move\\
+	(Repeats step 11 and 12, until game is done.)
+	\item    System displays the results screen with option to navigate back to main menu and saves the scores in database.
+	\item 	 Player navigates to main menu and choose options(Play again, display high scores, end game).
+		
 \end{enumerate}
 	
 	\textbf{Extensions:} \\
 	
-\hspace{5mm} 6 a. Time runs out for Player/Opponent\\
-\hspace{5mm} 6 a1. The Player with time left wins. Game ends and scores are saved. Go to step 9\\
-\hspace{5mm} 7 a. Player makes illegal move\\
-\hspace{5mm} 7 a1. Program shows a message, and lets Player try again\\
-\hspace{5mm} 7 b. Player quits\\
-\hspace{5mm} 7 b1. System goes to step 9\\
+\hspace{5mm} 4 a Player enter invalid sign credentials.\\
+\hspace{5mm} 4 a1 System throws error message and goes to step 3\\
+\hspace{5mm} 8 a. System displays available players online.\\
+\hspace{5mm} 8 a1. Player select the opponent create/join game.\\
+\hspace{5mm} 8 a2. System moves to step10.\\
+\hspace{5mm} 9 a. System displays gametype screen.\\
+\hspace{5mm} 9 a1. Player select the gametype and sign in opponent. \\
+\hspace{5mm} 9 a2. System moves to step10.\\
+\hspace{5mm} 10 a. Time runs out for Player/Opponent\\
+\hspace{5mm} 10 a1. The Player with time left wins. Game ends and scores are saved. Go to step 13\\
+\hspace{5mm} 11 a. Player makes illegal move\\
+\hspace{5mm} 11 a1. Program shows a message, and lets Player try again\\
+\hspace{5mm} 11 b. Player quits\\
+\hspace{5mm} 11 b1. System goes to step 13\\
 \vspace{3mm}
 
 Technology and Data Variations List:\hspace{3mm} Different computers (MAC, PC)\\
@@ -293,27 +314,32 @@ Primary actor: Player\\
 	\textbf{Main Success Scenario (or Basic Flow)}\\
 
 \begin{enumerate}	
-\item Player wants to play a single player chess game
-\item Player opens the program
-\item Player gets a menu displayed
-\item Chooses to play a single player game
-\item Screen with choosing of name, color and level of intelligence.
-\item System keeps track of time passed for player
-\item White makes a move
-\item Black makes a move\\
-(Repeats step 7 and 8, until game is done.)
-\item System saves the score of Player to the system
-\item System displays end menu, with options of new game, ranking and end.
+\item	 Player wants to play a single player chess game
+\item 	 Player starts the program
+\item 	 System displays the sign in menu.
+\item 	 Player sign in.
+\item    System displays main menu.
+\item    Player choose to play single player game
+\item 	 System displays screen for choosing the color, level of intelligence and game type.
+\item    Player selects the options and start the game.
+\item    System displays the chessboard and start the clock. 
+\item 	 White makes a move
+\item	 Black makes a move\\
+(Repeats step 10 and 11, until game is done.)
+\item    System displays the results screen with option to navigate back to main menu and saves the scores in database.
+\item 	 Player navigates to main menu and choose options(Play again, display high scores, end game).
 \end{enumerate}
 
 \textbf{Extensions:}\\
-6 a. Time runs out for Player\\
-6 a1. Player loses game. Go to step 9\\
-7 a. Player makes illegal move\\
-7 a1. Program shows a message, and lets Player try again.\\
-7 b. Player quits\\
-7 b1. Player presses quit\\
-7 b2. System goes to step 9\\
+\hspace{5mm}	4 a Player enter invalid sign credentials.\\
+\hspace{5mm}	4 a1 System throws error message and goes to step 3\\
+\hspace{5mm}	9 a. Time runs out for Player\\
+\hspace{5mm}	9 a1. Player loses game. Go to step 12\\
+\hspace{5mm}	10 a. Player makes illegal move\\
+\hspace{5mm}	10 a1. Program shows a message, and let Player try again.\\
+\hspace{5mm}	10 b. Player quits\\
+\hspace{5mm}	10 b1. Player presses quit\\
+\hspace{5mm}	10 b2. System goes to step 5\\
 \vspace{3mm}
 
 Technology and Data Variations List:\hspace{3mm} Different computers (MAC, PC)\\
@@ -326,7 +352,7 @@ Special Requirements:\\
 \newpage
 \section{Domain Model}
 \subsection{Class Diagram}
-As the full version of the class diagram is rather large, it is difficult to display it in this document without significant information loss. Instead, the full version can be found in our repository, specifically at team-nasa/docs/oblig4/diagrams\_and\_illustrations/Class-diagram.pdf.
+As the full version of the class diagram is rather large, it is difficult to display it in this document without significant information loss. Instead, the full version can be found in our repository, specifically at team-nasa/docs/oblig4/diagrams\_and\_illustrations/CLASS\_DIAGRAM\_UML\_OBLIG4\_correct.png.
 
 	
 \end{flushleft}
