@@ -127,10 +127,14 @@ Interface used by the Multiplayer class. Specifices all the methods needed for l
 Interface used by the SocketHandler class. Specifices all the methods needed for websocket joining, emitting data, disconnections and such.
 
 \section*{Relationships}
-The relations in the design model initially starts with the Chess class. The Chess class shows the first Screen, MainMenuScene, using the SceneManager and initialises the PlayerRegister. MainMenuScene gets input from user and shows highscores/starts game accordingly.
+The relations in the design model initially starts with the Chess class. The Chess class shows the first Screen, MainMenuScene, using the SceneManager and initialises the Database. MainMenuScene gets input from user and shows highscores/starts game accordingly.
 
 When a game is started, SceneManager shows the GameScene given a GameInfo by the MainMenuScene. In the GameScene the ChessGame and Checkerboard gets initialized. The ChessGame creates a new Board given a Setup. The Setup creates the actual Board instance and creates all the Squares, containing x, y and chesspiece (which extend AbstractPiece). The Checkerboard gets input from user and requests move to the ChessGame class which responds using the CheckerboardListener. If the move was valid, it gets executed and the checkerboard gets updated accordingly.
 
 The AI’s also gets initialized in the ChessGame class and is used if needed.
+
+Multiplayer gets initialized in the MainMenuScene and is used to list, create and join games through network.
+
+SocketHandler is used in the ChessGame class and acts as a middleware between the server and the client to smoothen things out. It is used to communicate between clients during games.
 
 \end{document}
