@@ -62,9 +62,9 @@ public class MainMenuScene extends AbstractScene {
     private Label headerMulti;
     private Label onlineName;
     private TextButton signIn, register, signUp, singleplayerBtn, multiplayerBtn, scores, startSingle, black, white,
-            signInP2, multiOpponent, chooseOnline, chooseOffline, createGame, joinGame, createGameBtn;
+            signInP2, multiOpponent, chooseOnline, chooseOffline, refreshGameList, createGame, joinGame, createGameBtn;
     private TextField username, registerUsername, enterOnlineName;
-    private Button backToLogIn, backToChooseGame;
+    private Button backToLogIn, backToChooseGame, signOutBtn;
     private SelectBox<String> difficulty, gameType, multiplayerOption;
     private ScrollPane scorePane, onlinePane;
     private Window window, onlineWindow;
@@ -156,6 +156,7 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void gamesListed(java.util.List<MultiplayerGame> games) {
+                refreshGameList.setText("Refresh games");
                 multiplayerGames = new ArrayList<>();
                 multiplayerGames.addAll(games);
                 addMultiplayerActors();
@@ -263,6 +264,10 @@ public class MainMenuScene extends AbstractScene {
         scores = new TextButton("Highscore", skin, "default");
         scores.setPosition(centreWidth, WindowInformation.HEIGHT / 4);
 
+        // Sign out button
+        signOutBtn = new Button(skin, "left");
+        signOutBtn.setPosition(centreWidth / 3.8f, WindowInformation.HEIGHT / 1.2f);
+
         // Elements in preferences (singleplayerBtn)
         startSingle = new TextButton("Start game", skin, "default");
         startSingle.setPosition(centreWidth, WindowInformation.HEIGHT / 3.5f);
@@ -334,11 +339,15 @@ public class MainMenuScene extends AbstractScene {
         headerMulti = new Label("Online", skin, "title-plain");
         headerMulti.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
 
+        int btnpaddings = 40;
         createGame = new TextButton("Create online game", skin, "default");
-        createGame.setPosition(centreWidth - createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+        createGame.setPosition(10 + centreWidth - createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+
+        refreshGameList = new TextButton("Refresh games", skin, "default");
+        refreshGameList.setPosition(createGame.getX() + createGame.getWidth() + btnpaddings, createGame.getY());
 
         joinGame = new TextButton("Join game", skin, "default");
-        joinGame.setPosition(centreWidth + createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+        joinGame.setPosition(refreshGameList.getX() + refreshGameList.getWidth() + btnpaddings*2, createGame.getY());
 
         Label lName = new Label("Name", skin, "title");
         Label type = new Label("Game type", skin, "title");
@@ -390,6 +399,7 @@ public class MainMenuScene extends AbstractScene {
         actors.add(singleplayerBtn);
         actors.add(multiplayerBtn);
         actors.add(scores);
+        actors.add(signOutBtn);
         actors.add(mainMenu);
         actors.add(startSingle);
         actors.add(difficulty);
@@ -409,6 +419,7 @@ public class MainMenuScene extends AbstractScene {
         actors.add(enterOnlineName);
         actors.add(createGameBtn);
         actors.add(animation);
+        actors.add(refreshGameList);
     }
     
     private void createAnimation(){
@@ -445,6 +456,9 @@ public class MainMenuScene extends AbstractScene {
         onlinePane.setSize(defaultWidth * 2.3f, defaultHeight * 4);
         scorePane.setSize(defaultWidth * 2.3f, defaultHeight * 7);
         window.setSize(defaultWidth * 2.3f, defaultHeight * 1.8f);
+        createGame.setSize(defaultWidth * 2 / 3, defaultHeight);
+        refreshGameList.setSize(defaultWidth * 2 / 3, defaultHeight);
+        joinGame.setSize(defaultWidth * 2 / 3, defaultHeight);
     }
 
     /**
@@ -523,6 +537,7 @@ public class MainMenuScene extends AbstractScene {
         mainMenu.setVisible(true);
         multiplayerBtn.setVisible(true);
         scores.setVisible(true);
+        signOutBtn.setVisible(true);
     }
 
     /**
@@ -590,6 +605,7 @@ public class MainMenuScene extends AbstractScene {
         createGame.setVisible(true);
         onlinePane.setVisible(true);
         joinGame.setVisible(true);
+        refreshGameList.setVisible(true);
         onlineWindow.setVisible(true);
         multiplayer.listGames();
     }
@@ -626,6 +642,7 @@ public class MainMenuScene extends AbstractScene {
         onlineOptionListener();
         offlineOptionListener();
         scoreListener();
+        signOutBtnListener();
         startSingleListener();
         blackListener();
         whiteListener();
@@ -633,6 +650,7 @@ public class MainMenuScene extends AbstractScene {
         createGameListener();
         createGameBtnListener();
         joinGameListener();
+        refreshGameListListener();
     }
 
     /**
@@ -943,9 +961,29 @@ public class MainMenuScene extends AbstractScene {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (onlineList.getSelectedIndex() > -1) {
                     MultiplayerGame game = multiplayerGames.get(onlineList.getSelectedIndex());
-                    multiplayer.joinGame(game.getId());
+
+                    // Check if we are trying to join our own games; another client is logged in with same name => Disallow.
+                    if (game.getPlayer().getName().equals(gameInfo.getPlayer().getName())) {
+
+                    } else {
+                        multiplayer.joinGame(game.getId());
+                    }
                 }
                 joinGameListener();
+            }
+        });
+    }
+
+    private void refreshGameListListener() {
+        refreshGameList.addListener(new ClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (!multiplayer.isListingGames()) {
+                    multiplayer.listGames();
+                    refreshGameList.setText("Loading...");
+                }
+                refreshGameListListener();
             }
         });
     }
@@ -985,6 +1023,18 @@ public class MainMenuScene extends AbstractScene {
 
                 screenScore();
                 scoreListener();
+            }
+        });
+    }
+
+    private void signOutBtnListener() {
+        signOutBtn.addListener(new ClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                playerOne = true;
+                screenSignIn();
+                signOutBtnListener();
             }
         });
     }

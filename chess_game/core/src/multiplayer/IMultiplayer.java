@@ -27,4 +27,10 @@ public interface IMultiplayer {
      * @param gameId Game id to join
      */
     void joinGame(String gameId);
+
+    /**
+     * If we are currently loading games from server.
+     * @return True if we are currently loading games from server, false otherwhise.
+     */
+    boolean isListingGames();
 }
