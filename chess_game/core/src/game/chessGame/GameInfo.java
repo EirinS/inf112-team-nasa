@@ -1,5 +1,6 @@
 package game.chessGame;
 
+import models.MultiplayerGame;
 import pieces.PieceColor;
 import player.AILevel;
 import db.Player;
@@ -14,18 +15,23 @@ public class GameInfo {
     private String gameOverString;
     private String playerRatingChange, opponentRatingChange;
 
+    private boolean online;
+    private MultiplayerGame multiplayerGame;
+
     public GameInfo(Player player) {
         this.player = player;
         gameType = GameType.REGULAR;
     }
 
-    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level, boolean singlePlayer) {
+    public GameInfo(Player player, Player opponent, PieceColor playerColor, GameType gameType, AILevel level, boolean singlePlayer, boolean online, MultiplayerGame multiplayerGame) {
         this.player = player;
         this.opponent = opponent;
         this.playerColor = playerColor;
         this.gameType = gameType;
         this.level = level;
         this.singlePlayer = singlePlayer;
+        this.online = online;
+        this.multiplayerGame = multiplayerGame;
     }
 
     public PieceColor getPlayerColor() {
@@ -114,5 +120,21 @@ public class GameInfo {
     public String getOpponentRatingChange()
     {
     	return opponentRatingChange;
+    }
+
+    public void setIsOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public MultiplayerGame getMultiplayerGame() {
+        return multiplayerGame;
+    }
+
+    public void setMultiplayerGame(MultiplayerGame game) {
+        this.multiplayerGame = game;
     }
 }

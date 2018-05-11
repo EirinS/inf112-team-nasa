@@ -2,25 +2,35 @@ package game.chessGame;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import boardstructure.*;
 import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
+import db.Database;
 import game.Chess;
 import game.listeners.ChessGameListener;
+import models.GameState;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import pieces.IPiece;
 import pieces.PieceColor;
 import pieces.pieceClasses.Bishop;
 import pieces.pieceClasses.King;
 import pieces.pieceClasses.Knight;
 import pieces.pieceClasses.Pawn;
-
+import pieces.pieceClasses.Queen;
 import player.AI;
 import db.Player;
 import player.AIThreadMove;
 import setups.Chess960Setup;
 import setups.DefaultSetup;
+import socket.SocketHandler;
+import socket.SocketHandlerListener;
 import sound.AudioManager;
 
 /**
@@ -28,7 +38,7 @@ import sound.AudioManager;
  * This includes an implementation of the game clock,
  * deciding when the game is over and updating player statistics after a game.
  */
-public class ChessGame implements IChessGame, BoardListener {
+public class ChessGame implements IChessGame, BoardListener, SocketHandlerListener {
 
     private GameInfo gameInfo;
     private IBoard board;
@@ -46,14 +56,15 @@ public class ChessGame implements IChessGame, BoardListener {
     private Timer playerTimer, opponentTimer;
     private boolean playerTimerRunning, opponentTimerRunning;
 
+    private SocketHandler socketHandler;
+
     public ChessGame(GameInfo gameInfo, ChessGameListener listener) {
         this.gameInfo = gameInfo;
         this.listener = listener;
         this.gameOverString = "";
 
         if (gameInfo.getGameType() == GameType.BULLET) {
-            playerSeconds = 60;
-            opponentSeconds = 60;
+            playerSeconds = opponentSeconds = 60;
         } else if (gameInfo.getGameType() == GameType.BLITZ) {
             playerSeconds = opponentSeconds = 180;
         } else if (gameInfo.getGameType() == GameType.RAPID) {
@@ -69,14 +80,21 @@ public class ChessGame implements IChessGame, BoardListener {
 
         this.boardHistory.add(board.copy());
 
-        // Load AI
-        if (gameInfo.getLevel() != null) {
-            computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
-            board.setAI(computerAI);
-        }
+        // Check if we are creating/joining a multiplayer game
+        if (gameInfo.isOnline()) {
+            socketHandler = new SocketHandler(this);
+            socketHandler.connect();
+        } else {
 
-        // Start timer!
-        turnTimer();
+            // Load AI
+            if (gameInfo.getLevel() != null) {
+                computerAI = gameInfo.getLevel().getAI(gameInfo.getPlayerColor().getOpposite());
+                board.setAI(computerAI);
+            }
+
+            // Start timer!
+            turnTimer();
+        }
     }
 
     private void turnTimer() {
@@ -219,7 +237,6 @@ public class ChessGame implements IChessGame, BoardListener {
                 listener.gameOver(3);
             }
         } else if (turn == gameInfo.getPlayerColor()) {
-
             //player, whose color is turn, lost
             if (updateRatings(p, o, 2)) {
                 listener.gameOver(2);
@@ -228,6 +245,7 @@ public class ChessGame implements IChessGame, BoardListener {
 
             //player, whose color is turn, won
             if (updateRatings(p, o, 1)) {
+
                 listener.gameOver(1);
             }
         }
@@ -398,7 +416,7 @@ public class ChessGame implements IChessGame, BoardListener {
     public boolean stalemate() {
         if (board.getAvailableMoves(board.getTurn()).isEmpty()) {
             //put in if you need check for stale-mate (king not in check)
-            /*
+			/*
             ArrayList<IPiece> threat = board.piecesThreatenedByOpponent(turn, getOtherPieceColor(turn));
 			for(IPiece p : threat) {
 				if (p instanceof King) {
@@ -563,6 +581,13 @@ public class ChessGame implements IChessGame, BoardListener {
     }
 
     @Override
+    public void disconnectSocket() {
+        if (socketHandler != null) {
+            socketHandler.disconnect();
+        }
+    }
+
+    @Override
     public void promotionRequested(Move move) {
         listener.promotionRequested(move);
     }
@@ -571,23 +596,62 @@ public class ChessGame implements IChessGame, BoardListener {
     public void movePerformed(Board board, ArrayList<Move> moves) {
         listener.moveOk(moves);
 
-        AudioManager.playMoveSound();
+        playMoveSound(board.getLastMove().getCapturedPiece());
 
         turnTimer();
         boardHistory.add(board.copy());
 
-        //this player is in checkmate, game is finished
-        if (checkmate()) {
-            finishGame(board.getTurn());
-            return;
-        }
-        if (isTie()) {
-            finishGame(null);
-            return;
-        }
+        if (gameInfo.isOnline() && board.getTurn() != gameInfo.getPlayerColor()) {
+            if (checkmate()) {
+                // TODO: 03/05/2018 send game-over to opponent with checkmate
 
-        // Check if AI should do move
-        aiMove();
+            } else if (isTie()) {
+                // TODO: 03/05/2018 send game-over to opponent with tie
+
+            } else {
+
+                // Emit move-data to opponent.
+                JSONObject obj = new JSONObject();
+                obj.put("type", "moves");
+
+                JSONArray arrMoves = new JSONArray();
+                for (Move m : moves) {
+
+                    // We need to serialize the object ourselves...
+                    // NOTE: 7 - ... to flip the move for opponent.
+                    JSONObject move = new JSONObject();
+                    move.put("fromX", 7 - m.getFrom().getX());
+                    move.put("fromY", 7 - m.getFrom().getY());
+                    move.put("toX", 7 - m.getTo().getX());
+                    move.put("toY", 7 - m.getTo().getY());
+                    arrMoves.put(move);
+                }
+                obj.put("moves", arrMoves);
+                socketHandler.emitData(obj);
+            }
+        } else {
+
+            //this player is in checkmate, game is finished
+            if (checkmate()) {
+                finishGame(board.getTurn());
+                return;
+            }
+            if (isTie()) {
+                finishGame(null);
+                return;
+            }
+
+            // Check if AI should do move
+            aiMove();
+        }
+    }
+
+    private void playMoveSound(IPiece captured) {
+        if (captured instanceof Queen) {
+            AudioManager.playScream();
+        } else {
+            AudioManager.playMoveSound();
+        }
     }
 
     @Override
@@ -597,5 +661,81 @@ public class ChessGame implements IChessGame, BoardListener {
 
     public String getGameOverString() {
         return gameOverString;
+    }
+
+    @Override
+    public void onConnected() {
+
+        // Join game!
+        socketHandler.joinGame(gameInfo.getMultiplayerGame().getId(), gameInfo.getPlayer().getName());
+    }
+
+
+    @Override
+    public void onData(JSONObject data) {
+        String type = (String) data.get("type");
+        switch (type) {
+            case "moves":
+                JSONArray moves = (JSONArray) data.get("moves");
+                for (Object object : moves) {
+                    JSONObject obj = (JSONObject) object;
+                    int fromX = obj.getInt("fromX");
+                    int fromY = obj.getInt("fromY");
+                    int toX = obj.getInt("toX");
+                    int toY = obj.getInt("toY");
+                    board.move(fromX, fromY, toX, toY);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onState(GameState state) {
+        switch (state.getMessage()) {
+            case READY:
+
+                // When ready state is called, we should receive an array with all playernames, where first string is player 1, or creator of the game.
+                if (state.getData() instanceof ArrayList) {
+                    ArrayList<String> players = (ArrayList<String>) state.getData();
+                    String opponentName;
+                    if (players.get(0).equals(gameInfo.getPlayer().getName())) {
+                        opponentName = players.get(1);
+
+                        // Player has created game and another player has joined => players turn.
+                        board.setTurn(gameInfo.getPlayerColor());
+                    } else {
+                        opponentName = players.get(0);
+
+                        // Player has joined game and other player is the host => opponents turn.
+                        board.setTurn(gameInfo.getPlayerColor().getOpposite());
+                    }
+                    try {
+                        gameInfo.setOpponent(Chess.getDatabase().getPlayer(opponentName));
+
+                        // Start timer and set game status to ready!
+                        turnTimer();
+                        listener.multiplayerGameReady(opponentName);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case OPPONENT_RESIGN:
+            case OPPONENT_DC:
+
+                // Opponent either resigned or disonnected; either way we won!
+                Gdx.app.postRunnable(() -> finishGame(gameInfo.getPlayerColor().getOpposite()));
+                break;
+            case UNKNOWN:
+                System.out.println("Unknown game state received... check api logs");
+                break;
+        }
+    }
+
+    @Override
+    public void onDisconnected() {
+
     }
 }
