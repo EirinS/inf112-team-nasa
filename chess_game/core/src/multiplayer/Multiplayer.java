@@ -24,6 +24,7 @@ public class Multiplayer implements IMultiplayer {
     private MultiplayerListener listener;
 
     private HerokuService service;
+    private boolean isListingGames;
 
     public Multiplayer(MultiplayerListener listener) {
         this.listener = listener;
@@ -40,10 +41,13 @@ public class Multiplayer implements IMultiplayer {
 
     @Override
     public void listGames() {
+        if (isListingGames) return;
+        isListingGames = true;
         service.listGames().enqueue(new Callback<List<MultiplayerGame>>() {
 
             @Override
             public void onResponse(Call<List<MultiplayerGame>> call, Response<List<MultiplayerGame>> response) {
+                isListingGames = false;
                 if (response.isSuccessful() && response.body() != null) {
                     listener.gamesListed(response.body());
                 } else {
@@ -53,6 +57,7 @@ public class Multiplayer implements IMultiplayer {
 
             @Override
             public void onFailure(Call<List<MultiplayerGame>> call, Throwable t) {
+                isListingGames = false;
                 t.printStackTrace();
                 listener.error(t);
             }
@@ -108,5 +113,10 @@ public class Multiplayer implements IMultiplayer {
                 listener.error(t);
             }
         });
+    }
+
+    @Override
+    public boolean isListingGames() {
+        return isListingGames;
     }
 }

@@ -65,6 +65,31 @@ Runs all the test for the entire project. This includes tests for board structur
 \subsection {AudioManager}
 Small utility class allowing the user to listen for sound-effect, such as move, hint and undo-sound.
 
+\subsection {AnimatedImage}
+This is a class that inherits from the class Image (from the LibGdx library) and therefore indirectly from Actor. It can therefore be added to our UI stage as a graphical element (more specifically an animation).
+
+\subsection {CreateAnimation}
+This creates an Animation from a spritesheet and can be adapted to different desirable specifications. This class is used internally in combination with the class AnimatedImage in order to create and add an animation to our application.
+
+\subsection {Models}
+The "models" package contains three models needed for serializing and deserializing JSON responses from the server.
+The three models we have so far are:
+\begin{itemize}  
+\item ApiResponse
+\item GameState
+\item MultiplayerGame
+\end{itemize}
+
+\subsection {Multiplayer}
+Handles all requests/responses from Heroku API. Implementation of IMultiplayer interface.
+
+\subsection {SocketHandler}
+Implementation of ISocketHandler. Used by ChessGame to connect to Heroku API's Socket.IO websockets.
+Acts as a middleware class.
+
+\subsection {SocketEvent}
+Small helperclass to define Socket.IO message types.
+
 \section {Interfaces}
 Below we have a short description of all the main interfaces in the project, separated into subsections.
 
@@ -92,11 +117,24 @@ Interface used by all AI. It  contains one function that returns the move the AI
 \subsection {IDatabase}
 Interface used by the Database class. Specifices all the methods needed for highscore listing, etc.
 
+\subsection {HerokuService}
+Specifies and is required for all the endpoints to our Heroku API.
+
+\subsection {IMultiplayer}
+Interface used by the Multiplayer class. Specifices all the methods needed for listing, creating and joining games.
+
+\subsection {ISocketHandler}
+Interface used by the SocketHandler class. Specifices all the methods needed for websocket joining, emitting data, disconnections and such.
+
 \section*{Relationships}
-The relations in the design model initially starts with the Chess class. The Chess class shows the first Screen, MainMenuScene, using the SceneManager and initialises the PlayerRegister. MainMenuScene gets input from user and shows highscores/starts game accordingly.
+The relations in the design model initially starts with the Chess class. The Chess class shows the first Screen, MainMenuScene, using the SceneManager and initialises the Database. MainMenuScene gets input from user and shows highscores/starts game accordingly.
 
 When a game is started, SceneManager shows the GameScene given a GameInfo by the MainMenuScene. In the GameScene the ChessGame and Checkerboard gets initialized. The ChessGame creates a new Board given a Setup. The Setup creates the actual Board instance and creates all the Squares, containing x, y and chesspiece (which extend AbstractPiece). The Checkerboard gets input from user and requests move to the ChessGame class which responds using the CheckerboardListener. If the move was valid, it gets executed and the checkerboard gets updated accordingly.
 
 The AI’s also gets initialized in the ChessGame class and is used if needed.
+
+Multiplayer gets initialized in the MainMenuScene and is used to list, create and join games through network.
+
+SocketHandler is used in the ChessGame class and acts as a middleware between the server and the client to smoothen things out. It is used to communicate between clients during games.
 
 \end{document}

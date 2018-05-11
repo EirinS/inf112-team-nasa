@@ -61,10 +61,11 @@ public class MainMenuScene extends AbstractScene {
     private Label error;
     private Label headerMulti;
     private Label onlineName;
+    private Label errorMultiplayer;
     private TextButton signIn, register, signUp, singleplayerBtn, multiplayerBtn, scores, startSingle, black, white,
-            signInP2, multiOpponent, chooseOnline, chooseOffline, createGame, joinGame, createGameBtn;
+            signInP2, multiOpponent, chooseOnline, chooseOffline, refreshGameList, createGame, joinGame, createGameBtn;
     private TextField username, registerUsername, enterOnlineName;
-    private Button backToLogIn, backToChooseGame;
+    private Button backToLogIn, backToChooseGame, signOutBtn;
     private SelectBox<String> difficulty, gameType, multiplayerOption;
     private ScrollPane scorePane, onlinePane;
     private Window window, onlineWindow;
@@ -79,9 +80,9 @@ public class MainMenuScene extends AbstractScene {
     // Online multiplayer stuff
     private IMultiplayer multiplayer;
     private ArrayList<MultiplayerGame> multiplayerGames;
-    
+
     // Animation
-	private AnimatedImage animation;
+    private AnimatedImage animation;
 
     /**
      * The constructor of the main menu scene.
@@ -156,6 +157,7 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void gamesListed(java.util.List<MultiplayerGame> games) {
+                refreshGameList.setText("Refresh games");
                 multiplayerGames = new ArrayList<>();
                 multiplayerGames.addAll(games);
                 addMultiplayerActors();
@@ -167,27 +169,29 @@ public class MainMenuScene extends AbstractScene {
 
                 // We have created a game, start GameScene!
                 screenAnimation();
-            	Timer timer = new Timer();
-            	timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                            Gdx.app.postRunnable(
-                            		new Runnable() {
-                                        @Override
-                                        public void run() {   
-                                        		gameInfo.setIsOnline(true);
-                                                gameInfo.setMultiplayerGame(multiplayerGame);
-                                                gameInfo.setPlayerColor(multiplayerGame.getPlayer().getColor());
-                                                gameInfo.getPlayer().loadRating();
-                                                gameInfo.setGameType(GameType.getGameType(multiplayerGame.getType()));
-                                                Gdx.app.postRunnable(() -> SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo));
-                                                timer.cancel();
-                                        }
-                                    }
-                            );
-                        };
-                   }
-               , (4000));
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                                   @Override
+                                   public void run() {
+                                       Gdx.app.postRunnable(
+                                               new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       gameInfo.setIsOnline(true);
+                                                       gameInfo.setMultiplayerGame(multiplayerGame);
+                                                       gameInfo.setPlayerColor(multiplayerGame.getPlayer().getColor());
+                                                       gameInfo.getPlayer().loadRating();
+                                                       gameInfo.setGameType(GameType.getGameType(multiplayerGame.getType()));
+                                                       Gdx.app.postRunnable(() -> SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo));
+                                                       timer.cancel();
+                                                   }
+                                               }
+                                       );
+                                   }
+
+                                   ;
+                               }
+                        , (4000));
             }
 
             @Override
@@ -230,7 +234,7 @@ public class MainMenuScene extends AbstractScene {
     private void setUpElements() {
         imgBackground = new Image(new Texture("pictures/menu.jpg"));
         imgBackground.setSize(WindowInformation.WIDTH, WindowInformation.HEIGHT);
-        
+
         createAnimation();
 
         // Elements in log in
@@ -262,6 +266,10 @@ public class MainMenuScene extends AbstractScene {
         multiplayerBtn.setPosition(centreWidth, WindowInformation.HEIGHT / 2.7f);
         scores = new TextButton("Highscore", skin, "default");
         scores.setPosition(centreWidth, WindowInformation.HEIGHT / 4);
+
+        // Sign out button
+        signOutBtn = new Button(skin, "left");
+        signOutBtn.setPosition(centreWidth / 3.8f, WindowInformation.HEIGHT / 1.2f);
 
         // Elements in preferences (singleplayerBtn)
         startSingle = new TextButton("Start game", skin, "default");
@@ -334,11 +342,19 @@ public class MainMenuScene extends AbstractScene {
         headerMulti = new Label("Online", skin, "title-plain");
         headerMulti.setPosition(centreWidth + (centreWidth / 3), WindowInformation.HEIGHT / 1.2f);
 
+        int btnpaddings = 40;
         createGame = new TextButton("Create online game", skin, "default");
-        createGame.setPosition(centreWidth - createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+        createGame.setPosition(10 + centreWidth - createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+
+        refreshGameList = new TextButton("Refresh games", skin, "default");
+        refreshGameList.setPosition(createGame.getX() + createGame.getWidth() + btnpaddings, createGame.getY());
+
+        errorMultiplayer = new Label("default", skin, "error");
+        errorMultiplayer.setText("Cannot join game with same playername as you!\nPlease sign out and use another user.");
+        errorMultiplayer.setPosition(centreWidth - 50, refreshGameList.getY() - refreshGameList.getHeight() - 35);
 
         joinGame = new TextButton("Join game", skin, "default");
-        joinGame.setPosition(centreWidth + createGame.getWidth(), WindowInformation.HEIGHT / 6f);
+        joinGame.setPosition(refreshGameList.getX() + refreshGameList.getWidth() + btnpaddings * 2, createGame.getY());
 
         Label lName = new Label("Name", skin, "title");
         Label type = new Label("Game type", skin, "title");
@@ -390,6 +406,7 @@ public class MainMenuScene extends AbstractScene {
         actors.add(singleplayerBtn);
         actors.add(multiplayerBtn);
         actors.add(scores);
+        actors.add(signOutBtn);
         actors.add(mainMenu);
         actors.add(startSingle);
         actors.add(difficulty);
@@ -399,6 +416,7 @@ public class MainMenuScene extends AbstractScene {
         actors.add(scorePane);
         actors.add(headerScore);
         actors.add(error);
+        actors.add(errorMultiplayer);
         actors.add(window);
         actors.add(chooseOnline);
         actors.add(chooseOffline);
@@ -409,18 +427,19 @@ public class MainMenuScene extends AbstractScene {
         actors.add(enterOnlineName);
         actors.add(createGameBtn);
         actors.add(animation);
+        actors.add(refreshGameList);
     }
-    
-    private void createAnimation(){
-		//animation = new AnimationActor("pictures/loading.png", 3, 474, 717, 5, 8, 10);
-		//animation.setSize(500, 200);
-		CreateAnimation object = new CreateAnimation("pictures/loading.png", 3, 474, 717, 5, 8, 10);
-		Animation<TextureRegion> a = object.getAnimation();
-		animation = new AnimatedImage(a);
-		animation.setSize(animation.getWidth(), animation.getHeight());
-		animation.setPosition(WindowInformation.WIDTH/2 - (animation.getWidth()/2), -50);
-		animation.setVisible(false);
-	}
+
+    private void createAnimation() {
+        //animation = new AnimationActor("pictures/loading.png", 3, 474, 717, 5, 8, 10);
+        //animation.setSize(500, 200);
+        CreateAnimation object = new CreateAnimation("pictures/loading.png", 3, 474, 717, 5, 8, 10);
+        Animation<TextureRegion> a = object.getAnimation();
+        animation = new AnimatedImage(a);
+        animation.setSize(animation.getWidth(), animation.getHeight());
+        animation.setPosition(WindowInformation.WIDTH / 2 - (animation.getWidth() / 2), -50);
+        animation.setVisible(false);
+    }
 
     /**
      * Private helping method. Uses the array to set up sizes of the elements. Some
@@ -445,6 +464,9 @@ public class MainMenuScene extends AbstractScene {
         onlinePane.setSize(defaultWidth * 2.3f, defaultHeight * 4);
         scorePane.setSize(defaultWidth * 2.3f, defaultHeight * 7);
         window.setSize(defaultWidth * 2.3f, defaultHeight * 1.8f);
+        createGame.setSize(defaultWidth * 2 / 3, defaultHeight);
+        refreshGameList.setSize(defaultWidth * 2 / 3, defaultHeight);
+        joinGame.setSize(defaultWidth * 2 / 3, defaultHeight);
     }
 
     /**
@@ -459,7 +481,7 @@ public class MainMenuScene extends AbstractScene {
 
     // Section 2: ToggleRightScreens
 
-    private void playLoadingAnimation(){
+    private void playLoadingAnimation() {
         //CustomAnimation animation = new CustomAnimation(game, gameInfo, "pictures/loading.png", 3, 474, 717, 5, 8, 10);
     }
 
@@ -484,12 +506,12 @@ public class MainMenuScene extends AbstractScene {
         register.setVisible(true);
         username.setVisible(true);
     }
-    
-    protected void screenAnimation(){
-		invisible();
-		imgBackground.setVisible(false);
-		animation.setVisible(true);
-	}
+
+    protected void screenAnimation() {
+        invisible();
+        imgBackground.setVisible(false);
+        animation.setVisible(true);
+    }
 
     /**
      * Displays the screen where one registers as a new player.
@@ -523,6 +545,7 @@ public class MainMenuScene extends AbstractScene {
         mainMenu.setVisible(true);
         multiplayerBtn.setVisible(true);
         scores.setVisible(true);
+        signOutBtn.setVisible(true);
     }
 
     /**
@@ -590,6 +613,7 @@ public class MainMenuScene extends AbstractScene {
         createGame.setVisible(true);
         onlinePane.setVisible(true);
         joinGame.setVisible(true);
+        refreshGameList.setVisible(true);
         onlineWindow.setVisible(true);
         multiplayer.listGames();
     }
@@ -626,6 +650,7 @@ public class MainMenuScene extends AbstractScene {
         onlineOptionListener();
         offlineOptionListener();
         scoreListener();
+        signOutBtnListener();
         startSingleListener();
         blackListener();
         whiteListener();
@@ -633,6 +658,7 @@ public class MainMenuScene extends AbstractScene {
         createGameListener();
         createGameBtnListener();
         joinGameListener();
+        refreshGameListListener();
     }
 
     /**
@@ -643,31 +669,33 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            	screenAnimation();
-            	Timer timer = new Timer();
-            	timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                            Gdx.app.postRunnable(
-                            		new Runnable() {
-                                        @Override
-                                        public void run() {
-                                        		gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
-                                                gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
-                                                gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
-                                                gameInfo.getPlayer().loadRating();
-                                                gameInfo.setIsOnline(false);
-                                                gameInfo.setSinglePlayer(true);
-                                                if (gameInfo.getOpponent() != null)
-                                                    gameInfo.getOpponent().loadRating();
-                                                SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
-                                           timer.cancel();
-                                        }
-                                    }
-                            );
-                        };
-                   }
-               , (4000));
+                screenAnimation();
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                                   @Override
+                                   public void run() {
+                                       Gdx.app.postRunnable(
+                                               new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       gameInfo.setLevel(AILevel.getAILevel(difficulty.getSelected()));
+                                                       gameInfo.setGameType(GameType.getGameType(gameType.getSelected()));
+                                                       gameInfo.setPlayerColor(white.isChecked() ? PieceColor.WHITE : PieceColor.BLACK);
+                                                       gameInfo.getPlayer().loadRating();
+                                                       gameInfo.setIsOnline(false);
+                                                       gameInfo.setSinglePlayer(true);
+                                                       if (gameInfo.getOpponent() != null)
+                                                           gameInfo.getOpponent().loadRating();
+                                                       SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+                                                       timer.cancel();
+                                                   }
+                                               }
+                                       );
+                                   }
+
+                                   ;
+                               }
+                        , (4000));
                 startSingleListener();
             }
         });
@@ -734,34 +762,36 @@ public class MainMenuScene extends AbstractScene {
                         error.setVisible(true);
                         signInListener();
                     } else if (exists) {
-                    	 screenAnimation();
-                     	Timer timer = new Timer();
-                     	timer.schedule(new TimerTask() {
-                             @Override
-                             public void run() {
-                                     Gdx.app.postRunnable(
-                                     		new Runnable() {
-                                                 @Override
-                                                 public void run() {   
-                                                	  try {
-                                                          gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
-                                                          gameInfo.setSinglePlayer(false);
-                                                          gameInfo.setPlayerColor(PieceColor.WHITE);
-                                                          gameInfo.getPlayer().loadRating();
-                                                          gameInfo.setIsOnline(false);
-                                                          gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
-                                                          SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
-                                                          signInListener();
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-                                                         timer.cancel();
-                                                 }
-                                             }
-                                     );
-                                 };
-                            }
-                        , (4000));
+                        screenAnimation();
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                                           @Override
+                                           public void run() {
+                                               Gdx.app.postRunnable(
+                                                       new Runnable() {
+                                                           @Override
+                                                           public void run() {
+                                                               try {
+                                                                   gameInfo.setOpponent(Chess.getDatabase().getPlayer(name));
+                                                                   gameInfo.setSinglePlayer(false);
+                                                                   gameInfo.setPlayerColor(PieceColor.WHITE);
+                                                                   gameInfo.getPlayer().loadRating();
+                                                                   gameInfo.setIsOnline(false);
+                                                                   gameInfo.setGameType(GameType.getGameType(multiplayerOption.getSelected()));
+                                                                   SceneManager.getInstance().showScreen(SceneEnum.GAME, game, gameInfo);
+                                                                   signInListener();
+                                                               } catch (SQLException e1) {
+                                                                   e1.printStackTrace();
+                                                               }
+                                                               timer.cancel();
+                                                           }
+                                                       }
+                                               );
+                                           }
+
+                                           ;
+                                       }
+                                , (4000));
                     } else {
                         error.setText("Alias not registered.");
                         error.setVisible(true);
@@ -830,7 +860,7 @@ public class MainMenuScene extends AbstractScene {
             }
         });
     }
-    
+
     /**
      * Adds an action event to the button that leads back to the game menu screen.
      */
@@ -912,6 +942,7 @@ public class MainMenuScene extends AbstractScene {
         createGame.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button) {
+                errorMultiplayer.setVisible(false);
                 screenCreateGame();
                 createGameListener();
             }
@@ -941,11 +972,33 @@ public class MainMenuScene extends AbstractScene {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                errorMultiplayer.setVisible(false);
                 if (onlineList.getSelectedIndex() > -1) {
                     MultiplayerGame game = multiplayerGames.get(onlineList.getSelectedIndex());
-                    multiplayer.joinGame(game.getId());
+
+                    // Check if we are trying to join our own games; another client is logged in with same name => Disallow.
+                    if (game.getPlayer().getName().equals(gameInfo.getPlayer().getName())) {
+                        errorMultiplayer.setVisible(true);
+                    } else {
+                        multiplayer.joinGame(game.getId());
+                    }
                 }
                 joinGameListener();
+            }
+        });
+    }
+
+    private void refreshGameListListener() {
+        refreshGameList.addListener(new ClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                errorMultiplayer.setVisible(false);
+                if (!multiplayer.isListingGames()) {
+                    multiplayer.listGames();
+                    refreshGameList.setText("Loading...");
+                }
+                refreshGameListListener();
             }
         });
     }
@@ -985,6 +1038,18 @@ public class MainMenuScene extends AbstractScene {
 
                 screenScore();
                 scoreListener();
+            }
+        });
+    }
+
+    private void signOutBtnListener() {
+        signOutBtn.addListener(new ClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                playerOne = true;
+                screenSignIn();
+                signOutBtnListener();
             }
         });
     }

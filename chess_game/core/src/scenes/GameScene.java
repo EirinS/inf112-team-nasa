@@ -104,6 +104,7 @@ public class GameScene extends AbstractScene implements CheckerboardListener, Ch
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 SceneManager.getInstance().showScreen(SceneEnum.MAIN_MENU, game);
+                chessGame.resign();
                 chessGame.disconnectSocket();
                 super.touchUp(event, x, y, pointer, button);
             }
