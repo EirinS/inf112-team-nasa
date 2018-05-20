@@ -1,0 +1,49 @@
+Feedback INF112 spring 2018 - Oblig.5
+
+Group: Team NASA
+
+
+
+
+Overall feedback:
+Very good delivery. Good features added to the game and good documentation for the program.
+
+
+Deliverable: Minutes/ meeting reports
+As good as always.
+
+
+Deliverable: Chess game + code quality
+Very good delivery, nice features and online seems to be working for the most part. If you win a game of online chess
+the game seems to freeze or crash. At least we could not figure out how to win a game without the game crashing when playing online.
+
+
+Deliverable: Retrospective summary
+Good, covers most of your struggles throughout the assignment.
+
+
+Deliverable: User manual
+The user manual seems mostly up to date with the game, but we are missing information about the additional features and modes
+added to the game. You mention regular chess and chess 960, but not the online part, nor the other gamemodes. 
+
+
+Deliverable: Presentation
+Good slides and well presented.
+
+
+Deliverable: Sequence diagram
+Also a lot better then previous iterations. We were missing the updated version of the sequence diagram that you were told to
+fix in the previous iterations (at least we could not find it), some points were deducted for this.
+
+
+Deliverable: Design/class diagram
+Everything seems to be on point for this delivery.
+
+
+Score: 96.8 (of 100)
+
+Evaluation: PASS
+
+Very good delivery as always, hope you had fun working on this project, and good luck on the exam!
+
+Graded by Joakim and Dan, Bergen, May 20.
